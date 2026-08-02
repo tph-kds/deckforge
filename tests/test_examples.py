@@ -17,4 +17,13 @@ class ExampleTests(unittest.TestCase):
  def test_editable_example_contract(self):
   subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_layout.py'),str(ROOT/'examples/02-example/deck.json')],check=True)
   subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/validate_output_contract.py'),str(ROOT/'examples/02-example'),'--profile','editable-deck'],check=True)
+ def test_motion_audit_passes_for_editable_example(self):
+  subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),str(ROOT/'examples/02-example/deck.json')],check=True)
+ def test_motion_audit_fails_for_static_deck(self):
+  import tempfile, json, os
+  static={'presentation':{'mode':'horizontal','transition':'','reducedMotion':'respect-system'},'slides':[{'id':'s1','title':'t','layout':'title-hero','blocks':[{'id':'b1','type':'text','content':'x'}]}]}
+  with tempfile.TemporaryDirectory() as d:
+   p=os.path.join(d,'deck.json');open(p,'w',encoding='utf-8').write(json.dumps(static))
+   r=subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),p],capture_output=True,text=True)
+   self.assertNotEqual(r.returncode,0)
 if __name__=='__main__':unittest.main()
