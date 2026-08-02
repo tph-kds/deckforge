@@ -1,0 +1,110 @@
+{
+  "version": "2.0",
+  "passingScore": 82,
+  "blockingChecks": [
+    "No horizontal or vertical clipping at 1280x720.",
+    "Presenter mode works by keyboard and touch.",
+    "All interactive controls are keyboard reachable.",
+    "No untrusted raw HTML is rendered.",
+    "Every image, diagram, chart, and video has an accessible text alternative.",
+    "Reduced-motion mode remains understandable.",
+    "No placeholder content, fake metrics, or invented citations remain."
+  ],
+  "dimensions": [
+    {
+      "id": "story",
+      "weight": 18,
+      "checks": [
+        "One clear narrative thesis",
+        "Each slide advances the argument",
+        "Opening and closing are specific"
+      ]
+    },
+    {
+      "id": "hierarchy",
+      "weight": 14,
+      "checks": [
+        "One focal point per slide",
+        "Readable type scale",
+        "Consistent alignment and spacing"
+      ]
+    },
+    {
+      "id": "content-fit",
+      "weight": 14,
+      "checks": [
+        "Content fits without shrinking",
+        "No paragraph walls",
+        "Complexity matches audience"
+      ]
+    },
+    {
+      "id": "visual-system",
+      "weight": 14,
+      "checks": [
+        "Theme is consistent",
+        "Visuals are meaningful",
+        "Charts use coherent encoding"
+      ]
+    },
+    {
+      "id": "editor-ux",
+      "weight": 10,
+      "checks": [
+        "Core actions are discoverable",
+        "Selection and undo are reliable",
+        "Toolbar is contextual"
+      ]
+    },
+    {
+      "id": "presenter-ux",
+      "weight": 10,
+      "checks": [
+        "Navigation is predictable",
+        "Speaker notes and overview work",
+        "Fullscreen removes editor chrome"
+      ]
+    },
+    {
+      "id": "accessibility",
+      "weight": 10,
+      "checks": [
+        "Contrast and focus states pass",
+        "Alt text and summaries exist",
+        "Reduced motion supported"
+      ]
+    },
+    {
+      "id": "performance",
+      "weight": 6,
+      "checks": [
+        "Lazy-load heavy media",
+        "Avoid layout thrash",
+        "Transitions remain smooth"
+      ]
+    },
+    {
+      "id": "trust",
+      "weight": 4,
+      "checks": [
+        "Claims are sourced",
+        "No fabricated UI or data",
+        "Security boundaries are explicit"
+      ]
+    }
+  ],
+  "aiSlopDetectors": [
+    "More than two gradients on one slide",
+    "Glassmorphism used as default container style",
+    "Three-card hero repeated across sections",
+    "Decorative glowing orbs behind unrelated content",
+    "Random icon for every bullet",
+    "All slides use identical composition",
+    "Excessive rounded rectangles",
+    "Dark neon AI aesthetic selected without domain rationale",
+    "Generic titles such as Overview, Solution, Benefits without a claim",
+    "Text centered everywhere",
+    "Meaningless stock imagery",
+    "Charts without units, source, or takeaway"
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "modes": [
+    {
+      "id": "plan",
+      "references": [
+        "built-in-skills/content-and-story.md",
+        "built-in-skills/quality-gate.md"
+      ],
+      "requiredOutputs": [
+        "assumptions",
+        "architecture or slide map",
+        "risks",
+        "verification plan"
+      ]
+    },
+    {
+      "id": "build",
+      "references": [
+        "built-in-skills/content-and-story.md",
+        "built-in-skills/template-and-theme.md",
+        "built-in-skills/editor-experience.md",
+        "built-in-skills/presenter-experience.md",
+        "built-in-skills/quality-gate.md"
+      ],
+      "requiredOutputs": [
+        "DeckProject or adapter",
+        "implementation changes",
+        "validation evidence"
+      ]
+    },
+    {
+      "id": "redesign",
+      "references": [
+        "built-in-skills/template-and-theme.md",
+        "built-in-skills/layout-and-rendering.md",
+        "built-in-skills/quality-gate.md"
+      ],
+      "requiredOutputs": [
+        "audit findings",
+        "implemented remediation",
+        "before/after verification"
+      ]
+    },
+    {
+      "id": "extend",
+      "references": [
+        "built-in-skills/editor-experience.md",
+        "built-in-skills/presenter-experience.md",
+        "built-in-skills/quality-gate.md"
+      ],
+      "requiredOutputs": [
+        "feature contract",
+        "implementation changes",
+        "tests and compatibility notes"
+      ]
+    },
+    {
+      "id": "migrate",
+      "references": [
+        "built-in-skills/import-and-migration.md",
+        "built-in-skills/quality-gate.md"
+      ],
+      "requiredOutputs": [
+        "compatibility matrix",
+        "migration report",
+        "validated DeckProject"
+      ]
+    },
+    {
+      "id": "publish",
+      "references": [
+        "built-in-skills/publish-and-embed.md",
+        "built-in-skills/security.md",
+        "built-in-skills/quality-gate.md"
+      ],
+      "requiredOutputs": [
+        "runtime contract",
+        "security policy",
+        "publish/embed tests"
+      ]
+    },
+    {
+      "id": "audit",
+      "references": [
+        "built-in-skills/quality-gate.md",
+        "built-in-skills/accessibility.md",
+        "built-in-skills/performance.md",
+        "built-in-skills/security.md"
+      ],
+      "requiredOutputs": [
+        "prioritized findings",
+        "evidence",
+        "concrete remediation"
+      ]
+    }
+  ]
+}

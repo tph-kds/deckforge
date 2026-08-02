@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "2.1",
   "meta": {
     "id": "deck-ai-product-vision",
     "slug": "ai-product-vision",
@@ -15,7 +15,8 @@
     "width": 1600,
     "height": 900,
     "safeMargin": 64,
-    "grid": 8
+    "grid": 8,
+    "layoutMode": "semantic-slots"
   },
   "theme": {
     "id": "ai-cosmos",
@@ -48,6 +49,21 @@
       "diagram",
       "image",
       "citation"
+    ],
+    "sidePanel": true,
+    "assetLibrary": true,
+    "themePicker": true,
+    "layoutPicker": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "requiredZones": [
+      "app-bar",
+      "slide-rail",
+      "canvas",
+      "inspector",
+      "notes",
+      "save-status"
     ]
   },
   "assets": [],
@@ -70,7 +86,9 @@
           "style": {
             "level": 1
           },
-          "sourceIds": []
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
         },
         {
           "id": "b2",
@@ -83,12 +101,26 @@
             "h": 100
           },
           "style": {},
-          "sourceIds": []
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
         }
       ],
       "speakerNotes": "Open with the operating principle, not the technology.",
       "sources": [],
-      "interactions": []
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "title",
+          "blockIds": [
+            "b1",
+            "b2"
+          ],
+          "flow": "stack",
+          "gap": 16
+        }
+      ]
     },
     {
       "id": "s2",
@@ -117,12 +149,25 @@
           },
           "style": {},
           "alt": "Three-layer architecture from experience to agent runtime to trust layer.",
-          "sourceIds": []
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
         }
       ],
       "speakerNotes": "Explain how product experience, execution, and governance remain separate.",
       "sources": [],
-      "interactions": []
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b3"
+          ],
+          "flow": "stack",
+          "gap": 16
+        }
+      ]
     }
   ],
   "sources": [],
@@ -143,5 +188,27 @@
     },
     "analytics": true,
     "allowDownload": false
+  },
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": [
+      "editor",
+      "presenter"
+    ],
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "capabilities": [
+      "semantic-layout",
+      "persistent-editing",
+      "shortcut-help"
+    ]
+  },
+  "shortcuts": {
+    "helpEnabled": true,
+    "helpKey": "?",
+    "editorPreset": "deckforge-default",
+    "presenterPreset": "deckforge-default"
   }
 }

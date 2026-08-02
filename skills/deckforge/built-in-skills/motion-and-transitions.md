@@ -1,30 +1,60 @@
 # Motion and Transitions
 
-Motion should explain sequence, causality, hierarchy, or comparison. It must never become a default decorative layer applied to every object.
+Motion must improve comprehension or presentation pacing. It is not a decoration quota.
 
-## Authoring model
+## Select a motion profile
 
-Create the final static composition first. Then define serializable build steps and transitions using `assets/animation-manifest.json`. Each step should identify targets, trigger, order, duration, delay, easing, and reduced-motion fallback. Keep timing deterministic so forward navigation, backward navigation, deep links, and presenter synchronization produce the same state.
+Read `assets/motion-profile-manifest.json`. Choose a profile based on presentation archetype, domain, audience, and delivery mode. Use one primary profile throughout the deck with rare justified exceptions.
 
-## Appropriate uses
+## Motion layers
 
-- reveal evidence in the order it is discussed;
-- transform one state into another to explain change;
-- highlight a relationship or path in a diagram;
-- compare before/after states;
-- stage a complex chart without changing the underlying values;
-- transition between strongly related slides.
+Treat motion as four separate systems:
 
-Avoid constant floating elements, excessive parallax, spinning objects, randomized motion, and long cinematic transitions that delay the presenter. Do not animate large amounts of text line by line unless the pacing requires it.
+1. **Slide transitions** — movement between slides.
+2. **Build steps** — staged reveal or emphasis within one slide.
+3. **Data/diagram animation** — line draw, bar grow, counter, path, or state transition.
+4. **Editor feedback** — selection, drag, snap, save, panel, and command feedback.
 
-## Runtime behavior
+Do not use presenter motion rules for editor chrome.
 
-Use transform and opacity where possible. Pause or clean up media and animation when leaving a slide. Preload adjacent assets. Ensure builds can be skipped, reversed, or entered at a specific step. Speaker view and audience view must remain synchronized.
+## Required editor controls
 
-## Reduced motion and static output
+When animation editing is in scope, the inspector must support:
 
-Respect system preference and user overrides. Replace spatial movement with immediate appearance or a brief crossfade while preserving narrative order. Static, print, and export modes must show the intended final state or a clearly selected build state.
+- animation type;
+- trigger;
+- order/build step;
+- duration and delay;
+- easing;
+- replay/preview;
+- remove animation;
+- reduced-motion fallback;
+- slide transition selection.
+
+## Smoothness rules
+
+- Prefer `transform` and `opacity`.
+- Avoid layout-triggering animation of width, height, top, or left for large moving objects.
+- Limit simultaneous movement.
+- Keep transition durations consistent with the selected motion profile.
+- Precompute diagram paths and chart geometry when possible.
+- Cancel or settle animations cleanly when navigating quickly.
+- Never make essential information available only after an animation the viewer cannot trigger.
+
+## Builds
+
+Navigation must consume build steps before advancing the slide. When moving backward, show the prior slide in completed state unless reverse builds are deliberately supported.
+
+Use builds for sequence, causality, comparison, focus, or explanation. Do not reveal every bullet one by one merely because it is possible.
+
+## Transformation and shared elements
+
+Morph/shared-element transitions are appropriate only when the same semantic object changes state across adjacent slides. Preserve object identity, label, and spatial continuity. Fall back to crossfade if geometry or content does not match safely.
+
+## Reduced motion
+
+Respect the DeckProject setting and `prefers-reduced-motion`. Replace spatial transitions with `appear`, `none`, or a short opacity fade. The deck must remain understandable with all motion disabled.
 
 ## Verification
 
-Test forward/backward navigation, rapid key presses, direct deep links, overview exit, reduced motion, browser back/forward, and low-performance devices. Confirm that animation never obscures focus, changes data meaning, or blocks access to content.
+Test rapid next/previous navigation, interrupted builds, fullscreen, reduced motion, low-power devices, media slides, and presenter controls. Fix dropped frames, late content, stuck states, and motion that obscures reading.

@@ -65,6 +65,9 @@ DeckForge tuân theo nguyên tắc đó bằng cách giữ workflow chính ngắ
 | Audience interaction pattern | 26 |
 | Presenter control | 20 |
 | Export contract | 6 |
+| Delivery profile | 4 |
+| Presentation archetype | 12 |
+| Motion profile | 8 |
 
 Ngoài ra còn có:
 
@@ -76,6 +79,30 @@ Ngoài ra còn có:
 - pattern cho chart, diagram, code, media và citation
 - starter component bằng React và TypeScript
 - scripts validation và packaging có tính xác định
+
+## Cập nhật độ ổn định DeckForge 3
+
+DeckForge 3 xử lý trực tiếp những lỗi thường gặp trong sản phẩm presentation được AI tạo ra:
+
+- **Semantic layout thay cho tọa độ tùy ý** — mỗi layout có slot rõ ràng, content budget, responsive order, safe margin và collision rules.
+- **Mặc định tạo editable deck thực sự** — yêu cầu tạo slide thông thường phải có editor hoạt động, không phải presenter tĩnh với toolbar chỉ để trang trí.
+- **Tools side panel đầy đủ** — người dùng có thể chỉnh layout, theme, màu sắc, typography, media, fit, alt text và style của slide hoặc block đang chọn.
+- **Authoring có persistence** — mọi thay đổi cập nhật vào `DeckProject`, hiển thị save status, tồn tại sau reload và hỗ trợ undo/redo.
+- **Output theo presentation archetype** — pitching, executive, technical, seminar, giáo dục, workshop, portfolio và data report có narrative/layout system khác nhau.
+- **Motion có mục đích** — motion profile có reduced-motion fallback, preview trong editor, khả năng ngắt và giới hạn hiệu năng.
+- **Shortcut dễ khám phá** — editor và presenter đều có nút trợ giúp cùng hộp thoại mở bằng phím `?`.
+- **Quality gate deterministic** — bắt buộc kiểm tra schema, layout, collision, capability truth, build và các luồng thao tác chính.
+
+Chạy example hoàn chỉnh:
+
+```bash
+cd examples/editable-deck-studio
+python -m http.server 4173
+```
+
+Sau đó mở `http://localhost:4173`. Example có slide rail, toolbar, inspector, notes, themes, layouts, thêm text/ảnh, persistence, undo/redo, save status, presenter mode, fullscreen, blackout, overview và shortcut guidance.
+
+Xem [`docs/DECKFORGE_3_UPGRADE.md`](./docs/DECKFORGE_3_UPGRADE.md) và [`docs/END_USER_FEATURE_MATRIX.md`](./docs/END_USER_FEATURE_MATRIX.md).
 
 ## Showcase template
 
@@ -257,6 +284,9 @@ Các đóng góp cho DeckForge nên giữ những nguyên tắc sau:
 | [`docs/FEATURE_BACKLOG.md`](./docs/FEATURE_BACKLOG.md) | Danh sách cải tiến sản phẩm và skill theo mức ưu tiên. |
 | [`docs/QUALITY_MODEL.md`](./docs/QUALITY_MODEL.md) | Tiêu chí đánh giá chất lượng sản phẩm trình chiếu. |
 | [`docs/TEMPLATE_AUTHORING.md`](./docs/TEMPLATE_AUTHORING.md) | Hướng dẫn thêm và duy trì template. |
+| [`docs/DECKFORGE_3_UPGRADE.md`](./docs/DECKFORGE_3_UPGRADE.md) | Acceptance contract, semantic layout, editor truth và validation của DeckForge 3. |
+| [`docs/END_USER_FEATURE_MATRIX.md`](./docs/END_USER_FEATURE_MATRIX.md) | Danh sách chức năng editor và presenter cần có cho end user. |
+| [`docs/GENERATED_OUTPUT_FAILURE_ANALYSIS.md`](./docs/GENERATED_OUTPUT_FAILURE_ANALYSIS.md) | Các lỗi output thường gặp và cơ chế ngăn chặn. |
 
 ## Ghi nhận
 
@@ -299,4 +329,4 @@ Các nội dung ghi nhận trên chỉ nhằm xác định hệ sinh thái và n
 
 ## Giấy phép
 
-[MIT License](./LICENSE) © [tph-kds](https://github.com/tph-kds). All rights reserved.
+[MIT License](./LICENSE) © [tph-kds](https://github.com/tph-kds) All rights reserved.

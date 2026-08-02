@@ -1,0 +1,800 @@
+[
+  {
+    "type": "heading",
+    "category": "content",
+    "description": "Semantic title or section heading",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "text",
+    "category": "content",
+    "description": "Short prose block",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "bullets",
+    "category": "content",
+    "description": "Ordered or unordered points",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "quote",
+    "category": "content",
+    "description": "Attributed quotation",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "callout",
+    "category": "content",
+    "description": "Highlighted conclusion, risk, or decision",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "citation",
+    "category": "evidence",
+    "description": "Inline source",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": true
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "citations",
+    "category": "evidence",
+    "description": "Slide or deck source list",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": true
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "image",
+    "category": "media",
+    "description": "Raster or vector image with alt text",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": true,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": true
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "gallery",
+    "category": "media",
+    "description": "Curated visual collection",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": true,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "video",
+    "category": "media",
+    "description": "Embedded or local video with poster and captions",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": true,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": true
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "audio",
+    "category": "media",
+    "description": "Audio clip with transcript",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": true
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "embed",
+    "category": "media",
+    "description": "Sandboxed external experience",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": true
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "metric",
+    "category": "data",
+    "description": "Key number with unit and context",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete",
+      "edit-data"
+    ]
+  },
+  {
+    "type": "chart",
+    "category": "data",
+    "description": "Data visualization with accessible summary",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": true,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete",
+      "edit-data"
+    ]
+  },
+  {
+    "type": "table",
+    "category": "data",
+    "description": "Structured rows and columns",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete",
+      "edit-data"
+    ]
+  },
+  {
+    "type": "timeline",
+    "category": "data",
+    "description": "Milestones or chronology",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete",
+      "edit-data"
+    ]
+  },
+  {
+    "type": "comparison",
+    "category": "data",
+    "description": "Criteria-based alternatives",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete",
+      "edit-data"
+    ]
+  },
+  {
+    "type": "map",
+    "category": "data",
+    "description": "Geographic information",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": true,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete",
+      "edit-data"
+    ]
+  },
+  {
+    "type": "diagram",
+    "category": "technical",
+    "description": "Architecture, process, system, or concept diagram",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": true,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "code",
+    "category": "technical",
+    "description": "Syntax-highlighted code",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "browser-demo",
+    "category": "technical",
+    "description": "Browser chrome and live demo area",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "terminal-demo",
+    "category": "technical",
+    "description": "Terminal commands and output",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "device",
+    "category": "product",
+    "description": "Phone, tablet, or desktop frame",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "card-grid",
+    "category": "layout",
+    "description": "Repeated semantic items",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "people-grid",
+    "category": "people",
+    "description": "People and roles",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "logo-wall",
+    "category": "proof",
+    "description": "Customers, partners, integrations",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "poll",
+    "category": "interaction",
+    "description": "Audience poll",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": true
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "qna",
+    "category": "interaction",
+    "description": "Audience questions",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": true
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "hotspot",
+    "category": "interaction",
+    "description": "Clickable annotation",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": true
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "speaker-cue",
+    "category": "presenter",
+    "description": "Private presenter cue",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "caption",
+    "category": "content",
+    "description": "Caption or explanatory label associated with media, data, or a figure",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": false,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "icon",
+    "category": "visual",
+    "description": "Single semantic icon with an accessible label when it communicates meaning",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": true,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  },
+  {
+    "type": "process",
+    "category": "data",
+    "description": "Ordered process or workflow with named steps, states, and exceptions",
+    "requiredFields": [
+      "id",
+      "type"
+    ],
+    "accessibility": {
+      "requiresAltText": true,
+      "keyboardInteractive": false
+    },
+    "security": {
+      "allowsRawHtml": false,
+      "sanitizeUrls": false
+    },
+    "editorCapabilities": [
+      "select",
+      "move",
+      "resize",
+      "duplicate",
+      "delete"
+    ]
+  }
+]

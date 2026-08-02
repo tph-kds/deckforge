@@ -1,7 +1,7 @@
 ---
 name: deckforge-publish
 description: Implement or specify save, version, publish, share, public page, iframe embed, analytics, and access-policy behavior for a DeckForge-compatible web presentation.
-version: 2.0.0
+version: 3.0.0
 ---
 
 # DeckForge Publish

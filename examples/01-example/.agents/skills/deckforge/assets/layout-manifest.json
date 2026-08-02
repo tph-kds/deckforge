@@ -1,0 +1,603 @@
+[
+  {
+    "id": "title-hero",
+    "name": "Title Hero",
+    "category": "Opening",
+    "purpose": "One decisive title, short subtitle, one visual anchor",
+    "density": "low",
+    "recommendedBlocks": [
+      "heading",
+      "text",
+      "image"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "section-divider",
+    "name": "Section Divider",
+    "category": "Opening",
+    "purpose": "Section title with chapter number and quiet context",
+    "density": "low",
+    "recommendedBlocks": [
+      "heading",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "statement",
+    "name": "Statement",
+    "category": "Narrative",
+    "purpose": "Single argument or conclusion with supporting phrase",
+    "density": "low",
+    "recommendedBlocks": [
+      "heading",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "centered-quote",
+    "name": "Centered Quote",
+    "category": "Narrative",
+    "purpose": "Short quote with source and restrained treatment",
+    "density": "low",
+    "recommendedBlocks": [
+      "quote",
+      "citation"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "big-number",
+    "name": "Big Number",
+    "category": "Data",
+    "purpose": "One dominant metric with meaning and comparison",
+    "density": "low",
+    "recommendedBlocks": [
+      "metric",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "metric-grid",
+    "name": "Metric Grid",
+    "category": "Data",
+    "purpose": "Three to six metrics with consistent units and hierarchy",
+    "density": "medium",
+    "recommendedBlocks": [
+      "metric",
+      "card-grid"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "two-column",
+    "name": "Two Column",
+    "category": "General",
+    "purpose": "Balanced text and visual or two related ideas",
+    "density": "medium",
+    "recommendedBlocks": [
+      "heading",
+      "text",
+      "image"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "split-visual",
+    "name": "Split Visual",
+    "category": "General",
+    "purpose": "Large visual paired with concise interpretation",
+    "density": "medium",
+    "recommendedBlocks": [
+      "image",
+      "text",
+      "caption"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "three-column",
+    "name": "Three Column",
+    "category": "General",
+    "purpose": "Three parallel concepts with equal weight",
+    "density": "medium",
+    "recommendedBlocks": [
+      "card-grid",
+      "icon",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "card-grid",
+    "name": "Card Grid",
+    "category": "General",
+    "purpose": "Modular points where cards are semantically justified",
+    "density": "medium",
+    "recommendedBlocks": [
+      "card-grid"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "timeline-horizontal",
+    "name": "Timeline Horizontal",
+    "category": "Process",
+    "purpose": "Time-based milestones across a horizontal axis",
+    "density": "medium",
+    "recommendedBlocks": [
+      "timeline"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "timeline-vertical",
+    "name": "Timeline Vertical",
+    "category": "Process",
+    "purpose": "Chronological narrative with more explanatory text",
+    "density": "medium",
+    "recommendedBlocks": [
+      "timeline"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "process-steps",
+    "name": "Process Steps",
+    "category": "Process",
+    "purpose": "Three to seven ordered actions with clear progression",
+    "density": "medium",
+    "recommendedBlocks": [
+      "process"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "funnel",
+    "name": "Funnel",
+    "category": "Process",
+    "purpose": "Narrowing stages with volume or qualification changes",
+    "density": "medium",
+    "recommendedBlocks": [
+      "diagram"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "pyramid",
+    "name": "Pyramid",
+    "category": "Strategy",
+    "purpose": "Layered priorities, maturity, or hierarchy",
+    "density": "medium",
+    "recommendedBlocks": [
+      "diagram"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "matrix-2x2",
+    "name": "Matrix 2X2",
+    "category": "Strategy",
+    "purpose": "Four quadrants with meaningful axes and labels",
+    "density": "medium",
+    "recommendedBlocks": [
+      "diagram"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "comparison",
+    "name": "Comparison",
+    "category": "Decision",
+    "purpose": "Side-by-side alternatives with explicit criteria",
+    "density": "high",
+    "recommendedBlocks": [
+      "comparison",
+      "table"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "before-after",
+    "name": "Before After",
+    "category": "Decision",
+    "purpose": "Current state versus target state",
+    "density": "medium",
+    "recommendedBlocks": [
+      "comparison",
+      "image"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "architecture",
+    "name": "Architecture",
+    "category": "Technical",
+    "purpose": "System components, boundaries, and data flows",
+    "density": "high",
+    "recommendedBlocks": [
+      "diagram",
+      "code"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "flowchart",
+    "name": "Flowchart",
+    "category": "Technical",
+    "purpose": "Decision or operational flow with directional logic",
+    "density": "high",
+    "recommendedBlocks": [
+      "diagram"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "radial",
+    "name": "Radial",
+    "category": "Technical",
+    "purpose": "Hub-and-spoke ecosystem or capability map",
+    "density": "medium",
+    "recommendedBlocks": [
+      "diagram"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "map",
+    "name": "Map",
+    "category": "Geographic",
+    "purpose": "Locations or regional metrics with legend",
+    "density": "high",
+    "recommendedBlocks": [
+      "map"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "dashboard",
+    "name": "Dashboard",
+    "category": "Data",
+    "purpose": "Multiple coordinated views with a clear focal KPI",
+    "density": "high",
+    "recommendedBlocks": [
+      "metric",
+      "chart",
+      "table"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "chart-focus",
+    "name": "Chart Focus",
+    "category": "Data",
+    "purpose": "One chart plus headline insight and annotation",
+    "density": "medium",
+    "recommendedBlocks": [
+      "chart",
+      "caption"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "table-focus",
+    "name": "Table Focus",
+    "category": "Data",
+    "purpose": "Compact table with highlighted rows or variance",
+    "density": "high",
+    "recommendedBlocks": [
+      "table"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "code-focus",
+    "name": "Code Focus",
+    "category": "Technical",
+    "purpose": "Readable code with line emphasis and explanation",
+    "density": "medium",
+    "recommendedBlocks": [
+      "code",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "browser-demo",
+    "name": "Browser Demo",
+    "category": "Demo",
+    "purpose": "Live or simulated browser experience with callouts",
+    "density": "high",
+    "recommendedBlocks": [
+      "browser-demo"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "terminal-demo",
+    "name": "Terminal Demo",
+    "category": "Demo",
+    "purpose": "Command sequence and result in a terminal shell",
+    "density": "high",
+    "recommendedBlocks": [
+      "terminal-demo",
+      "code"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "device-showcase",
+    "name": "Device Showcase",
+    "category": "Product",
+    "purpose": "App screens inside device frames with annotations",
+    "density": "medium",
+    "recommendedBlocks": [
+      "device",
+      "image"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "gallery",
+    "name": "Gallery",
+    "category": "Creative",
+    "purpose": "Curated image or artifact grid with consistent crops",
+    "density": "medium",
+    "recommendedBlocks": [
+      "gallery"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "team",
+    "name": "Team",
+    "category": "People",
+    "purpose": "Team members with roles, not decorative headshots",
+    "density": "medium",
+    "recommendedBlocks": [
+      "people-grid"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "logo-wall",
+    "name": "Logo Wall",
+    "category": "Proof",
+    "purpose": "Customer or partner logos with grouped meaning",
+    "density": "low",
+    "recommendedBlocks": [
+      "logo-wall"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "qna",
+    "name": "Qna",
+    "category": "Closing",
+    "purpose": "Question prompt with supporting context",
+    "density": "low",
+    "recommendedBlocks": [
+      "heading",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "summary",
+    "name": "Summary",
+    "category": "Closing",
+    "purpose": "Three to five takeaways prioritized by importance",
+    "density": "medium",
+    "recommendedBlocks": [
+      "bullets",
+      "callout"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "references",
+    "name": "References",
+    "category": "Closing",
+    "purpose": "Readable sources, links, and methodology notes",
+    "density": "high",
+    "recommendedBlocks": [
+      "citations"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  },
+  {
+    "id": "closing-cta",
+    "name": "Closing Cta",
+    "category": "Closing",
+    "purpose": "Final action, owner, next date, and contact path",
+    "density": "low",
+    "recommendedBlocks": [
+      "heading",
+      "callout"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ]
+  }
+]

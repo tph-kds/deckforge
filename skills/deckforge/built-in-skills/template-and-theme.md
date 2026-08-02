@@ -1,36 +1,49 @@
 # Template and Theme
 
-A template is a narrative and interaction recipe. A theme is a visual token system. Select them independently and combine them deliberately.
+A presentation archetype describes the communication situation. A template describes the narrative recipe. A theme describes the visual token system. A layout describes a single-slide constraint system. Select them independently.
 
-## Template selection
+## Selection sequence
 
-Use `assets/template-manifest.json`. Score candidates against audience, objective, decision type, duration, domain, evidence type, delivery mode, and required interaction. The slide plan is a starting structure, not mandatory filler. Remove unnecessary roles and add domain-specific slides only when they advance the argument.
+1. Select archetype from `presentation-archetype-manifest.json`.
+2. Select template from `template-manifest.json`.
+3. Select one primary theme from `theme-manifest.json`.
+4. Plan layout rhythm from `layout-manifest.json`.
+5. Apply justified token overrides.
 
-For each chosen template, define:
+## Template scoring
 
-- the narrative arc and opening premise;
-- required evidence and source expectations;
-- default slide roles and layout recipes;
-- presenter-led versus self-guided behavior;
-- notes, appendix, demo, or audience-interaction needs;
-- common failure modes.
+Score candidates against audience, objective, decision/learning type, duration, evidence type, domain, delivery mode, and interaction needs.
 
-Do not select a startup-pitch structure for every business deck or force all projects into an eight-slide sequence.
+A template slide plan is a starting point. Remove filler roles and add domain-specific slides only when they advance the argument. Do not force every deck into eight slides.
 
 ## Theme selection
 
-Use `assets/theme-manifest.json`. Score domain fit, tone, brand compatibility, contrast, density, typography, media mix, chart palette, shape language, and motion style. Select one primary theme and express justified overrides as tokens. Do not mix unrelated themes slide by slide.
+Score tone, brand compatibility, contrast, density, typography, media mix, chart palette, shape language, and motion style. Bind to the target product's design system when available.
 
-Bind to the target product's existing design system when available. Font names in a catalog are preferences, not bundled assets; use licensed, available fonts or project-native alternatives.
+Fonts in a catalog are preferences, not bundled licenses. Use available or project-native alternatives.
 
-## Composition rules
+## Editor expectations
 
-Ensure each slide has one focal point and appropriate density. Vary layout rhythm across the deck while keeping typography, grid, iconography, illustration, charts, radius, and motion coherent. Use decoration sparingly and never as a substitute for evidence.
+The default editable profile must expose:
+
+- theme picker with previews;
+- palette/accent controls;
+- typography pair controls;
+- background controls;
+- layout picker grouped by purpose;
+- template/archetype metadata for new-deck flows;
+- reset-to-theme behavior.
+
+Theme changes should update tokens, not rewrite every block with duplicated style values.
+
+## Layout rhythm
+
+Keep typography and tokens coherent while varying composition. Avoid using `two-column`, `card-grid`, or centered statement repeatedly. Use low-density slides around high-density technical/data slides to maintain pace.
 
 ## Custom generation
 
-When no template fits, generate a new recipe with a stable ID, audience, goal, slide roles, layout mapping, evidence expectations, interaction profile, and quality risks. Validate referenced layouts and themes before use.
+When no template fits, create a stable recipe with archetype, audience, goal, slide roles, layout mapping, evidence expectations, interaction profile, and known risks. Validate every referenced ID.
 
 ## Verification
 
-Preview representative content, not lorem ipsum. Check contrast, content fit, chart colors, image treatment, narrow behavior, and presentation distance. Compare the result against the stated audience and objective, not merely against current visual trends.
+Preview actual content. Check theme contrast, layout fit, chart colors, media treatment, narrow behavior, and presentation-distance legibility. Compare the result with the audience and purpose, not only visual trends.

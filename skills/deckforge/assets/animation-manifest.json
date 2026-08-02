@@ -10,7 +10,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "none",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "fade-in",
@@ -23,7 +26,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "appear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "fade-out",
@@ -36,7 +42,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "disappear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "slide-in",
@@ -49,7 +58,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "appear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "slide-out",
@@ -62,7 +74,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "disappear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "zoom-in",
@@ -75,7 +90,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "appear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "zoom-out",
@@ -88,7 +106,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "disappear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "wipe-in",
@@ -101,7 +122,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "appear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "blur-in",
@@ -114,7 +138,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "appear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "float-in",
@@ -127,7 +154,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "appear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "scale-emphasis",
@@ -140,7 +170,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "none",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "pulse",
@@ -153,7 +186,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "none",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "highlight",
@@ -166,7 +202,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "none",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "counter",
@@ -179,7 +218,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "appear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "bar-grow",
@@ -192,7 +234,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "appear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "line-draw",
@@ -205,7 +250,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "appear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "stagger",
@@ -218,7 +266,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "appear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "path",
@@ -231,7 +282,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "appear",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "morph",
@@ -244,7 +298,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "fade",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "crossfade",
@@ -257,7 +314,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "fade",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "push",
@@ -270,7 +330,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "fade",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "cover",
@@ -283,7 +346,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "fade",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "parallax",
@@ -296,7 +362,10 @@
       "after-previous"
     ],
     "reducedMotionFallback": "none",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   },
   {
     "id": "none",
@@ -309,6 +378,9 @@
       "after-previous"
     ],
     "reducedMotionFallback": "none",
-    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
   }
 ]

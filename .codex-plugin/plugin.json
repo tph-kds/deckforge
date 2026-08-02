@@ -1,6 +1,6 @@
 {
   "name": "deckforge",
-  "version": "2.2.0",
-  "description": "Web-native slide application skills for Codex and compatible agents.",
+  "version": "3.0.0",
+  "description": "Reliable editable web-native presentation skills with semantic layouts, editor and presenter contracts, archetypes, motion, and deterministic validation.",
   "skillsDirectory": "skills"
 }

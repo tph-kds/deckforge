@@ -1,114 +1,151 @@
-# DeckForge Design and Engineering Standard
+# DeckForge 3 Design and Engineering Standard
 
-You are building a presentation product, not decorating rectangles. The result must combine editorial judgment, slide design, interaction design, frontend engineering, accessibility, and delivery safety.
+You are building a presentation product, not decorating rectangles. The result must combine editorial judgment, slide design, interaction design, frontend engineering, accessibility, persistence, and delivery safety.
 
-## Product model
+## Product contexts
 
-A DeckForge experience has four distinct contexts:
+A complete DeckForge experience may have four distinct contexts:
 
-1. **Authoring** — outline, slide rail, canvas, direct manipulation, toolbar, insert menu, style controls, notes, comments, undo/redo, autosave.
-2. **Presenting** — fullscreen stage, builds, navigation, overview, timer, speaker notes, next slide, remote-friendly controls.
-3. **Audience viewing** — responsive published page, deep links, media, charts, optional interaction, citations, follow-up action.
-4. **Embedding** — constrained iframe with origin policy, sandbox, sizing, and communication contract.
+1. **Authoring** — slide rail, canvas, toolbar, contextual inspector, insert menu, theme/layout/media controls, notes, undo/redo, save status, autosave, and command palette.
+2. **Presenting** — fullscreen stage, build steps, navigation, overview, timer, speaker notes, next-slide preview, blackout, and remote-friendly controls.
+3. **Audience viewing** — responsive published page, deep links, media, charts, optional interaction, citations, and follow-up actions.
+4. **Embedding** — constrained iframe with origin policy, sandbox, responsive sizing, and a documented message contract.
 
-Do not merge these contexts into one cluttered UI.
+Do not merge these into one cluttered surface. Editor controls must disappear in presenter/viewer modes.
+
+## Default product promise
+
+When an end user asks for a web presentation without restricting the output, choose the `editable-deck` profile. A static presenter is not a complete DeckForge result.
+
+The editor must be functional. Changes to text, visual style, theme, layout, image/media, and block insertion must update the in-memory DeckProject and visibly rerender the canvas. Save must survive a reload.
 
 ## Story before layout
 
-Determine audience, objective, decision, evidence, constraints, time, and tone. Write the narrative thesis in one sentence. Build a slide map where every slide has a job. Remove slides that repeat the same job.
+Determine audience, objective, desired decision, evidence, constraints, duration, delivery mode, and tone. Write one narrative thesis. Build a slide map where every slide has a specific job. Remove repeated jobs.
 
-Prefer claim-led titles such as "Onboarding time fell after retrieval caching" over category labels such as "Results". Use one main idea per slide. Complex technical slides may contain multiple objects, but the reading path must remain obvious.
+Prefer claim-led titles over generic labels. Use one main idea per slide. Technical slides may contain several objects, but their reading path must remain obvious.
+
+## Semantic composition
+
+A layout is a constraint system, not a decorative label. Normal slides use named layout slots such as `title`, `lead`, `primary`, `secondary`, `visual`, `evidence`, `caption`, and `footer`.
+
+Resolve slot geometry from the layout manifest. Blocks bind to slots. Absolute frames are an escape hatch for user-created freeform content, not the normal generation strategy.
+
+Every composition must satisfy:
+
+- safe-margin containment;
+- no forbidden overlap;
+- adequate text capacity;
+- readable font sizes;
+- explicit z-order;
+- balanced occupied area and whitespace;
+- one dominant focal point;
+- stable alignment lines;
+- coherent responsive reading order.
+
+If content does not fit, shorten, split, change the layout, or move detail to notes/appendix. Never hide the failure.
 
 ## Visual system
 
-Choose a template for narrative structure and a theme for visual expression. Establish:
+Select a presentation archetype, narrative template, visual theme, and layout rhythm independently.
 
-- 8px or project-native spacing grid
-- explicit safe margins
-- stable type scale and line lengths
-- one dominant focal point per slide
-- limited accent colors with semantic meaning
-- consistent chart encodings and diagram grammar
-- purposeful imagery with provenance
-- responsive ordering for narrow viewports
+Establish:
+
+- an 8px or product-native spacing grid;
+- explicit safe margins;
+- stable type scale and line lengths;
+- one primary focal point per slide;
+- limited accent colors with semantic meaning;
+- consistent image crops, chart encodings, and diagram grammar;
+- responsive ordering for narrow viewports;
+- restrained motion appropriate to audience and domain.
 
 ## Anti-AI-slop rules
 
-Never use these as defaults:
+Never default to:
 
-- generic gradient hero plus three cards
-- translucent glass panels on every slide
-- decorative glowing blobs, stars, grids, or particles unrelated to content
-- a random icon for every bullet
-- identical composition across all slides
-- excessive rounded rectangles
-- dark neon styling merely because the topic is AI
-- generic titles: Overview, Benefits, Our Solution, Key Features, Conclusion
-- centered body copy or tiny labels
-- fake dashboards, fake numbers, or invented product screenshots
+- generic gradient hero plus three cards;
+- translucent glass on every slide;
+- glowing blobs, decorative particles, or random grids;
+- icons for every bullet;
+- identical compositions across the whole deck;
+- excessive rounded rectangles;
+- dark neon styling merely because the subject is AI;
+- generic titles such as Overview, Benefits, Solution, Features, Conclusion;
+- centered body copy, tiny labels, fake dashboards, or invented metrics.
 
-A visual effect must reinforce hierarchy, domain, sequence, comparison, or emotion. If it does none of those, remove it.
+A visual effect must reinforce hierarchy, sequence, comparison, causality, emotion, or brand. Otherwise remove it.
 
-## Content fit
+## Editor interaction model
 
-Never solve overflow by clipping, hiding, or shrinking below readable presentation size. Instead:
+Persist only document state. Keep selection, hover, open panels, pointer gestures, zoom, and viewport transform ephemeral.
 
-- split the slide
-- shorten or rewrite
-- convert prose into a diagram or table
-- move detail into speaker notes or an appendix
-- change layout
+Use command-based or transaction-based edits. A drag/resize gesture creates one undo entry at commit. Required editor behavior includes:
 
-## Editor architecture
+- slide creation, duplication, deletion, and reorder;
+- selection and multi-selection;
+- direct text editing with schema-safe rich text;
+- add text, image, shape, chart, table, code, media, and diagram;
+- theme, palette, typography, layout, background, and transition controls;
+- move, resize, align, distribute, group, lock, layer order, duplicate, and delete;
+- undo/redo, autosave, save status, reload recovery, and validation feedback;
+- notes editing and presentation launch;
+- visible shortcut hints and a searchable command palette.
 
-Treat deck content as serializable data. Keep selection, hover, panel state, zoom, and drag state ephemeral. Use stable IDs and command-based history. Core commands should be testable without the DOM.
+Use schema-controlled rich text. Do not rely on ad-hoc contenteditable for production history and paste normalization.
 
-Canvas interactions must include visible selection, keyboard nudging, resize handles, snap guides, alignment, grouping, locking, duplicate, delete, undo/redo, and contextual properties. Use a command palette for discoverability.
+## Asset and media model
 
-Rich text should be schema-controlled. Do not rely on ad-hoc `contenteditable` for production history, paste normalization, and collaborative editing.
+Support upload/import, URL insertion, alt text, captions, source attribution, focal point, crop/fit, replace, remove, loading, broken-media states, and optimization. Do not fabricate image assets. Use user-provided, licensed, generated-with-permission, or clearly marked placeholder assets.
 
-## Presenter architecture
+## Presenter model
 
-Navigation must handle build steps before moving slides. Arriving backward should show the completed state unless the product deliberately supports reverse builds. Presenter mode hides editing controls and remains usable by keyboard, touch, and assistive technology.
+Navigation consumes build steps before moving slides. Backward arrival normally shows the completed build state. Presenter mode hides editing controls and works with keyboard, touch, and assistive technology.
 
-Support reduced motion by replacing spatial transitions with immediate or fade-based state changes. Fullscreen must not steal browser search shortcuts. Deep links should resolve deterministically.
+Provide an in-product shortcut guide. Do not expect users to discover hidden keys from README files.
 
 ## Motion
 
-Use motion to reveal sequence, causality, hierarchy, comparison, or state change. Limit simultaneous motion. Keep durations consistent. Avoid bouncing and elastic easing in executive, research, financial, compliance, and healthcare contexts unless there is a clear reason.
+Use motion to reveal sequence, causality, hierarchy, comparison, or state change. Limit concurrent motion, keep durations consistent, and avoid playful physics in executive, research, finance, compliance, or healthcare contexts unless justified.
+
+Respect reduced motion by replacing spatial transforms with immediate or subtle fade changes.
 
 ## Data and diagrams
 
-Every chart needs a question, takeaway, units, source, and accessible summary. Annotate the important point directly. Avoid 3D charts, unlabeled axes, rainbow palettes, and decorative gauges.
+Every chart needs a question, takeaway, units, source, and accessible summary. Annotate the important point. Avoid 3D charts, unlabeled axes, rainbow palettes, decorative gauges, and meaningless dashboards.
 
-Diagrams need named nodes, directional edges, boundaries, legends when necessary, and a clear reading order. Do not use Mermaid as an excuse for a visually poor result; style and simplify it or build a dedicated component.
+Diagrams need named nodes, directional edges, boundaries, labels, and clear reading order. Diagram content must stay inside its assigned slot and must never cover slide titles.
 
 ## Accessibility
 
-- Respect WCAG contrast and visible focus.
-- Provide alt text or a concise equivalent for every non-text object.
-- Provide data-table or textual summaries for charts.
+- Meet WCAG contrast and visible-focus expectations.
+- Provide alt text or concise equivalents for non-text objects.
+- Provide table/text summaries for charts.
 - Maintain keyboard access to editor and presenter controls.
 - Preserve logical reading order on responsive layouts.
 - Respect `prefers-reduced-motion`.
 - Do not encode meaning by color alone.
+- Ensure the shortcut dialog and command palette are keyboard accessible.
 
 ## Security
 
-Use structured block data. Sanitize imported rich text and SVG. Validate asset URLs and content types. External embeds require allow-lists, sandbox policy, loading behavior, and a documented message protocol. Never expose secrets in deck JSON.
+Use structured block data. Sanitize rich text and SVG. Validate asset URLs and content types. External embeds require allow-lists, sandbox policy, loading behavior, and a documented message protocol. Never expose secrets in deck JSON.
 
 ## Performance
 
-Lazy-load non-current heavy media, prefetch adjacent slides, avoid re-rendering the whole deck for a selection change, virtualize long slide rails, and keep transforms on compositor-friendly properties. Measure before optimizing.
+Lazy-load heavy non-current media, prefetch adjacent slides, avoid whole-deck rerenders for selection changes, virtualize long slide rails, and use compositor-friendly transforms. Debounce autosave and persist atomic documents.
 
-## Verification loop
+## Blocking verification loop
 
-1. Validate schema and catalogs.
-2. Run the target app.
-3. Review each slide at the authored canvas size.
-4. Review at a narrow viewport.
-5. Test keyboard, touch, fullscreen, deep links, overview, notes, and build sequence.
-6. Run accessibility checks.
-7. Run the anti-slop and quality rubric.
-8. Fix all blocking failures.
-9. Report implemented behavior, tests, remaining tradeoffs, and exact file paths.
+1. Validate schema and catalog references.
+2. Run the layout collision/content-fit audit.
+3. Run the output-profile contract validator.
+4. Run typecheck, tests, and production build.
+5. Open the editor; change text, layout, theme, and media; save and reload.
+6. Review every slide at canonical 16:9.
+7. Review a common laptop and narrow viewport.
+8. Test presenter keyboard/touch, fullscreen, overview, notes, shortcut help, and build sequence.
+9. Run accessibility and anti-slop checks.
+10. Fix blocking failures before reporting completion.
+
+Never claim a route, interaction, save behavior, viewport, or browser was tested when it was not.

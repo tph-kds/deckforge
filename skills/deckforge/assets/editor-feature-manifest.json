@@ -1,0 +1,97 @@
+{
+  "version": "1.0",
+  "defaultProfile": "editable-deck",
+  "zones": [
+    {
+      "id": "app-bar",
+      "required": true,
+      "features": [
+        "document-title",
+        "undo",
+        "redo",
+        "insert",
+        "layout",
+        "theme",
+        "save-status",
+        "present",
+        "help"
+      ]
+    },
+    {
+      "id": "slide-rail",
+      "required": true,
+      "features": [
+        "add-slide",
+        "select-slide",
+        "duplicate-slide",
+        "delete-slide",
+        "reorder-slide",
+        "hide-slide",
+        "thumbnail"
+      ]
+    },
+    {
+      "id": "canvas",
+      "required": true,
+      "features": [
+        "fit",
+        "zoom",
+        "selection",
+        "multi-selection",
+        "safe-margins",
+        "snap-guides",
+        "overflow-warning"
+      ]
+    },
+    {
+      "id": "inspector",
+      "required": true,
+      "tabs": [
+        "content",
+        "layout",
+        "style",
+        "animation",
+        "media",
+        "accessibility"
+      ]
+    },
+    {
+      "id": "notes",
+      "required": true,
+      "features": [
+        "speaker-notes",
+        "validation-summary"
+      ]
+    },
+    {
+      "id": "save-status",
+      "required": true,
+      "states": [
+        "dirty",
+        "saving",
+        "saved",
+        "failed",
+        "offline",
+        "conflict"
+      ]
+    }
+  ],
+  "minimumEditFlows": [
+    "edit-title",
+    "change-layout",
+    "change-theme",
+    "add-text",
+    "add-image",
+    "undo-redo",
+    "save-reload",
+    "present-current-slide"
+  ],
+  "persistenceMinimum": [
+    "serialize-deck-project",
+    "autosave",
+    "restore-on-reload",
+    "export-json",
+    "reset-with-confirmation"
+  ],
+  "capabilityTruthRule": "A feature may be declared enabled only when a visible control, state mutation, renderer behavior, and verification path exist."
+}

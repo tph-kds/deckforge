@@ -65,6 +65,9 @@ DeckForge follows this model by keeping its primary workflow concise while placi
 | Audience interaction patterns | 26 |
 | Presenter controls | 20 |
 | Export contracts | 6 |
+| Delivery profiles | 4 |
+| Presentation archetypes | 12 |
+| Motion profiles | 8 |
 
 Additional capabilities include:
 
@@ -76,6 +79,30 @@ Additional capabilities include:
 - chart, diagram, code, media, and citation patterns
 - React and TypeScript starter components
 - deterministic validation and packaging scripts
+
+## DeckForge 3 reliability update
+
+DeckForge 3 directly addresses common failures in AI-generated presentation applications:
+
+- **Semantic composition instead of arbitrary coordinates** — every layout defines named slots, content budgets, responsive order, safe margins, and collision rules.
+- **A truthful editable-deck default** — ordinary slide-creation requests must produce a functional editor, not a presenter page with decorative toolbar icons.
+- **Real tools side panel** — selected slides and blocks can be edited through layout, theme, color, typography, media, fit, alt-text, and style controls.
+- **Persistent authoring** — edits update the serialized `DeckProject`, show save status, survive reload, and participate in undo/redo history.
+- **Archetype-aware output** — pitching, executive, technical, academic, educational, workshop, portfolio, and data presentations receive different narrative and visual systems.
+- **Purposeful motion** — motion profiles include reduced-motion fallbacks, editor preview, interruptibility, and performance rules.
+- **Discoverable shortcuts** — editor and presenter experiences expose a visible help control and a `?` shortcut dialog.
+- **Deterministic quality gates** — schema, layout, collision, capability-truth, build, and behavioral checks are required before completion.
+
+Run the complete reference implementation:
+
+```bash
+cd examples/editable-deck-studio
+python -m http.server 4173
+```
+
+Then open `http://localhost:4173`. The example includes a slide rail, toolbar, inspector, notes, themes, layouts, text and image insertion, persistence, undo/redo, save status, presenter mode, fullscreen, blackout, overview, and shortcut guidance.
+
+See [`docs/DECKFORGE_3_UPGRADE.md`](./docs/DECKFORGE_3_UPGRADE.md) and [`docs/END_USER_FEATURE_MATRIX.md`](./docs/END_USER_FEATURE_MATRIX.md).
 
 ## Template showcase
 
@@ -257,6 +284,9 @@ DeckForge contributions should preserve these principles:
 | [`docs/FEATURE_BACKLOG.md`](./docs/FEATURE_BACKLOG.md) | Prioritized product and skill improvements. |
 | [`docs/QUALITY_MODEL.md`](./docs/QUALITY_MODEL.md) | Quality criteria for generated presentation products. |
 | [`docs/TEMPLATE_AUTHORING.md`](./docs/TEMPLATE_AUTHORING.md) | Guidance for adding and maintaining templates. |
+| [`docs/DECKFORGE_3_UPGRADE.md`](./docs/DECKFORGE_3_UPGRADE.md) | DeckForge 3 acceptance contracts, semantic layouts, editor truth, and validation. |
+| [`docs/END_USER_FEATURE_MATRIX.md`](./docs/END_USER_FEATURE_MATRIX.md) | Required end-user editor and presenter capabilities. |
+| [`docs/GENERATED_OUTPUT_FAILURE_ANALYSIS.md`](./docs/GENERATED_OUTPUT_FAILURE_ANALYSIS.md) | Failure patterns and the safeguards that prevent them. |
 
 ## Acknowledgments
 
@@ -299,4 +329,4 @@ These acknowledgments identify relevant ecosystems and technical foundations; th
 
 ## License
 
-[MIT License](./LICENSE) © [tph-kds](https://github.com/tph-kds). All rights reserved.
+[MIT License](./LICENSE) © [tph-kds](https://github.com/tph-kds) All rights reserved.

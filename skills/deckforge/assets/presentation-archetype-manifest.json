@@ -1,0 +1,351 @@
+[
+  {
+    "id": "startup-pitch",
+    "name": "Startup / Investor Pitch",
+    "intent": "persuade investors or sponsors",
+    "recommendedTemplateIds": [
+      "startup-pitch",
+      "demo-day",
+      "investor-update"
+    ],
+    "requiredMoves": [
+      "credible problem evidence",
+      "differentiated solution",
+      "market and traction proof",
+      "business model",
+      "team credibility",
+      "specific ask"
+    ],
+    "layoutRhythm": [
+      "title-hero",
+      "statement",
+      "chart-focus",
+      "browser-demo",
+      "comparison",
+      "big-number",
+      "team",
+      "closing-cta"
+    ]
+  },
+  {
+    "id": "executive-decision",
+    "name": "Executive / Board Decision",
+    "intent": "support a concrete decision",
+    "recommendedTemplateIds": [
+      "executive-strategy",
+      "board-update",
+      "quarterly-business-review"
+    ],
+    "requiredMoves": [
+      "decision frame",
+      "current evidence",
+      "options",
+      "tradeoffs",
+      "recommendation",
+      "owner and next milestone"
+    ],
+    "layoutRhythm": [
+      "statement",
+      "big-number",
+      "chart-focus",
+      "comparison",
+      "matrix-2x2",
+      "timeline-horizontal",
+      "closing-cta"
+    ]
+  },
+  {
+    "id": "product-story",
+    "name": "Product Launch / Sales Story",
+    "intent": "explain and persuade around a product",
+    "recommendedTemplateIds": [
+      "product-launch",
+      "go-to-market",
+      "sales-kickoff",
+      "customer-case-study"
+    ],
+    "requiredMoves": [
+      "audience problem",
+      "product promise",
+      "experience or demo",
+      "differentiation",
+      "proof",
+      "adoption path",
+      "call to action"
+    ],
+    "layoutRhythm": [
+      "title-hero",
+      "before-after",
+      "browser-demo",
+      "device-showcase",
+      "comparison",
+      "metric-grid",
+      "timeline-horizontal",
+      "closing-cta"
+    ]
+  },
+  {
+    "id": "technical-review",
+    "name": "Technical Architecture / Engineering Review",
+    "intent": "evaluate or align on a technical design",
+    "recommendedTemplateIds": [
+      "system-design",
+      "architecture-review",
+      "engineering-rfc",
+      "platform-migration",
+      "security-review"
+    ],
+    "requiredMoves": [
+      "constraints",
+      "system context",
+      "alternatives",
+      "chosen architecture",
+      "data/control flow",
+      "risks",
+      "rollout and observability"
+    ],
+    "layoutRhythm": [
+      "statement",
+      "architecture",
+      "flowchart",
+      "comparison",
+      "code-focus",
+      "timeline-horizontal",
+      "table-focus",
+      "summary"
+    ]
+  },
+  {
+    "id": "seminar-talk",
+    "name": "Seminar / Conference Talk",
+    "intent": "teach or advance an argument to a knowledgeable audience",
+    "recommendedTemplateIds": [
+      "conference-session",
+      "event-keynote",
+      "editorial-story"
+    ],
+    "requiredMoves": [
+      "opening thesis",
+      "context",
+      "argument or framework",
+      "evidence/examples",
+      "implications",
+      "discussion prompt"
+    ],
+    "layoutRhythm": [
+      "title-hero",
+      "statement",
+      "two-column",
+      "chart-focus",
+      "split-visual",
+      "summary",
+      "qna"
+    ]
+  },
+  {
+    "id": "academic-research",
+    "name": "Academic Research / Thesis Defense",
+    "intent": "present methods and evidence with rigor",
+    "recommendedTemplateIds": [
+      "academic-conference",
+      "thesis-defense",
+      "experiment-results",
+      "literature-review"
+    ],
+    "requiredMoves": [
+      "research question",
+      "gap",
+      "method",
+      "data",
+      "results",
+      "limitations",
+      "contribution",
+      "references"
+    ],
+    "layoutRhythm": [
+      "title-hero",
+      "statement",
+      "process-steps",
+      "chart-focus",
+      "table-focus",
+      "comparison",
+      "summary",
+      "references"
+    ]
+  },
+  {
+    "id": "education-lesson",
+    "name": "Education Lesson",
+    "intent": "help learners understand and practice",
+    "recommendedTemplateIds": [
+      "course-lesson",
+      "workshop-training"
+    ],
+    "requiredMoves": [
+      "learning objectives",
+      "prior knowledge hook",
+      "concept model",
+      "worked example",
+      "guided practice",
+      "knowledge check",
+      "recap and next step"
+    ],
+    "layoutRhythm": [
+      "title-hero",
+      "statement",
+      "diagram",
+      "process-steps",
+      "split-visual",
+      "comparison",
+      "summary",
+      "qna"
+    ]
+  },
+  {
+    "id": "training-workshop",
+    "name": "Training Workshop",
+    "intent": "guide participants through action",
+    "recommendedTemplateIds": [
+      "workshop-training",
+      "conference-session"
+    ],
+    "requiredMoves": [
+      "outcomes",
+      "agenda",
+      "concept",
+      "demonstration",
+      "exercise",
+      "debrief",
+      "job aid",
+      "follow-up"
+    ],
+    "layoutRhythm": [
+      "title-hero",
+      "timeline-horizontal",
+      "statement",
+      "browser-demo",
+      "process-steps",
+      "two-column",
+      "summary",
+      "closing-cta"
+    ]
+  },
+  {
+    "id": "data-report",
+    "name": "Data Story / Business Report",
+    "intent": "explain performance, causes, and action",
+    "recommendedTemplateIds": [
+      "data-storytelling",
+      "quarterly-business-review",
+      "annual-operating-plan"
+    ],
+    "requiredMoves": [
+      "headline result",
+      "trend",
+      "segment or driver",
+      "cause",
+      "risk",
+      "forecast",
+      "recommendation"
+    ],
+    "layoutRhythm": [
+      "big-number",
+      "chart-focus",
+      "dashboard",
+      "table-focus",
+      "comparison",
+      "matrix-2x2",
+      "summary"
+    ]
+  },
+  {
+    "id": "portfolio-case-study",
+    "name": "Portfolio / Case Study",
+    "intent": "show process, craft, and impact",
+    "recommendedTemplateIds": [
+      "portfolio-showcase",
+      "ux-case-study",
+      "design-system-showcase"
+    ],
+    "requiredMoves": [
+      "context",
+      "problem",
+      "role and constraints",
+      "process",
+      "key decisions",
+      "artifacts",
+      "outcomes",
+      "reflection"
+    ],
+    "layoutRhythm": [
+      "title-hero",
+      "before-after",
+      "gallery",
+      "process-steps",
+      "browser-demo",
+      "metric-grid",
+      "summary"
+    ]
+  },
+  {
+    "id": "impact-policy",
+    "name": "Impact / Public Policy",
+    "intent": "communicate evidence, stakeholders, and action",
+    "recommendedTemplateIds": [
+      "public-policy",
+      "nonprofit-impact",
+      "climate-tech",
+      "healthcare-brief"
+    ],
+    "requiredMoves": [
+      "human context",
+      "evidence",
+      "stakeholders",
+      "policy or intervention",
+      "tradeoffs",
+      "implementation",
+      "measurement",
+      "call to action"
+    ],
+    "layoutRhythm": [
+      "title-hero",
+      "map",
+      "chart-focus",
+      "radial",
+      "comparison",
+      "timeline-horizontal",
+      "summary",
+      "closing-cta"
+    ]
+  },
+  {
+    "id": "internal-change",
+    "name": "Internal All-hands / Transformation",
+    "intent": "align teams around change",
+    "recommendedTemplateIds": [
+      "company-all-hands",
+      "transformation-roadmap",
+      "annual-operating-plan"
+    ],
+    "requiredMoves": [
+      "why now",
+      "current reality",
+      "future state",
+      "what changes",
+      "roadmap",
+      "roles",
+      "measures",
+      "next action"
+    ],
+    "layoutRhythm": [
+      "title-hero",
+      "statement",
+      "before-after",
+      "timeline-horizontal",
+      "process-steps",
+      "metric-grid",
+      "summary",
+      "closing-cta"
+    ]
+  }
+]

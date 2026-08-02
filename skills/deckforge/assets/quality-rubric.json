@@ -1,19 +1,24 @@
 {
-  "version": "2.0",
-  "passingScore": 82,
+  "version": "3.0",
+  "passingScore": 88,
   "blockingChecks": [
-    "No horizontal or vertical clipping at 1280x720.",
-    "Presenter mode works by keyboard and touch.",
-    "All interactive controls are keyboard reachable.",
-    "No untrusted raw HTML is rendered.",
+    "Selected delivery profile is fully implemented; metadata alone does not count.",
+    "No content block collision, title/visual overlap, or safe-margin violation.",
+    "No horizontal or vertical clipping at canonical 16:9 and common laptop viewport.",
+    "Editable-deck supports text, layout, theme/style, media insertion, undo/redo, save, reload, and present-current-slide.",
+    "Presenter mode works by keyboard and touch and contains no editor chrome.",
+    "Shortcut help is visible, accessible, and available in editor and presenter contexts.",
+    "All interactive controls are keyboard reachable with visible focus.",
+    "No untrusted raw HTML or unsanitized SVG is rendered.",
     "Every image, diagram, chart, and video has an accessible text alternative.",
     "Reduced-motion mode remains understandable.",
-    "No placeholder content, fake metrics, or invented citations remain."
+    "No placeholder content, fake metrics, invented citations, logos, screenshots, or testimonials remain.",
+    "Typecheck, tests, layout audit, output-contract validation, and production build pass."
   ],
   "dimensions": [
     {
       "id": "story",
-      "weight": 18,
+      "weight": 14,
       "checks": [
         "One clear narrative thesis",
         "Each slide advances the argument",
@@ -22,7 +27,7 @@
     },
     {
       "id": "hierarchy",
-      "weight": 14,
+      "weight": 12,
       "checks": [
         "One focal point per slide",
         "Readable type scale",
@@ -31,16 +36,17 @@
     },
     {
       "id": "content-fit",
-      "weight": 14,
+      "weight": 16,
       "checks": [
-        "Content fits without shrinking",
-        "No paragraph walls",
-        "Complexity matches audience"
+        "Semantic slot layout is used by default",
+        "No collisions or safe-margin violations",
+        "Content fits without unreadable shrinking",
+        "Whitespace and density are balanced"
       ]
     },
     {
       "id": "visual-system",
-      "weight": 14,
+      "weight": 12,
       "checks": [
         "Theme is consistent",
         "Visuals are meaningful",
@@ -49,11 +55,13 @@
     },
     {
       "id": "editor-ux",
-      "weight": 10,
+      "weight": 16,
       "checks": [
-        "Core actions are discoverable",
-        "Selection and undo are reliable",
-        "Toolbar is contextual"
+        "All required editor zones exist",
+        "Controls mutate DeckProject and update canvas",
+        "Layout/theme/media flows work",
+        "Undo/redo and save/reload are reliable",
+        "Shortcut help and command discovery are visible"
       ]
     },
     {
@@ -67,7 +75,7 @@
     },
     {
       "id": "accessibility",
-      "weight": 10,
+      "weight": 9,
       "checks": [
         "Contrast and focus states pass",
         "Alt text and summaries exist",
@@ -76,7 +84,7 @@
     },
     {
       "id": "performance",
-      "weight": 6,
+      "weight": 5,
       "checks": [
         "Lazy-load heavy media",
         "Avoid layout thrash",
@@ -85,7 +93,7 @@
     },
     {
       "id": "trust",
-      "weight": 4,
+      "weight": 6,
       "checks": [
         "Claims are sourced",
         "No fabricated UI or data",
@@ -105,6 +113,10 @@
     "Generic titles such as Overview, Solution, Benefits without a claim",
     "Text centered everywhere",
     "Meaningless stock imagery",
-    "Charts without units, source, or takeaway"
+    "Charts without units, source, or takeaway",
+    "Large unused regions caused by weak composition",
+    "Absolute-positioned content crossing semantic layout boundaries",
+    "Toolbar visuals without functional editor behavior",
+    "Same two-column composition used repeatedly"
   ]
 }

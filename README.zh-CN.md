@@ -65,6 +65,9 @@ DeckForge 遵循这一原则：主工作流保持简洁，更深入的设计、r
 | Audience interaction pattern | 26 |
 | Presenter control | 20 |
 | Export contract | 6 |
+| Delivery profile | 4 |
+| Presentation archetype | 12 |
+| Motion profile | 8 |
 
 另外还包括：
 
@@ -76,6 +79,30 @@ DeckForge 遵循这一原则：主工作流保持简洁，更深入的设计、r
 - chart、diagram、code、media 与 citation 模式
 - React 和 TypeScript starter components
 - 确定性的 validation 与 packaging scripts
+
+## DeckForge 3 稳定性升级
+
+DeckForge 3 直接解决 AI 生成演示应用中的常见问题：
+
+- **语义化布局，而不是任意坐标** — 每个布局都定义命名 slot、内容预算、响应式顺序、安全边距和碰撞规则。
+- **默认交付真实可编辑 Deck** — 普通幻灯片创建请求必须生成可操作编辑器，而不是带装饰性工具栏的静态 presenter。
+- **完整 Tools Side Panel** — 可编辑所选 slide 或 block 的布局、主题、颜色、排版、媒体、fit、alt text 与样式。
+- **可持久化编辑** — 修改会写回序列化 `DeckProject`，显示保存状态，刷新后恢复，并支持 undo/redo。
+- **按演示类型生成** — pitch、executive、technical、academic、education、workshop、portfolio 与 data report 使用不同的叙事和视觉系统。
+- **有目的的动效** — motion profile 包含 reduced-motion fallback、编辑器预览、可中断行为与性能规则。
+- **可发现快捷键** — 编辑器和演示模式均提供可见帮助入口与 `?` 快捷键对话框。
+- **确定性质量门禁** — 完成前必须通过 schema、layout、collision、capability truth、build 与关键行为验证。
+
+运行完整参考示例：
+
+```bash
+cd examples/editable-deck-studio
+python -m http.server 4173
+```
+
+打开 `http://localhost:4173`。该示例包含 slide rail、toolbar、inspector、notes、themes、layouts、文本和图片插入、persistence、undo/redo、保存状态、presenter mode、fullscreen、blackout、overview 与快捷键帮助。
+
+参阅 [`docs/DECKFORGE_3_UPGRADE.md`](./docs/DECKFORGE_3_UPGRADE.md) 与 [`docs/END_USER_FEATURE_MATRIX.md`](./docs/END_USER_FEATURE_MATRIX.md)。
 
 ## 模板展示
 
@@ -257,6 +284,9 @@ DeckForge 的贡献应保持以下原则：
 | [`docs/FEATURE_BACKLOG.md`](./docs/FEATURE_BACKLOG.md) | 按优先级组织的产品与 Skill 改进项。 |
 | [`docs/QUALITY_MODEL.md`](./docs/QUALITY_MODEL.md) | 演示产品的质量标准。 |
 | [`docs/TEMPLATE_AUTHORING.md`](./docs/TEMPLATE_AUTHORING.md) | 添加与维护模板的指南。 |
+| [`docs/DECKFORGE_3_UPGRADE.md`](./docs/DECKFORGE_3_UPGRADE.md) | DeckForge 3 的 acceptance contract、语义布局、editor truth 与 validation。 |
+| [`docs/END_USER_FEATURE_MATRIX.md`](./docs/END_USER_FEATURE_MATRIX.md) | 面向最终用户的 editor 与 presenter 必需能力。 |
+| [`docs/GENERATED_OUTPUT_FAILURE_ANALYSIS.md`](./docs/GENERATED_OUTPUT_FAILURE_ANALYSIS.md) | 常见生成失败模式及其防护机制。 |
 
 ## 致谢
 
@@ -299,4 +329,4 @@ DeckForge 的产品方向也参考了与浏览器演示、内容编辑和 canvas
 
 ## 许可证
 
-[MIT License](./LICENSE) © [tph-kds](https://github.com/tph-kds). All rights reserved.
+[MIT License](./LICENSE) © [tph-kds](https://github.com/tph-kds) All rights reserved.

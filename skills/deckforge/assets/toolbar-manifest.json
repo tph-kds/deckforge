@@ -74,7 +74,8 @@
       "actions": [
         "notes",
         "comments",
-        "accessibility-check"
+        "accessibility-check",
+        "shortcut-help"
       ]
     },
     {
@@ -90,6 +91,7 @@
     {
       "id": "delivery",
       "actions": [
+        "save",
         "present",
         "share",
         "embed",
@@ -109,7 +111,9 @@
     "undo": "Ctrl/Cmd+Z",
     "redo": "Ctrl/Cmd+Shift+Z",
     "duplicate": "Ctrl/Cmd+D",
-    "delete": "Backspace/Delete"
+    "delete": "Backspace/Delete",
+    "save": "Ctrl/Cmd+S",
+    "shortcutHelp": "?"
   },
   "actions": [
     {
@@ -675,6 +679,36 @@
       "requiresSelection": false,
       "requiresRuntime": false,
       "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "save",
+      "label": "Save",
+      "group": "delivery",
+      "shortcut": "Ctrl/Cmd+S",
+      "selection": "document",
+      "description": "Persist the current DeckProject and update save status."
+    },
+    {
+      "id": "shortcut-help",
+      "label": "Keyboard shortcuts",
+      "group": "review",
+      "shortcut": "?",
+      "selection": "any",
+      "description": "Open the accessible editor and presenter shortcut guide."
+    },
+    {
+      "id": "replace-media",
+      "label": "Replace media",
+      "group": "insert",
+      "selection": "media",
+      "description": "Replace the selected image, video, or audio while preserving layout binding."
+    },
+    {
+      "id": "crop-media",
+      "label": "Crop / focal point",
+      "group": "format",
+      "selection": "media",
+      "description": "Adjust crop, object fit, and focal point."
     }
   ],
   "selectionModes": [
@@ -694,5 +728,6 @@
     "zoom-level",
     "current-slide",
     "publish-state"
-  ]
+  ],
+  "capabilityTruthRule": "Only expose enabled actions that have state mutations, renderer support, persistence behavior, and tests."
 }

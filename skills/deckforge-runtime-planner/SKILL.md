@@ -1,7 +1,7 @@
 ---
 name: deckforge-runtime-planner
 description: Plan the architecture, data model, APIs, storage, publishing, embedding, versioning, collaboration, and deployment of a production web-slide runtime without implementing it.
-version: 2.0.0
+version: 3.0.0
 ---
 
 # DeckForge Runtime Planner

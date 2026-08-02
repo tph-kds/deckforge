@@ -1,31 +1,87 @@
 # Editor Experience
 
-The editor must make common actions obvious while keeping advanced controls contextual. It should feel like a focused presentation tool, not an exposed JSON editor or an unrestricted whiteboard.
+The editor is a required product surface for the default `editable-deck` profile. It must edit the serialized deck, not merely display toolbar icons.
 
-## Required surface
+## Required workspace anatomy
 
-Provide a slide rail, main canvas, top-level toolbar, contextual formatting controls, insert menu, properties panel, notes area, zoom and fit controls, grid/guides, autosave state, present action, and a discoverable command palette. Keep the center canvas visually dominant.
+Use a stable application shell:
+
+1. **Top app bar** — document title, undo/redo, insert, theme/layout, save status, preview/present, share/export, help.
+2. **Slide rail** — add, select, duplicate, delete, reorder, section grouping, hidden-slide state, thumbnail preview.
+3. **Canvas workspace** — 16:9 stage, zoom/fit, selection, guides, snap feedback, safe margins, overflow warnings.
+4. **Right inspector** — context-sensitive panels for content, layout, style/theme, animation, media, accessibility, and source metadata.
+5. **Notes/footer area** — speaker notes, comments when requested, validation/status messages.
+
+The canvas remains visually dominant. Panels may collapse but cannot disappear without a way to reopen them.
+
+## Minimum viable editing contract
+
+The user must be able to:
+
+- edit title and body text;
+- add text, image/media, shape, chart, table, code, and diagram blocks when enabled;
+- change layout and preserve/rebind content;
+- change theme, palette, fonts, background, and semantic styles;
+- replace images and change crop/fit/focal point;
+- move or resize freeform blocks;
+- align, distribute, group, lock, layer, duplicate, and delete;
+- create, duplicate, delete, and reorder slides;
+- edit speaker notes;
+- set transitions and build animations;
+- undo/redo;
+- save and restore;
+- present from the current slide;
+- open shortcut guidance.
+
+If scope requires a smaller MVP, document which controls are intentionally disabled. Do not advertise unsupported controls.
 
 ## State architecture
 
-Separate persisted `DeckProject` data from ephemeral editor state such as selection, hover, active panel, open dialogs, pointer gesture, and viewport transform. Use command objects or equivalent transactions for undo/redo. A drag or resize gesture should create one history entry when committed, not hundreds of entries during pointer movement. Preserve stable IDs and support reversible operations.
+Separate:
 
-## Selection and manipulation
+- persisted DeckProject document;
+- editor selection and hover state;
+- active tool and panel state;
+- viewport/zoom state;
+- pointer gesture state;
+- save/retry/conflict state.
 
-Define single selection, multi-selection, slide selection, text-editing mode, group selection, locked content, and nested interactive blocks. Selection handles must not change the rendered slide geometry. Support move, resize, rotate only when meaningful, duplicate, delete, group, lock, align, distribute, layer ordering, copy/paste, and keyboard nudging. Provide snapping feedback without making precision work impossible.
+Use command objects, transactions, or equivalent reversible mutations. A drag gesture creates one history entry at commit. Use stable IDs.
 
-## Toolbar behavior
+## Layout editing
 
-Use the toolbar manifest as the command contract. Show universal actions consistently and object-specific actions contextually. Disable unavailable actions with an explanation rather than silently hiding core commands. Keep dangerous actions reversible or confirmed. Provide shortcut hints in menus and tooltips.
+Changing a slide layout should rebind blocks by semantic role/slot rather than deleting content. Show warnings for unassigned or over-budget content. Offer a recovery area for blocks that cannot be mapped automatically.
 
-## Content insertion
+## Text editing
 
-Insert semantic blocks—heading, text, image, chart, diagram, table, code, media, embed—not arbitrary raw HTML. New blocks should receive sensible size, position, tokens, alt-text prompts, and source fields. Rich-text editing must preserve schema integrity and history.
+Use schema-controlled rich text where formatting beyond plain text is required. Normalize paste, keep history atomic, and preserve accessibility semantics. Do not use unrestricted raw HTML.
 
-## Reliability
+## Persistence
 
-Handle autosave, offline/retry states, version conflicts, asset upload progress, broken media, and validation errors visibly. Never lose user work when switching slides or entering presenter mode.
+At minimum for a standalone demo:
+
+- autosave DeckProject JSON to local storage;
+- show `Saving…`, `Saved`, and `Save failed` states;
+- restore on reload;
+- allow reset/export of the document.
+
+For an existing product, use its persistence/API conventions. Handle retries, version conflicts, broken assets, and offline states visibly.
+
+## Shortcut discoverability
+
+Use `shortcut-help-and-discoverability.md`. Shortcut hints belong in tooltips and menus, and a visible Help action must open the full list.
 
 ## Verification
 
-Test the full path with mouse, keyboard, and touch where editing is supported. Verify selection, copy/paste, undo/redo, slide reorder, notes, theme/layout changes, autosave recovery, error states, and presentation launch.
+Test the full edit path:
+
+1. modify title;
+2. change layout;
+3. change theme/accent;
+4. insert text and image;
+5. undo and redo;
+6. save and reload;
+7. launch presenter on the current slide;
+8. return without losing work.
+
+Failure in any selected-profile requirement blocks completion.

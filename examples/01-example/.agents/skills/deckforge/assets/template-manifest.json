@@ -1,0 +1,4838 @@
+[
+  {
+    "id": "executive-strategy",
+    "name": "Executive Strategy",
+    "category": "Business",
+    "audience": "Executives",
+    "goal": "Strategic choice and alignment",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "market-map",
+        "layout": "matrix-2x2",
+        "purpose": "Market Map"
+      },
+      {
+        "order": 4,
+        "role": "matrix-2x2",
+        "layout": "matrix-2x2",
+        "purpose": "Matrix 2X2"
+      },
+      {
+        "order": 5,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 6,
+        "role": "roadmap",
+        "layout": "timeline-horizontal",
+        "purpose": "Roadmap"
+      },
+      {
+        "order": 7,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      },
+      {
+        "order": 8,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "business",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 insight \u2192 strategic choice \u2192 plan \u2192 decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "quarterly-business-review",
+    "name": "Quarterly Business Review",
+    "category": "Business",
+    "audience": "Leadership",
+    "goal": "Performance, causes, decisions",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 3,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 4,
+        "role": "dashboard",
+        "layout": "dashboard",
+        "purpose": "Dashboard"
+      },
+      {
+        "order": 5,
+        "role": "before-after",
+        "layout": "before-after",
+        "purpose": "Before After"
+      },
+      {
+        "order": 6,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 7,
+        "role": "roadmap",
+        "layout": "timeline-horizontal",
+        "purpose": "Roadmap"
+      },
+      {
+        "order": 8,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      }
+    ],
+    "recommendedThemeTags": [
+      "business",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 insight \u2192 strategic choice \u2192 plan \u2192 decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "board-update",
+    "name": "Board Update",
+    "category": "Business",
+    "audience": "Board",
+    "goal": "Concise governance and decisions",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "big-number",
+        "layout": "big-number",
+        "purpose": "Big Number"
+      },
+      {
+        "order": 3,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 4,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 5,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 6,
+        "role": "decision-log",
+        "layout": "table-focus",
+        "purpose": "Decision Log"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "business",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 insight \u2192 strategic choice \u2192 plan \u2192 decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "annual-operating-plan",
+    "name": "Annual Operating Plan",
+    "category": "Business",
+    "audience": "Leadership",
+    "goal": "Targets, initiatives, ownership",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 4,
+        "role": "timeline-horizontal",
+        "layout": "timeline-horizontal",
+        "purpose": "Timeline Horizontal"
+      },
+      {
+        "order": 5,
+        "role": "portfolio-grid",
+        "layout": "card-grid",
+        "purpose": "Portfolio Grid"
+      },
+      {
+        "order": 6,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "business",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 insight \u2192 strategic choice \u2192 plan \u2192 decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "company-all-hands",
+    "name": "Company All Hands",
+    "category": "Business",
+    "audience": "All employees",
+    "goal": "Context, progress, people, direction",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 4,
+        "role": "customer-story",
+        "layout": "split-visual",
+        "purpose": "Customer Story"
+      },
+      {
+        "order": 5,
+        "role": "timeline-horizontal",
+        "layout": "timeline-horizontal",
+        "purpose": "Timeline Horizontal"
+      },
+      {
+        "order": 6,
+        "role": "team",
+        "layout": "team",
+        "purpose": "Team"
+      },
+      {
+        "order": 7,
+        "role": "qna",
+        "layout": "qna",
+        "purpose": "Qna"
+      }
+    ],
+    "recommendedThemeTags": [
+      "business",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 insight \u2192 strategic choice \u2192 plan \u2192 decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "sales-kickoff",
+    "name": "Sales Kickoff",
+    "category": "Business",
+    "audience": "Sales teams",
+    "goal": "Motivation, playbook, targets",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "big-number",
+        "layout": "big-number",
+        "purpose": "Big Number"
+      },
+      {
+        "order": 3,
+        "role": "market-map",
+        "layout": "matrix-2x2",
+        "purpose": "Market Map"
+      },
+      {
+        "order": 4,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 5,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 6,
+        "role": "customer-story",
+        "layout": "split-visual",
+        "purpose": "Customer Story"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "business",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 insight \u2192 strategic choice \u2192 plan \u2192 decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "investor-update",
+    "name": "Investor Update",
+    "category": "Business",
+    "audience": "Investors",
+    "goal": "Traction, runway, strategy",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 3,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 4,
+        "role": "customer-story",
+        "layout": "split-visual",
+        "purpose": "Customer Story"
+      },
+      {
+        "order": 5,
+        "role": "roadmap",
+        "layout": "timeline-horizontal",
+        "purpose": "Roadmap"
+      },
+      {
+        "order": 6,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "business",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 insight \u2192 strategic choice \u2192 plan \u2192 decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "transformation-roadmap",
+    "name": "Transformation Roadmap",
+    "category": "Business",
+    "audience": "Cross-functional leaders",
+    "goal": "Current state to target operating model",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "before-after",
+        "layout": "before-after",
+        "purpose": "Before After"
+      },
+      {
+        "order": 3,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 4,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 5,
+        "role": "timeline-horizontal",
+        "layout": "timeline-horizontal",
+        "purpose": "Timeline Horizontal"
+      },
+      {
+        "order": 6,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 7,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      }
+    ],
+    "recommendedThemeTags": [
+      "business",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 insight \u2192 strategic choice \u2192 plan \u2192 decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "startup-pitch",
+    "name": "Startup Pitch",
+    "category": "Startup",
+    "audience": "Investors",
+    "goal": "Problem, solution, traction, ask",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "before-after",
+        "layout": "before-after",
+        "purpose": "Before After"
+      },
+      {
+        "order": 4,
+        "role": "device-showcase",
+        "layout": "device-showcase",
+        "purpose": "Device Showcase"
+      },
+      {
+        "order": 5,
+        "role": "market-map",
+        "layout": "matrix-2x2",
+        "purpose": "Market Map"
+      },
+      {
+        "order": 6,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 7,
+        "role": "team",
+        "layout": "team",
+        "purpose": "Team"
+      },
+      {
+        "order": 8,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "startup",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 evidence \u2192 proposal \u2192 action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "product-launch",
+    "name": "Product Launch",
+    "category": "Product",
+    "audience": "Customers and press",
+    "goal": "Value, experience, proof, action",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "device-showcase",
+        "layout": "device-showcase",
+        "purpose": "Device Showcase"
+      },
+      {
+        "order": 4,
+        "role": "browser-demo",
+        "layout": "browser-demo",
+        "purpose": "Browser Demo"
+      },
+      {
+        "order": 5,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 6,
+        "role": "customer-story",
+        "layout": "split-visual",
+        "purpose": "Customer Story"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "product",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "user/problem \u2192 opportunity \u2192 product response \u2192 proof \u2192 roadmap/action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "product-vision",
+    "name": "Product Vision",
+    "category": "Product",
+    "audience": "Product organization",
+    "goal": "Future narrative and principles",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "customer-journey",
+        "layout": "timeline-horizontal",
+        "purpose": "Customer Journey"
+      },
+      {
+        "order": 4,
+        "role": "before-after",
+        "layout": "before-after",
+        "purpose": "Before After"
+      },
+      {
+        "order": 5,
+        "role": "radial",
+        "layout": "radial",
+        "purpose": "Radial"
+      },
+      {
+        "order": 6,
+        "role": "roadmap",
+        "layout": "timeline-horizontal",
+        "purpose": "Roadmap"
+      },
+      {
+        "order": 7,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      }
+    ],
+    "recommendedThemeTags": [
+      "product",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "user/problem \u2192 opportunity \u2192 product response \u2192 proof \u2192 roadmap/action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "product-roadmap",
+    "name": "Product Roadmap",
+    "category": "Product",
+    "audience": "Stakeholders",
+    "goal": "Priorities, sequencing, dependencies",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "timeline-horizontal",
+        "layout": "timeline-horizontal",
+        "purpose": "Timeline Horizontal"
+      },
+      {
+        "order": 4,
+        "role": "portfolio-grid",
+        "layout": "card-grid",
+        "purpose": "Portfolio Grid"
+      },
+      {
+        "order": 5,
+        "role": "dependency-map",
+        "layout": "architecture",
+        "purpose": "Dependency Map"
+      },
+      {
+        "order": 6,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "product",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "user/problem \u2192 opportunity \u2192 product response \u2192 proof \u2192 roadmap/action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "feature-deep-dive",
+    "name": "Feature Deep Dive",
+    "category": "Product",
+    "audience": "Users and internal teams",
+    "goal": "Use case, workflow, details",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "problem-evidence",
+        "layout": "chart-focus",
+        "purpose": "Problem Evidence"
+      },
+      {
+        "order": 3,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 4,
+        "role": "browser-demo",
+        "layout": "browser-demo",
+        "purpose": "Browser Demo"
+      },
+      {
+        "order": 5,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 6,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 7,
+        "role": "qna",
+        "layout": "qna",
+        "purpose": "Qna"
+      }
+    ],
+    "recommendedThemeTags": [
+      "product",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "user/problem \u2192 opportunity \u2192 product response \u2192 proof \u2192 roadmap/action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "demo-day",
+    "name": "Demo Day",
+    "category": "Product",
+    "audience": "Mixed audience",
+    "goal": "Fast product story with live demonstration",
+    "defaultSlideCount": 6,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "browser-demo",
+        "layout": "browser-demo",
+        "purpose": "Browser Demo"
+      },
+      {
+        "order": 4,
+        "role": "device-showcase",
+        "layout": "device-showcase",
+        "purpose": "Device Showcase"
+      },
+      {
+        "order": 5,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 6,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "product",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "user/problem \u2192 opportunity \u2192 product response \u2192 proof \u2192 roadmap/action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "customer-case-study",
+    "name": "Customer Case Study",
+    "category": "Product",
+    "audience": "Prospects",
+    "goal": "Challenge, implementation, results",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "customer-story",
+        "layout": "split-visual",
+        "purpose": "Customer Story"
+      },
+      {
+        "order": 3,
+        "role": "before-after",
+        "layout": "before-after",
+        "purpose": "Before After"
+      },
+      {
+        "order": 4,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 5,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 6,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 7,
+        "role": "quote",
+        "layout": "two-column",
+        "purpose": "Quote"
+      },
+      {
+        "order": 8,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "product",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "user/problem \u2192 opportunity \u2192 product response \u2192 proof \u2192 roadmap/action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "go-to-market",
+    "name": "Go To Market",
+    "category": "Product",
+    "audience": "Leadership and GTM teams",
+    "goal": "Segments, positioning, channels, metrics",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "market-map",
+        "layout": "matrix-2x2",
+        "purpose": "Market Map"
+      },
+      {
+        "order": 3,
+        "role": "customer-journey",
+        "layout": "timeline-horizontal",
+        "purpose": "Customer Journey"
+      },
+      {
+        "order": 4,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 5,
+        "role": "funnel",
+        "layout": "funnel",
+        "purpose": "Funnel"
+      },
+      {
+        "order": 6,
+        "role": "timeline-horizontal",
+        "layout": "timeline-horizontal",
+        "purpose": "Timeline Horizontal"
+      },
+      {
+        "order": 7,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 8,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "product",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "user/problem \u2192 opportunity \u2192 product response \u2192 proof \u2192 roadmap/action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "system-design",
+    "name": "System Design",
+    "category": "Technical",
+    "audience": "Engineers",
+    "goal": "Requirements, architecture, tradeoffs",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 4,
+        "role": "flowchart",
+        "layout": "flowchart",
+        "purpose": "Flowchart"
+      },
+      {
+        "order": 5,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 6,
+        "role": "table-focus",
+        "layout": "table-focus",
+        "purpose": "Table Focus"
+      },
+      {
+        "order": 7,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 8,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      }
+    ],
+    "recommendedThemeTags": [
+      "technical",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "requirements \u2192 architecture \u2192 key flows \u2192 trade-offs \u2192 rollout/decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "architecture-review",
+    "name": "Architecture Review",
+    "category": "Technical",
+    "audience": "Senior engineers",
+    "goal": "Boundaries, decisions, risks",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "context-map",
+        "layout": "radial",
+        "purpose": "Context Map"
+      },
+      {
+        "order": 3,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 4,
+        "role": "data-flow",
+        "layout": "flowchart",
+        "purpose": "Data Flow"
+      },
+      {
+        "order": 5,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 6,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 7,
+        "role": "decision-log",
+        "layout": "table-focus",
+        "purpose": "Decision Log"
+      }
+    ],
+    "recommendedThemeTags": [
+      "technical",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "requirements \u2192 architecture \u2192 key flows \u2192 trade-offs \u2192 rollout/decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "engineering-rfc",
+    "name": "Engineering Rfc",
+    "category": "Technical",
+    "audience": "Engineering organization",
+    "goal": "Proposal and decision",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "requirements",
+        "layout": "two-column",
+        "purpose": "Requirements"
+      },
+      {
+        "order": 4,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 5,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 6,
+        "role": "migration-plan",
+        "layout": "timeline-horizontal",
+        "purpose": "Migration Plan"
+      },
+      {
+        "order": 7,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 8,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "technical",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "requirements \u2192 architecture \u2192 key flows \u2192 trade-offs \u2192 rollout/decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "incident-postmortem",
+    "name": "Incident Postmortem",
+    "category": "Technical",
+    "audience": "Engineering and leadership",
+    "goal": "Timeline, impact, causes, prevention",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "big-number",
+        "layout": "big-number",
+        "purpose": "Big Number"
+      },
+      {
+        "order": 3,
+        "role": "timeline-vertical",
+        "layout": "timeline-vertical",
+        "purpose": "Timeline Vertical"
+      },
+      {
+        "order": 4,
+        "role": "flowchart",
+        "layout": "flowchart",
+        "purpose": "Flowchart"
+      },
+      {
+        "order": 5,
+        "role": "root-cause",
+        "layout": "flowchart",
+        "purpose": "Root Cause"
+      },
+      {
+        "order": 6,
+        "role": "before-after",
+        "layout": "before-after",
+        "purpose": "Before After"
+      },
+      {
+        "order": 7,
+        "role": "action-plan",
+        "layout": "process-steps",
+        "purpose": "Action Plan"
+      },
+      {
+        "order": 8,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      }
+    ],
+    "recommendedThemeTags": [
+      "technical",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "requirements \u2192 architecture \u2192 key flows \u2192 trade-offs \u2192 rollout/decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "platform-migration",
+    "name": "Platform Migration",
+    "category": "Technical",
+    "audience": "Engineering and product",
+    "goal": "Why migrate, how, safeguards",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "before-after",
+        "layout": "before-after",
+        "purpose": "Before After"
+      },
+      {
+        "order": 3,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 4,
+        "role": "timeline-horizontal",
+        "layout": "timeline-horizontal",
+        "purpose": "Timeline Horizontal"
+      },
+      {
+        "order": 5,
+        "role": "dependency-map",
+        "layout": "architecture",
+        "purpose": "Dependency Map"
+      },
+      {
+        "order": 6,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 7,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 8,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "technical",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "requirements \u2192 architecture \u2192 key flows \u2192 trade-offs \u2192 rollout/decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "ai-ml-overview",
+    "name": "Ai Ml Overview",
+    "category": "Technical",
+    "audience": "Mixed technical audience",
+    "goal": "Problem, model, evaluation, deployment",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "problem-evidence",
+        "layout": "chart-focus",
+        "purpose": "Problem Evidence"
+      },
+      {
+        "order": 3,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 4,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 5,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 6,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 7,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 8,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      }
+    ],
+    "recommendedThemeTags": [
+      "technical",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "requirements \u2192 architecture \u2192 key flows \u2192 trade-offs \u2192 rollout/decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "rag-architecture",
+    "name": "Rag Architecture",
+    "category": "Technical",
+    "audience": "AI engineers",
+    "goal": "Retrieval pipeline and quality controls",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 3,
+        "role": "flowchart",
+        "layout": "flowchart",
+        "purpose": "Flowchart"
+      },
+      {
+        "order": 4,
+        "role": "data-flow",
+        "layout": "flowchart",
+        "purpose": "Data Flow"
+      },
+      {
+        "order": 5,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 6,
+        "role": "evaluation-dashboard",
+        "layout": "dashboard",
+        "purpose": "Evaluation Dashboard"
+      },
+      {
+        "order": 7,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 8,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      }
+    ],
+    "recommendedThemeTags": [
+      "technical",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "requirements \u2192 architecture \u2192 key flows \u2192 trade-offs \u2192 rollout/decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "agentic-workflow",
+    "name": "Agentic Workflow",
+    "category": "Technical",
+    "audience": "AI and product teams",
+    "goal": "Agents, tools, memory, governance",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 3,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 4,
+        "role": "sequence-diagram",
+        "layout": "flowchart",
+        "purpose": "Sequence Diagram"
+      },
+      {
+        "order": 5,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 6,
+        "role": "observability-dashboard",
+        "layout": "dashboard",
+        "purpose": "Observability Dashboard"
+      },
+      {
+        "order": 7,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 8,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      }
+    ],
+    "recommendedThemeTags": [
+      "technical",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "requirements \u2192 architecture \u2192 key flows \u2192 trade-offs \u2192 rollout/decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "api-developer",
+    "name": "Api Developer",
+    "category": "Technical",
+    "audience": "Developers",
+    "goal": "Concept, integration, code, result",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "code-focus",
+        "layout": "code-focus",
+        "purpose": "Code Focus"
+      },
+      {
+        "order": 4,
+        "role": "terminal-demo",
+        "layout": "terminal-demo",
+        "purpose": "Terminal Demo"
+      },
+      {
+        "order": 5,
+        "role": "browser-demo",
+        "layout": "browser-demo",
+        "purpose": "Browser Demo"
+      },
+      {
+        "order": 6,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 7,
+        "role": "references",
+        "layout": "references",
+        "purpose": "References"
+      },
+      {
+        "order": 8,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "technical",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "requirements \u2192 architecture \u2192 key flows \u2192 trade-offs \u2192 rollout/decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "security-review",
+    "name": "Security Review",
+    "category": "Technical",
+    "audience": "Security and engineering",
+    "goal": "Threats, controls, residual risk",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "context-map",
+        "layout": "radial",
+        "purpose": "Context Map"
+      },
+      {
+        "order": 3,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 4,
+        "role": "threat-model",
+        "layout": "matrix-2x2",
+        "purpose": "Threat Model"
+      },
+      {
+        "order": 5,
+        "role": "matrix-2x2",
+        "layout": "matrix-2x2",
+        "purpose": "Matrix 2X2"
+      },
+      {
+        "order": 6,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 7,
+        "role": "action-plan",
+        "layout": "process-steps",
+        "purpose": "Action Plan"
+      }
+    ],
+    "recommendedThemeTags": [
+      "technical",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "requirements \u2192 architecture \u2192 key flows \u2192 trade-offs \u2192 rollout/decision",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "academic-conference",
+    "name": "Academic Conference",
+    "category": "Research",
+    "audience": "Researchers",
+    "goal": "Question, method, findings, implication",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "problem-evidence",
+        "layout": "chart-focus",
+        "purpose": "Problem Evidence"
+      },
+      {
+        "order": 3,
+        "role": "literature-map",
+        "layout": "radial",
+        "purpose": "Literature Map"
+      },
+      {
+        "order": 4,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 5,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 6,
+        "role": "table-focus",
+        "layout": "table-focus",
+        "purpose": "Table Focus"
+      },
+      {
+        "order": 7,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      },
+      {
+        "order": 8,
+        "role": "references",
+        "layout": "references",
+        "purpose": "References"
+      }
+    ],
+    "recommendedThemeTags": [
+      "research",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "question \u2192 method \u2192 evidence \u2192 interpretation \u2192 limitations/next work",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "thesis-defense",
+    "name": "Thesis Defense",
+    "category": "Research",
+    "audience": "Academic committee",
+    "goal": "Contribution, method, evidence, limitations",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "literature-map",
+        "layout": "radial",
+        "purpose": "Literature Map"
+      },
+      {
+        "order": 4,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 5,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 6,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 7,
+        "role": "limitations",
+        "layout": "two-column",
+        "purpose": "Limitations"
+      },
+      {
+        "order": 8,
+        "role": "references",
+        "layout": "references",
+        "purpose": "References"
+      }
+    ],
+    "recommendedThemeTags": [
+      "research",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "question \u2192 method \u2192 evidence \u2192 interpretation \u2192 limitations/next work",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "literature-review",
+    "name": "Literature Review",
+    "category": "Research",
+    "audience": "Researchers",
+    "goal": "Landscape, clusters, gaps",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "market-map",
+        "layout": "matrix-2x2",
+        "purpose": "Market Map"
+      },
+      {
+        "order": 4,
+        "role": "matrix-2x2",
+        "layout": "matrix-2x2",
+        "purpose": "Matrix 2X2"
+      },
+      {
+        "order": 5,
+        "role": "timeline-horizontal",
+        "layout": "timeline-horizontal",
+        "purpose": "Timeline Horizontal"
+      },
+      {
+        "order": 6,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 7,
+        "role": "research-gaps",
+        "layout": "matrix-2x2",
+        "purpose": "Research Gaps"
+      },
+      {
+        "order": 8,
+        "role": "references",
+        "layout": "references",
+        "purpose": "References"
+      }
+    ],
+    "recommendedThemeTags": [
+      "research",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "question \u2192 method \u2192 evidence \u2192 interpretation \u2192 limitations/next work",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "experiment-results",
+    "name": "Experiment Results",
+    "category": "Research",
+    "audience": "Researchers and product teams",
+    "goal": "Hypothesis, design, result, decision",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 4,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 5,
+        "role": "table-focus",
+        "layout": "table-focus",
+        "purpose": "Table Focus"
+      },
+      {
+        "order": 6,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 7,
+        "role": "limitations",
+        "layout": "two-column",
+        "purpose": "Limitations"
+      },
+      {
+        "order": 8,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "research",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "question \u2192 method \u2192 evidence \u2192 interpretation \u2192 limitations/next work",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "workshop-training",
+    "name": "Workshop Training",
+    "category": "Education",
+    "audience": "Learners",
+    "goal": "Objective, concept, practice, recap",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "learning-objectives",
+        "layout": "summary",
+        "purpose": "Learning Objectives"
+      },
+      {
+        "order": 3,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 4,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 5,
+        "role": "interactive-exercise",
+        "layout": "qna",
+        "purpose": "Interactive Exercise"
+      },
+      {
+        "order": 6,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 7,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      },
+      {
+        "order": 8,
+        "role": "qna",
+        "layout": "qna",
+        "purpose": "Qna"
+      }
+    ],
+    "recommendedThemeTags": [
+      "education",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "hybrid",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "learning objective \u2192 concept \u2192 guided example \u2192 practice \u2192 recap",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "course-lesson",
+    "name": "Course Lesson",
+    "category": "Education",
+    "audience": "Students",
+    "goal": "Teach one coherent concept",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "learning-objectives",
+        "layout": "summary",
+        "purpose": "Learning Objectives"
+      },
+      {
+        "order": 3,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 4,
+        "role": "diagram",
+        "layout": "two-column",
+        "purpose": "Diagram"
+      },
+      {
+        "order": 5,
+        "role": "worked-example",
+        "layout": "two-column",
+        "purpose": "Worked Example"
+      },
+      {
+        "order": 6,
+        "role": "interactive-exercise",
+        "layout": "qna",
+        "purpose": "Interactive Exercise"
+      },
+      {
+        "order": 7,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      },
+      {
+        "order": 8,
+        "role": "qna",
+        "layout": "qna",
+        "purpose": "Qna"
+      }
+    ],
+    "recommendedThemeTags": [
+      "education",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "hybrid",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "learning objective \u2192 concept \u2192 guided example \u2192 practice \u2192 recap",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "scientific-poster-web",
+    "name": "Scientific Poster Web",
+    "category": "Research",
+    "audience": "Conference attendees",
+    "goal": "Scrollable web poster with sections",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "problem-evidence",
+        "layout": "chart-focus",
+        "purpose": "Problem Evidence"
+      },
+      {
+        "order": 3,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 4,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 5,
+        "role": "table-focus",
+        "layout": "table-focus",
+        "purpose": "Table Focus"
+      },
+      {
+        "order": 6,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      },
+      {
+        "order": 7,
+        "role": "references",
+        "layout": "references",
+        "purpose": "References"
+      }
+    ],
+    "recommendedThemeTags": [
+      "research",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "question \u2192 method \u2192 evidence \u2192 interpretation \u2192 limitations/next work",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "brand-story",
+    "name": "Brand Story",
+    "category": "Creative",
+    "audience": "Customers and partners",
+    "goal": "Origin, belief, expression, proof",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "timeline-horizontal",
+        "layout": "timeline-horizontal",
+        "purpose": "Timeline Horizontal"
+      },
+      {
+        "order": 4,
+        "role": "gallery",
+        "layout": "gallery",
+        "purpose": "Gallery"
+      },
+      {
+        "order": 5,
+        "role": "customer-story",
+        "layout": "split-visual",
+        "purpose": "Customer Story"
+      },
+      {
+        "order": 6,
+        "role": "quote",
+        "layout": "two-column",
+        "purpose": "Quote"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "creative",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "hybrid",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "premise \u2192 tension \u2192 visual story \u2192 evidence/work \u2192 invitation",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "campaign-proposal",
+    "name": "Campaign Proposal",
+    "category": "Marketing",
+    "audience": "Marketing leadership",
+    "goal": "Audience, idea, channels, measurement",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "problem-evidence",
+        "layout": "chart-focus",
+        "purpose": "Problem Evidence"
+      },
+      {
+        "order": 3,
+        "role": "customer-journey",
+        "layout": "timeline-horizontal",
+        "purpose": "Customer Journey"
+      },
+      {
+        "order": 4,
+        "role": "gallery",
+        "layout": "gallery",
+        "purpose": "Gallery"
+      },
+      {
+        "order": 5,
+        "role": "timeline-horizontal",
+        "layout": "timeline-horizontal",
+        "purpose": "Timeline Horizontal"
+      },
+      {
+        "order": 6,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "marketing",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 evidence \u2192 proposal \u2192 action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "portfolio-showcase",
+    "name": "Portfolio Showcase",
+    "category": "Creative",
+    "audience": "Clients and recruiters",
+    "goal": "Selected work and thinking",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "gallery",
+        "layout": "gallery",
+        "purpose": "Gallery"
+      },
+      {
+        "order": 4,
+        "role": "ux-case-study",
+        "layout": "split-visual",
+        "purpose": "Ux Case Study"
+      },
+      {
+        "order": 5,
+        "role": "before-after",
+        "layout": "before-after",
+        "purpose": "Before After"
+      },
+      {
+        "order": 6,
+        "role": "quote",
+        "layout": "two-column",
+        "purpose": "Quote"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "creative",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "hybrid",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "premise \u2192 tension \u2192 visual story \u2192 evidence/work \u2192 invitation",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "event-keynote",
+    "name": "Event Keynote",
+    "category": "Creative",
+    "audience": "Large audience",
+    "goal": "Memorable narrative and reveal",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "big-number",
+        "layout": "big-number",
+        "purpose": "Big Number"
+      },
+      {
+        "order": 4,
+        "role": "timeline-horizontal",
+        "layout": "timeline-horizontal",
+        "purpose": "Timeline Horizontal"
+      },
+      {
+        "order": 5,
+        "role": "gallery",
+        "layout": "gallery",
+        "purpose": "Gallery"
+      },
+      {
+        "order": 6,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "creative",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "hybrid",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "premise \u2192 tension \u2192 visual story \u2192 evidence/work \u2192 invitation",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "editorial-story",
+    "name": "Editorial Story",
+    "category": "Creative",
+    "audience": "General audience",
+    "goal": "Narrative journalism or thought leadership",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "timeline-vertical",
+        "layout": "timeline-vertical",
+        "purpose": "Timeline Vertical"
+      },
+      {
+        "order": 4,
+        "role": "quote",
+        "layout": "two-column",
+        "purpose": "Quote"
+      },
+      {
+        "order": 5,
+        "role": "gallery",
+        "layout": "gallery",
+        "purpose": "Gallery"
+      },
+      {
+        "order": 6,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 7,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      }
+    ],
+    "recommendedThemeTags": [
+      "creative",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "hybrid",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "premise \u2192 tension \u2192 visual story \u2192 evidence/work \u2192 invitation",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "data-storytelling",
+    "name": "Data Storytelling",
+    "category": "Data",
+    "audience": "Decision makers",
+    "goal": "Insight-led sequence from evidence",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "big-number",
+        "layout": "big-number",
+        "purpose": "Big Number"
+      },
+      {
+        "order": 3,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 4,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 5,
+        "role": "map",
+        "layout": "map",
+        "purpose": "Map"
+      },
+      {
+        "order": 6,
+        "role": "dashboard",
+        "layout": "dashboard",
+        "purpose": "Dashboard"
+      },
+      {
+        "order": 7,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      },
+      {
+        "order": 8,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "data",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 evidence \u2192 proposal \u2192 action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "nonprofit-impact",
+    "name": "Nonprofit Impact",
+    "category": "Impact",
+    "audience": "Donors and stakeholders",
+    "goal": "Mission, reach, outcomes, needs",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "map",
+        "layout": "map",
+        "purpose": "Map"
+      },
+      {
+        "order": 4,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 5,
+        "role": "customer-story",
+        "layout": "split-visual",
+        "purpose": "Customer Story"
+      },
+      {
+        "order": 6,
+        "role": "timeline-horizontal",
+        "layout": "timeline-horizontal",
+        "purpose": "Timeline Horizontal"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "impact",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 evidence \u2192 proposal \u2192 action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "public-policy",
+    "name": "Public Policy",
+    "category": "Impact",
+    "audience": "Policy makers",
+    "goal": "Context, evidence, options, recommendation",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "problem-evidence",
+        "layout": "chart-focus",
+        "purpose": "Problem Evidence"
+      },
+      {
+        "order": 3,
+        "role": "map",
+        "layout": "map",
+        "purpose": "Map"
+      },
+      {
+        "order": 4,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 5,
+        "role": "comparison",
+        "layout": "comparison",
+        "purpose": "Comparison"
+      },
+      {
+        "order": 6,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 7,
+        "role": "recommendation",
+        "layout": "statement",
+        "purpose": "Recommendation"
+      },
+      {
+        "order": 8,
+        "role": "references",
+        "layout": "references",
+        "purpose": "References"
+      }
+    ],
+    "recommendedThemeTags": [
+      "impact",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 evidence \u2192 proposal \u2192 action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "healthcare-brief",
+    "name": "Healthcare Brief",
+    "category": "Industry",
+    "audience": "Clinical and business leaders",
+    "goal": "Need, evidence, workflow, safety",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "problem-evidence",
+        "layout": "chart-focus",
+        "purpose": "Problem Evidence"
+      },
+      {
+        "order": 3,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 4,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 5,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 6,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 7,
+        "role": "references",
+        "layout": "references",
+        "purpose": "References"
+      }
+    ],
+    "recommendedThemeTags": [
+      "industry",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 evidence \u2192 proposal \u2192 action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "fintech-product",
+    "name": "Fintech Product",
+    "category": "Industry",
+    "audience": "Business and technical stakeholders",
+    "goal": "Trust, flow, metrics, compliance",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 4,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 5,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 6,
+        "role": "risk-register",
+        "layout": "table-focus",
+        "purpose": "Risk Register"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "industry",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 evidence \u2192 proposal \u2192 action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "climate-tech",
+    "name": "Climate Tech",
+    "category": "Industry",
+    "audience": "Investors and partners",
+    "goal": "Climate problem, solution, impact",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "problem-evidence",
+        "layout": "chart-focus",
+        "purpose": "Problem Evidence"
+      },
+      {
+        "order": 3,
+        "role": "map",
+        "layout": "map",
+        "purpose": "Map"
+      },
+      {
+        "order": 4,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 5,
+        "role": "chart-focus",
+        "layout": "chart-focus",
+        "purpose": "Chart Focus"
+      },
+      {
+        "order": 6,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "industry",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 evidence \u2192 proposal \u2192 action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "design-system-showcase",
+    "name": "Design System Showcase",
+    "category": "Design",
+    "audience": "Design and engineering",
+    "goal": "Foundations, components, adoption",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "token-grid",
+        "layout": "card-grid",
+        "purpose": "Token Grid"
+      },
+      {
+        "order": 4,
+        "role": "component-gallery",
+        "layout": "gallery",
+        "purpose": "Component Gallery"
+      },
+      {
+        "order": 5,
+        "role": "before-after",
+        "layout": "before-after",
+        "purpose": "Before After"
+      },
+      {
+        "order": 6,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 7,
+        "role": "roadmap",
+        "layout": "timeline-horizontal",
+        "purpose": "Roadmap"
+      },
+      {
+        "order": 8,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "design",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "problem \u2192 research \u2192 principles \u2192 iterations \u2192 outcome and learning",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "ux-case-study",
+    "name": "Ux Case Study",
+    "category": "Design",
+    "audience": "Hiring managers and stakeholders",
+    "goal": "Problem, research, iterations, outcome",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "problem-evidence",
+        "layout": "chart-focus",
+        "purpose": "Problem Evidence"
+      },
+      {
+        "order": 3,
+        "role": "customer-journey",
+        "layout": "timeline-horizontal",
+        "purpose": "Customer Journey"
+      },
+      {
+        "order": 4,
+        "role": "gallery",
+        "layout": "gallery",
+        "purpose": "Gallery"
+      },
+      {
+        "order": 5,
+        "role": "before-after",
+        "layout": "before-after",
+        "purpose": "Before After"
+      },
+      {
+        "order": 6,
+        "role": "metric-grid",
+        "layout": "metric-grid",
+        "purpose": "Metric Grid"
+      },
+      {
+        "order": 7,
+        "role": "reflection",
+        "layout": "summary",
+        "purpose": "Reflection"
+      }
+    ],
+    "recommendedThemeTags": [
+      "design",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "problem \u2192 research \u2192 principles \u2192 iterations \u2192 outcome and learning",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "recruiting-employer-brand",
+    "name": "Recruiting Employer Brand",
+    "category": "People",
+    "audience": "Candidates",
+    "goal": "Mission, work, culture, roles",
+    "defaultSlideCount": 7,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 3,
+        "role": "team",
+        "layout": "team",
+        "purpose": "Team"
+      },
+      {
+        "order": 4,
+        "role": "customer-story",
+        "layout": "split-visual",
+        "purpose": "Customer Story"
+      },
+      {
+        "order": 5,
+        "role": "gallery",
+        "layout": "gallery",
+        "purpose": "Gallery"
+      },
+      {
+        "order": 6,
+        "role": "process-steps",
+        "layout": "process-steps",
+        "purpose": "Process Steps"
+      },
+      {
+        "order": 7,
+        "role": "closing-cta",
+        "layout": "closing-cta",
+        "purpose": "Closing Cta"
+      }
+    ],
+    "recommendedThemeTags": [
+      "people",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "presenter-led",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "context \u2192 evidence \u2192 proposal \u2192 action",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  },
+  {
+    "id": "conference-session",
+    "name": "Conference Session",
+    "category": "Education",
+    "audience": "Conference attendees",
+    "goal": "Teach, demonstrate, involve audience",
+    "defaultSlideCount": 8,
+    "slidePlan": [
+      {
+        "order": 1,
+        "role": "title-hero",
+        "layout": "title-hero",
+        "purpose": "Title Hero"
+      },
+      {
+        "order": 2,
+        "role": "learning-objectives",
+        "layout": "summary",
+        "purpose": "Learning Objectives"
+      },
+      {
+        "order": 3,
+        "role": "statement",
+        "layout": "statement",
+        "purpose": "Statement"
+      },
+      {
+        "order": 4,
+        "role": "architecture",
+        "layout": "architecture",
+        "purpose": "Architecture"
+      },
+      {
+        "order": 5,
+        "role": "browser-demo",
+        "layout": "browser-demo",
+        "purpose": "Browser Demo"
+      },
+      {
+        "order": 6,
+        "role": "interactive-exercise",
+        "layout": "qna",
+        "purpose": "Interactive Exercise"
+      },
+      {
+        "order": 7,
+        "role": "summary",
+        "layout": "summary",
+        "purpose": "Summary"
+      },
+      {
+        "order": 8,
+        "role": "qna",
+        "layout": "qna",
+        "purpose": "Qna"
+      }
+    ],
+    "recommendedThemeTags": [
+      "education",
+      "professional",
+      "web-native"
+    ],
+    "interactionProfile": "hybrid",
+    "evidenceExpectation": "Every factual claim, metric, quotation, or external comparison must have a traceable source.",
+    "qualityRisks": [
+      "Generic opening without a point of view",
+      "Repeated card grids",
+      "Decorative visuals without narrative value",
+      "Too much content per slide"
+    ],
+    "narrativeArc": "learning objective \u2192 concept \u2192 guided example \u2192 practice \u2192 recap",
+    "deliveryModes": [
+      "presenter-led",
+      "published-self-guided"
+    ],
+    "editorPreset": {
+      "slideRail": true,
+      "notes": true,
+      "comments": true,
+      "recommendedPanels": [
+        "layout",
+        "theme",
+        "sources",
+        "accessibility"
+      ]
+    },
+    "presenterPreset": {
+      "overview": true,
+      "speakerView": true,
+      "deepLinks": true,
+      "progress": true,
+      "reducedMotion": "respect-system"
+    },
+    "requiredEvidence": [
+      "Traceable source for external claims",
+      "Explicit units and time range for metrics",
+      "Accessible summary for charts and diagrams"
+    ],
+    "completionCriteria": [
+      "Titles form a coherent argument",
+      "No duplicate slide roles",
+      "Closing requests a concrete decision or action"
+    ]
+  }
+]

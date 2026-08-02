@@ -40,3 +40,15 @@ This backlog is for a target DeckForge application, not for the Agent Skills rep
 - Image-only slides as the canonical editable representation.
 - A universal whiteboard, website builder, document editor, or video editor inside the slide canvas.
 - Authentication, billing, database, and deployment code inside this skills repository.
+
+## DeckForge 3 baseline already enforced by the skill
+
+The following are no longer optional backlog items for an `editable-deck` output:
+
+- semantic slot-based layouts with collision validation
+- functional slide rail, toolbar, inspector/tools panel, notes, and save status
+- state mutation, undo/redo, persistence, and reload recovery
+- theme, layout, text, and media editing
+- separate presenter mode with fullscreen, overview, blackout, progress, and shortcut help
+- archetype-aware template selection and named motion profiles
+- schema, layout, output-contract, build, and behavioral verification

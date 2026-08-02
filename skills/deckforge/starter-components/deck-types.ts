@@ -3,14 +3,8 @@ export type SlideId = string;
 export type BlockId = string;
 export type InteractionId = string;
 
-export type Frame = {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  rotation?: number;
-  z?: number;
-};
+export type Frame = { x: number; y: number; w: number; h: number; rotation?: number; z?: number };
+export type PositionMode = 'slot' | 'flow' | 'freeform' | 'background';
 
 export type BuildAnimation = {
   id: string;
@@ -26,7 +20,11 @@ export type DeckBlock = {
   id: BlockId;
   type: string;
   content?: unknown;
+  slot?: string;
+  positionMode?: PositionMode;
   frame?: Frame;
+  resolvedFrame?: Frame;
+  fitPolicy?: 'wrap' | 'contain' | 'cover' | 'scroll' | 'change-layout' | 'split-slide';
   style?: Record<string, unknown>;
   data?: unknown;
   alt?: string;
@@ -35,9 +33,13 @@ export type DeckBlock = {
   animation?: BuildAnimation;
   locked?: boolean;
   hidden?: boolean;
+  decorative?: boolean;
+  allowOverlap?: boolean;
   groupId?: string;
   role?: string;
 };
+
+export type LayoutBinding = { slot: string; blockIds: BlockId[]; flow?: 'stack' | 'row' | 'grid' | 'overlay'; gap?: number };
 
 export type DeckInteraction = {
   id: InteractionId;
@@ -56,6 +58,10 @@ export type DeckSlide = {
   id: SlideId;
   title: string;
   layout: string;
+  layoutVariant?: string;
+  layoutBindings?: LayoutBinding[];
+  density?: 'low' | 'medium' | 'high';
+  focalBlockId?: BlockId;
   blocks: DeckBlock[];
   speakerNotes?: string;
   sources?: string[];
@@ -67,7 +73,13 @@ export type DeckSlide = {
 };
 
 export type DeckProject = {
-  schemaVersion: '2.0';
+  schemaVersion: '2.1';
+  experience: {
+    profile: 'editable-deck' | 'presentation-runtime' | 'published-story' | 'embedded-deck';
+    surfaces: Array<'editor' | 'presenter' | 'viewer' | 'embed-viewer'>;
+    routes?: Record<string, string>;
+    capabilities?: string[];
+  };
   meta: {
     id: DeckId;
     slug: string;
@@ -85,6 +97,7 @@ export type DeckProject = {
     safeMargin?: number;
     grid?: number;
     responsiveMode?: 'letterbox' | 'reflow' | 'hybrid';
+    layoutMode?: 'semantic-slots' | 'hybrid' | 'freeform';
   };
   theme: { id: string; overrides?: Record<string, unknown>; designSystemRef?: string };
   presentation: {
@@ -103,6 +116,13 @@ export type DeckProject = {
     enabled: boolean;
     toolbar: boolean;
     history: boolean;
+    sidePanel?: boolean;
+    assetLibrary?: boolean;
+    themePicker?: boolean;
+    layoutPicker?: boolean;
+    shortcutHelp?: boolean;
+    saveStatus?: boolean;
+    persistence?: 'none' | 'local-storage' | 'api' | 'host-managed';
     snapToGrid?: boolean;
     guides?: boolean;
     comments?: boolean;
@@ -111,17 +131,13 @@ export type DeckProject = {
     commandPalette?: boolean;
     notes?: boolean;
     allowedBlockTypes?: string[];
+    requiredZones?: string[];
   };
+  shortcuts?: { helpEnabled?: boolean; helpKey?: string; editorPreset?: string; presenterPreset?: string };
   slides: DeckSlide[];
   sources?: Array<{ id: string; title: string; url: string }>;
-  publish: {
-    visibility: 'private' | 'workspace' | 'unlisted' | 'public';
-    embed: { enabled: boolean; allowedOrigins?: string[]; sandbox?: string[]; responsive?: boolean };
-  };
+  publish: { visibility: 'private' | 'workspace' | 'unlisted' | 'public'; embed: { enabled: boolean; allowedOrigins?: string[]; sandbox?: string[]; responsive?: boolean } };
 };
 
-export type EditorSelection = {
-  slideId: SlideId;
-  blockIds: BlockId[];
-  mode?: 'block' | 'text' | 'canvas';
-};
+export type EditorSelection = { slideId: SlideId; blockIds: BlockId[]; mode?: 'block' | 'text' | 'canvas' };
+export type SaveState = 'clean' | 'dirty' | 'saving' | 'saved' | 'failed' | 'offline' | 'conflict';

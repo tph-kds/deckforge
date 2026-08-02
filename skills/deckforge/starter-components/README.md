@@ -1,16 +1,17 @@
 # Starter Components
 
-These files are copyable architecture references, not a complete application. Adapt imports, styling, state, persistence, component primitives, and accessibility behavior to the target project. The examples intentionally avoid authentication, database, collaboration-provider, and deployment assumptions.
+These files are copyable architecture references for the default **editable-deck** profile. They are not a hosted product, but they now demonstrate the required structural boundaries instead of only presenter scaffolding.
 
 Included references cover:
 
-- serializable DeckProject and interaction types;
+- DeckProject 2.1 and semantic slot bindings;
+- layout-slot resolution and assignment validation;
 - command/history state boundaries;
-- selection normalization;
-- semantic block registry;
-- editor shell and toolbar;
-- presenter reducer with build-step navigation;
-- slide overview and speaker view;
-- hotkeys, animation fallbacks, and export adapters.
+- local persistence and save status;
+- editor app bar, slide rail, canvas, inspector, notes, and Present action;
+- contextual toolbar groups;
+- accessible shortcut-help dialog;
+- presenter reducer, overview, speaker view, and hotkeys;
+- block registry, animations, and export contracts.
 
-A production implementation still needs schema validation, rich-text and media adapters, layout measurement, persistence, authorization, autosave recovery, collaboration, visual tests, and runtime security controls.
+A production implementation must still adapt authentication, API persistence, collaboration, rich-text/media adapters, schema validation, authorization, asset upload, visual regression, and runtime security to the target product.

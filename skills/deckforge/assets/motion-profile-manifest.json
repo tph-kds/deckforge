@@ -1,0 +1,209 @@
+[
+  {
+    "id": "executive-subtle",
+    "name": "Executive Subtle",
+    "useFor": [
+      "executive-decision",
+      "data-report",
+      "internal-change"
+    ],
+    "slideTransition": "crossfade",
+    "objectBuilds": [
+      "appear",
+      "fade-in",
+      "highlight"
+    ],
+    "durationRangeMs": [
+      180,
+      420
+    ],
+    "maxConcurrentMotions": 2,
+    "easing": "cubic-bezier(0.22,0.61,0.36,1)",
+    "avoid": [
+      "bounce",
+      "elastic",
+      "continuous-parallax"
+    ],
+    "reducedMotion": "appear"
+  },
+  {
+    "id": "technical-precise",
+    "name": "Technical Precise",
+    "useFor": [
+      "technical-review",
+      "academic-research"
+    ],
+    "slideTransition": "push",
+    "objectBuilds": [
+      "fade-in",
+      "wipe-in",
+      "line-draw",
+      "stagger",
+      "highlight"
+    ],
+    "durationRangeMs": [
+      220,
+      520
+    ],
+    "maxConcurrentMotions": 3,
+    "easing": "cubic-bezier(0.2,0.8,0.2,1)",
+    "avoid": [
+      "decorative-float",
+      "random-zoom"
+    ],
+    "reducedMotion": "appear"
+  },
+  {
+    "id": "education-guided",
+    "name": "Education Guided",
+    "useFor": [
+      "education-lesson",
+      "training-workshop"
+    ],
+    "slideTransition": "crossfade",
+    "objectBuilds": [
+      "appear",
+      "fade-in",
+      "stagger",
+      "highlight",
+      "path"
+    ],
+    "durationRangeMs": [
+      250,
+      650
+    ],
+    "maxConcurrentMotions": 3,
+    "easing": "ease-out",
+    "avoid": [
+      "fast-flash",
+      "autoplay-without-control"
+    ],
+    "reducedMotion": "appear"
+  },
+  {
+    "id": "pitch-dynamic",
+    "name": "Pitch Dynamic",
+    "useFor": [
+      "startup-pitch",
+      "product-story"
+    ],
+    "slideTransition": "cover",
+    "objectBuilds": [
+      "fade-in",
+      "slide-in",
+      "scale-emphasis",
+      "counter",
+      "bar-grow",
+      "stagger"
+    ],
+    "durationRangeMs": [
+      220,
+      600
+    ],
+    "maxConcurrentMotions": 3,
+    "easing": "cubic-bezier(0.16,1,0.3,1)",
+    "avoid": [
+      "animation-on-every-bullet",
+      "excessive-parallax"
+    ],
+    "reducedMotion": "fade-in"
+  },
+  {
+    "id": "seminar-editorial",
+    "name": "Seminar Editorial",
+    "useFor": [
+      "seminar-talk",
+      "impact-policy"
+    ],
+    "slideTransition": "crossfade",
+    "objectBuilds": [
+      "fade-in",
+      "wipe-in",
+      "highlight",
+      "line-draw"
+    ],
+    "durationRangeMs": [
+      260,
+      600
+    ],
+    "maxConcurrentMotions": 2,
+    "easing": "ease-out",
+    "avoid": [
+      "game-like-motion"
+    ],
+    "reducedMotion": "appear"
+  },
+  {
+    "id": "portfolio-showcase",
+    "name": "Portfolio Showcase",
+    "useFor": [
+      "portfolio-case-study"
+    ],
+    "slideTransition": "morph",
+    "objectBuilds": [
+      "fade-in",
+      "zoom-in",
+      "morph",
+      "parallax",
+      "stagger"
+    ],
+    "durationRangeMs": [
+      260,
+      750
+    ],
+    "maxConcurrentMotions": 3,
+    "easing": "cubic-bezier(0.16,1,0.3,1)",
+    "avoid": [
+      "unrelated-object-motion"
+    ],
+    "reducedMotion": "crossfade"
+  },
+  {
+    "id": "self-guided-calm",
+    "name": "Self-guided Calm",
+    "useFor": [
+      "published-story"
+    ],
+    "slideTransition": "crossfade",
+    "objectBuilds": [
+      "appear",
+      "fade-in"
+    ],
+    "durationRangeMs": [
+      160,
+      360
+    ],
+    "maxConcurrentMotions": 2,
+    "easing": "ease-out",
+    "avoid": [
+      "click-dependent-essential-content",
+      "autoplay-heavy-motion"
+    ],
+    "reducedMotion": "appear"
+  },
+  {
+    "id": "none-accessible",
+    "name": "No Spatial Motion",
+    "useFor": [
+      "reduced-motion",
+      "compliance-sensitive"
+    ],
+    "slideTransition": "none",
+    "objectBuilds": [
+      "appear"
+    ],
+    "durationRangeMs": [
+      0,
+      120
+    ],
+    "maxConcurrentMotions": 1,
+    "easing": "linear",
+    "avoid": [
+      "translate",
+      "scale",
+      "parallax",
+      "path"
+    ],
+    "reducedMotion": "none"
+  }
+]

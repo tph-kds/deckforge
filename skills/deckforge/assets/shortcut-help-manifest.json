@@ -1,0 +1,191 @@
+{
+  "version": "1.0",
+  "openHelp": [
+    "?",
+    "Shift+/"
+  ],
+  "editor": [
+    {
+      "id": "save",
+      "keys": [
+        "Ctrl/Cmd",
+        "S"
+      ],
+      "label": "Save deck"
+    },
+    {
+      "id": "undo",
+      "keys": [
+        "Ctrl/Cmd",
+        "Z"
+      ],
+      "label": "Undo"
+    },
+    {
+      "id": "redo",
+      "keys": [
+        "Ctrl/Cmd",
+        "Shift",
+        "Z"
+      ],
+      "label": "Redo"
+    },
+    {
+      "id": "duplicate",
+      "keys": [
+        "Ctrl/Cmd",
+        "D"
+      ],
+      "label": "Duplicate selection or slide"
+    },
+    {
+      "id": "delete",
+      "keys": [
+        "Delete / Backspace"
+      ],
+      "label": "Delete selection"
+    },
+    {
+      "id": "nudge",
+      "keys": [
+        "Arrow keys"
+      ],
+      "label": "Nudge selection"
+    },
+    {
+      "id": "large-nudge",
+      "keys": [
+        "Shift",
+        "Arrow keys"
+      ],
+      "label": "Nudge by larger step"
+    },
+    {
+      "id": "select-all",
+      "keys": [
+        "Ctrl/Cmd",
+        "A"
+      ],
+      "label": "Select all in current context"
+    },
+    {
+      "id": "command-palette",
+      "keys": [
+        "Ctrl/Cmd",
+        "K"
+      ],
+      "label": "Open command palette"
+    },
+    {
+      "id": "present",
+      "keys": [
+        "Ctrl/Cmd",
+        "Enter"
+      ],
+      "label": "Present from current slide"
+    },
+    {
+      "id": "shortcuts",
+      "keys": [
+        "?"
+      ],
+      "label": "Open keyboard shortcuts"
+    }
+  ],
+  "presenter": [
+    {
+      "id": "next",
+      "keys": [
+        "ArrowRight / Space / PageDown"
+      ],
+      "label": "Next build or slide"
+    },
+    {
+      "id": "previous",
+      "keys": [
+        "ArrowLeft / Shift+Space / PageUp"
+      ],
+      "label": "Previous build or slide"
+    },
+    {
+      "id": "first",
+      "keys": [
+        "Home"
+      ],
+      "label": "First slide"
+    },
+    {
+      "id": "last",
+      "keys": [
+        "End"
+      ],
+      "label": "Last slide"
+    },
+    {
+      "id": "overview",
+      "keys": [
+        "O / Esc"
+      ],
+      "label": "Toggle overview"
+    },
+    {
+      "id": "fullscreen",
+      "keys": [
+        "F"
+      ],
+      "label": "Toggle fullscreen"
+    },
+    {
+      "id": "speaker-view",
+      "keys": [
+        "S"
+      ],
+      "label": "Open speaker view"
+    },
+    {
+      "id": "blackout",
+      "keys": [
+        "B"
+      ],
+      "label": "Toggle blackout"
+    },
+    {
+      "id": "timer",
+      "keys": [
+        "T"
+      ],
+      "label": "Toggle timer"
+    },
+    {
+      "id": "jump",
+      "keys": [
+        "G"
+      ],
+      "label": "Go to slide"
+    },
+    {
+      "id": "shortcuts",
+      "keys": [
+        "?"
+      ],
+      "label": "Open keyboard shortcuts"
+    },
+    {
+      "id": "exit",
+      "keys": [
+        "Esc"
+      ],
+      "label": "Exit dialog, overview, or fullscreen"
+    }
+  ],
+  "accessibility": {
+    "dialogRole": "dialog",
+    "modal": true,
+    "focusTrap": true,
+    "restoreFocus": true,
+    "closeKeys": [
+      "Escape"
+    ],
+    "ignoreWhileTyping": true
+  }
+}

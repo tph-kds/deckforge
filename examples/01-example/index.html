@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Coding Agent trong phát triển phần mềm</title>
+  <meta name="description" content="Bài trình bày 5 phút về cách áp dụng AI Coding Agent có kiểm soát trong đội kỹ thuật.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#deck-viewport">Bỏ qua điều hướng</a>
+
+  <main id="deck-viewport" class="deck-viewport" tabindex="-1">
+    <!-- Slides are rendered into #stage here -->
+    <div id="stage" class="stage" aria-live="polite"></div>
+  </main>
+
+  <div class="deck-progress" aria-hidden="true"><span id="progress-fill"></span></div>
+
+  <div class="deck-hud">
+    <div class="hud-left" id="slide-counter" aria-hidden="true">1 / 6</div>
+    <div class="hud-right" id="timer-chip" hidden aria-hidden="true"><span id="timer-text">00:00</span></div>
+  </div>
+
+  <div class="deck-controls" role="toolbar" aria-label="Điều khiển trình chiếu">
+    <button type="button" id="btn-prev" aria-label="Slide trước" title="Slide trước (←)">‹</button>
+    <button type="button" id="btn-overview" aria-label="Tổng quan các slide" title="Tổng quan (O)">▦</button>
+    <button type="button" id="btn-notes" aria-label="Ghi chú người trình bày" title="Ghi chú (N)">✎</button>
+    <button type="button" id="btn-blackout" aria-label="Màn hình đen" title="Màn hình đen (B)">●</button>
+    <button type="button" id="btn-timer" aria-label="Đồng hồ trình chiếu" title="Đồng hồ (T)">⏱</button>
+    <button type="button" id="btn-fullscreen" aria-label="Toàn màn hình" title="Toàn màn hình (F)">⛶</button>
+    <button type="button" id="btn-next" aria-label="Slide tiếp theo" title="Slide tiếp theo (→)">›</button>
+  </div>
+
+  <div id="notes-panel" class="notes-panel" role="region" aria-label="Ghi chú người trình bày" hidden>
+    <div class="notes-head">
+      <strong>Ghi chú người trình bày</strong>
+      <button type="button" id="btn-notes-close" aria-label="Đóng ghi chú">✕</button>
+    </div>
+    <div id="notes-text" class="notes-text"></div>
+  </div>
+
+  <div id="blackout" class="blackout" aria-hidden="true" hidden></div>
+
+  <div id="overview" class="overview" role="dialog" aria-modal="true" aria-label="Tổng quan các slide" hidden>
+    <div class="overview-inner">
+      <div class="overview-head">
+        <strong>Tổng quan</strong>
+        <button type="button" id="btn-overview-close" aria-label="Đóng tổng quan">✕</button>
+      </div>
+      <div id="overview-grid" class="overview-grid"></div>
+    </div>
+  </div>
+
+  <script id="deck-json" type="application/json">
+{
+  "schemaVersion": "2.0",
+  "meta": {
+    "id": "deck-ai-coding-agent",
+    "slug": "ai-coding-agent",
+    "title": "AI Coding Agent trong phát triển phần mềm",
+    "description": "5 phút về cách đội kỹ thuật và quản lý áp dụng AI Coding Agent một cách có kiểm soát.",
+    "language": "vi",
+    "audience": "Đội ngũ kỹ thuật và quản lý",
+    "objective": "Thống nhất lý do và cách bắt đầu một pilot AI Coding Agent có kiểm soát trong vòng 90 ngày.",
+    "templateId": "transformation-roadmap",
+    "tags": ["ai", "coding-agent", "phat-trien-phan-mem", "tech"],
+    "createdAt": "2026-08-02T00:00:00Z",
+    "updatedAt": "2026-08-02T00:00:00Z"
+  },
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1600,
+    "height": 900,
+    "safeMargin": 64,
+    "grid": 8,
+    "responsiveMode": "hybrid"
+  },
+  "theme": {
+    "id": "oceanic-blueprint",
+    "mode": "light",
+    "overrides": {
+      "accent": "#0891B2",
+      "accentSoft": "#E0F4F8",
+      "benefit": "#047857",
+      "benefitSoft": "#E7F6EF",
+      "risk": "#B42318",
+      "riskSoft": "#FDEBE9",
+      "warn": "#B45309",
+      "warnSoft": "#FDF0E3",
+      "headingFont": "Manrope",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    }
+  },
+  "presentation": {
+    "mode": "horizontal",
+    "transition": "crossfade",
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "progress": true,
+    "controls": true,
+    "reducedMotion": "respect-system",
+    "autoplay": { "enabled": false, "intervalMs": 15000, "loop": false, "pauseOnInteraction": true }
+  },
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "snapToGrid": true,
+    "guides": true,
+    "notes": true,
+    "autosave": true,
+    "allowedBlockTypes": ["heading", "text", "bullets", "callout", "caption", "metric", "table", "process", "diagram", "citation"]
+  },
+  "assets": [],
+  "slides": [
+    {
+      "id": "s1-mo-dau",
+      "title": "AI Coding Agent: làm phần mềm nhanh hơn, không phải thay kỹ sư",
+      "layout": "title-hero",
+      "transition": "crossfade",
+      "speakerNotes": "Mở đầu bằng luận điểm, không phải công nghệ. Mục tiêu 5 phút: 1) AI coding agent không thay kỹ sư mà lo bỏ các việc lặp lại; 2) giá trị đến từ quy trình có kiểm soát; 3) bắt đầu một pilot nhỏ, đo lường trong 90 ngày. Giới thiệu bản thân và đội trước khi trình chiếu slide 2.",
+      "blocks": [
+        {
+          "id": "b1-kicker",
+          "type": "text",
+          "content": "AI CODING AGENT · TRONG PHÁT TRIỂN PHẦN MỀM",
+          "frame": { "x": 120, "y": 150, "w": 980, "h": 44 },
+          "style": { "variant": "kicker" },
+          "animation": { "id": "fade-in", "trigger": "on-enter", "order": 0, "durationMs": 400, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b1-title",
+          "type": "heading",
+          "content": "AI Coding Agent: làm phần mềm nhanh hơn, không phải thay kỹ sư",
+          "frame": { "x": 118, "y": 216, "w": 1300, "h": 250 },
+          "style": { "level": 1 },
+          "animation": { "id": "fade-in", "trigger": "on-enter", "order": 1, "durationMs": 500, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b1-subtitle",
+          "type": "text",
+          "content": "Bức tranh thực tế về trợ lý lập trình AI: nó giúp ích ở đâu, cần giám sát thế nào, và cách bắt đầu có kiểm soát trong 90 ngày.",
+          "frame": { "x": 122, "y": 470, "w": 1000, "h": 120 },
+          "style": { "variant": "subtitle" },
+          "animation": { "id": "fade-in", "trigger": "after-previous", "order": 2, "durationMs": 500, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b1-meta",
+          "type": "text",
+          "content": "5 phút · Đội Kỹ thuật & Quản lý · [Tên người trình bày] · [Ngày]",
+          "frame": { "x": 122, "y": 640, "w": 760, "h": 48 },
+          "style": { "variant": "meta" },
+          "animation": { "id": "fade-in", "trigger": "after-previous", "order": 3, "durationMs": 400, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b1-loop",
+          "type": "diagram",
+          "content": {
+            "width": 460,
+            "height": 460,
+            "kind": "flow",
+            "nodes": [
+              { "id": "n1", "label": "Kỹ sư nêu ý định", "kind": "actor", "x": 150, "y": 30, "w": 160, "h": 92 },
+              { "id": "n2", "label": "Agent đề xuất", "kind": "agent", "x": 270, "y": 190, "w": 160, "h": 92 },
+              { "id": "n3", "label": "Diff · code · test", "kind": "data", "x": 150, "y": 340, "w": 160, "h": 92 },
+              { "id": "n4", "label": "Kỹ sư review", "kind": "actor", "x": 30, "y": 190, "w": 160, "h": 92 }
+            ],
+            "edges": [
+              { "from": "n1", "to": "n2", "label": "task" },
+              { "from": "n2", "to": "n3", "label": "đề xuất" },
+              { "from": "n3", "to": "n4", "label": "review" },
+              { "from": "n4", "to": "n1", "label": "merge" }
+            ],
+            "notes": []
+          },
+          "frame": { "x": 1030, "y": 180, "w": 460, "h": 460 },
+          "alt": "Vòng lặp cộng tác: kỹ sư nêu ý định, agent đề xuất code, kỹ sư review và merge.",
+          "ariaLabel": "Vòng lặp cộng tác giữa kỹ sư và coding agent.",
+          "animation": { "id": "fade-in", "trigger": "with-previous", "order": 0, "durationMs": 500, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        }
+      ],
+      "sources": [],
+      "interactions": []
+    },
+    {
+      "id": "s2-van-de",
+      "title": "Thời gian của kỹ sư bị đốt vào việc lặp lại, không phải thiết kế",
+      "layout": "two-column",
+      "transition": "crossfade",
+      "speakerNotes": "Dẫn dắt: đội không thiếu năng lực, mà cấu trúc công việc khiến kỹ sư lặp lại. Đọc 4 điểm nghẽn bên trái; bên phải là vòng lặp phát triển điển hình với điểm nghẽn ở review và hiểu code cũ. Không cần số liệu cứng ở slide này — nhấn mạnh cảm giác thực tế của đội.",
+      "blocks": [
+        { "id": "b2-kicker", "type": "text", "content": "02 · VẤN ĐỀ HIỆN TẠI", "frame": { "x": 64, "y": 84, "w": 800, "h": 40 }, "style": { "variant": "kicker" } },
+        { "id": "b2-title", "type": "heading", "content": "Thời gian của kỹ sư bị đốt vào việc lặp lại, không phải thiết kế", "frame": { "x": 62, "y": 130, "w": 1440, "h": 120 }, "style": { "level": 2 } },
+        { "id": "b2-lead", "type": "text", "content": "Không phải thiếu năng lực — mà là cấu trúc công việc khiến kỹ sư lặp đi lặp lại các thao tác.", "frame": { "x": 64, "y": 296, "w": 800, "h": 84 }, "style": { "variant": "lead" } },
+        {
+          "id": "b2-bullets",
+          "type": "bullets",
+          "content": {
+            "items": [
+              "Viết boilerplate, code mẫu và “dán – sửa” lặp đi lặp lại",
+              "Code review, kiểm thử và sửa lỗi vận hành chiếm phần lớn vòng lặp",
+              "Chuyển ngữ cảnh liên tục giữa nhiều task, nhiều repo",
+              "Kiến thức ẩn trong code cũ — khó hiểu, khó bảo trì, khó onboard"
+            ]
+          },
+          "frame": { "x": 64, "y": 400, "w": 800, "h": 360 },
+          "style": { "marker": "accent" },
+          "animation": { "id": "stagger", "trigger": "on-click", "order": 0, "durationMs": 350, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b2-diagram",
+          "type": "diagram",
+          "content": {
+            "width": 606,
+            "height": 470,
+            "kind": "flow",
+            "nodes": [
+              { "id": "n1", "label": "Viết code", "kind": "data", "x": 40, "y": 140, "w": 160, "h": 100 },
+              { "id": "n2", "label": "Review", "kind": "data", "x": 240, "y": 140, "w": 160, "h": 100 },
+              { "id": "n3", "label": "Test & fix", "kind": "data", "x": 440, "y": 140, "w": 160, "h": 100 }
+            ],
+            "edges": [
+              { "from": "n1", "to": "n2", "label": "chờ review" },
+              { "from": "n2", "to": "n3", "label": "bug lặp" },
+              { "from": "n3", "to": "n1", "label": "quay vòng", "bend": "down" }
+            ],
+            "notes": [
+              { "x": 40, "y": 330, "w": 560, "h": 90, "text": "Điểm nghẽn điển hình: review chậm và phải hiểu lại code cũ mỗi lần sửa.", "tone": "warn" }
+            ]
+          },
+          "frame": { "x": 930, "y": 296, "w": 606, "h": 470 },
+          "alt": "Vòng lặp phát triển: viết code, review, test và fix, quay vòng — điểm nghẽn ở review và hiểu code cũ.",
+          "ariaLabel": "Sơ đồ vòng lặp phát triển phần mềm với điểm nghẽn ở review.",
+          "animation": { "id": "fade-in", "trigger": "after-previous", "order": 1, "durationMs": 500, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        { "id": "b2-caption", "type": "caption", "content": "Vòng lặp phát triển điển hình: nhiều vòng quay chậm, giá trị rò rỉ ở các bước chờ đợi.", "frame": { "x": 930, "y": 788, "w": 606, "h": 64 }, "style": {} }
+      ],
+      "sources": [],
+      "interactions": []
+    },
+    {
+      "id": "s3-agent-giup",
+      "title": "Coding Agent lo phần thao tác, kỹ sư giữ quyết định và review",
+      "layout": "architecture",
+      "transition": "crossfade",
+      "speakerNotes": "Giải thích mô hình: con người nêu ý định, agent thực thi trong sandbox, kỹ sư phê duyệt. Nhấn mạnh ranh giới trách nhiệm: máy đề xuất, người quyết định. Trỏ vào từng nhóm năng lực của agent, rồi khép lại bằng mô tả khảo sát: developer vẫn dành phần lớn thời gian cho việc ngoài viết code — đó là nơi agent giúp.",
+      "blocks": [
+        { "id": "b3-kicker", "type": "text", "content": "03 · AI CODING AGENT GIÚP NHƯ THẾ NÀO", "frame": { "x": 64, "y": 84, "w": 900, "h": 40 }, "style": { "variant": "kicker" } },
+        { "id": "b3-title", "type": "heading", "content": "Coding Agent lo phần thao tác, kỹ sư giữ quyết định và review", "frame": { "x": 62, "y": 130, "w": 1440, "h": 120 }, "style": { "level": 2 } },
+        { "id": "b3-lead", "type": "text", "content": "Mô hình hoạt động: kỹ sư nêu ý định, agent thực thi trong phạm vi kiểm soát, kỹ sư phê duyệt trước khi merge.", "frame": { "x": 64, "y": 296, "w": 556, "h": 120 }, "style": { "variant": "lead" } },
+        {
+          "id": "b3-bullets",
+          "type": "bullets",
+          "content": {
+            "items": [
+              "Hiểu toàn bộ codebase và quy ước của repo",
+              "Đề xuất và sửa code, viết test, refactor an toàn",
+              "Giải thích code cũ, soạn tài liệu và mô tả PR",
+              "Chạy trong editor/CLI; kết quả hiển thị dạng diff để review"
+            ]
+          },
+          "frame": { "x": 64, "y": 440, "w": 556, "h": 340 },
+          "style": { "marker": "accent" },
+          "animation": { "id": "stagger", "trigger": "on-click", "order": 0, "durationMs": 350, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b3-diagram",
+          "type": "diagram",
+          "content": {
+            "width": 856,
+            "height": 540,
+            "kind": "architecture",
+            "nodes": [
+              { "id": "n1", "label": "Kỹ sư\nquyết định & review", "kind": "actor", "x": 20, "y": 40, "w": 170, "h": 110 },
+              { "id": "n2", "label": "Coding Agent\nthực thi trong sandbox", "kind": "agent", "x": 260, "y": 40, "w": 170, "h": 110 },
+              { "id": "n3", "label": "Repo + CI\n(build · test)", "kind": "system", "x": 500, "y": 40, "w": 210, "h": 110 },
+              { "id": "n4", "label": "Hiểu codebase", "kind": "chip", "x": 250, "y": 250, "w": 150, "h": 56 },
+              { "id": "n5", "label": "Sinh & sửa code", "kind": "chip", "x": 410, "y": 250, "w": 150, "h": 56 },
+              { "id": "n6", "label": "Viết test", "kind": "chip", "x": 570, "y": 250, "w": 150, "h": 56 },
+              { "id": "n7", "label": "Refactor", "kind": "chip", "x": 250, "y": 315, "w": 150, "h": 56 },
+              { "id": "n8", "label": "Giải thích code cũ", "kind": "chip", "x": 410, "y": 315, "w": 150, "h": 56 },
+              { "id": "n9", "label": "Soạn PR · tài liệu", "kind": "chip", "x": 570, "y": 315, "w": 150, "h": 56 }
+            ],
+            "edges": [
+              { "from": "n1", "to": "n2", "label": "ý định" },
+              { "from": "n2", "to": "n3", "label": "thực thi" },
+              { "from": "n3", "to": "n2", "label": "build · test", "bend": "down" },
+              { "from": "n2", "to": "n1", "label": "đề xuất diff", "bend": "down" }
+            ],
+            "notes": [
+              { "x": 20, "y": 420, "w": 700, "h": 90, "text": "Máy đề xuất — con người quyết định. Mọi thay đổi của agent đều qua review trước khi chạm vào production.", "tone": "info" }
+            ]
+          },
+          "frame": { "x": 680, "y": 280, "w": 856, "h": 540 },
+          "alt": "Kiến trúc cộng tác: kỹ sư quyết định và review, coding agent thực thi trong sandbox với các năng lực hiểu codebase, sinh và sửa code, viết test, refactor, giải thích code cũ, soạn PR.",
+          "ariaLabel": "Sơ đồ kiến trúc cộng tác giữa kỹ sư và coding agent.",
+          "animation": { "id": "fade-in", "trigger": "after-previous", "order": 1, "durationMs": 500, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b3-citation",
+          "type": "citation",
+          "content": { "sourceId": "src-so-survey", "text": "Khảo sát Stack Overflow 2024: phần lớn thời gian của developer nằm ngoài việc viết code mới." },
+          "frame": { "x": 64, "y": 832, "w": 1440, "h": 44 },
+          "style": {},
+          "sourceIds": ["src-so-survey"]
+        }
+      ],
+      "sources": ["src-so-survey"],
+      "interactions": []
+    },
+    {
+      "id": "s4-quy-trinh",
+      "title": "5 bước áp dụng có kiểm soát — bắt đầu nhỏ, đo lường, mở rộng",
+      "layout": "process-steps",
+      "transition": "crossfade",
+      "speakerNotes": "Đi từng bước một. Điểm mấu chốt: bắt đầu với 1–2 dự án pilot, đặt guardrail trước khi mở rộng, và đo lường bằng dữ liệu thực tế của đội (không phải cảm tính). Bước 5 chỉ thực hiện khi 4 bước đầu đã có kết quả đo. Khép lại bằng nguyên tắc: mọi thay đổi do AI đề xuất đều qua review của con người.",
+      "blocks": [
+        { "id": "b4-kicker", "type": "text", "content": "04 · QUY TRÌNH ÁP DỤNG THỰC TẾ", "frame": { "x": 64, "y": 84, "w": 900, "h": 40 }, "style": { "variant": "kicker" } },
+        { "id": "b4-title", "type": "heading", "content": "5 bước áp dụng có kiểm soát — bắt đầu nhỏ, đo lường, mở rộng", "frame": { "x": 62, "y": 130, "w": 1440, "h": 120 }, "style": { "level": 2 } },
+        {
+          "id": "b4-steps",
+          "type": "process",
+          "content": {
+            "reveal": "steps",
+            "steps": [
+              { "title": "Chọn phạm vi", "text": "1–2 dự án pilot, codebase rõ ràng, vòng lặp phát hành ngắn" },
+              { "title": "Đặt guardrail", "text": "Chính sách dữ liệu nhạy cảm, danh sách cấm, review bắt buộc" },
+              { "title": "Tích hợp quy trình", "text": "IDE/CLI, quy ước repo, CI kiểm tra tự động" },
+              { "title": "Đo lường", "text": "Thời gian PR, tốc độ review, độ phủ test, tỷ lệ chấp nhận đề xuất" },
+              { "title": "Mở rộng có kiểm soát", "text": "Đào tạo, chia sẻ pattern, giám sát chất lượng liên tục" }
+            ]
+          },
+          "frame": { "x": 64, "y": 316, "w": 1472, "h": 408 },
+          "style": {},
+          "animation": { "id": "stagger", "trigger": "on-click", "order": 0, "durationMs": 300, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b4-rule",
+          "type": "callout",
+          "content": { "tone": "info", "title": "Nguyên tắc cốt lõi", "text": "Mọi thay đổi do AI đề xuất đều phải qua review của con người trước khi chạm vào production." },
+          "frame": { "x": 64, "y": 764, "w": 1472, "h": 116 },
+          "style": {},
+          "animation": { "id": "fade-in", "trigger": "after-previous", "order": 1, "durationMs": 450, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        }
+      ],
+      "sources": [],
+      "interactions": []
+    },
+    {
+      "id": "s5-loi-ich-rui-ro",
+      "title": "Lợi ích thật, rủi ro thật — và cách giảm thiểu từng loại",
+      "layout": "table-focus",
+      "transition": "crossfade",
+      "speakerNotes": "Không bán ước mơ cũng không dọa: mỗi lợi ích đi kèm một rủi ro và một cách giảm thiểu. Số 55,8% là kết quả của nghiên cứu có đối chứng của GitHub Copilot (n=95 developer, 2023) — nêu rõ đây là task lặp lại ở mức đơn giản. Nhấn mạnh cột giảm thiểu là phần quyết định: chính sách + quy trình, không phải tin vào công cụ.",
+      "blocks": [
+        { "id": "b5-kicker", "type": "text", "content": "05 · LỢI ÍCH & RỦI RO", "frame": { "x": 64, "y": 84, "w": 900, "h": 40 }, "style": { "variant": "kicker" } },
+        { "id": "b5-title", "type": "heading", "content": "Lợi ích thật, rủi ro thật — và cách giảm thiểu từng loại", "frame": { "x": 62, "y": 130, "w": 1440, "h": 110 }, "style": { "level": 2 } },
+        {
+          "id": "b5-metric",
+          "type": "metric",
+          "content": {
+            "value": "55,8%",
+            "label": "nhanh hơn khi hoàn thành task lặp lại",
+            "context": "So với nhóm đối chứng · n=95 developer · GitHub Copilot (2023)"
+          },
+          "frame": { "x": 64, "y": 272, "w": 500, "h": 150 },
+          "style": {},
+          "animation": { "id": "fade-in", "trigger": "on-enter", "order": 0, "durationMs": 450, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b5-table",
+          "type": "table",
+          "content": {
+            "reveal": "rows",
+            "caption": "Ba cột đọc cùng nhau: lợi ích, rủi ro tương ứng, cách giảm thiểu.",
+            "columnTones": ["benefit", "risk", "neutral"],
+            "headers": ["Lợi ích", "Rủi ro cần quản lý", "Cách giảm thiểu"],
+            "rows": [
+              ["Task lặp lại (boilerplate, test, refactor) hoàn thành nhanh hơn", "Code sai logic, lạm dụng đề xuất khi thiếu kiểm tra kỹ", "Review bắt buộc + test tự động chạy trước khi merge"],
+              ["Giảm chuyển ngữ cảnh; test và tài liệu được viết thường xuyên hơn", "Rò rỉ mã nguồn hoặc dữ liệu nhạy cảm qua công cụ dùng đám mây", "Guardrail dữ liệu, danh sách cấm, chính sách minh bạch"],
+              ["Onboarding nhanh hơn nhờ agent giải thích code cũ", "Lệ thuộc quá mức, kỹ năng phân tích và sửa lỗi giảm dần", "Quy định vùng “không dùng AI”, rèn tư duy phản biện"],
+              ["Hiện thực hóa backlog nhanh hơn trong từng sprint", "Khó truy vết trách nhiệm khi phần mềm gặp sự cố", "Ghi log thay đổi, quy trình phê duyệt, đánh giá định kỳ"]
+            ]
+          },
+          "frame": { "x": 64, "y": 452, "w": 1472, "h": 372 },
+          "style": {},
+          "animation": { "id": "stagger", "trigger": "on-click", "order": 1, "durationMs": 300, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b5-caption",
+          "type": "caption",
+          "content": "Nguồn: Peng et al., Quantifying GitHub Copilot's impact on developer productivity (arXiv 2302.06590, 2023); Stack Overflow Developer Survey 2024.",
+          "frame": { "x": 64, "y": 842, "w": 1440, "h": 44 },
+          "style": {},
+          "sourceIds": ["src-copilot-study", "src-so-survey"]
+        }
+      ],
+      "sources": ["src-copilot-study", "src-so-survey"],
+      "interactions": []
+    },
+    {
+      "id": "s6-ket-luan",
+      "title": "Hành động hôm nay: chọn một pilot, đặt guardrail, đo trong 90 ngày",
+      "layout": "qna",
+      "transition": "crossfade",
+      "speakerNotes": "Tổng kết bằng 3 điểm. Sau đó mở Q&A với câu hỏi gợi mở cho cả đội thay vì chỉ nhận câu hỏi. Đề xuất cụ thể: chọn một dự án pilot (ví dụ backend/mobile có codebase rõ ràng), người phụ trách, và mốc đánh giá sau 90 ngày dựa trên 4 chỉ số ở slide 4. Kết thúc bằng lời mời phản hồi.",
+      "blocks": [
+        { "id": "b6-kicker", "type": "text", "content": "06 · KẾT LUẬN & Q&A", "frame": { "x": 64, "y": 84, "w": 900, "h": 40 }, "style": { "variant": "kicker" } },
+        { "id": "b6-title", "type": "heading", "content": "Hành động hôm nay: chọn một pilot, đặt guardrail, đo trong 90 ngày", "frame": { "x": 62, "y": 130, "w": 1440, "h": 130 }, "style": { "level": 2 } },
+        {
+          "id": "b6-takeaways",
+          "type": "bullets",
+          "content": {
+            "ordered": true,
+            "items": [
+              "Coding agent tăng tốc công việc lặp lại — không thay thế quyết định của kỹ sư",
+              "Giá trị đến từ quy trình: guardrail, review và đo lường — không phải từ công cụ đơn lẻ",
+              "Bắt đầu nhỏ, mở rộng có kiểm soát, điều chỉnh theo dữ liệu thực tế của đội"
+            ]
+          },
+          "frame": { "x": 64, "y": 320, "w": 1080, "h": 360 },
+          "style": { "marker": "accent", "big": true },
+          "animation": { "id": "stagger", "trigger": "on-enter", "order": 0, "durationMs": 400, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b6-callout",
+          "type": "callout",
+          "content": { "tone": "accent", "title": "Q&A — gợi mở cho cả đội", "text": "“Việc nhàm chán nhất trong quy trình phát triển của bạn là gì?” — câu trả lời chính là nơi nên chọn làm pilot đầu tiên." },
+          "frame": { "x": 1200, "y": 320, "w": 336, "h": 360 },
+          "style": {},
+          "animation": { "id": "fade-in", "trigger": "after-previous", "order": 1, "durationMs": 450, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        },
+        {
+          "id": "b6-next",
+          "type": "text",
+          "content": "Đề xuất tiếp theo: [Tên người phụ trách] · chọn dự án pilot · họp khởi động trong 2 tuần tới · đánh giá sau 90 ngày.",
+          "frame": { "x": 64, "y": 724, "w": 1440, "h": 64 },
+          "style": { "variant": "meta" },
+          "animation": { "id": "fade-in", "trigger": "after-previous", "order": 2, "durationMs": 400, "easing": "ease-out", "reducedMotionFallback": "appear" }
+        }
+      ],
+      "sources": [],
+      "interactions": []
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-copilot-study",
+      "title": "Quantifying GitHub Copilot's impact on developer productivity and happiness",
+      "url": "https://arxiv.org/abs/2302.06590",
+      "authors": ["Sida Peng", "Eirini Kalliamvakou", "Peter Cihon", "Mert Demirer"],
+      "publisher": "arXiv (GitHub, Microsoft Research)",
+      "publishedAt": "2023-02-13",
+      "note": "Thử nghiệm đối chứng ngẫu nhiên với 95 developer; nhóm được hỗ trợ hoàn thành task lặp lại nhanh hơn 55,8%."
+    },
+    {
+      "id": "src-so-survey",
+      "title": "Stack Overflow Developer Survey 2024",
+      "url": "https://survey.stackoverflow.co/2024",
+      "publisher": "Stack Overflow",
+      "publishedAt": "2024-07-01",
+      "note": "Khảo sát developer toàn cầu; phần lớn thời gian của developer nằm ngoài việc viết code mới."
+    },
+    {
+      "id": "src-mckinsey",
+      "title": "Unleashing developer productivity with generative AI",
+      "url": "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/unleashing-developer-productivity-with-generative-ai",
+      "publisher": "McKinsey & Company",
+      "publishedAt": "2023-07-01",
+      "note": "Phân tích về tác động tiềm năng của AI tạo sinh lên năng suất phát triển phần mềm."
+    }
+  ],
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "ai-coding-agent",
+    "embed": {
+      "enabled": true,
+      "allowedOrigins": [],
+      "sandbox": ["allow-scripts", "allow-forms", "allow-popups"],
+      "responsive": true,
+      "title": "AI Coding Agent trong phát triển phần mềm"
+    },
+    "analytics": false,
+    "allowDownload": false,
+    "indexing": "disallow"
+  }
+}
+  </script>
+
+  <script src="app.js"></script>
+</body>
+</html>

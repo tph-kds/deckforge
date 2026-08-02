@@ -1,7 +1,7 @@
 {
   "name": "deckforge",
-  "version": "2.2.0",
-  "description": "Web-native slide application design, editor, presenter, templates, and quality skills.",
+  "version": "3.0.0",
+  "description": "Reliable editable web-native presentation skills with semantic layouts, editor and presenter contracts, archetypes, motion, and deterministic validation.",
   "author": {
     "name": "DeckForge contributors"
   },

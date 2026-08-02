@@ -1,0 +1,337 @@
+[
+  {
+    "id": "next-slide",
+    "type": "navigation",
+    "description": "Advance to the next slide or build step",
+    "supportedTriggers": [
+      "keyboard",
+      "click",
+      "touch"
+    ],
+    "interactionProfile": "all",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "previous-slide",
+    "type": "navigation",
+    "description": "Return to the previous slide or completed build state",
+    "supportedTriggers": [
+      "keyboard",
+      "click",
+      "touch"
+    ],
+    "interactionProfile": "all",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "jump-to-slide",
+    "type": "navigation",
+    "description": "Navigate to a selected slide or section",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "all",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "branch-choice",
+    "type": "branch",
+    "description": "Choose a narrative branch with a deterministic fallback",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "presenter-led",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "reveal-step",
+    "type": "reveal",
+    "description": "Reveal evidence in an authored build sequence",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "presenter-led",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "toggle-detail",
+    "type": "toggle",
+    "description": "Show or hide optional explanatory detail",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "self-guided",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "tabs",
+    "type": "tabs",
+    "description": "Switch between related content panels without leaving the slide",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "self-guided",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "accordion",
+    "type": "accordion",
+    "description": "Expand secondary detail while preserving a readable collapsed state",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "self-guided",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "tooltip",
+    "type": "tooltip",
+    "description": "Expose a concise definition or data point on focus and hover",
+    "supportedTriggers": [
+      "focus",
+      "hover"
+    ],
+    "interactionProfile": "all",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "modal-detail",
+    "type": "modal",
+    "description": "Open an accessible detail dialog or media view",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "self-guided",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "zoom-region",
+    "type": "zoom",
+    "description": "Magnify a diagram, map, image, or code region",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "all",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "pan-canvas",
+    "type": "pan",
+    "description": "Navigate a large spatial canvas with visible controls",
+    "supportedTriggers": [
+      "drag",
+      "keyboard"
+    ],
+    "interactionProfile": "self-guided",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "filter-data",
+    "type": "filter",
+    "description": "Filter a chart or table using explicit controls",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "self-guided",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "sort-data",
+    "type": "sort",
+    "description": "Sort a table or ranked view with announced state",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "self-guided",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "poll",
+    "type": "poll",
+    "description": "Collect an audience response through an external runtime adapter",
+    "supportedTriggers": [
+      "submit"
+    ],
+    "interactionProfile": "live-audience",
+    "requiresFallback": true,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "quiz",
+    "type": "quiz",
+    "description": "Evaluate an answer and provide accessible feedback",
+    "supportedTriggers": [
+      "submit"
+    ],
+    "interactionProfile": "training",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "form",
+    "type": "form",
+    "description": "Collect structured input through a governed runtime adapter",
+    "supportedTriggers": [
+      "submit"
+    ],
+    "interactionProfile": "self-guided",
+    "requiresFallback": true,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "q-and-a",
+    "type": "q-and-a",
+    "description": "Open or submit moderated audience questions",
+    "supportedTriggers": [
+      "submit"
+    ],
+    "interactionProfile": "live-audience",
+    "requiresFallback": true,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "code-run",
+    "type": "code-run",
+    "description": "Run a sandboxed code example with a static fallback",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "technical-demo",
+    "requiresFallback": true,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "product-demo",
+    "type": "demo",
+    "description": "Control a live or recorded product demonstration",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "technical-demo",
+    "requiresFallback": true,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "media-control",
+    "type": "media-control",
+    "description": "Play, pause, seek, caption, or mute media",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "all",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "annotation",
+    "type": "annotation",
+    "description": "Draw or place temporary presenter annotations",
+    "supportedTriggers": [
+      "pointer",
+      "keyboard"
+    ],
+    "interactionProfile": "presenter-led",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "external-link",
+    "type": "external-link",
+    "description": "Open a validated external resource with clear destination",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "all",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "copy-value",
+    "type": "copy",
+    "description": "Copy code, URL, citation, or structured value with confirmation",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "self-guided",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "download-asset",
+    "type": "download",
+    "description": "Download an explicitly permitted artifact",
+    "supportedTriggers": [
+      "click",
+      "keyboard"
+    ],
+    "interactionProfile": "self-guided",
+    "requiresFallback": false,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  },
+  {
+    "id": "custom-event",
+    "type": "custom-event",
+    "description": "Emit a versioned runtime event through a documented adapter",
+    "supportedTriggers": [
+      "configured"
+    ],
+    "interactionProfile": "advanced",
+    "requiresFallback": true,
+    "accessibilityRule": "The action must be keyboard reachable, visibly focused, labeled, and understandable without motion or color alone.",
+    "securityRule": "Validate payloads and destinations; networked actions require a runtime authorization and sanitization boundary."
+  }
+]
