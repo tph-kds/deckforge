@@ -47,6 +47,8 @@ def main():
         check('media-control','Image/media insertion or replacement',[r'add(image|media)',r'insert(image|media)',r'replace(image|media)',r'assetlibrary',r'fileinput'])
         check('add-text','Text insertion',[r'addtext',r'inserttext',r'createblock.*text'])
         check('present-current','Present from current slide',[r'present.*current',r'current.*present',r'presentfromslide'])
+        check('default-motion','Runtime motion (transitions and builds)',[r'motionprofileid',r'slidetype=["\']animation',r'buildindex|buildstep|buildstepindex',r'step-visible|row-visible|build-hidden',r'anim-in|animate-in',r'transition.*(slide|class)|slide.*transition'])
+        check('chrome-safe','Presenter chrome docked outside slide area',[r'presenter[-_ ]chrome',r'presenter[-_ ]controls',r'presenter[-_ ]stage',r'deck-controls'],required=False)
     elif a.profile=='published-story':
         check('responsive-viewer','Responsive/self-guided viewer',[r'viewer',r'reflow',r'responsive'])
         check('deep-links','Deep-linked slides',[r'location\.hash',r'router.*slide',r'deeplink'])

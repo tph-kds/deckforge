@@ -19,6 +19,9 @@ class ExampleTests(unittest.TestCase):
   subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/validate_output_contract.py'),str(ROOT/'examples/02-example'),'--profile','editable-deck'],check=True)
  def test_motion_audit_passes_for_editable_example(self):
   subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),str(ROOT/'examples/02-example/deck.json')],check=True)
+ def test_editable_example_passes_motion_and_chrome_checks(self):
+  result=subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/validate_output_contract.py'),str(ROOT/'examples/02-example'),'--profile','editable-deck'],capture_output=True,text=True)
+  self.assertEqual(result.returncode,0,result.stderr)
  def test_motion_audit_fails_for_static_deck(self):
   import tempfile, json, os
   static={'presentation':{'mode':'horizontal','transition':'','reducedMotion':'respect-system'},'slides':[{'id':'s1','title':'t','layout':'title-hero','blocks':[{'id':'b1','type':'text','content':'x'}]}]}
