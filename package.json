@@ -4,7 +4,7 @@
   "private": true,
   "description": "Agent Skills for professional web-native presentations.",
   "scripts": {
-    "validate": "python scripts/check_rules.py && python scripts/lint_skills.py && python scripts/validate_repository_assets.py && python scripts/validate_catalogs.py && python scripts/validate_deck_project.py examples/ai-product-vision.deck.json && python scripts/validate_deck_project.py examples/editable-deck-studio/deck.json && python scripts/audit_deck_layout.py examples/editable-deck-studio/deck.json && python scripts/validate_output_contract.py examples/editable-deck-studio --profile editable-deck && node --check examples/editable-deck-studio/app.js && python -m unittest discover -s tests -p \"test_*.py\"",
+    "validate": "python scripts/check_rules.py && python scripts/lint_skills.py && python scripts/validate_repository_assets.py && python scripts/validate_catalogs.py && python scripts/validate_deck_project.py examples/ai-product-vision.deck.json && python scripts/validate_deck_project.py examples/02-example/deck.json && python scripts/audit_deck_layout.py examples/02-example/deck.json && python scripts/validate_output_contract.py examples/02-example --profile editable-deck && node --check examples/01-example/app.js && python -m unittest discover -s tests -p \"test_*.py\"",
     "package-skills": "python scripts/package_skill_zips.py"
   },
   "license": "MIT"
