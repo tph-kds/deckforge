@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
 import type { Block, DeckSlide } from '../deck/types';
+import type { RenderSurface } from './SlideRenderer';
 import { ChartRenderer } from './Chart';
 
 interface BlockViewProps {
   block: Block;
   slide: DeckSlide;
   themeId: string;
+  surface?: RenderSurface;
 }
 
 function styleFrom(style: Record<string, unknown> | undefined): Record<string, string> {
@@ -108,8 +110,9 @@ function ImageBlock({ block }: BlockViewProps) {
   );
 }
 
-export function BlockRenderer({ block, slide, themeId }: BlockViewProps): ReactNode {
+export function BlockRenderer({ block, slide, themeId, surface = 'editor' }: BlockViewProps): ReactNode {
   const style = styleFrom(block.style);
+  void surface;
   const className = `deck-block block-${block.type}`;
   switch (block.type) {
     case 'heading':

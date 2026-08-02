@@ -4,7 +4,7 @@ import { listLayouts, auditSlideLayout } from '../deck/layout';
 import { listThemes, getTheme } from '../deck/themes';
 import { newId } from '../deck/seed';
 import type { Block } from '../deck/types';
-import { SlideRenderer } from '../render/SlideRenderer';
+import { EditorSlideRenderer } from '../render/SlideRenderer';
 import { SaveStatus } from '../ui/SaveStatus';
 import { CommandPalette, type CommandItem } from '../ui/CommandPalette';
 import { ShortcutHelpDialog } from '../ui/ShortcutHelpDialog';
@@ -258,7 +258,7 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
           ) : null}
         </div>
         <div className="canvas-stage" onClick={() => selectNone()}>
-          <SlideRenderer
+          <EditorSlideRenderer
             deck={deck}
             slide={activeSlide}
             scale={zoom}

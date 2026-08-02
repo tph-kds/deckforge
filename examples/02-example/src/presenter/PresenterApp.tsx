@@ -2,9 +2,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { DeckStore } from '../deck/useDeck';
 import type { DeckSlide } from '../deck/types';
 import { getTheme } from '../deck/themes';
-import { SlideRenderer } from '../render/SlideRenderer';
+import { PresenterSlideRenderer, ThumbnailSlideRenderer } from '../render/SlideRenderer';
+import { SlideStage } from '../render/SlideStage';
 import { ShortcutHelpDialog } from '../ui/ShortcutHelpDialog';
 import { useHotkeys } from '../ui/hotkeys';
+import { useTimer } from './useTimer';
+import { formatElapsed } from './timerMachine';
 
 interface PresenterAppProps {
   store: DeckStore;
@@ -20,6 +23,9 @@ const HELP_ROWS = [
   { keys: 'F', label: 'Toggle fullscreen' },
   { keys: 'S', label: 'Open speaker view' },
   { keys: 'B', label: 'Toggle blackout' },
+  { keys: 'T', label: 'Show / hide timer' },
+  { keys: 'P', label: 'Pause / resume timer' },
+  { keys: 'R', label: 'Reset timer' },
   { keys: 'G', label: 'Go to slide' },
   { keys: 'Escape', label: 'Exit dialog, overview, or fullscreen' },
 ];
@@ -38,8 +44,8 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
   const [overview, setOverview] = useState(false);
   const [blackout, setBlackout] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
-  const [elapsed, setElapsed] = useState(0);
-  const [timerVisible, setTimerVisible] = useState(false);
+  const timer = useTimer();
+  const [timerVisible, setTimerVisible] = useState(true);
   const [speakerOpen, setSpeakerOpen] = useState(false);
   const [buildIndex, setBuildIndex] = useState(0);
   const [chromeActive, setChromeActive] = useState(true);
@@ -76,12 +82,6 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
   useEffect(() => {
     window.history.replaceState({}, '', `#/${safeIndex}`);
   }, [safeIndex]);
-
-  useEffect(() => {
-    const start = Date.now();
-    const timer = window.setInterval(() => setElapsed(Math.floor((Date.now() - start) / 1000)), 1000);
-    return () => window.clearInterval(timer);
-  }, [speakerOpen, blackout]);
 
   useEffect(() => {
     const onMove = () => {
@@ -160,6 +160,8 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
     { keys: ['s'], handler: () => setSpeakerOpen((value) => !value) },
     { keys: ['b'], handler: () => setBlackout((value) => !value) },
     { keys: ['t'], handler: () => setTimerVisible((value) => !value) },
+    { keys: ['p'], handler: () => timer.toggleRunning() },
+    { keys: ['r'], handler: () => timer.reset() },
     { keys: ['?'], handler: () => setHelpOpen(true) },
     {
       keys: ['escape'],
@@ -179,6 +181,7 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
   };
 
   const progress = total > 1 ? (safeIndex / (total - 1)) * 100 : 0;
+  const timerStatus = timer.status === 'idle' ? 'idle' : timer.isRunning ? 'running' : 'paused';
 
   return (
     <div className={`presenter-shell ${overview ? 'is-overview' : ''} ${blackout ? 'is-blackout' : ''} ${chromeActive ? 'is-chrome-active' : ''}`}>
@@ -189,9 +192,13 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
       ) : (
         <>
           <div className="presenter-stage">
-            <div key={safeIndex} className="presenter-stage-slide is-current slide-enter">
-              <SlideRenderer deck={deck} slide={slide} scale={1} buildIndex={buildIndex} />
-            </div>
+            <SlideStage deck={deck} className="presenter-stage-slide">
+              {(stageScale) => (
+                <div key={safeIndex} className="is-current slide-enter">
+                  <PresenterSlideRenderer deck={deck} slide={slide} scale={stageScale} buildIndex={buildIndex} />
+                </div>
+              )}
+            </SlideStage>
           </div>
           <div className="presenter-chrome">
             <div className="presenter-controls" role="toolbar" aria-label="Presenter controls">
@@ -214,9 +221,28 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
             </div>
             <div className="presenter-timer">
               {timerVisible ? (
-                <span className="timer-label">
-                  {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}
-                </span>
+                <div className="timer-display" title={`Timer (${timerStatus})`}>
+                  <span className="timer-status-dot" data-status={timerStatus} aria-hidden="true" />
+                  <span className="timer-label">{formatElapsed(timer.elapsedMs)}</span>
+                  <button
+                    type="button"
+                    className="timer-control"
+                    onClick={timer.toggleRunning}
+                    aria-label={timer.status === 'idle' ? 'Start timer' : timer.isRunning ? 'Pause timer' : 'Resume timer'}
+                    title="P"
+                  >
+                    {timer.status === 'idle' ? 'Start' : timer.isRunning ? 'Pause' : 'Resume'}
+                  </button>
+                  <button
+                    type="button"
+                    className="timer-control"
+                    onClick={timer.reset}
+                    aria-label="Reset timer"
+                    title="R"
+                  >
+                    Reset
+                  </button>
+                </div>
               ) : (
                 <span className="timer-label timer-hidden">T to show timer</span>
               )}
@@ -238,7 +264,9 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
               onClick={() => goTo(slideIndex)}
             >
               <div className="overview-thumb">
-                <SlideRenderer deck={deck} slide={slideItem} scale={0.22} />
+                <SlideStage deck={deck}>
+                  {(stageScale) => <ThumbnailSlideRenderer deck={deck} slide={slideItem} scale={stageScale} />}
+                </SlideStage>
               </div>
               <span className="overview-number">{slideIndex + 1}</span>
               <span className="overview-title">{slideItem.title}</span>
@@ -248,7 +276,7 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
       ) : null}
 
       {speakerOpen && !blackout ? (
-        <SpeakerPanel store={store} currentIndex={safeIndex} elapsed={elapsed} onClose={() => setSpeakerOpen(false)} />
+        <SpeakerPanel store={store} currentIndex={safeIndex} elapsedMs={timer.elapsedMs} onClose={() => setSpeakerOpen(false)} />
       ) : null}
 
       <ShortcutHelpDialog open={helpOpen} onClose={() => setHelpOpen(false)} groups={[]} rows={HELP_ROWS} />
@@ -260,11 +288,11 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
 interface SpeakerPanelProps {
   store: DeckStore;
   currentIndex: number;
-  elapsed: number;
+  elapsedMs: number;
   onClose: () => void;
 }
 
-function SpeakerPanel({ store, currentIndex, elapsed, onClose }: SpeakerPanelProps) {
+function SpeakerPanel({ store, currentIndex, elapsedMs, onClose }: SpeakerPanelProps) {
   const { deck } = store;
   const slide = deck.slides[currentIndex];
   const nextSlide = deck.slides[currentIndex + 1];
@@ -272,14 +300,14 @@ function SpeakerPanel({ store, currentIndex, elapsed, onClose }: SpeakerPanelPro
     <div className="speaker-panel" role="dialog" aria-modal="true" aria-label="Speaker view">
       <div className="speaker-panel-header">
         <strong>Speaker view</strong>
-        <span className="speaker-clock">
-          {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}
-        </span>
+        <span className="speaker-clock">{formatElapsed(elapsedMs)}</span>
         <button type="button" className="icon-button" onClick={onClose} aria-label="Close speaker view">×</button>
       </div>
       <div className="speaker-grid">
         <div className="speaker-current">
-          <SlideRenderer deck={deck} slide={slide} scale={0.42} />
+          <SlideStage deck={deck}>
+            {(stageScale) => <PresenterSlideRenderer deck={deck} slide={slide} scale={stageScale} />}
+          </SlideStage>
           <div className="speaker-notes">
             <h4>Notes</h4>
             <p>{slide.speakerNotes || 'No notes for this slide.'}</p>
@@ -289,7 +317,9 @@ function SpeakerPanel({ store, currentIndex, elapsed, onClose }: SpeakerPanelPro
           <h4>Up next</h4>
           {nextSlide ? (
             <div className="speaker-next-thumb">
-              <SlideRenderer deck={deck} slide={nextSlide} scale={0.3} />
+              <SlideStage deck={deck}>
+                {(stageScale) => <ThumbnailSlideRenderer deck={deck} slide={nextSlide} scale={stageScale} />}
+              </SlideStage>
               <p>{nextSlide.title}</p>
             </div>
           ) : (
