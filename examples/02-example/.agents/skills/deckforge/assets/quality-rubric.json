@@ -1,0 +1,122 @@
+{
+  "version": "3.0",
+  "passingScore": 88,
+  "blockingChecks": [
+    "Selected delivery profile is fully implemented; metadata alone does not count.",
+    "No content block collision, title/visual overlap, or safe-margin violation.",
+    "No horizontal or vertical clipping at canonical 16:9 and common laptop viewport.",
+    "Editable-deck supports text, layout, theme/style, media insertion, undo/redo, save, reload, and present-current-slide.",
+    "Presenter mode works by keyboard and touch and contains no editor chrome.",
+    "Shortcut help is visible, accessible, and available in editor and presenter contexts.",
+    "All interactive controls are keyboard reachable with visible focus.",
+    "No untrusted raw HTML or unsanitized SVG is rendered.",
+    "Every image, diagram, chart, and video has an accessible text alternative.",
+    "Reduced-motion mode remains understandable.",
+    "No placeholder content, fake metrics, invented citations, logos, screenshots, or testimonials remain.",
+    "Typecheck, tests, layout audit, output-contract validation, and production build pass."
+  ],
+  "dimensions": [
+    {
+      "id": "story",
+      "weight": 14,
+      "checks": [
+        "One clear narrative thesis",
+        "Each slide advances the argument",
+        "Opening and closing are specific"
+      ]
+    },
+    {
+      "id": "hierarchy",
+      "weight": 12,
+      "checks": [
+        "One focal point per slide",
+        "Readable type scale",
+        "Consistent alignment and spacing"
+      ]
+    },
+    {
+      "id": "content-fit",
+      "weight": 16,
+      "checks": [
+        "Semantic slot layout is used by default",
+        "No collisions or safe-margin violations",
+        "Content fits without unreadable shrinking",
+        "Whitespace and density are balanced"
+      ]
+    },
+    {
+      "id": "visual-system",
+      "weight": 12,
+      "checks": [
+        "Theme is consistent",
+        "Visuals are meaningful",
+        "Charts use coherent encoding"
+      ]
+    },
+    {
+      "id": "editor-ux",
+      "weight": 16,
+      "checks": [
+        "All required editor zones exist",
+        "Controls mutate DeckProject and update canvas",
+        "Layout/theme/media flows work",
+        "Undo/redo and save/reload are reliable",
+        "Shortcut help and command discovery are visible"
+      ]
+    },
+    {
+      "id": "presenter-ux",
+      "weight": 10,
+      "checks": [
+        "Navigation is predictable",
+        "Speaker notes and overview work",
+        "Fullscreen removes editor chrome"
+      ]
+    },
+    {
+      "id": "accessibility",
+      "weight": 9,
+      "checks": [
+        "Contrast and focus states pass",
+        "Alt text and summaries exist",
+        "Reduced motion supported"
+      ]
+    },
+    {
+      "id": "performance",
+      "weight": 5,
+      "checks": [
+        "Lazy-load heavy media",
+        "Avoid layout thrash",
+        "Transitions remain smooth"
+      ]
+    },
+    {
+      "id": "trust",
+      "weight": 6,
+      "checks": [
+        "Claims are sourced",
+        "No fabricated UI or data",
+        "Security boundaries are explicit"
+      ]
+    }
+  ],
+  "aiSlopDetectors": [
+    "More than two gradients on one slide",
+    "Glassmorphism used as default container style",
+    "Three-card hero repeated across sections",
+    "Decorative glowing orbs behind unrelated content",
+    "Random icon for every bullet",
+    "All slides use identical composition",
+    "Excessive rounded rectangles",
+    "Dark neon AI aesthetic selected without domain rationale",
+    "Generic titles such as Overview, Solution, Benefits without a claim",
+    "Text centered everywhere",
+    "Meaningless stock imagery",
+    "Charts without units, source, or takeaway",
+    "Large unused regions caused by weak composition",
+    "Absolute-positioned content crossing semantic layout boundaries",
+    "Toolbar visuals without functional editor behavior",
+    "Same two-column composition used repeatedly"
+  ]
+}

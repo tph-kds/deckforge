@@ -1,0 +1,1002 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckforge.dev/schemas/deck-project.schema.json",
+  "title": "DeckProject 2.1",
+  "description": "Structured document model for editable, presentable, publishable browser-native decks with semantic layout slots.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "meta",
+    "canvas",
+    "theme",
+    "presentation",
+    "editor",
+    "slides",
+    "publish",
+    "experience"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "2.1"
+    },
+    "meta": {
+      "$ref": "#/$defs/meta"
+    },
+    "canvas": {
+      "$ref": "#/$defs/canvas"
+    },
+    "theme": {
+      "$ref": "#/$defs/theme"
+    },
+    "presentation": {
+      "$ref": "#/$defs/presentation"
+    },
+    "editor": {
+      "$ref": "#/$defs/editor"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/asset"
+      },
+      "default": []
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/slide"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      },
+      "default": []
+    },
+    "publish": {
+      "$ref": "#/$defs/publish"
+    },
+    "experience": {
+      "$ref": "#/$defs/experience"
+    },
+    "shortcuts": {
+      "$ref": "#/$defs/shortcuts"
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "slug",
+        "title",
+        "language"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "slug": {
+          "$ref": "#/$defs/slug"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2
+        },
+        "audience": {
+          "type": "string"
+        },
+        "objective": {
+          "type": "string"
+        },
+        "templateId": {
+          "type": "string"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "canvas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "aspectRatio",
+        "width",
+        "height"
+      ],
+      "properties": {
+        "aspectRatio": {
+          "enum": [
+            "16:9",
+            "4:3",
+            "custom"
+          ]
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 320,
+          "maximum": 10000
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 180,
+          "maximum": 10000
+        },
+        "safeMargin": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "grid": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "responsiveMode": {
+          "enum": [
+            "letterbox",
+            "reflow",
+            "hybrid"
+          ]
+        },
+        "background": {
+          "type": "string"
+        },
+        "layoutMode": {
+          "enum": [
+            "semantic-slots",
+            "hybrid",
+            "freeform"
+          ]
+        }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "overrides": {
+          "type": "object"
+        },
+        "designSystemRef": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "light",
+            "dark",
+            "system",
+            "fixed"
+          ]
+        }
+      }
+    },
+    "autoplay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "intervalMs": {
+          "type": "integer",
+          "minimum": 1000
+        },
+        "loop": {
+          "type": "boolean"
+        },
+        "pauseOnInteraction": {
+          "type": "boolean"
+        }
+      }
+    },
+    "presentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "transition",
+        "keyboard",
+        "reducedMotion"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "horizontal",
+            "vertical",
+            "freeform",
+            "3d-coverflow"
+          ]
+        },
+        "transition": {
+          "type": "string"
+        },
+        "keyboard": {
+          "type": "boolean"
+        },
+        "touch": {
+          "type": "boolean"
+        },
+        "deepLinks": {
+          "type": "boolean"
+        },
+        "overview": {
+          "type": "boolean"
+        },
+        "speakerView": {
+          "type": "boolean"
+        },
+        "progress": {
+          "type": "boolean"
+        },
+        "controls": {
+          "type": "boolean"
+        },
+        "reducedMotion": {
+          "enum": [
+            "respect-system",
+            "always",
+            "never"
+          ]
+        },
+        "autoplay": {
+          "$ref": "#/$defs/autoplay"
+        }
+      }
+    },
+    "editor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "toolbar",
+        "history"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "toolbar": {
+          "type": "boolean"
+        },
+        "history": {
+          "type": "boolean"
+        },
+        "snapToGrid": {
+          "type": "boolean"
+        },
+        "guides": {
+          "type": "boolean"
+        },
+        "comments": {
+          "type": "boolean"
+        },
+        "collaboration": {
+          "type": "boolean"
+        },
+        "autosave": {
+          "type": "boolean"
+        },
+        "commandPalette": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "boolean"
+        },
+        "allowedBlockTypes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "sidePanel": {
+          "type": "boolean"
+        },
+        "assetLibrary": {
+          "type": "boolean"
+        },
+        "themePicker": {
+          "type": "boolean"
+        },
+        "layoutPicker": {
+          "type": "boolean"
+        },
+        "shortcutHelp": {
+          "type": "boolean"
+        },
+        "saveStatus": {
+          "type": "boolean"
+        },
+        "persistence": {
+          "enum": [
+            "none",
+            "local-storage",
+            "api",
+            "host-managed"
+          ]
+        },
+        "routes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "requiredZones": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "frame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "x",
+        "y",
+        "w",
+        "h"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "w": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "h": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "rotation": {
+          "type": "number",
+          "minimum": -360,
+          "maximum": 360
+        },
+        "z": {
+          "type": "integer"
+        }
+      }
+    },
+    "animation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "trigger": {
+          "enum": [
+            "on-enter",
+            "on-click",
+            "with-previous",
+            "after-previous",
+            "on-hover",
+            "on-visible"
+          ]
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "durationMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 30000
+        },
+        "delayMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 30000
+        },
+        "easing": {
+          "type": "string"
+        },
+        "reducedMotionFallback": {
+          "type": "string"
+        }
+      }
+    },
+    "block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content": {},
+        "frame": {
+          "$ref": "#/$defs/frame"
+        },
+        "style": {
+          "type": "object"
+        },
+        "data": {},
+        "alt": {
+          "type": "string"
+        },
+        "ariaLabel": {
+          "type": "string"
+        },
+        "sourceIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "animation": {
+          "$ref": "#/$defs/animation"
+        },
+        "locked": {
+          "type": "boolean"
+        },
+        "hidden": {
+          "type": "boolean"
+        },
+        "groupId": {
+          "$ref": "#/$defs/id"
+        },
+        "role": {
+          "type": "string"
+        },
+        "slot": {
+          "type": "string",
+          "minLength": 1
+        },
+        "positionMode": {
+          "enum": [
+            "slot",
+            "flow",
+            "freeform",
+            "background"
+          ]
+        },
+        "fitPolicy": {
+          "enum": [
+            "wrap",
+            "contain",
+            "cover",
+            "scroll",
+            "change-layout",
+            "split-slide"
+          ]
+        },
+        "resolvedFrame": {
+          "$ref": "#/$defs/frame"
+        },
+        "decorative": {
+          "type": "boolean"
+        },
+        "allowOverlap": {
+          "type": "boolean"
+        }
+      }
+    },
+    "interaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "trigger",
+        "action"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "type": {
+          "enum": [
+            "navigation",
+            "reveal",
+            "toggle",
+            "tabs",
+            "accordion",
+            "tooltip",
+            "modal",
+            "zoom",
+            "pan",
+            "filter",
+            "sort",
+            "poll",
+            "quiz",
+            "form",
+            "q-and-a",
+            "code-run",
+            "demo",
+            "media-control",
+            "annotation",
+            "branch",
+            "external-link",
+            "download",
+            "copy",
+            "custom-event"
+          ]
+        },
+        "trigger": {
+          "enum": [
+            "click",
+            "double-click",
+            "hover",
+            "focus",
+            "keyboard",
+            "submit",
+            "slide-enter",
+            "build-step",
+            "timer"
+          ]
+        },
+        "targetId": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payload": {},
+        "audienceVisible": {
+          "type": "boolean"
+        },
+        "requiresNetwork": {
+          "type": "boolean"
+        },
+        "fallback": {
+          "type": "string"
+        },
+        "ariaLabel": {
+          "type": "string"
+        }
+      }
+    },
+    "slide": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "layout",
+        "blocks"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "type": "string"
+        },
+        "layout": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hidden": {
+          "type": "boolean"
+        },
+        "section": {
+          "type": "string"
+        },
+        "background": {
+          "type": "object"
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/block"
+          }
+        },
+        "speakerNotes": {
+          "type": "string"
+        },
+        "sources": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "interactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/interaction"
+          }
+        },
+        "transition": {
+          "type": "string"
+        },
+        "durationMs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "layoutVariant": {
+          "type": "string"
+        },
+        "layoutBindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/layoutBinding"
+          }
+        },
+        "density": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "focalBlockId": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "src"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "image",
+            "video",
+            "audio",
+            "font",
+            "data",
+            "document",
+            "model",
+            "embed-poster"
+          ]
+        },
+        "src": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "durationMs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "alt": {
+          "type": "string"
+        },
+        "credit": {
+          "type": "string"
+        },
+        "license": {
+          "type": "string"
+        },
+        "integrity": {
+          "type": "string"
+        },
+        "posterSrc": {
+          "type": "string"
+        },
+        "transcriptSrc": {
+          "type": "string"
+        },
+        "focalPoint": {
+          "type": "object"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "url"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "publisher": {
+          "type": "string"
+        },
+        "publishedAt": {
+          "type": "string"
+        },
+        "accessedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "note": {
+          "type": "string"
+        },
+        "license": {
+          "type": "string"
+        }
+      }
+    },
+    "embed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "allowedOrigins": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "sandbox": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "responsive": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        },
+        "referrerPolicy": {
+          "type": "string"
+        },
+        "allow": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "messageProtocolVersion": {
+          "type": "string"
+        }
+      }
+    },
+    "publish": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "visibility",
+        "embed"
+      ],
+      "properties": {
+        "visibility": {
+          "enum": [
+            "private",
+            "workspace",
+            "unlisted",
+            "public"
+          ]
+        },
+        "slug": {
+          "$ref": "#/$defs/slug"
+        },
+        "customDomain": {
+          "type": "string"
+        },
+        "embed": {
+          "$ref": "#/$defs/embed"
+        },
+        "analytics": {
+          "type": "boolean"
+        },
+        "allowDownload": {
+          "type": "boolean"
+        },
+        "indexing": {
+          "enum": [
+            "allow",
+            "disallow"
+          ]
+        },
+        "versionPolicy": {
+          "enum": [
+            "latest",
+            "pinned"
+          ]
+        }
+      }
+    },
+    "experience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile",
+        "surfaces"
+      ],
+      "properties": {
+        "profile": {
+          "enum": [
+            "editable-deck",
+            "presentation-runtime",
+            "published-story",
+            "embedded-deck"
+          ]
+        },
+        "surfaces": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "editor",
+              "presenter",
+              "viewer",
+              "embed-viewer"
+            ]
+          }
+        },
+        "routes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "shortcuts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "helpEnabled": {
+          "type": "boolean"
+        },
+        "helpKey": {
+          "type": "string"
+        },
+        "editorPreset": {
+          "type": "string"
+        },
+        "presenterPreset": {
+          "type": "string"
+        },
+        "overrides": {
+          "type": "object"
+        }
+      }
+    },
+    "layoutBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slot",
+        "blockIds"
+      ],
+      "properties": {
+        "slot": {
+          "type": "string",
+          "minLength": 1
+        },
+        "blockIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "flow": {
+          "enum": [
+            "stack",
+            "row",
+            "grid",
+            "overlay"
+          ]
+        },
+        "gap": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

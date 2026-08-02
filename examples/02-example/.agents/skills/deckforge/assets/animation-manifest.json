@@ -1,0 +1,386 @@
+[
+  {
+    "id": "appear",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "fade-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "fade-out",
+    "category": "exit",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "disappear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "slide-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "slide-out",
+    "category": "exit",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "disappear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "zoom-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "zoom-out",
+    "category": "exit",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "disappear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "wipe-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "blur-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "float-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "scale-emphasis",
+    "category": "emphasis",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "pulse",
+    "category": "emphasis",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "highlight",
+    "category": "emphasis",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "counter",
+    "category": "data",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "bar-grow",
+    "category": "data",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "line-draw",
+    "category": "data",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "stagger",
+    "category": "sequence",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "path",
+    "category": "motion",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "morph",
+    "category": "transition",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "fade",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "crossfade",
+    "category": "transition",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "fade",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "push",
+    "category": "transition",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "fade",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "cover",
+    "category": "transition",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "fade",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "parallax",
+    "category": "transition",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  },
+  {
+    "id": "none",
+    "category": "none",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default.",
+    "performanceRule": "Prefer opacity and transform; avoid animating layout dimensions, top/left, filters on large surfaces, or many box-shadows.",
+    "interruptibility": "Animations must settle safely when the user advances, goes backward, changes slide, or enables reduced motion.",
+    "editorPreview": "Provide preview, replay, duration, delay, trigger, and remove-animation controls when animation editing is enabled."
+  }
+]

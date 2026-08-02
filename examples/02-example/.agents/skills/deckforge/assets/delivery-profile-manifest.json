@@ -1,0 +1,109 @@
+[
+  {
+    "id": "editable-deck",
+    "name": "Editable Deck Studio",
+    "default": true,
+    "useWhen": "Default for end-user requests to create a browser-native presentation unless they explicitly request view-only output.",
+    "requiredSurfaces": [
+      "editor",
+      "presenter"
+    ],
+    "requiredEditorZones": [
+      "app-bar",
+      "slide-rail",
+      "canvas",
+      "inspector",
+      "notes",
+      "save-status"
+    ],
+    "requiredCapabilities": [
+      "edit-text",
+      "insert-block",
+      "insert-or-replace-image",
+      "change-layout",
+      "change-theme",
+      "change-style",
+      "undo-redo",
+      "autosave-and-restore",
+      "shortcut-help",
+      "present-current-slide"
+    ],
+    "blockingValidators": [
+      "layout-audit",
+      "output-contract",
+      "schema",
+      "typecheck",
+      "production-build"
+    ]
+  },
+  {
+    "id": "presentation-runtime",
+    "name": "Presentation Runtime",
+    "default": false,
+    "useWhen": "Only when the user explicitly requests presentation/view-only output.",
+    "requiredSurfaces": [
+      "presenter"
+    ],
+    "requiredCapabilities": [
+      "keyboard-navigation",
+      "fullscreen",
+      "overview",
+      "progress",
+      "reduced-motion",
+      "shortcut-help"
+    ],
+    "blockingValidators": [
+      "layout-audit",
+      "output-contract",
+      "schema",
+      "production-build"
+    ]
+  },
+  {
+    "id": "published-story",
+    "name": "Published Self-guided Story",
+    "default": false,
+    "useWhen": "A public or internal audience will browse the presentation without a live presenter.",
+    "requiredSurfaces": [
+      "viewer"
+    ],
+    "requiredCapabilities": [
+      "deep-links",
+      "responsive-reflow",
+      "citations",
+      "media-fallbacks",
+      "accessible-reading-order",
+      "share-metadata"
+    ],
+    "blockingValidators": [
+      "layout-audit",
+      "output-contract",
+      "schema",
+      "accessibility",
+      "production-build"
+    ]
+  },
+  {
+    "id": "embedded-deck",
+    "name": "Embedded Deck",
+    "default": false,
+    "useWhen": "The deck is hosted inside another product or iframe.",
+    "requiredSurfaces": [
+      "embed-viewer"
+    ],
+    "requiredCapabilities": [
+      "responsive-sizing",
+      "origin-policy",
+      "sandbox-policy",
+      "message-contract",
+      "fallback-link"
+    ],
+    "blockingValidators": [
+      "layout-audit",
+      "output-contract",
+      "schema",
+      "security",
+      "production-build"
+    ]
+  }
+]

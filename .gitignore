@@ -12,4 +12,14 @@ AUDIT_AND_REDESIGN_REPORT.md
 GITHUB_PUBLISHING.md
 VALIDATION_REPORT.md
 
+# platforms
+.opencode/*
+.superpowers/*
+
+# examples
+examples/01-example/node_modules/
+examples/01-example/dist/
+examples/02-example/node_modules/
+examples/02-example/dist/
+
 

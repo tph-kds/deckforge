@@ -1,0 +1,162 @@
+[
+  {
+    "id": "previous",
+    "label": "Previous",
+    "shortcut": "ArrowLeft / PageUp",
+    "description": "Move to the previous build or slide",
+    "audienceVisible": true,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "next",
+    "label": "Next",
+    "shortcut": "ArrowRight / Space / PageDown",
+    "description": "Move to the next build or slide",
+    "audienceVisible": true,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "first",
+    "label": "First slide",
+    "shortcut": "Home",
+    "description": "Jump to the first visible slide",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "last",
+    "label": "Last slide",
+    "shortcut": "End",
+    "description": "Jump to the last visible slide",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "overview",
+    "label": "Overview",
+    "shortcut": "O",
+    "description": "Open the slide overview grid",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "fullscreen",
+    "label": "Fullscreen",
+    "shortcut": "F",
+    "description": "Request or exit browser fullscreen",
+    "audienceVisible": true,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "speaker-view",
+    "label": "Speaker view",
+    "shortcut": "S",
+    "description": "Open the private speaker window",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "notes",
+    "label": "Toggle notes",
+    "shortcut": "N",
+    "description": "Show or hide private notes in speaker view",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "timer",
+    "label": "Timer",
+    "shortcut": "T",
+    "description": "Start, pause, or reset the presentation timer",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "blackout",
+    "label": "Black screen",
+    "shortcut": "B",
+    "description": "Temporarily hide the projected slide",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "whiteout",
+    "label": "White screen",
+    "shortcut": "W",
+    "description": "Temporarily show a blank light screen",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "laser",
+    "label": "Pointer",
+    "shortcut": "L",
+    "description": "Toggle an accessible presenter pointer",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "annotations",
+    "label": "Annotations",
+    "shortcut": "A",
+    "description": "Open temporary presentation annotation tools",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "captions",
+    "label": "Captions",
+    "shortcut": "C",
+    "description": "Toggle available captions or transcript",
+    "audienceVisible": true,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "mute",
+    "label": "Mute media",
+    "shortcut": "M",
+    "description": "Mute or unmute active media",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "autoplay",
+    "label": "Autoplay",
+    "shortcut": "Shift+A",
+    "description": "Start or pause configured autoplay",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "copy-link",
+    "label": "Copy slide link",
+    "shortcut": "Ctrl/Cmd+L",
+    "description": "Copy a deep link to the current slide",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "help",
+    "label": "Shortcut help",
+    "shortcut": "?",
+    "description": "Open a keyboard shortcut reference",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "exit",
+    "label": "Exit presentation",
+    "shortcut": "Escape",
+    "description": "Leave overlays, fullscreen, or presenter mode",
+    "audienceVisible": true,
+    "mustWorkWithoutFullscreen": true
+  },
+  {
+    "id": "reconnect",
+    "label": "Reconnect speaker view",
+    "shortcut": null,
+    "description": "Re-establish a lost speaker/audience synchronization channel",
+    "audienceVisible": false,
+    "mustWorkWithoutFullscreen": true
+  }
+]

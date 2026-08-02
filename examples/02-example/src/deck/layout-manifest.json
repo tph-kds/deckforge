@@ -1,0 +1,5050 @@
+[
+  {
+    "id": "title-hero",
+    "name": "Title Hero",
+    "category": "Opening",
+    "purpose": "One decisive title, short subtitle, one visual anchor",
+    "density": "low",
+    "recommendedBlocks": [
+      "heading",
+      "text",
+      "image"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 7,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 75,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 7,
+            "rowSpan": 3
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 78,
+            "maxLines": 3
+          }
+        },
+        {
+          "id": "subtitle",
+          "role": "support",
+          "grid": {
+            "column": 1,
+            "row": 5,
+            "columnSpan": 7,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 2,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 220,
+            "maxLines": 4
+          }
+        },
+        {
+          "id": "meta",
+          "role": "footer",
+          "grid": {
+            "column": 1,
+            "row": 7,
+            "columnSpan": 7,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "caption"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 120,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "visual",
+          "role": "visual",
+          "grid": {
+            "column": 9,
+            "row": 2,
+            "columnSpan": 4,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "icon"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "secondary"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "subtitle",
+        "visual",
+        "meta"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.34,
+        "maxOccupiedRatio": 0.74
+      },
+      "freeformAllowed": false,
+      "notes": "Title and visual occupy disjoint regions. Never allow the title to extend into columns 9–12."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "section-divider",
+    "name": "Section Divider",
+    "category": "Opening",
+    "purpose": "Section title with chapter number and quiet context",
+    "density": "low",
+    "recommendedBlocks": [
+      "heading",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "chapter",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 3,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "metric"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 20,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 10,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 80,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "context",
+          "role": "support",
+          "grid": {
+            "column": 1,
+            "row": 5,
+            "columnSpan": 8,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "text",
+            "quote"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 180,
+            "maxLines": 4
+          }
+        },
+        {
+          "id": "accent",
+          "role": "visual",
+          "grid": {
+            "column": 10,
+            "row": 2,
+            "columnSpan": 3,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "icon"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "chapter",
+        "title",
+        "context",
+        "accent"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.25,
+        "maxOccupiedRatio": 0.64
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "statement",
+    "name": "Statement",
+    "category": "Narrative",
+    "purpose": "Single argument or conclusion with supporting phrase",
+    "density": "low",
+    "recommendedBlocks": [
+      "heading",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "statement",
+          "role": "title",
+          "grid": {
+            "column": 2,
+            "row": 2,
+            "columnSpan": 10,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "heading",
+            "quote"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 120,
+            "maxLines": 4
+          }
+        },
+        {
+          "id": "support",
+          "role": "support",
+          "grid": {
+            "column": 3,
+            "row": 6,
+            "columnSpan": 8,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "citation"
+          ],
+          "required": false,
+          "maxItems": 2,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 180,
+            "maxLines": 2
+          }
+        }
+      ],
+      "responsiveOrder": [
+        "statement",
+        "support"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.2,
+        "maxOccupiedRatio": 0.58
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "centered-quote",
+    "name": "Centered Quote",
+    "category": "Narrative",
+    "purpose": "Short quote with source and restrained treatment",
+    "density": "low",
+    "recommendedBlocks": [
+      "quote",
+      "citation"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "quote",
+          "role": "title",
+          "grid": {
+            "column": 2,
+            "row": 2,
+            "columnSpan": 10,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "quote",
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 220,
+            "maxLines": 6
+          }
+        },
+        {
+          "id": "source",
+          "role": "source",
+          "grid": {
+            "column": 4,
+            "row": 6,
+            "columnSpan": 6,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "citation",
+            "caption"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 120,
+            "maxLines": 2
+          }
+        }
+      ],
+      "responsiveOrder": [
+        "quote",
+        "source"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.22,
+        "maxOccupiedRatio": 0.6
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "big-number",
+    "name": "Big Number",
+    "category": "Data",
+    "purpose": "One dominant metric with meaning and comparison",
+    "density": "low",
+    "recommendedBlocks": [
+      "metric",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "context",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "metric",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 7,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "metric"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary"
+        },
+        {
+          "id": "meaning",
+          "role": "support",
+          "grid": {
+            "column": 8,
+            "row": 3,
+            "columnSpan": 5,
+            "rowSpan": 3
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "callout",
+            "chart"
+          ],
+          "required": false,
+          "maxItems": 3,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 220,
+            "maxLines": 6
+          }
+        },
+        {
+          "id": "footer",
+          "role": "footer",
+          "grid": {
+            "column": 1,
+            "row": 8,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "caption",
+            "citation"
+          ],
+          "required": false,
+          "maxItems": 3,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 180,
+            "maxLines": 2
+          }
+        }
+      ],
+      "responsiveOrder": [
+        "context",
+        "metric",
+        "meaning",
+        "footer"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.35,
+        "maxOccupiedRatio": 0.72
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "metric-grid",
+    "name": "Metric Grid",
+    "category": "Data",
+    "purpose": "Three to six metrics with consistent units and hierarchy",
+    "density": "medium",
+    "recommendedBlocks": [
+      "metric",
+      "card-grid"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "metrics",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 12,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "metric"
+          ],
+          "required": true,
+          "maxItems": 6,
+          "priority": "primary"
+        },
+        {
+          "id": "takeaway",
+          "role": "support",
+          "grid": {
+            "column": 1,
+            "row": 7,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "callout"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 160,
+            "maxLines": 2
+          }
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "metrics",
+        "takeaway"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.44,
+        "maxOccupiedRatio": 0.8
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "two-column",
+    "name": "Two Column",
+    "category": "General",
+    "purpose": "Balanced text and visual or two related ideas",
+    "density": "medium",
+    "recommendedBlocks": [
+      "heading",
+      "text",
+      "image"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "left",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 6,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "metric",
+            "table",
+            "comparison",
+            "timeline",
+            "process",
+            "icon",
+            "logo-wall",
+            "people-grid",
+            "audio"
+          ],
+          "required": true,
+          "maxItems": 5,
+          "priority": "primary"
+        },
+        {
+          "id": "right",
+          "role": "secondary",
+          "grid": {
+            "column": 7,
+            "row": 3,
+            "columnSpan": 6,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "metric",
+            "table",
+            "comparison",
+            "timeline",
+            "process",
+            "icon",
+            "logo-wall",
+            "people-grid",
+            "audio"
+          ],
+          "required": true,
+          "maxItems": 4,
+          "priority": "secondary"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "left",
+        "right"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.46,
+        "maxOccupiedRatio": 0.84
+      },
+      "freeformAllowed": false,
+      "notes": "Use independent flow containers. Never let left/right blocks cross the column boundary."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "split-visual",
+    "name": "Split Visual",
+    "category": "General",
+    "purpose": "Large visual paired with concise interpretation",
+    "density": "medium",
+    "recommendedBlocks": [
+      "image",
+      "text",
+      "caption"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "visual",
+          "role": "visual",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 7,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary"
+        },
+        {
+          "id": "interpretation",
+          "role": "support",
+          "grid": {
+            "column": 8,
+            "row": 3,
+            "columnSpan": 5,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "metric"
+          ],
+          "required": true,
+          "maxItems": 5,
+          "priority": "secondary"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "visual",
+        "interpretation"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.5,
+        "maxOccupiedRatio": 0.86
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "three-column",
+    "name": "Three Column",
+    "category": "General",
+    "purpose": "Three parallel concepts with equal weight",
+    "density": "medium",
+    "recommendedBlocks": [
+      "card-grid",
+      "icon",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "column-1",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 4,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "metric",
+            "table",
+            "comparison",
+            "timeline",
+            "process",
+            "icon",
+            "logo-wall",
+            "people-grid",
+            "audio"
+          ],
+          "required": true,
+          "maxItems": 4,
+          "priority": "normal"
+        },
+        {
+          "id": "column-2",
+          "role": "primary",
+          "grid": {
+            "column": 5,
+            "row": 3,
+            "columnSpan": 4,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "metric",
+            "table",
+            "comparison",
+            "timeline",
+            "process",
+            "icon",
+            "logo-wall",
+            "people-grid",
+            "audio"
+          ],
+          "required": true,
+          "maxItems": 4,
+          "priority": "normal"
+        },
+        {
+          "id": "column-3",
+          "role": "primary",
+          "grid": {
+            "column": 9,
+            "row": 3,
+            "columnSpan": 4,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "metric",
+            "table",
+            "comparison",
+            "timeline",
+            "process",
+            "icon",
+            "logo-wall",
+            "people-grid",
+            "audio"
+          ],
+          "required": true,
+          "maxItems": 4,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "column-1",
+        "column-2",
+        "column-3"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.48,
+        "maxOccupiedRatio": 0.86
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "card-grid",
+    "name": "Card Grid",
+    "category": "General",
+    "purpose": "Modular points where cards are semantically justified",
+    "density": "medium",
+    "recommendedBlocks": [
+      "card-grid"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "cards",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 12,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "callout",
+            "metric",
+            "image",
+            "text",
+            "people-grid",
+            "logo-wall"
+          ],
+          "required": true,
+          "maxItems": 8,
+          "priority": "primary"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "cards"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.48,
+        "maxOccupiedRatio": 0.88
+      },
+      "freeformAllowed": false,
+      "notes": "Cards must be semantically justified and use a consistent internal hierarchy."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "timeline-horizontal",
+    "name": "Timeline Horizontal",
+    "category": "Process",
+    "purpose": "Time-based milestones across a horizontal axis",
+    "density": "medium",
+    "recommendedBlocks": [
+      "timeline"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "timeline",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 12,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "timeline",
+            "process",
+            "diagram"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary"
+        },
+        {
+          "id": "takeaway",
+          "role": "support",
+          "grid": {
+            "column": 1,
+            "row": 7,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "callout"
+          ],
+          "required": false,
+          "maxItems": 2,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 180,
+            "maxLines": 2
+          }
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "timeline",
+        "takeaway"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.42,
+        "maxOccupiedRatio": 0.82
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "timeline-vertical",
+    "name": "Timeline Vertical",
+    "category": "Process",
+    "purpose": "Chronological narrative with more explanatory text",
+    "density": "medium",
+    "recommendedBlocks": [
+      "timeline"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "timeline",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 7,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "timeline",
+            "process"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary"
+        },
+        {
+          "id": "details",
+          "role": "support",
+          "grid": {
+            "column": 8,
+            "row": 3,
+            "columnSpan": 5,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "metric"
+          ],
+          "required": false,
+          "maxItems": 5,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "timeline",
+        "details"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.48,
+        "maxOccupiedRatio": 0.84
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "process-steps",
+    "name": "Process Steps",
+    "category": "Process",
+    "purpose": "Three to seven ordered actions with clear progression",
+    "density": "medium",
+    "recommendedBlocks": [
+      "process"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "steps",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 12,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "process",
+            "timeline",
+            "diagram"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary"
+        },
+        {
+          "id": "outcome",
+          "role": "support",
+          "grid": {
+            "column": 2,
+            "row": 7,
+            "columnSpan": 10,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "callout"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 180,
+            "maxLines": 2
+          }
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "steps",
+        "outcome"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.42,
+        "maxOccupiedRatio": 0.82
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "funnel",
+    "name": "Funnel",
+    "category": "Process",
+    "purpose": "Narrowing stages with volume or qualification changes",
+    "density": "medium",
+    "recommendedBlocks": [
+      "diagram"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "funnel",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 7,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "diagram",
+            "chart",
+            "process"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "metrics",
+          "role": "support",
+          "grid": {
+            "column": 8,
+            "row": 3,
+            "columnSpan": 5,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "metric",
+            "text",
+            "callout"
+          ],
+          "required": false,
+          "maxItems": 5,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "funnel",
+        "metrics"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.45,
+        "maxOccupiedRatio": 0.82
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "pyramid",
+    "name": "Pyramid",
+    "category": "Strategy",
+    "purpose": "Layered priorities, maturity, or hierarchy",
+    "density": "medium",
+    "recommendedBlocks": [
+      "diagram"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "pyramid",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 7,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "diagram",
+            "chart"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "explanation",
+          "role": "support",
+          "grid": {
+            "column": 8,
+            "row": 3,
+            "columnSpan": 5,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "metric"
+          ],
+          "required": false,
+          "maxItems": 5,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "pyramid",
+        "explanation"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.45,
+        "maxOccupiedRatio": 0.82
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "matrix-2x2",
+    "name": "Matrix 2X2",
+    "category": "Strategy",
+    "purpose": "Four quadrants with meaningful axes and labels",
+    "density": "medium",
+    "recommendedBlocks": [
+      "diagram"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "matrix",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 8,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "diagram",
+            "chart",
+            "comparison"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "insight",
+          "role": "support",
+          "grid": {
+            "column": 9,
+            "row": 3,
+            "columnSpan": 4,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "text",
+            "callout",
+            "metric"
+          ],
+          "required": false,
+          "maxItems": 4,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "matrix",
+        "insight"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.48,
+        "maxOccupiedRatio": 0.84
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "comparison",
+    "name": "Comparison",
+    "category": "Decision",
+    "purpose": "Side-by-side alternatives with explicit criteria",
+    "density": "high",
+    "recommendedBlocks": [
+      "comparison",
+      "table"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "option-a",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 5,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "metric",
+            "table",
+            "comparison",
+            "timeline",
+            "process",
+            "icon",
+            "logo-wall",
+            "people-grid",
+            "audio"
+          ],
+          "required": true,
+          "maxItems": 5,
+          "priority": "normal"
+        },
+        {
+          "id": "criteria",
+          "role": "context",
+          "grid": {
+            "column": 6,
+            "row": 3,
+            "columnSpan": 2,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "text",
+            "table",
+            "comparison"
+          ],
+          "required": false,
+          "maxItems": 6,
+          "priority": "normal"
+        },
+        {
+          "id": "option-b",
+          "role": "primary",
+          "grid": {
+            "column": 8,
+            "row": 3,
+            "columnSpan": 5,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "metric",
+            "table",
+            "comparison",
+            "timeline",
+            "process",
+            "icon",
+            "logo-wall",
+            "people-grid",
+            "audio"
+          ],
+          "required": true,
+          "maxItems": 5,
+          "priority": "normal"
+        },
+        {
+          "id": "decision",
+          "role": "support",
+          "grid": {
+            "column": 1,
+            "row": 7,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "callout",
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 180,
+            "maxLines": 2
+          }
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "option-a",
+        "criteria",
+        "option-b",
+        "decision"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.5,
+        "maxOccupiedRatio": 0.88
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "before-after",
+    "name": "Before After",
+    "category": "Decision",
+    "purpose": "Current state versus target state",
+    "density": "medium",
+    "recommendedBlocks": [
+      "comparison",
+      "image"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "before",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 5,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "metric",
+            "table",
+            "comparison",
+            "timeline",
+            "process",
+            "icon",
+            "logo-wall",
+            "people-grid",
+            "audio"
+          ],
+          "required": true,
+          "maxItems": 5,
+          "priority": "normal"
+        },
+        {
+          "id": "transition",
+          "role": "context",
+          "grid": {
+            "column": 6,
+            "row": 4,
+            "columnSpan": 2,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "icon",
+            "text"
+          ],
+          "required": false,
+          "maxItems": 2,
+          "priority": "normal"
+        },
+        {
+          "id": "after",
+          "role": "primary",
+          "grid": {
+            "column": 8,
+            "row": 3,
+            "columnSpan": 5,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "heading",
+            "text",
+            "bullets",
+            "callout",
+            "caption",
+            "citation",
+            "quote",
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "metric",
+            "table",
+            "comparison",
+            "timeline",
+            "process",
+            "icon",
+            "logo-wall",
+            "people-grid",
+            "audio"
+          ],
+          "required": true,
+          "maxItems": 5,
+          "priority": "normal"
+        },
+        {
+          "id": "impact",
+          "role": "support",
+          "grid": {
+            "column": 1,
+            "row": 7,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "metric",
+            "callout",
+            "text"
+          ],
+          "required": false,
+          "maxItems": 3,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "before",
+        "transition",
+        "after",
+        "impact"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.48,
+        "maxOccupiedRatio": 0.86
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "architecture",
+    "name": "Architecture",
+    "category": "Technical",
+    "purpose": "System components, boundaries, and data flows",
+    "density": "high",
+    "recommendedBlocks": [
+      "diagram",
+      "code"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "diagram",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 9,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "diagram"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary"
+        },
+        {
+          "id": "legend",
+          "role": "support",
+          "grid": {
+            "column": 10,
+            "row": 3,
+            "columnSpan": 3,
+            "rowSpan": 3
+          },
+          "allowedBlocks": [
+            "text",
+            "caption",
+            "callout"
+          ],
+          "required": false,
+          "maxItems": 5,
+          "priority": "normal"
+        },
+        {
+          "id": "takeaway",
+          "role": "support",
+          "grid": {
+            "column": 10,
+            "row": 6,
+            "columnSpan": 3,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "text",
+            "callout"
+          ],
+          "required": false,
+          "maxItems": 2,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "diagram",
+        "legend",
+        "takeaway"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.5,
+        "maxOccupiedRatio": 0.88
+      },
+      "freeformAllowed": false,
+      "notes": "All diagram nodes and edge labels must remain inside the diagram slot."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "flowchart",
+    "name": "Flowchart",
+    "category": "Technical",
+    "purpose": "Decision or operational flow with directional logic",
+    "density": "high",
+    "recommendedBlocks": [
+      "diagram"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "flow",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 9,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "diagram",
+            "process"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "notes",
+          "role": "support",
+          "grid": {
+            "column": 10,
+            "row": 3,
+            "columnSpan": 3,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "text",
+            "callout",
+            "caption"
+          ],
+          "required": false,
+          "maxItems": 5,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "flow",
+        "notes"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.48,
+        "maxOccupiedRatio": 0.86
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "radial",
+    "name": "Radial",
+    "category": "Technical",
+    "purpose": "Hub-and-spoke ecosystem or capability map",
+    "density": "medium",
+    "recommendedBlocks": [
+      "diagram"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "map",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 8,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "diagram",
+            "chart"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "legend",
+          "role": "support",
+          "grid": {
+            "column": 9,
+            "row": 3,
+            "columnSpan": 4,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "text",
+            "callout",
+            "metric"
+          ],
+          "required": false,
+          "maxItems": 6,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "map",
+        "legend"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.46,
+        "maxOccupiedRatio": 0.84
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "map",
+    "name": "Map",
+    "category": "Geographic",
+    "purpose": "Locations or regional metrics with legend",
+    "density": "high",
+    "recommendedBlocks": [
+      "map"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "map",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 8,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "map",
+            "image",
+            "chart"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "legend",
+          "role": "support",
+          "grid": {
+            "column": 9,
+            "row": 3,
+            "columnSpan": 4,
+            "rowSpan": 3
+          },
+          "allowedBlocks": [
+            "text",
+            "caption",
+            "metric"
+          ],
+          "required": false,
+          "maxItems": 6,
+          "priority": "normal"
+        },
+        {
+          "id": "takeaway",
+          "role": "support",
+          "grid": {
+            "column": 9,
+            "row": 6,
+            "columnSpan": 4,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "callout",
+            "text"
+          ],
+          "required": false,
+          "maxItems": 2,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "map",
+        "legend",
+        "takeaway"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.5,
+        "maxOccupiedRatio": 0.86
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "dashboard",
+    "name": "Dashboard",
+    "category": "Data",
+    "purpose": "Multiple coordinated views with a clear focal KPI",
+    "density": "high",
+    "recommendedBlocks": [
+      "metric",
+      "chart",
+      "table"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "hero-metric",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 3,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "metric"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "primary-chart",
+          "role": "primary",
+          "grid": {
+            "column": 4,
+            "row": 3,
+            "columnSpan": 6,
+            "rowSpan": 3
+          },
+          "allowedBlocks": [
+            "chart"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "secondary-metrics",
+          "role": "secondary",
+          "grid": {
+            "column": 10,
+            "row": 3,
+            "columnSpan": 3,
+            "rowSpan": 3
+          },
+          "allowedBlocks": [
+            "metric"
+          ],
+          "required": false,
+          "maxItems": 4,
+          "priority": "normal"
+        },
+        {
+          "id": "supporting-view",
+          "role": "secondary",
+          "grid": {
+            "column": 1,
+            "row": 6,
+            "columnSpan": 9,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "chart",
+            "table",
+            "text"
+          ],
+          "required": false,
+          "maxItems": 2,
+          "priority": "normal"
+        },
+        {
+          "id": "takeaway",
+          "role": "support",
+          "grid": {
+            "column": 10,
+            "row": 6,
+            "columnSpan": 3,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "callout",
+            "text"
+          ],
+          "required": false,
+          "maxItems": 2,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "hero-metric",
+        "primary-chart",
+        "secondary-metrics",
+        "supporting-view",
+        "takeaway"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.58,
+        "maxOccupiedRatio": 0.9
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "chart-focus",
+    "name": "Chart Focus",
+    "category": "Data",
+    "purpose": "One chart plus headline insight and annotation",
+    "density": "medium",
+    "recommendedBlocks": [
+      "chart",
+      "caption"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "chart",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 9,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "chart"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "annotation",
+          "role": "support",
+          "grid": {
+            "column": 10,
+            "row": 3,
+            "columnSpan": 3,
+            "rowSpan": 3
+          },
+          "allowedBlocks": [
+            "text",
+            "callout",
+            "metric"
+          ],
+          "required": false,
+          "maxItems": 3,
+          "priority": "normal"
+        },
+        {
+          "id": "source",
+          "role": "source",
+          "grid": {
+            "column": 10,
+            "row": 6,
+            "columnSpan": 3,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "citation",
+            "caption",
+            "text"
+          ],
+          "required": false,
+          "maxItems": 3,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "chart",
+        "annotation",
+        "source"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.52,
+        "maxOccupiedRatio": 0.87
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "table-focus",
+    "name": "Table Focus",
+    "category": "Data",
+    "purpose": "Compact table with highlighted rows or variance",
+    "density": "high",
+    "recommendedBlocks": [
+      "table"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "table",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 9,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "table",
+            "comparison"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "insight",
+          "role": "support",
+          "grid": {
+            "column": 10,
+            "row": 3,
+            "columnSpan": 3,
+            "rowSpan": 3
+          },
+          "allowedBlocks": [
+            "callout",
+            "text",
+            "metric"
+          ],
+          "required": false,
+          "maxItems": 4,
+          "priority": "normal"
+        },
+        {
+          "id": "source",
+          "role": "source",
+          "grid": {
+            "column": 10,
+            "row": 6,
+            "columnSpan": 3,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "citation",
+            "caption"
+          ],
+          "required": false,
+          "maxItems": 3,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "table",
+        "insight",
+        "source"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.54,
+        "maxOccupiedRatio": 0.88
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "code-focus",
+    "name": "Code Focus",
+    "category": "Technical",
+    "purpose": "Readable code with line emphasis and explanation",
+    "density": "medium",
+    "recommendedBlocks": [
+      "code",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "code",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 8,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "code",
+            "terminal-demo"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "explanation",
+          "role": "support",
+          "grid": {
+            "column": 9,
+            "row": 3,
+            "columnSpan": 4,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "text",
+            "callout",
+            "bullets"
+          ],
+          "required": false,
+          "maxItems": 5,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "code",
+        "explanation"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.5,
+        "maxOccupiedRatio": 0.86
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "browser-demo",
+    "name": "Browser Demo",
+    "category": "Demo",
+    "purpose": "Live or simulated browser experience with callouts",
+    "density": "high",
+    "recommendedBlocks": [
+      "browser-demo"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "demo",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 9,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "browser-demo",
+            "embed",
+            "video",
+            "image"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "callouts",
+          "role": "support",
+          "grid": {
+            "column": 10,
+            "row": 3,
+            "columnSpan": 3,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "text",
+            "callout",
+            "caption"
+          ],
+          "required": false,
+          "maxItems": 5,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "demo",
+        "callouts"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.54,
+        "maxOccupiedRatio": 0.88
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "terminal-demo",
+    "name": "Terminal Demo",
+    "category": "Demo",
+    "purpose": "Command sequence and result in a terminal shell",
+    "density": "high",
+    "recommendedBlocks": [
+      "terminal-demo",
+      "code"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "terminal",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 8,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "terminal-demo",
+            "code"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "normal"
+        },
+        {
+          "id": "steps",
+          "role": "support",
+          "grid": {
+            "column": 9,
+            "row": 3,
+            "columnSpan": 4,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "bullets",
+            "process",
+            "text"
+          ],
+          "required": false,
+          "maxItems": 5,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "terminal",
+        "steps"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.5,
+        "maxOccupiedRatio": 0.86
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "device-showcase",
+    "name": "Device Showcase",
+    "category": "Product",
+    "purpose": "App screens inside device frames with annotations",
+    "density": "medium",
+    "recommendedBlocks": [
+      "device",
+      "image"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "devices",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 8,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "device",
+            "image",
+            "gallery"
+          ],
+          "required": true,
+          "maxItems": 3,
+          "priority": "normal"
+        },
+        {
+          "id": "features",
+          "role": "support",
+          "grid": {
+            "column": 9,
+            "row": 3,
+            "columnSpan": 4,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "text",
+            "callout",
+            "bullets"
+          ],
+          "required": false,
+          "maxItems": 5,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "devices",
+        "features"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.48,
+        "maxOccupiedRatio": 0.86
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "gallery",
+    "name": "Gallery",
+    "category": "Creative",
+    "purpose": "Curated image or artifact grid with consistent crops",
+    "density": "medium",
+    "recommendedBlocks": [
+      "gallery"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "gallery",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 12,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "gallery",
+            "image"
+          ],
+          "required": true,
+          "maxItems": 8,
+          "priority": "normal"
+        },
+        {
+          "id": "caption",
+          "role": "support",
+          "grid": {
+            "column": 2,
+            "row": 7,
+            "columnSpan": 10,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "caption",
+            "text"
+          ],
+          "required": false,
+          "maxItems": 2,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 180,
+            "maxLines": 2
+          }
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "gallery",
+        "caption"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.54,
+        "maxOccupiedRatio": 0.9
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "team",
+    "name": "Team",
+    "category": "People",
+    "purpose": "Team members with roles, not decorative headshots",
+    "density": "medium",
+    "recommendedBlocks": [
+      "people-grid"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "members",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 12,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "people-grid",
+            "image",
+            "text"
+          ],
+          "required": true,
+          "maxItems": 6,
+          "priority": "normal"
+        },
+        {
+          "id": "context",
+          "role": "support",
+          "grid": {
+            "column": 2,
+            "row": 7,
+            "columnSpan": 10,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "callout"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 160,
+            "maxLines": 2
+          }
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "members",
+        "context"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.5,
+        "maxOccupiedRatio": 0.88
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "logo-wall",
+    "name": "Logo Wall",
+    "category": "Proof",
+    "purpose": "Customer or partner logos with grouped meaning",
+    "density": "low",
+    "recommendedBlocks": [
+      "logo-wall"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "logos",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 12,
+            "rowSpan": 4
+          },
+          "allowedBlocks": [
+            "logo-wall",
+            "gallery",
+            "image"
+          ],
+          "required": true,
+          "maxItems": 18,
+          "priority": "normal"
+        },
+        {
+          "id": "meaning",
+          "role": "support",
+          "grid": {
+            "column": 2,
+            "row": 7,
+            "columnSpan": 10,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "caption"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 160,
+            "maxLines": 2
+          }
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "logos",
+        "meaning"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.48,
+        "maxOccupiedRatio": 0.88
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "qna",
+    "name": "Qna",
+    "category": "Closing",
+    "purpose": "Question prompt with supporting context",
+    "density": "low",
+    "recommendedBlocks": [
+      "heading",
+      "text"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "context",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 80,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "prompt",
+          "role": "title",
+          "grid": {
+            "column": 2,
+            "row": 2,
+            "columnSpan": 9,
+            "rowSpan": 3
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 70,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "support",
+          "role": "support",
+          "grid": {
+            "column": 2,
+            "row": 5,
+            "columnSpan": 7,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "text",
+            "callout"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 180,
+            "maxLines": 4
+          }
+        },
+        {
+          "id": "contact",
+          "role": "footer",
+          "grid": {
+            "column": 2,
+            "row": 7,
+            "columnSpan": 7,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "caption"
+          ],
+          "required": false,
+          "maxItems": 3,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 140,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "visual",
+          "role": "visual",
+          "grid": {
+            "column": 10,
+            "row": 3,
+            "columnSpan": 3,
+            "rowSpan": 3
+          },
+          "allowedBlocks": [
+            "icon",
+            "image"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "context",
+        "prompt",
+        "support",
+        "visual",
+        "contact"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.28,
+        "maxOccupiedRatio": 0.66
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "summary",
+    "name": "Summary",
+    "category": "Closing",
+    "purpose": "Three to five takeaways prioritized by importance",
+    "density": "medium",
+    "recommendedBlocks": [
+      "bullets",
+      "callout"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "takeaways",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 8,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "bullets",
+            "callout",
+            "text"
+          ],
+          "required": true,
+          "maxItems": 5,
+          "priority": "normal"
+        },
+        {
+          "id": "action",
+          "role": "secondary",
+          "grid": {
+            "column": 9,
+            "row": 3,
+            "columnSpan": 4,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "callout",
+            "metric",
+            "process",
+            "text"
+          ],
+          "required": false,
+          "maxItems": 4,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "takeaways",
+        "action"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.46,
+        "maxOccupiedRatio": 0.82
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "references",
+    "name": "References",
+    "category": "Closing",
+    "purpose": "Readable sources, links, and methodology notes",
+    "density": "high",
+    "recommendedBlocks": [
+      "citations"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "kicker",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 90,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 105,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "sources",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 3,
+            "columnSpan": 12,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "citation",
+            "text",
+            "table"
+          ],
+          "required": true,
+          "maxItems": 18,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "kicker",
+        "title",
+        "sources"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.48,
+        "maxOccupiedRatio": 0.88
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  },
+  {
+    "id": "closing-cta",
+    "name": "Closing Cta",
+    "category": "Closing",
+    "purpose": "Final action, owner, next date, and contact path",
+    "density": "low",
+    "recommendedBlocks": [
+      "heading",
+      "callout"
+    ],
+    "responsiveRule": "Preserve reading order; stack columns below 840px and keep primary evidence before commentary.",
+    "qualityChecks": [
+      "No clipped content at 16:9 and mobile preview.",
+      "One dominant focal point.",
+      "Minimum 32px presentation body text equivalent."
+    ],
+    "layoutContractVersion": "1.0",
+    "composition": {
+      "grid": {
+        "columns": 12,
+        "rows": 8,
+        "columnGap": 0.35,
+        "rowGap": 0.3
+      },
+      "slots": [
+        {
+          "id": "context",
+          "role": "context",
+          "grid": {
+            "column": 1,
+            "row": 1,
+            "columnSpan": 12,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 80,
+            "maxLines": 1
+          }
+        },
+        {
+          "id": "title",
+          "role": "title",
+          "grid": {
+            "column": 1,
+            "row": 2,
+            "columnSpan": 8,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "heading"
+          ],
+          "required": true,
+          "maxItems": 1,
+          "priority": "primary",
+          "contentBudget": {
+            "maxCharacters": 75,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "action",
+          "role": "primary",
+          "grid": {
+            "column": 1,
+            "row": 4,
+            "columnSpan": 7,
+            "rowSpan": 2
+          },
+          "allowedBlocks": [
+            "callout",
+            "text",
+            "process"
+          ],
+          "required": true,
+          "maxItems": 3,
+          "priority": "normal"
+        },
+        {
+          "id": "owner-date",
+          "role": "support",
+          "grid": {
+            "column": 1,
+            "row": 6,
+            "columnSpan": 7,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "caption"
+          ],
+          "required": false,
+          "maxItems": 3,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 150,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "contact",
+          "role": "footer",
+          "grid": {
+            "column": 1,
+            "row": 7,
+            "columnSpan": 7,
+            "rowSpan": 1
+          },
+          "allowedBlocks": [
+            "text",
+            "citation"
+          ],
+          "required": false,
+          "maxItems": 3,
+          "priority": "normal",
+          "contentBudget": {
+            "maxCharacters": 140,
+            "maxLines": 2
+          }
+        },
+        {
+          "id": "visual",
+          "role": "visual",
+          "grid": {
+            "column": 9,
+            "row": 2,
+            "columnSpan": 4,
+            "rowSpan": 5
+          },
+          "allowedBlocks": [
+            "image",
+            "video",
+            "gallery",
+            "browser-demo",
+            "device",
+            "embed",
+            "diagram",
+            "chart",
+            "map",
+            "code",
+            "terminal-demo",
+            "icon"
+          ],
+          "required": false,
+          "maxItems": 1,
+          "priority": "normal"
+        }
+      ],
+      "responsiveOrder": [
+        "context",
+        "title",
+        "action",
+        "owner-date",
+        "visual",
+        "contact"
+      ],
+      "collisionPolicy": {
+        "mode": "forbid-content-overlap",
+        "allowedOverlapRoles": [
+          "background",
+          "decoration",
+          "annotation"
+        ],
+        "maxIncidentalOverlapRatio": 0.02
+      },
+      "whitespaceTarget": {
+        "minOccupiedRatio": 0.34,
+        "maxOccupiedRatio": 0.74
+      },
+      "freeformAllowed": false,
+      "notes": "Bind normal content to semantic slots. Use freeform only for explicit user-positioned annotations or diagram internals."
+    },
+    "defaultPositionMode": "slot",
+    "freeformPolicy": "explicit-only"
+  }
+]

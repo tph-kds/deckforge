@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "deckforge": {
+      "source": "tph-kds/deckforge",
+      "sourceType": "github",
+      "skillPath": "skills/deckforge/SKILL.md",
+      "computedHash": "9b626ee3452c2d90fe18df9a20d102f38a2379b74c36946245edd0105f51ee5d"
+    }
+  }
+}

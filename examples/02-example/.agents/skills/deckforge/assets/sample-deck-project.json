@@ -1,0 +1,214 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {
+    "id": "deck-ai-product-vision",
+    "slug": "ai-product-vision",
+    "title": "AI Product Vision 2027",
+    "description": "A web-native product strategy presentation.",
+    "language": "en",
+    "audience": "Product and engineering leadership",
+    "objective": "Align the organization on an AI-native product roadmap.",
+    "templateId": "product-vision"
+  },
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1600,
+    "height": 900,
+    "safeMargin": 64,
+    "grid": 8,
+    "layoutMode": "semantic-slots"
+  },
+  "theme": {
+    "id": "ai-cosmos",
+    "overrides": {}
+  },
+  "presentation": {
+    "mode": "horizontal",
+    "transition": "crossfade",
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "reducedMotion": "respect-system"
+  },
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "snapToGrid": true,
+    "guides": true,
+    "comments": true,
+    "collaboration": false,
+    "autosave": true,
+    "allowedBlockTypes": [
+      "heading",
+      "text",
+      "metric",
+      "chart",
+      "diagram",
+      "image",
+      "citation"
+    ],
+    "sidePanel": true,
+    "assetLibrary": true,
+    "themePicker": true,
+    "layoutPicker": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "requiredZones": [
+      "app-bar",
+      "slide-rail",
+      "canvas",
+      "inspector",
+      "notes",
+      "save-status"
+    ]
+  },
+  "assets": [],
+  "slides": [
+    {
+      "id": "s1",
+      "title": "AI should remove coordination cost",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b1",
+          "type": "heading",
+          "content": "AI should remove coordination cost, not add another interface.",
+          "frame": {
+            "x": 80,
+            "y": 120,
+            "w": 940,
+            "h": 260
+          },
+          "style": {
+            "level": 1
+          },
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b2",
+          "type": "text",
+          "content": "A product vision for embedded, observable, and governed agents.",
+          "frame": {
+            "x": 84,
+            "y": 430,
+            "w": 720,
+            "h": 100
+          },
+          "style": {},
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Open with the operating principle, not the technology.",
+      "sources": [],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "title",
+          "blockIds": [
+            "b1",
+            "b2"
+          ],
+          "flow": "stack",
+          "gap": 16
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Three layers of the product",
+      "layout": "architecture",
+      "blocks": [
+        {
+          "id": "b3",
+          "type": "diagram",
+          "content": {
+            "nodes": [
+              "Experience",
+              "Agent runtime",
+              "Trust layer"
+            ],
+            "edges": [
+              "Experience->Agent runtime",
+              "Agent runtime->Trust layer"
+            ]
+          },
+          "frame": {
+            "x": 120,
+            "y": 150,
+            "w": 1360,
+            "h": 560
+          },
+          "style": {},
+          "alt": "Three-layer architecture from experience to agent runtime to trust layer.",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Explain how product experience, execution, and governance remain separate.",
+      "sources": [],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b3"
+          ],
+          "flow": "stack",
+          "gap": 16
+        }
+      ]
+    }
+  ],
+  "sources": [],
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "ai-product-vision",
+    "embed": {
+      "enabled": true,
+      "allowedOrigins": [
+        "https://example.com"
+      ],
+      "sandbox": [
+        "allow-scripts",
+        "allow-forms",
+        "allow-popups"
+      ],
+      "responsive": true
+    },
+    "analytics": true,
+    "allowDownload": false
+  },
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": [
+      "editor",
+      "presenter"
+    ],
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "capabilities": [
+      "semantic-layout",
+      "persistent-editing",
+      "shortcut-help"
+    ]
+  },
+  "shortcuts": {
+    "helpEnabled": true,
+    "helpKey": "?",
+    "editorPreset": "deckforge-default",
+    "presenterPreset": "deckforge-default"
+  }
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "standalone-html",
+    "editability": "web-source",
+    "fidelity": "high",
+    "requirements": [
+      "Inline or package validated assets",
+      "No runtime secrets",
+      "Keyboard and reduced-motion support"
+    ]
+  },
+  {
+    "id": "pdf",
+    "editability": "none",
+    "fidelity": "static-final-state",
+    "requirements": [
+      "Deterministic build state",
+      "Print-safe backgrounds",
+      "Links and citations retained where supported"
+    ]
+  },
+  {
+    "id": "pptx-editable",
+    "editability": "partial",
+    "fidelity": "layout-dependent",
+    "requirements": [
+      "Map semantic text and shapes",
+      "Report unsupported web interactions",
+      "Never claim perfect fidelity"
+    ]
+  },
+  {
+    "id": "pptx-screenshot",
+    "editability": "none",
+    "fidelity": "visual-high",
+    "requirements": [
+      "One rendered image per slide",
+      "Speaker notes exported separately when possible",
+      "Clearly label non-editable output"
+    ]
+  },
+  {
+    "id": "png-sequence",
+    "editability": "none",
+    "fidelity": "static-high",
+    "requirements": [
+      "Configurable scale",
+      "Final or selected build state",
+      "Accessible source deck retained"
+    ]
+  },
+  {
+    "id": "video",
+    "editability": "none",
+    "fidelity": "timed-playback",
+    "requirements": [
+      "Explicit timing",
+      "Captions/transcript",
+      "Licensed audio and media"
+    ]
+  }
+]

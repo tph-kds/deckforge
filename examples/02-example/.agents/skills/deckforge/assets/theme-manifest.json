@@ -1,0 +1,3120 @@
+[
+  {
+    "id": "aurora-executive",
+    "name": "Aurora Executive",
+    "category": "Executive",
+    "description": "Gradient-rich enterprise keynote with calm aurora accents",
+    "tokens": {
+      "background": "#0B1020",
+      "foreground": "#F8FAFC",
+      "primary": "#2DD4BF",
+      "secondary": "#A78BFA",
+      "surface": "#232836",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#343946",
+      "border": "#484C58",
+      "focus": "#A78BFA"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "high-contrast, premium, strategic",
+    "layoutBias": [
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "density": "airy",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#2DD4BF",
+      "#A78BFA",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "executive",
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "fintech-midnight",
+    "name": "Fintech Midnight",
+    "category": "FinTech",
+    "description": "Dark navy fintech dashboard language with luminous data accents",
+    "tokens": {
+      "background": "#07111F",
+      "foreground": "#F8FAFC",
+      "primary": "#36E4DA",
+      "secondary": "#F6C85F",
+      "surface": "#202935",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#313945",
+      "border": "#454C57",
+      "focus": "#F6C85F"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "metrics, trust, payments",
+    "layoutBias": [
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#36E4DA",
+      "#F6C85F",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "fintech",
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "saigon-neon",
+    "name": "Saigon Neon",
+    "category": "Modern Asia",
+    "description": "Vibrant urban night style inspired by Southeast Asian tech events",
+    "tokens": {
+      "background": "#120B2F",
+      "foreground": "#F8FAFC",
+      "primary": "#FF4D8D",
+      "secondary": "#00E5FF",
+      "surface": "#2A2344",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#3A3452",
+      "border": "#4D4863",
+      "focus": "#00E5FF"
+    },
+    "typography": {
+      "headingFont": "Space Grotesk",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "bold, hackathon, GenAI",
+    "layoutBias": [
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "density": "compact",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#FF4D8D",
+      "#00E5FF",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "modern asia",
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "minimal-founder",
+    "name": "Minimal Founder",
+    "category": "Startup",
+    "description": "Clean founder pitch deck with generous whitespace and sharp type",
+    "tokens": {
+      "background": "#FFFFFF",
+      "foreground": "#0F172A",
+      "primary": "#111827",
+      "secondary": "#2563EB",
+      "surface": "#F6F6F6",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEEEEE",
+      "border": "#DBDBDB",
+      "focus": "#2563EB"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "pitch, VC, narrative",
+    "layoutBias": [
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "density": "airy",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#111827",
+      "#2563EB",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "startup",
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "warm-product",
+    "name": "Warm Product",
+    "category": "Product",
+    "description": "Soft warm SaaS product storytelling with card-based layouts",
+    "tokens": {
+      "background": "#FFF7ED",
+      "foreground": "#0F172A",
+      "primary": "#1F2937",
+      "secondary": "#F97316",
+      "surface": "#F6EEE5",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEE7DE",
+      "border": "#DBD4CC",
+      "focus": "#F97316"
+    },
+    "typography": {
+      "headingFont": "Manrope",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "SaaS, demo, friendly",
+    "layoutBias": [
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#1F2937",
+      "#F97316",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "product",
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "research-lab",
+    "name": "Research Lab",
+    "category": "Research",
+    "description": "Academic but modern research slides with precise grids",
+    "tokens": {
+      "background": "#F8FAFC",
+      "foreground": "#0F172A",
+      "primary": "#0F172A",
+      "secondary": "#0EA5E9",
+      "surface": "#EFF1F3",
+      "muted": "#64748B",
+      "surfaceElevated": "#E8EAEC",
+      "border": "#D5D7D9",
+      "focus": "#0EA5E9"
+    },
+    "typography": {
+      "headingFont": "IBM Plex Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "paper, method, results",
+    "layoutBias": [
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "density": "compact",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#0F172A",
+      "#0EA5E9",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "research",
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "ai-cosmos",
+    "name": "Ai Cosmos",
+    "category": "AI",
+    "description": "Futuristic AI cosmos with dark surfaces and neural glows",
+    "tokens": {
+      "background": "#050816",
+      "foreground": "#F8FAFC",
+      "primary": "#7C3AED",
+      "secondary": "#22D3EE",
+      "surface": "#1E212D",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#30323E",
+      "border": "#444650",
+      "focus": "#22D3EE"
+    },
+    "typography": {
+      "headingFont": "Sora",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "AI, agents, frontier",
+    "layoutBias": [
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "density": "airy",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#7C3AED",
+      "#22D3EE",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "ai",
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "carbon-command",
+    "name": "Carbon Command",
+    "category": "Engineering",
+    "description": "Carbon-black command center for deep technical demos",
+    "tokens": {
+      "background": "#0A0A0A",
+      "foreground": "#F8FAFC",
+      "primary": "#84CC16",
+      "secondary": "#38BDF8",
+      "surface": "#222222",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#343434",
+      "border": "#474747",
+      "focus": "#38BDF8"
+    },
+    "typography": {
+      "headingFont": "JetBrains Mono",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "technical, terminal, infra",
+    "layoutBias": [
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#84CC16",
+      "#38BDF8",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "engineering",
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "glass-enterprise",
+    "name": "Glass Enterprise",
+    "category": "Enterprise",
+    "description": "Glassmorphism business deck with blue/gray hierarchy",
+    "tokens": {
+      "background": "#EAF2FF",
+      "foreground": "#0F172A",
+      "primary": "#0F172A",
+      "secondary": "#3B82F6",
+      "surface": "#E2EAF6",
+      "muted": "#64748B",
+      "surfaceElevated": "#DBE2EE",
+      "border": "#C9D0DB",
+      "focus": "#3B82F6"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "B2B, polished, UI",
+    "layoutBias": [
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "density": "compact",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#0F172A",
+      "#3B82F6",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "enterprise",
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "editorial-cream",
+    "name": "Editorial Cream",
+    "category": "Editorial",
+    "description": "Magazine-like narrative presentation with cream background",
+    "tokens": {
+      "background": "#FAF3E7",
+      "foreground": "#0F172A",
+      "primary": "#2B2118",
+      "secondary": "#B45309",
+      "surface": "#F1EADF",
+      "muted": "#64748B",
+      "surfaceElevated": "#EAE3D8",
+      "border": "#D7D1C7",
+      "focus": "#B45309"
+    },
+    "typography": {
+      "headingFont": "Libre Baskerville",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "story, thought leadership",
+    "layoutBias": [
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "density": "airy",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#2B2118",
+      "#B45309",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "editorial",
+      "hero",
+      "cards",
+      "diagram",
+      "metrics"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "quantum-violet",
+    "name": "Quantum Violet",
+    "category": "AI",
+    "description": "Deep violet scientific futurism",
+    "tokens": {
+      "background": "#0F172A",
+      "foreground": "#F8FAFC",
+      "primary": "#38BDF8",
+      "secondary": "#A78BFA",
+      "surface": "#272E3F",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#383E4E",
+      "border": "#4B515F",
+      "focus": "#A78BFA"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "ai, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#38BDF8",
+      "#A78BFA",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "ai",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "oceanic-blueprint",
+    "name": "Oceanic Blueprint",
+    "category": "Architecture",
+    "description": "Blueprint grid over ocean blues",
+    "tokens": {
+      "background": "#FFFFFF",
+      "foreground": "#0F172A",
+      "primary": "#111827",
+      "secondary": "#06B6D4",
+      "surface": "#F6F6F6",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEEEEE",
+      "border": "#DBDBDB",
+      "focus": "#06B6D4"
+    },
+    "typography": {
+      "headingFont": "Manrope",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "architecture, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#111827",
+      "#06B6D4",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "architecture",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "civic-slate",
+    "name": "Civic Slate",
+    "category": "Public Sector",
+    "description": "Responsible civic dashboard clarity",
+    "tokens": {
+      "background": "#111827",
+      "foreground": "#F8FAFC",
+      "primary": "#F59E0B",
+      "secondary": "#EF4444",
+      "surface": "#292F3D",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#393F4C",
+      "border": "#4C525D",
+      "focus": "#EF4444"
+    },
+    "typography": {
+      "headingFont": "Space Grotesk",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "public sector, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#F59E0B",
+      "#EF4444",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "public sector",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "greenfield-growth",
+    "name": "Greenfield Growth",
+    "category": "Climate",
+    "description": "Green innovation and sustainability",
+    "tokens": {
+      "background": "#022C22",
+      "foreground": "#F8FAFC",
+      "primary": "#34D399",
+      "secondary": "#A7F3D0",
+      "surface": "#1B4138",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D5048",
+      "border": "#416159",
+      "focus": "#A7F3D0"
+    },
+    "typography": {
+      "headingFont": "IBM Plex Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "climate, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#34D399",
+      "#A7F3D0",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "climate",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "mono-ink",
+    "name": "Mono Ink",
+    "category": "Minimal",
+    "description": "Black-and-white consultant elegance",
+    "tokens": {
+      "background": "#FAFAFA",
+      "foreground": "#0F172A",
+      "primary": "#18181B",
+      "secondary": "#71717A",
+      "surface": "#F1F1F1",
+      "muted": "#64748B",
+      "surfaceElevated": "#EAEAEA",
+      "border": "#D7D7D7",
+      "focus": "#71717A"
+    },
+    "typography": {
+      "headingFont": "Sora",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "minimal, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#18181B",
+      "#71717A",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "minimal",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "solar-optimist",
+    "name": "Solar Optimist",
+    "category": "Startup",
+    "description": "Sunny optimistic product launch",
+    "tokens": {
+      "background": "#FFF7ED",
+      "foreground": "#0F172A",
+      "primary": "#9A3412",
+      "secondary": "#FDBA74",
+      "surface": "#F6EEE5",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEE7DE",
+      "border": "#DBD4CC",
+      "focus": "#FDBA74"
+    },
+    "typography": {
+      "headingFont": "DM Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "startup, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#9A3412",
+      "#FDBA74",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "startup",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "cyber-grid",
+    "name": "Cyber Grid",
+    "category": "Security",
+    "description": "Cybersecurity command-grid aesthetic",
+    "tokens": {
+      "background": "#020617",
+      "foreground": "#F8FAFC",
+      "primary": "#22D3EE",
+      "secondary": "#F43F5E",
+      "surface": "#1B1F2E",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D303E",
+      "border": "#414451",
+      "focus": "#F43F5E"
+    },
+    "typography": {
+      "headingFont": "Plus Jakarta Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "security, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#22D3EE",
+      "#F43F5E",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "security",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "healthcare-calm",
+    "name": "Healthcare Calm",
+    "category": "Healthcare",
+    "description": "Calm clinical modern interface",
+    "tokens": {
+      "background": "#F0FDF4",
+      "foreground": "#0F172A",
+      "primary": "#14532D",
+      "secondary": "#14B8A6",
+      "surface": "#E8F4EB",
+      "muted": "#64748B",
+      "surfaceElevated": "#E0EDE4",
+      "border": "#CEDAD2",
+      "focus": "#14B8A6"
+    },
+    "typography": {
+      "headingFont": "Source Sans 3",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "healthcare, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#14532D",
+      "#14B8A6",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "healthcare",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "education-playful",
+    "name": "Education Playful",
+    "category": "Education",
+    "description": "Bright learning-focused classroom style",
+    "tokens": {
+      "background": "#FEFCE8",
+      "foreground": "#0F172A",
+      "primary": "#1E293B",
+      "secondary": "#EAB308",
+      "surface": "#F5F3E0",
+      "muted": "#64748B",
+      "surfaceElevated": "#EDECD9",
+      "border": "#DAD9C8",
+      "focus": "#EAB308"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "education, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#1E293B",
+      "#EAB308",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "education",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "data-observatory",
+    "name": "Data Observatory",
+    "category": "Analytics",
+    "description": "Astronomy-inspired analytics report",
+    "tokens": {
+      "background": "#020617",
+      "foreground": "#F8FAFC",
+      "primary": "#60A5FA",
+      "secondary": "#C084FC",
+      "surface": "#1B1F2E",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D303E",
+      "border": "#414451",
+      "focus": "#C084FC"
+    },
+    "typography": {
+      "headingFont": "Manrope",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "analytics, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#60A5FA",
+      "#C084FC",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "analytics",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "luxury-onyx",
+    "name": "Luxury Onyx",
+    "category": "Premium",
+    "description": "Luxury black and gold executive deck",
+    "tokens": {
+      "background": "#0F172A",
+      "foreground": "#F8FAFC",
+      "primary": "#38BDF8",
+      "secondary": "#A78BFA",
+      "surface": "#272E3F",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#383E4E",
+      "border": "#4B515F",
+      "focus": "#A78BFA"
+    },
+    "typography": {
+      "headingFont": "Space Grotesk",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "premium, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#38BDF8",
+      "#A78BFA",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "premium",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "violet-studio",
+    "name": "Violet Studio",
+    "category": "Creative",
+    "description": "Studio portfolio with violet accents",
+    "tokens": {
+      "background": "#FFFFFF",
+      "foreground": "#0F172A",
+      "primary": "#111827",
+      "secondary": "#06B6D4",
+      "surface": "#F6F6F6",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEEEEE",
+      "border": "#DBDBDB",
+      "focus": "#06B6D4"
+    },
+    "typography": {
+      "headingFont": "IBM Plex Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "creative, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#111827",
+      "#06B6D4",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "creative",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "coral-market",
+    "name": "Coral Market",
+    "category": "Marketing",
+    "description": "Friendly coral campaign narrative",
+    "tokens": {
+      "background": "#111827",
+      "foreground": "#F8FAFC",
+      "primary": "#F59E0B",
+      "secondary": "#EF4444",
+      "surface": "#292F3D",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#393F4C",
+      "border": "#4C525D",
+      "focus": "#EF4444"
+    },
+    "typography": {
+      "headingFont": "Sora",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "marketing, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#F59E0B",
+      "#EF4444",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "marketing",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "deep-space-product",
+    "name": "Deep Space Product",
+    "category": "Product",
+    "description": "Dark product launch with cosmic depth",
+    "tokens": {
+      "background": "#022C22",
+      "foreground": "#F8FAFC",
+      "primary": "#34D399",
+      "secondary": "#A7F3D0",
+      "surface": "#1B4138",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D5048",
+      "border": "#416159",
+      "focus": "#A7F3D0"
+    },
+    "typography": {
+      "headingFont": "DM Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "product, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#34D399",
+      "#A7F3D0",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "product",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "notion-clean",
+    "name": "Notion Clean",
+    "category": "Documentation",
+    "description": "Clean knowledge-base style",
+    "tokens": {
+      "background": "#FAFAFA",
+      "foreground": "#0F172A",
+      "primary": "#18181B",
+      "secondary": "#71717A",
+      "surface": "#F1F1F1",
+      "muted": "#64748B",
+      "surfaceElevated": "#EAEAEA",
+      "border": "#D7D7D7",
+      "focus": "#71717A"
+    },
+    "typography": {
+      "headingFont": "Plus Jakarta Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "documentation, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#18181B",
+      "#71717A",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "documentation",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "blue-ocean-strategy",
+    "name": "Blue Ocean Strategy",
+    "category": "Strategy",
+    "description": "Consulting strategy with blue accents",
+    "tokens": {
+      "background": "#FFF7ED",
+      "foreground": "#0F172A",
+      "primary": "#9A3412",
+      "secondary": "#FDBA74",
+      "surface": "#F6EEE5",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEE7DE",
+      "border": "#DBD4CC",
+      "focus": "#FDBA74"
+    },
+    "typography": {
+      "headingFont": "Source Sans 3",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "strategy, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#9A3412",
+      "#FDBA74",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "strategy",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "terminal-green",
+    "name": "Terminal Green",
+    "category": "Engineering",
+    "description": "Terminal-first hacker engineering mode",
+    "tokens": {
+      "background": "#020617",
+      "foreground": "#F8FAFC",
+      "primary": "#22D3EE",
+      "secondary": "#F43F5E",
+      "surface": "#1B1F2E",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D303E",
+      "border": "#414451",
+      "focus": "#F43F5E"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "engineering, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#22D3EE",
+      "#F43F5E",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "engineering",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "paper-research",
+    "name": "Paper Research",
+    "category": "Research",
+    "description": "Paper-like research manuscript layout",
+    "tokens": {
+      "background": "#F0FDF4",
+      "foreground": "#0F172A",
+      "primary": "#14532D",
+      "secondary": "#14B8A6",
+      "surface": "#E8F4EB",
+      "muted": "#64748B",
+      "surfaceElevated": "#E0EDE4",
+      "border": "#CEDAD2",
+      "focus": "#14B8A6"
+    },
+    "typography": {
+      "headingFont": "Manrope",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "research, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#14532D",
+      "#14B8A6",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "research",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "gradient-saas",
+    "name": "Gradient Saas",
+    "category": "SaaS",
+    "description": "Soft gradients for SaaS landing storytelling",
+    "tokens": {
+      "background": "#FEFCE8",
+      "foreground": "#0F172A",
+      "primary": "#1E293B",
+      "secondary": "#EAB308",
+      "surface": "#F5F3E0",
+      "muted": "#64748B",
+      "surfaceElevated": "#EDECD9",
+      "border": "#DAD9C8",
+      "focus": "#EAB308"
+    },
+    "typography": {
+      "headingFont": "Space Grotesk",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "saas, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#1E293B",
+      "#EAB308",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "saas",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "banking-trust",
+    "name": "Banking Trust",
+    "category": "FinTech",
+    "description": "Conservative bank-grade trust design",
+    "tokens": {
+      "background": "#020617",
+      "foreground": "#F8FAFC",
+      "primary": "#60A5FA",
+      "secondary": "#C084FC",
+      "surface": "#1B1F2E",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D303E",
+      "border": "#414451",
+      "focus": "#C084FC"
+    },
+    "typography": {
+      "headingFont": "IBM Plex Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "fintech, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#60A5FA",
+      "#C084FC",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "fintech",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "robotics-lab",
+    "name": "Robotics Lab",
+    "category": "Robotics",
+    "description": "Industrial robotics lab style",
+    "tokens": {
+      "background": "#0F172A",
+      "foreground": "#F8FAFC",
+      "primary": "#38BDF8",
+      "secondary": "#A78BFA",
+      "surface": "#272E3F",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#383E4E",
+      "border": "#4B515F",
+      "focus": "#A78BFA"
+    },
+    "typography": {
+      "headingFont": "Sora",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "robotics, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#38BDF8",
+      "#A78BFA",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "robotics",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "genz-pop",
+    "name": "Genz Pop",
+    "category": "Community",
+    "description": "High-energy pop community deck",
+    "tokens": {
+      "background": "#FFFFFF",
+      "foreground": "#0F172A",
+      "primary": "#111827",
+      "secondary": "#06B6D4",
+      "surface": "#F6F6F6",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEEEEE",
+      "border": "#DBDBDB",
+      "focus": "#06B6D4"
+    },
+    "typography": {
+      "headingFont": "DM Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "community, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#111827",
+      "#06B6D4",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "community",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "founder-bold",
+    "name": "Founder Bold",
+    "category": "Startup",
+    "description": "Bold founder story with oversized typography",
+    "tokens": {
+      "background": "#111827",
+      "foreground": "#F8FAFC",
+      "primary": "#F59E0B",
+      "secondary": "#EF4444",
+      "surface": "#292F3D",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#393F4C",
+      "border": "#4C525D",
+      "focus": "#EF4444"
+    },
+    "typography": {
+      "headingFont": "Plus Jakarta Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "startup, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#F59E0B",
+      "#EF4444",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "startup",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "enterprise-report",
+    "name": "Enterprise Report",
+    "category": "Enterprise",
+    "description": "Annual-report inspired corporate design",
+    "tokens": {
+      "background": "#022C22",
+      "foreground": "#F8FAFC",
+      "primary": "#34D399",
+      "secondary": "#A7F3D0",
+      "surface": "#1B4138",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D5048",
+      "border": "#416159",
+      "focus": "#A7F3D0"
+    },
+    "typography": {
+      "headingFont": "Source Sans 3",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "enterprise, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#34D399",
+      "#A7F3D0",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "enterprise",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "blueprint-mcp",
+    "name": "Blueprint Mcp",
+    "category": "Developer Tool",
+    "description": "Protocol architecture blueprint aesthetic",
+    "tokens": {
+      "background": "#FAFAFA",
+      "foreground": "#0F172A",
+      "primary": "#18181B",
+      "secondary": "#71717A",
+      "surface": "#F1F1F1",
+      "muted": "#64748B",
+      "surfaceElevated": "#EAEAEA",
+      "border": "#D7D7D7",
+      "focus": "#71717A"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "developer tool, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#18181B",
+      "#71717A",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "developer tool",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "portfolio-dark",
+    "name": "Portfolio Dark",
+    "category": "Portfolio",
+    "description": "Designer portfolio with dark canvas",
+    "tokens": {
+      "background": "#FFF7ED",
+      "foreground": "#0F172A",
+      "primary": "#9A3412",
+      "secondary": "#FDBA74",
+      "surface": "#F6EEE5",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEE7DE",
+      "border": "#DBD4CC",
+      "focus": "#FDBA74"
+    },
+    "typography": {
+      "headingFont": "Manrope",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "portfolio, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#9A3412",
+      "#FDBA74",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "portfolio",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "sunset-demo",
+    "name": "Sunset Demo",
+    "category": "Product",
+    "description": "Demo-day sunset gradients",
+    "tokens": {
+      "background": "#020617",
+      "foreground": "#F8FAFC",
+      "primary": "#22D3EE",
+      "secondary": "#F43F5E",
+      "surface": "#1B1F2E",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D303E",
+      "border": "#414451",
+      "focus": "#F43F5E"
+    },
+    "typography": {
+      "headingFont": "Space Grotesk",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "product, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#22D3EE",
+      "#F43F5E",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "product",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "neo-brutalist",
+    "name": "Neo Brutalist",
+    "category": "Creative",
+    "description": "Bold neo-brutalist web slide style",
+    "tokens": {
+      "background": "#F0FDF4",
+      "foreground": "#0F172A",
+      "primary": "#14532D",
+      "secondary": "#14B8A6",
+      "surface": "#E8F4EB",
+      "muted": "#64748B",
+      "surfaceElevated": "#E0EDE4",
+      "border": "#CEDAD2",
+      "focus": "#14B8A6"
+    },
+    "typography": {
+      "headingFont": "IBM Plex Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "creative, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#14532D",
+      "#14B8A6",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "creative",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "calm-ai-safety",
+    "name": "Calm Ai Safety",
+    "category": "AI Safety",
+    "description": "Responsible AI safety with calm palette",
+    "tokens": {
+      "background": "#FEFCE8",
+      "foreground": "#0F172A",
+      "primary": "#1E293B",
+      "secondary": "#EAB308",
+      "surface": "#F5F3E0",
+      "muted": "#64748B",
+      "surfaceElevated": "#EDECD9",
+      "border": "#DAD9C8",
+      "focus": "#EAB308"
+    },
+    "typography": {
+      "headingFont": "Sora",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "ai safety, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#1E293B",
+      "#EAB308",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "ai safety",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "vietnam-tech",
+    "name": "Vietnam Tech",
+    "category": "Regional",
+    "description": "Vietnam tech ecosystem-inspired accents",
+    "tokens": {
+      "background": "#020617",
+      "foreground": "#F8FAFC",
+      "primary": "#60A5FA",
+      "secondary": "#C084FC",
+      "surface": "#1B1F2E",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D303E",
+      "border": "#414451",
+      "focus": "#C084FC"
+    },
+    "typography": {
+      "headingFont": "DM Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "regional, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#60A5FA",
+      "#C084FC",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "regional",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "market-map",
+    "name": "Market Map",
+    "category": "Business",
+    "description": "Market landscape grid and quadrants",
+    "tokens": {
+      "background": "#0F172A",
+      "foreground": "#F8FAFC",
+      "primary": "#38BDF8",
+      "secondary": "#A78BFA",
+      "surface": "#272E3F",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#383E4E",
+      "border": "#4B515F",
+      "focus": "#A78BFA"
+    },
+    "typography": {
+      "headingFont": "Plus Jakarta Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "business, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#38BDF8",
+      "#A78BFA",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "business",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "customer-journey",
+    "name": "Customer Journey",
+    "category": "Product",
+    "description": "Journey-map friendly product design",
+    "tokens": {
+      "background": "#FFFFFF",
+      "foreground": "#0F172A",
+      "primary": "#111827",
+      "secondary": "#06B6D4",
+      "surface": "#F6F6F6",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEEEEE",
+      "border": "#DBDBDB",
+      "focus": "#06B6D4"
+    },
+    "typography": {
+      "headingFont": "Source Sans 3",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "product, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#111827",
+      "#06B6D4",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "product",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "pitch-night",
+    "name": "Pitch Night",
+    "category": "Startup",
+    "description": "Dark high-stakes pitch-night style",
+    "tokens": {
+      "background": "#111827",
+      "foreground": "#F8FAFC",
+      "primary": "#F59E0B",
+      "secondary": "#EF4444",
+      "surface": "#292F3D",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#393F4C",
+      "border": "#4C525D",
+      "focus": "#EF4444"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "startup, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#F59E0B",
+      "#EF4444",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "startup",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "scientific-poster",
+    "name": "Scientific Poster",
+    "category": "Research",
+    "description": "Conference poster meets slide deck",
+    "tokens": {
+      "background": "#022C22",
+      "foreground": "#F8FAFC",
+      "primary": "#34D399",
+      "secondary": "#A7F3D0",
+      "surface": "#1B4138",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D5048",
+      "border": "#416159",
+      "focus": "#A7F3D0"
+    },
+    "typography": {
+      "headingFont": "Manrope",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "research, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#34D399",
+      "#A7F3D0",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "research",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "cloud-infra",
+    "name": "Cloud Infra",
+    "category": "Cloud",
+    "description": "Cloud platform diagrams and soft blue nodes",
+    "tokens": {
+      "background": "#FAFAFA",
+      "foreground": "#0F172A",
+      "primary": "#18181B",
+      "secondary": "#71717A",
+      "surface": "#F1F1F1",
+      "muted": "#64748B",
+      "surfaceElevated": "#EAEAEA",
+      "border": "#D7D7D7",
+      "focus": "#71717A"
+    },
+    "typography": {
+      "headingFont": "Space Grotesk",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "cloud, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#18181B",
+      "#71717A",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "cloud",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "agent-orchestration",
+    "name": "Agent Orchestration",
+    "category": "AI Agents",
+    "description": "Multi-agent workflow visual language",
+    "tokens": {
+      "background": "#FFF7ED",
+      "foreground": "#0F172A",
+      "primary": "#9A3412",
+      "secondary": "#FDBA74",
+      "surface": "#F6EEE5",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEE7DE",
+      "border": "#DBD4CC",
+      "focus": "#FDBA74"
+    },
+    "typography": {
+      "headingFont": "IBM Plex Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "ai agents, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#9A3412",
+      "#FDBA74",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "ai agents",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "rag-knowledge",
+    "name": "Rag Knowledge",
+    "category": "AI",
+    "description": "Knowledge graph and RAG themed",
+    "tokens": {
+      "background": "#020617",
+      "foreground": "#F8FAFC",
+      "primary": "#22D3EE",
+      "secondary": "#F43F5E",
+      "surface": "#1B1F2E",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D303E",
+      "border": "#414451",
+      "focus": "#F43F5E"
+    },
+    "typography": {
+      "headingFont": "Sora",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "ai, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#22D3EE",
+      "#F43F5E",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "ai",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "video-ai-studio",
+    "name": "Video Ai Studio",
+    "category": "Media AI",
+    "description": "Video generation studio deck",
+    "tokens": {
+      "background": "#F0FDF4",
+      "foreground": "#0F172A",
+      "primary": "#14532D",
+      "secondary": "#14B8A6",
+      "surface": "#E8F4EB",
+      "muted": "#64748B",
+      "surfaceElevated": "#E0EDE4",
+      "border": "#CEDAD2",
+      "focus": "#14B8A6"
+    },
+    "typography": {
+      "headingFont": "DM Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "media ai, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#14532D",
+      "#14B8A6",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "media ai",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "edtech-scholar",
+    "name": "Edtech Scholar",
+    "category": "Education",
+    "description": "Scholarship and admissions style",
+    "tokens": {
+      "background": "#FEFCE8",
+      "foreground": "#0F172A",
+      "primary": "#1E293B",
+      "secondary": "#EAB308",
+      "surface": "#F5F3E0",
+      "muted": "#64748B",
+      "surfaceElevated": "#EDECD9",
+      "border": "#DAD9C8",
+      "focus": "#EAB308"
+    },
+    "typography": {
+      "headingFont": "Plus Jakarta Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "education, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#1E293B",
+      "#EAB308",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "education",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "global-south-ai",
+    "name": "Global South Ai",
+    "category": "Community",
+    "description": "Inclusive global AI community design",
+    "tokens": {
+      "background": "#020617",
+      "foreground": "#F8FAFC",
+      "primary": "#60A5FA",
+      "secondary": "#C084FC",
+      "surface": "#1B1F2E",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D303E",
+      "border": "#414451",
+      "focus": "#C084FC"
+    },
+    "typography": {
+      "headingFont": "Source Sans 3",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "community, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#60A5FA",
+      "#C084FC",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "community",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "paytech-ledger",
+    "name": "Paytech Ledger",
+    "category": "FinTech",
+    "description": "Ledger/payments grid language",
+    "tokens": {
+      "background": "#0F172A",
+      "foreground": "#F8FAFC",
+      "primary": "#38BDF8",
+      "secondary": "#A78BFA",
+      "surface": "#272E3F",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#383E4E",
+      "border": "#4B515F",
+      "focus": "#A78BFA"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "fintech, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#38BDF8",
+      "#A78BFA",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "fintech",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "startup-memo",
+    "name": "Startup Memo",
+    "category": "VC",
+    "description": "Investor memo visual style",
+    "tokens": {
+      "background": "#FFFFFF",
+      "foreground": "#0F172A",
+      "primary": "#111827",
+      "secondary": "#06B6D4",
+      "surface": "#F6F6F6",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEEEEE",
+      "border": "#DBDBDB",
+      "focus": "#06B6D4"
+    },
+    "typography": {
+      "headingFont": "Manrope",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "vc, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#111827",
+      "#06B6D4",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "vc",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "conference-mainstage",
+    "name": "Conference Mainstage",
+    "category": "Event",
+    "description": "Big-stage conference keynote",
+    "tokens": {
+      "background": "#111827",
+      "foreground": "#F8FAFC",
+      "primary": "#F59E0B",
+      "secondary": "#EF4444",
+      "surface": "#292F3D",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#393F4C",
+      "border": "#4C525D",
+      "focus": "#EF4444"
+    },
+    "typography": {
+      "headingFont": "Space Grotesk",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "event, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#F59E0B",
+      "#EF4444",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "event",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "design-system",
+    "name": "Design System",
+    "category": "Design",
+    "description": "Design tokens and UI guideline deck",
+    "tokens": {
+      "background": "#022C22",
+      "foreground": "#F8FAFC",
+      "primary": "#34D399",
+      "secondary": "#A7F3D0",
+      "surface": "#1B4138",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D5048",
+      "border": "#416159",
+      "focus": "#A7F3D0"
+    },
+    "typography": {
+      "headingFont": "IBM Plex Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "design, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#34D399",
+      "#A7F3D0",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "design",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "mobile-app-showcase",
+    "name": "Mobile App Showcase",
+    "category": "Product",
+    "description": "Mobile app screenshots and feature cards",
+    "tokens": {
+      "background": "#FAFAFA",
+      "foreground": "#0F172A",
+      "primary": "#18181B",
+      "secondary": "#71717A",
+      "surface": "#F1F1F1",
+      "muted": "#64748B",
+      "surfaceElevated": "#EAEAEA",
+      "border": "#D7D7D7",
+      "focus": "#71717A"
+    },
+    "typography": {
+      "headingFont": "Sora",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "product, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#18181B",
+      "#71717A",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "product",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "api-platform",
+    "name": "Api Platform",
+    "category": "Developer Tool",
+    "description": "API docs and platform launch style",
+    "tokens": {
+      "background": "#FFF7ED",
+      "foreground": "#0F172A",
+      "primary": "#9A3412",
+      "secondary": "#FDBA74",
+      "surface": "#F6EEE5",
+      "muted": "#64748B",
+      "surfaceElevated": "#EEE7DE",
+      "border": "#DBD4CC",
+      "focus": "#FDBA74"
+    },
+    "typography": {
+      "headingFont": "DM Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "developer tool, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#9A3412",
+      "#FDBA74",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "developer tool",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "risk-governance",
+    "name": "Risk Governance",
+    "category": "Compliance",
+    "description": "Risk/compliance boardroom deck",
+    "tokens": {
+      "background": "#020617",
+      "foreground": "#F8FAFC",
+      "primary": "#22D3EE",
+      "secondary": "#F43F5E",
+      "surface": "#1B1F2E",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D303E",
+      "border": "#414451",
+      "focus": "#F43F5E"
+    },
+    "typography": {
+      "headingFont": "Plus Jakarta Sans",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "compliance, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "sharp",
+    "motionStyle": "subtle",
+    "chartPalette": [
+      "#22D3EE",
+      "#F43F5E",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "compliance",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "spatial-web",
+    "name": "Spatial Web",
+    "category": "XR",
+    "description": "3D spatial web and immersive UI",
+    "tokens": {
+      "background": "#F0FDF4",
+      "foreground": "#0F172A",
+      "primary": "#14532D",
+      "secondary": "#14B8A6",
+      "surface": "#E8F4EB",
+      "muted": "#64748B",
+      "surfaceElevated": "#E0EDE4",
+      "border": "#CEDAD2",
+      "focus": "#14B8A6"
+    },
+    "typography": {
+      "headingFont": "Source Sans 3",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "xr, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "density": "airy",
+    "shapeLanguage": "soft",
+    "motionStyle": "cinematic",
+    "chartPalette": [
+      "#14532D",
+      "#14B8A6",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "xr",
+      "hero",
+      "split",
+      "cards",
+      "timeline",
+      "comparison"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "open-source-builder",
+    "name": "Open Source Builder",
+    "category": "Developer",
+    "description": "Open-source community builder style",
+    "tokens": {
+      "background": "#FEFCE8",
+      "foreground": "#0F172A",
+      "primary": "#1E293B",
+      "secondary": "#EAB308",
+      "surface": "#F5F3E0",
+      "muted": "#64748B",
+      "surfaceElevated": "#EDECD9",
+      "border": "#DAD9C8",
+      "focus": "#EAB308"
+    },
+    "typography": {
+      "headingFont": "Inter",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "developer, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards"
+    ],
+    "density": "balanced",
+    "shapeLanguage": "editorial",
+    "motionStyle": "snappy",
+    "chartPalette": [
+      "#1E293B",
+      "#EAB308",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "developer",
+      "hero",
+      "split",
+      "cards"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  },
+  {
+    "id": "rainforest-tech",
+    "name": "Rainforest Tech",
+    "category": "Climate",
+    "description": "Natural green tech-modern mix",
+    "tokens": {
+      "background": "#020617",
+      "foreground": "#F8FAFC",
+      "primary": "#60A5FA",
+      "secondary": "#C084FC",
+      "surface": "#1B1F2E",
+      "muted": "#A7B0C0",
+      "surfaceElevated": "#2D303E",
+      "border": "#414451",
+      "focus": "#C084FC"
+    },
+    "typography": {
+      "headingFont": "Manrope",
+      "bodyFont": "Inter",
+      "codeFont": "JetBrains Mono"
+    },
+    "mood": "climate, modern, web-native",
+    "layoutBias": [
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "density": "compact",
+    "shapeLanguage": "technical",
+    "motionStyle": "precise",
+    "chartPalette": [
+      "#60A5FA",
+      "#C084FC",
+      "#22C55E",
+      "#F59E0B",
+      "#EF4444",
+      "#8B5CF6"
+    ],
+    "recommendedFor": [
+      "climate",
+      "hero",
+      "split",
+      "cards",
+      "timeline"
+    ],
+    "antiPatterns": [
+      "Do not combine more than two decorative effects in one slide.",
+      "Do not apply glass cards to every content group.",
+      "Do not use accent colors for body text."
+    ]
+  }
+]
