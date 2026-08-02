@@ -10,6 +10,8 @@ A presentation archetype describes the communication situation. A template descr
 4. Plan layout rhythm from `layout-manifest.json`.
 5. Apply justified token overrides.
 
+A theme must never replace narrative structure. Select archetype and template before theme; the theme supplies tokens, not slide roles or argument flow.
+
 ## Template scoring
 
 Score candidates against audience, objective, decision/learning type, duration, evidence type, domain, delivery mode, and interaction needs.
@@ -21,6 +23,8 @@ A template slide plan is a starting point. Remove filler roles and add domain-sp
 Score tone, brand compatibility, contrast, density, typography, media mix, chart palette, shape language, and motion style. Bind to the target product's design system when available.
 
 Fonts in a catalog are preferences, not bundled licenses. Use available or project-native alternatives.
+
+Treat the selected theme's `antiPatterns` array as blockers, not suggestions. Each entry forbids a usage outright (for example, "Do not combine more than two decorative effects in one slide.").
 
 ## Editor expectations
 

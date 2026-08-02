@@ -11,7 +11,9 @@ Use data visuals and diagrams to answer a precise question. Do not add them mere
 - Part-to-whole → stacked bar; use pie/donut only for a few clearly different parts.
 - Progress toward target → bullet/progress view with baseline and target.
 
-Every chart must define units, time range, denominator, source, and accessible summary. Use direct labels where possible, emphasize the series that supports the claim, and mute secondary context. Keep zero baselines where magnitude comparison requires them. Do not use 3D charts, dual axes without strong justification, decorative gauges, or interpolated precision unsupported by the source.
+Every chart must define a question and a takeaway plus units, time range, denominator, source, and accessible summary. Use direct labels where possible, emphasize the series that supports the claim, and mute secondary context. Keep zero baselines where magnitude comparison requires them. Do not use 3D charts, dual axes without strong justification, decorative gauges, or interpolated precision unsupported by the source.
+
+A chart or diagram must stay inside its assigned slot frame and must not overflow into neighboring content. Do not include decorative charts or invented metrics; every visual must answer its stated question with real data.
 
 ## Diagram construction
 
