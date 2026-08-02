@@ -29,6 +29,10 @@ def main():
  for label,values in [('slide',slide_ids),('block',block_ids),('interaction',interaction_ids)]:
   if len(values)!=len(set(values)):fail(f'duplicate {label} IDs')
  templates=catalog_ids('template-manifest.json','id');themes=catalog_ids('theme-manifest.json','id');blocks=catalog_ids('block-manifest.json','type');animations=catalog_ids('animation-manifest.json','id');interaction_types=catalog_ids('interaction-manifest.json','type')
+ motion_profiles=catalog_ids('motion-profile-manifest.json','id')
+ mpid=deck.get('presentation',{}).get('motionProfileId')
+ if not mpid:fail('presentation.motionProfileId is required (pick from motion-profile-manifest.json)')
+ if mpid not in motion_profiles:fail(f'unknown presentation.motionProfileId: {mpid}')
  layout_items=load_json(ASSETS/'layout-manifest.json');layouts={x['id']:x for x in layout_items}
  profile=deck['experience']['profile'];surfaces=set(deck['experience']['surfaces'])
  if profile=='editable-deck':

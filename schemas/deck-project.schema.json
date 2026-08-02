@@ -246,6 +246,7 @@
         "mode",
         "transition",
         "keyboard",
+        "motionProfileId",
         "reducedMotion"
       ],
       "properties": {
@@ -287,6 +288,22 @@
             "always",
             "never"
           ]
+        },
+        "motionProfileId": {
+          "enum": [
+            "executive-subtle",
+            "technical-precise",
+            "education-guided",
+            "pitch-dynamic",
+            "seminar-editorial",
+            "portfolio-showcase",
+            "self-guided-calm",
+            "none-accessible"
+          ]
+        },
+        "defaultBuilds": {
+          "type": "boolean",
+          "description": "Runtime applies default entrance/build motion from the motion profile even when individual blocks declare no animation."
         },
         "autoplay": {
           "$ref": "#/$defs/autoplay"

@@ -25,6 +25,7 @@
   "presentation": {
     "mode": "horizontal",
     "transition": "crossfade",
+    "motionProfileId": "pitch-dynamic",
     "keyboard": true,
     "touch": true,
     "deepLinks": true,

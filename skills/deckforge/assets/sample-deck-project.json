@@ -25,6 +25,8 @@
   "presentation": {
     "mode": "horizontal",
     "transition": "crossfade",
+    "motionProfileId": "executive-subtle",
+    "defaultBuilds": true,
     "keyboard": true,
     "touch": true,
     "deepLinks": true,
