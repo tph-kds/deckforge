@@ -77,6 +77,13 @@ def main():
   for section in ['editor','presenter']:
    ids=[x.get('id') for x in sh.get(section,[])]
    if len(ids)!=len(set(ids)):errors.append(f'shortcut-help {section}: duplicate ids')
+  sample=load('sample-deck-project.json')
+  if not isinstance(sample,dict) or sample.get('schemaVersion')!='2.1':
+   errors.append('sample-deck-project.json: expected schema 2.1 object')
+  for slide in sample.get('slides',[]):
+   for block in slide.get('blocks',[]):
+    if block.get('type') not in block_types:errors.append(f"sample deck {slide.get('id')}: unknown block type {block.get('type')}")
+    for sid in block.get('sourceIds',[]):errors.append('sample deck: sourceIds are not allowed in the offline sample')
  if errors:
   print('\n'.join('ERROR: '+e for e in errors),file=sys.stderr);raise SystemExit(1)
  summary=', '.join(f"{n.replace('-manifest.json','')}={len(d)}" for n,d in catalogs.items())

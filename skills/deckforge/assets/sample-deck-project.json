@@ -104,7 +104,33 @@
           },
           "style": {},
           "sourceIds": [],
-          "slot": "title",
+          "slot": "subtitle",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b6",
+          "type": "diagram",
+          "content": {
+            "nodes": [
+              "Agents",
+              "Tools",
+              "Guardrails"
+            ],
+            "edges": [
+              "Agents->Tools",
+              "Agents->Guardrails"
+            ]
+          },
+          "frame": {
+            "x": 980,
+            "y": 200,
+            "w": 520,
+            "h": 460
+          },
+          "style": {},
+          "alt": "Diagram of agents orchestrating tools under guardrails.",
+          "sourceIds": [],
+          "slot": "visual",
           "positionMode": "slot"
         }
       ],
@@ -116,8 +142,23 @@
         {
           "slot": "title",
           "blockIds": [
-            "b1",
+            "b1"
+          ],
+          "flow": "stack",
+          "gap": 16
+        },
+        {
+          "slot": "subtitle",
+          "blockIds": [
             "b2"
+          ],
+          "flow": "stack",
+          "gap": 16
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b6"
           ],
           "flow": "stack",
           "gap": 16
@@ -131,6 +172,23 @@
       "blocks": [
         {
           "id": "b3",
+          "type": "heading",
+          "content": "Three layers of the product",
+          "frame": {
+            "x": 84,
+            "y": 90,
+            "w": 900,
+            "h": 80
+          },
+          "style": {
+            "level": 2
+          },
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b4",
           "type": "diagram",
           "content": {
             "nodes": [
@@ -145,14 +203,44 @@
           },
           "frame": {
             "x": 120,
-            "y": 150,
+            "y": 220,
             "w": 1360,
-            "h": 560
+            "h": 480
           },
           "style": {},
           "alt": "Three-layer architecture from experience to agent runtime to trust layer.",
           "sourceIds": [],
-          "slot": "kicker",
+          "slot": "diagram",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b5",
+          "type": "text",
+          "content": "Keep experience, execution, and governance as separate layers.",
+          "frame": {
+            "x": 120,
+            "y": 760,
+            "w": 900,
+            "h": 60
+          },
+          "style": {},
+          "sourceIds": [],
+          "slot": "takeaway",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b7",
+          "type": "caption",
+          "content": "Experience: product surfaces · Runtime: execution and orchestration · Trust: policy, privacy, safety",
+          "frame": {
+            "x": 980,
+            "y": 640,
+            "w": 520,
+            "h": 120
+          },
+          "style": {},
+          "sourceIds": [],
+          "slot": "legend",
           "positionMode": "slot"
         }
       ],
@@ -162,9 +250,33 @@
       "density": "medium",
       "layoutBindings": [
         {
-          "slot": "kicker",
+          "slot": "title",
           "blockIds": [
             "b3"
+          ],
+          "flow": "stack",
+          "gap": 16
+        },
+        {
+          "slot": "diagram",
+          "blockIds": [
+            "b4"
+          ],
+          "flow": "stack",
+          "gap": 16
+        },
+        {
+          "slot": "takeaway",
+          "blockIds": [
+            "b5"
+          ],
+          "flow": "stack",
+          "gap": 16
+        },
+        {
+          "slot": "legend",
+          "blockIds": [
+            "b7"
           ],
           "flow": "stack",
           "gap": 16

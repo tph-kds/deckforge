@@ -18,6 +18,7 @@
 - Added `docs/EXTENDING.md` documenting how to extend catalog manifests, embedded copies, and built-in skill workflows, with the verification commands that gate each change.
 - Added a deterministic content audit (`skills/deckforge/scripts/audit_deck_content.py`, wrapped at `scripts/audit_deck_content.py`) covering plan §5.5/§20.1 checks: duplicate slide titles, generic context-free titles, verbatim repeated claims, empty text content, incomplete metrics, chart captions, and density budgets. Wired into `npm run validate`, `npm run test:visual`, and the regression suite with a violations fixture; documented in `quality-gate.md`.
 - Fixed the `ai-product-vision` reference deck, which bound a diagram to the text-only `kicker` slot while its required `title`/`diagram` slots were empty and mis-assigned two blocks to the single-item `title` slot; it now passes strict layout, content, motion, and schema audits and is covered by the validate gate.
+- Applied the same slot-binding fix to `skills/deckforge/assets/sample-deck-project.json` (the deck agents copy from) and added a sample-deck integrity check to `scripts/validate_catalogs.py`.
 
 ## 2.2.0 — 2026-08-02
 
