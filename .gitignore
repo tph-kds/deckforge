@@ -23,4 +23,7 @@ examples/01-example/dist/
 examples/02-example/node_modules/
 examples/02-example/dist/
 
+# git worktrees
+.worktrees/
+
 
