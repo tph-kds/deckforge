@@ -45,6 +45,15 @@ class ExampleTests(unittest.TestCase):
    p=os.path.join(d,'deck.json');Path(p).write_text(json.dumps(static),encoding='utf-8')
    r=subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),p],capture_output=True,text=True)
    self.assertNotEqual(r.returncode,0)
+ def test_content_audit_passes_for_real_decks(self):
+  for name in ('02-example/deck.json','acme-platform-migration.deck.json'):
+   subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_content.py'),str(ROOT/'examples'/name)],check=True)
+ def test_content_audit_fails_for_violation_fixture(self):
+  path=ROOT/'tests/fixtures/content-violations/deck.json'
+  r=subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_content.py'),str(path)],capture_output=True,text=True)
+  self.assertNotEqual(r.returncode,0)
+  for needle in ('duplicate slide title','empty content','metric missing','repeated claim'):
+   self.assertIn(needle,r.stderr)
  def test_embedded_skill_copy_in_sync(self):
   import hashlib
   canon=ROOT/'skills/deckforge';embed=ROOT/'examples/02-example/.agents/skills/deckforge'

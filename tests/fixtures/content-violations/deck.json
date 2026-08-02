@@ -1,0 +1,309 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {
+    "id": "deck-content-violations",
+    "slug": "content-violations",
+    "title": "Content violations fixture",
+    "description": "Fixture deck exercising every deterministic content-audit failure mode.",
+    "language": "en",
+    "audience": "QA",
+    "objective": "Fail the content audit",
+    "templateId": "executive-strategy"
+  },
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1600,
+    "height": 900,
+    "safeMargin": 64,
+    "grid": 8,
+    "layoutMode": "semantic-slots"
+  },
+  "theme": {
+    "id": "mono-ink",
+    "overrides": {}
+  },
+  "presentation": {
+    "mode": "horizontal",
+    "transition": "crossfade",
+    "motionProfileId": "executive-subtle",
+    "defaultBuilds": true,
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "reducedMotion": "respect-system"
+  },
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "autosave": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "requiredZones": [
+      "app-bar",
+      "slide-rail",
+      "canvas",
+      "inspector",
+      "notes",
+      "save-status"
+    ]
+  },
+  "assets": [],
+  "slides": [
+    {
+      "id": "s1",
+      "title": "Overview",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b1",
+          "type": "heading",
+          "content": "Overview",
+          "frame": { "x": 80, "y": 150, "w": 980, "h": 200 },
+          "style": { "level": 1 },
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "",
+      "sources": [],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        { "slot": "title", "blockIds": ["b1"], "flow": "stack", "gap": 16 }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Overview",
+      "layout": "statement",
+      "blocks": [
+        {
+          "id": "b2",
+          "type": "text",
+          "content": "",
+          "frame": { "x": 80, "y": 150, "w": 980, "h": 200 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "statement",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b3",
+          "type": "metric",
+          "content": { "value": "", "label": "" },
+          "frame": { "x": 80, "y": 400, "w": 320, "h": 160 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "support",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "",
+      "sources": [],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        { "slot": "statement", "blockIds": ["b2"], "flow": "stack", "gap": 16 },
+        { "slot": "support", "blockIds": ["b3"], "flow": "stack", "gap": 16 }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Claimed twice",
+      "layout": "statement",
+      "blocks": [
+        {
+          "id": "b4",
+          "type": "text",
+          "content": "Revenue grew 12 percent last quarter across every region.",
+          "frame": { "x": 80, "y": 150, "w": 980, "h": 200 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "statement",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "",
+      "sources": [],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        { "slot": "statement", "blockIds": ["b4"], "flow": "stack", "gap": 16 }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "Claimed twice again",
+      "layout": "statement",
+      "blocks": [
+        {
+          "id": "b5",
+          "type": "text",
+          "content": "Revenue grew 12 percent last quarter across every region.",
+          "frame": { "x": 80, "y": 150, "w": 980, "h": 200 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "statement",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "",
+      "sources": [],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        { "slot": "statement", "blockIds": ["b5"], "flow": "stack", "gap": 16 }
+      ]
+    },
+    {
+      "id": "s5",
+      "title": "Dense deck",
+      "layout": "metric-grid",
+      "blocks": [
+        {
+          "id": "b6",
+          "type": "heading",
+          "content": "A",
+          "frame": { "x": 80, "y": 80, "w": 400, "h": 60 },
+          "style": { "level": 2 },
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b7",
+          "type": "metric",
+          "content": { "value": "1", "label": "one" },
+          "frame": { "x": 120, "y": 200, "w": 300, "h": 140 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b8",
+          "type": "metric",
+          "content": { "value": "2", "label": "two" },
+          "frame": { "x": 440, "y": 200, "w": 300, "h": 140 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b9",
+          "type": "metric",
+          "content": { "value": "3", "label": "three" },
+          "frame": { "x": 760, "y": 200, "w": 300, "h": 140 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b10",
+          "type": "metric",
+          "content": { "value": "4", "label": "four" },
+          "frame": { "x": 1080, "y": 200, "w": 300, "h": 140 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b11",
+          "type": "metric",
+          "content": { "value": "5", "label": "five" },
+          "frame": { "x": 120, "y": 380, "w": 300, "h": 140 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b12",
+          "type": "metric",
+          "content": { "value": "6", "label": "six" },
+          "frame": { "x": 440, "y": 380, "w": 300, "h": 140 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b13",
+          "type": "metric",
+          "content": { "value": "7", "label": "seven" },
+          "frame": { "x": 760, "y": 380, "w": 300, "h": 140 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b14",
+          "type": "metric",
+          "content": { "value": "8", "label": "eight" },
+          "frame": { "x": 1080, "y": 380, "w": 300, "h": 140 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b15",
+          "type": "metric",
+          "content": { "value": "9", "label": "nine" },
+          "frame": { "x": 120, "y": 560, "w": 300, "h": 140 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b16",
+          "type": "metric",
+          "content": { "value": "10", "label": "ten" },
+          "frame": { "x": 440, "y": 560, "w": 300, "h": 140 },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "",
+      "sources": [],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        { "slot": "title", "blockIds": ["b6"], "flow": "stack", "gap": 16 },
+        {
+          "slot": "metrics",
+          "blockIds": ["b7", "b8", "b9", "b10", "b11", "b12", "b13", "b14", "b15", "b16"],
+          "flow": "grid",
+          "gap": 16
+        }
+      ]
+    }
+  ],
+  "sources": [],
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "content-violations",
+    "embed": { "enabled": true, "allowedOrigins": ["https://example.com"], "sandbox": ["allow-scripts"], "responsive": true },
+    "analytics": false,
+    "allowDownload": false
+  },
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": ["editor", "presenter"],
+    "routes": { "editor": "/editor", "presenter": "/present" },
+    "capabilities": ["semantic-layout", "persistent-editing", "shortcut-help"]
+  },
+  "shortcuts": { "helpEnabled": true, "helpKey": "?", "editorPreset": "deckforge-default", "presenterPreset": "deckforge-default" }
+}

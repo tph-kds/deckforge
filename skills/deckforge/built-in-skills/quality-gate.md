@@ -8,6 +8,7 @@ Run:
 
 ```bash
 python scripts/audit_deck_layout.py <deck.json>
+python scripts/audit_deck_content.py <deck.json>
 python scripts/validate_output_contract.py <target-project> --profile <profile>
 ```
 
@@ -41,6 +42,15 @@ Read slide titles as a narrative. Inspect each slide for:
 - sources and citations;
 - varied but coherent layout rhythm;
 - absence of placeholders and AI-slop patterns.
+
+Blocking content defects (also caught by `audit_deck_content.py`):
+
+- duplicate slide titles;
+- generic context-free titles such as "Overview" or "Thank you";
+- the same claim stated verbatim on multiple slides;
+- empty text, heading, quote, or callout content;
+- metric blocks missing a value or label;
+- charts with no caption and little supporting text.
 
 ## Collision review
 

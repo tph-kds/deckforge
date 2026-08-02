@@ -16,6 +16,7 @@
 - Added a theme-variant example deck (`examples/acme-platform-migration.deck.json`) demonstrating the `portfolio-case-study` archetype, `editorial-cream` theme, and `seminar-editorial` motion profile as an alternative reference to the default `02-example`; wired into `npm run validate` and the regression test suite.
 - Added repo-level `npm run test` (Python suite + the `02-example` vitest suite, 76 tests) and `npm run test:visual` (strict layout, asset, and contrast audits) to complete the M7 exit-condition commands.
 - Added `docs/EXTENDING.md` documenting how to extend catalog manifests, embedded copies, and built-in skill workflows, with the verification commands that gate each change.
+- Added a deterministic content audit (`skills/deckforge/scripts/audit_deck_content.py`, wrapped at `scripts/audit_deck_content.py`) covering plan §5.5/§20.1 checks: duplicate slide titles, generic context-free titles, verbatim repeated claims, empty text content, incomplete metrics, chart captions, and density budgets. Wired into `npm run validate`, `npm run test:visual`, and the regression suite with a violations fixture; documented in `quality-gate.md`.
 
 ## 2.2.0 — 2026-08-02
 

@@ -32,6 +32,7 @@ npm run validate        # full repo gate (rules, catalogs, decks, output contrac
 python scripts/validate_catalogs.py                  # catalog + semantic layout contract integrity
 python scripts/validate_deck_project.py <deck.json>  # schema 2.1 + profile contract
 python scripts/audit_deck_layout.py <deck.json> --strict
+python scripts/audit_deck_content.py <deck.json>     # titles, claims, density, metrics, charts
 python skills/deckforge/scripts/audit_deck_motion.py <deck.json>
 npm run test            # Python suite + the 02-example vitest suite
 npm run test:visual     # deterministic strict-layout, asset, and contrast audits
