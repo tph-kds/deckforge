@@ -184,7 +184,7 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
   const theme = getTheme(deck.theme.id);
 
   return (
-    <div className="editor-shell" data-testid="deck-editor-shell">
+    <div className={`editor-shell ${notesOpen ? '' : 'notes-collapsed'}`} data-testid="deck-editor-shell">
       <header className="editor-appbar">
         <div className="editor-document-title">
           <strong>{deck.meta.title}</strong>
