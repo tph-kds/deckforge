@@ -12,7 +12,18 @@ export function PresenterView({ deck, renderSlide }: { deck: DeckProject; render
   const go = (next: number) => { setIndex(Math.min(Math.max(next,0),visible.length-1)); setBuildIndex(0); };
   const next = () => { if (buildIndex + 1 < buildCount) setBuildIndex(buildIndex+1); else go(index+1); };
   const previous = () => { if (buildIndex > 0) setBuildIndex(buildIndex-1); else go(index-1); };
-  useDeckHotkeys({ next, previous, first: () => go(0), last: () => go(visible.length-1) });
+  useDeckHotkeys({
+    next,
+    previous,
+    first: () => go(0),
+    last: () => go(visible.length - 1),
+    overview: () => {},
+    fullscreen: () => {},
+    speaker: () => {},
+    blackout: () => {},
+    shortcuts: () => {},
+    exit: () => {},
+  });
   return (
     <main className="presenter-view" aria-live="polite">
       <div className="presenter-stage">{renderSlide(index, buildIndex)}</div>
