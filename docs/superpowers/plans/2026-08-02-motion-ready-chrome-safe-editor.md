@@ -34,7 +34,7 @@
 
 The tests and the `validate` script reference `examples/editable-deck-studio`, which does not exist. The real editable example lives at `examples/02-example`. Also, `node --check` currently targets `examples/editable-deck-studio/app.js` but the editable example is a Vite/React app with no root `app.js`; the vanilla JS file to syntax-check is `examples/01-example/app.js`.
 
-- [ ] **Step 1: Fix the test paths**
+- [x] **Step 1: Fix the test paths**
 
 Edit `tests/test_examples.py`:
 
@@ -45,21 +45,21 @@ ROOT/'examples/editable-deck-studio'             ->   ROOT/'examples/02-example'
 
 (lines 6, 18, 19).
 
-- [ ] **Step 2: Run the tests**
+- [x] **Step 2: Run the tests**
 
 Run: `python -m unittest discover -s tests -p "test_*.py" -v`
 Expected: all tests PASS, no FileNotFoundError.
 
-- [ ] **Step 3: Fix the package.json validate script**
+- [x] **Step 3: Fix the package.json validate script**
 
 Edit `package.json` line 7. Replace every `examples/editable-deck-studio` with `examples/02-example`, and replace the `node --check` target `examples/editable-deck-studio/app.js` with `examples/01-example/app.js`.
 
-- [ ] **Step 4: Verify a component command**
+- [x] **Step 4: Verify a component command**
 
 Run: `python scripts/validate_deck_project.py examples/02-example/deck.json`
 Expected: `OK: examples\02-example\deck.json (7 slides, 36 blocks, 0 interactions, profile=editable-deck)`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add tests/test_examples.py package.json
@@ -84,7 +84,7 @@ git commit -m "fix(validate): point tests and validate script at examples/02-exa
 - Consumes: `motion-profile-manifest.json` ids.
 - Produces: `presentation.motionProfileId` (required string) and `presentation.defaultBuilds` (optional boolean) in the schema and in every validated deck; `validate_deck_project.py` rejects unknown profile ids.
 
-- [ ] **Step 1: Add the fields to the canonical schema**
+- [x] **Step 1: Add the fields to the canonical schema**
 
 In `skills/deckforge/assets/deck-project.schema.json`, `presentation` definition (around lines 242-295):
 
@@ -111,12 +111,12 @@ Add to `properties`:
 }
 ```
 
-- [ ] **Step 2: Mirror the schema**
+- [x] **Step 2: Mirror the schema**
 
 Run: `Copy-Item skills/deckforge/assets/deck-project.schema.json schemas/deck-project.schema.json`
 Verify identical: `python -c "import json;print(json.load(open('schemas/deck-project.schema.json'))==json.load(open('skills/deckforge/assets/deck-project.schema.json')))"` prints `True`.
 
-- [ ] **Step 3: Add the validation check**
+- [x] **Step 3: Add the validation check**
 
 Edit `scripts/validate_deck_project.py` after the `motion_profiles`/catalog loading lines:
 
@@ -127,12 +127,12 @@ if not mpid:fail('presentation.motionProfileId is required (pick from motion-pro
 if mpid not in motion_profiles:fail(f'unknown presentation.motionProfileId: {mpid}')
 ```
 
-- [ ] **Step 4: Run it — expect failure on current decks**
+- [x] **Step 4: Run it — expect failure on current decks**
 
 Run: `python scripts/validate_deck_project.py examples/02-example/deck.json`
 Expected: `ERROR: presentation.motionProfileId is required ...` and exit 1.
 
-- [ ] **Step 5: Add `motionProfileId` to the decks**
+- [x] **Step 5: Add `motionProfileId` to the decks**
 
 `examples/02-example/deck.json` `presentation` (line ~31): add `"motionProfileId": "technical-precise"` (profile `slideTransition` is `push`, matching the deck) and `"defaultBuilds": true`.
 
@@ -142,7 +142,7 @@ Expected: `ERROR: presentation.motionProfileId is required ...` and exit 1.
 
 `examples/01-example/index.html` embedded deck `presentation` (line ~99): add `"motionProfileId": "education-guided"`.
 
-- [ ] **Step 6: Run validation on both example decks**
+- [x] **Step 6: Run validation on both example decks**
 
 Run:
 ```bash
@@ -151,12 +151,12 @@ python scripts/validate_deck_project.py examples/02-example/deck.json
 ```
 Expected: both print `OK:` with no ERROR.
 
-- [ ] **Step 7: Verify catalog validation still passes**
+- [x] **Step 7: Verify catalog validation still passes**
 
 Run: `python scripts/validate_catalogs.py`
 Expected: PASS, exit 0.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add skills/deckforge/assets/deck-project.schema.json schemas/deck-project.schema.json scripts/validate_deck_project.py skills/deckforge/assets/sample-deck-project.json examples/ai-product-vision.deck.json examples/02-example/deck.json examples/01-example/index.html
@@ -181,7 +181,7 @@ git commit -m "feat(schema): require presentation.motionProfileId and validate i
 - Consumes: `motionProfileId` (Task 2).
 - Produces: agent-facing rules that force motion and chrome discipline; consumed by nothing at runtime.
 
-- [ ] **Step 1: Update `motion-and-transitions.md`**
+- [x] **Step 1: Update `motion-and-transitions.md`**
 
 Add a section before `## Select a motion profile`:
 
@@ -208,7 +208,7 @@ motion.
 
 Also add to `## Smoothness rules`: `- Docked presenter chrome must never animate over the slide canvas.`
 
-- [ ] **Step 2: Update `quality-gate.md`**
+- [x] **Step 2: Update `quality-gate.md`**
 
 Add under `## Document-to-product consistency`:
 
@@ -217,7 +217,7 @@ Add under `## Document-to-product consistency`:
 - presenter chrome (timer, position, controls, progress) must be docked outside the slide area — floating chrome over slide content is blocking.
 ```
 
-- [ ] **Step 3: Update `system-prompt.md`**
+- [x] **Step 3: Update `system-prompt.md`**
 
 Replace the `## Motion` paragraph (line ~107):
 
@@ -235,7 +235,7 @@ Respect reduced motion by replacing spatial transforms with immediate or subtle
 fade changes. Presenter chrome must be docked outside the letterboxed slide area.
 ```
 
-- [ ] **Step 4: Update `SKILL.md`**
+- [x] **Step 4: Update `SKILL.md`**
 
 In section 5 (after archetype reading), add a step binding motion:
 
@@ -246,7 +246,7 @@ Apply the profile's default slide transition and block builds even when the user
 did not request motion.
 ```
 
-- [ ] **Step 5: Update `delivery-acceptance-contract.md`**
+- [x] **Step 5: Update `delivery-acceptance-contract.md`**
 
 Add to `Blocking failures`:
 
@@ -256,7 +256,7 @@ Add to `Blocking failures`:
 - editor with an unassigned grid row or a non-collapsible notes area.
 ```
 
-- [ ] **Step 6: Update `editor-experience.md`**
+- [x] **Step 6: Update `editor-experience.md`**
 
 Add under `Required workspace anatomy`:
 
@@ -267,7 +267,7 @@ direct grid child. The canvas row must be `minmax(0,1fr)` with `overflow:auto`;
 no reserved-but-empty bands may exist.
 ```
 
-- [ ] **Step 7: Update `presenter-experience.md`**
+- [x] **Step 7: Update `presenter-experience.md`**
 
 Add under `Audience view`:
 
@@ -277,7 +277,7 @@ the letterboxed slide. Never float chrome over the slide canvas. Auto-hide chrom
 on idle in fullscreen and reveal on pointer-move.
 ```
 
-- [ ] **Step 8: Update `layout-and-rendering.md`**
+- [x] **Step 8: Update `layout-and-rendering.md`**
 
 Add under `Responsive strategy`:
 
@@ -286,7 +286,7 @@ Presenter reserves a docked chrome band outside the letterboxed stage. The slide
 canvas must never be covered by chrome at any viewport or fullscreen state.
 ```
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add skills/deckforge/built-in-skills/motion-and-transitions.md skills/deckforge/built-in-skills/quality-gate.md skills/deckforge/system-prompt.md skills/deckforge/SKILL.md skills/deckforge/references/delivery-acceptance-contract.md skills/deckforge/built-in-skills/editor-experience.md skills/deckforge/built-in-skills/presenter-experience.md skills/deckforge/built-in-skills/layout-and-rendering.md
@@ -312,7 +312,7 @@ git commit -m "docs(skills): mandate default motion and docked presenter chrome"
   3. at least one block in the deck declares an `animation` OR `presentation.defaultBuilds === true`;
   4. `presentation.reducedMotion` present.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Add to `tests/test_examples.py`:
 
@@ -328,12 +328,12 @@ Add to `tests/test_examples.py`:
    self.assertNotEqual(r.returncode,0)
 ```
 
-- [ ] **Step 2: Run to verify it fails**
+- [x] **Step 2: Run to verify it fails**
 
 Run: `python -m unittest tests.test_examples -v`
 Expected: `test_motion_audit_*` FAIL (module/script not found).
 
-- [ ] **Step 3: Write the validator**
+- [x] **Step 3: Write the validator**
 
 Create `skills/deckforge/scripts/audit_deck_motion.py`:
 
@@ -369,7 +369,7 @@ def main():
 if __name__=='__main__':main()
 ```
 
-- [ ] **Step 4: Create the root wrapper**
+- [x] **Step 4: Create the root wrapper**
 
 Create `scripts/audit_deck_motion.py`:
 
@@ -380,12 +380,12 @@ import runpy
 runpy.run_path(str(Path(__file__).resolve().parents[1]/'skills/deckforge/scripts/audit_deck_motion.py'),run_name='__main__')
 ```
 
-- [ ] **Step 5: Run the test suite**
+- [x] **Step 5: Run the test suite**
 
 Run: `python -m unittest tests.test_examples -v`
 Expected: both new tests PASS.
 
-- [ ] **Step 6: Verify both example decks pass the motion audit**
+- [x] **Step 6: Verify both example decks pass the motion audit**
 
 Run:
 ```bash
@@ -394,7 +394,7 @@ python skills/deckforge/scripts/audit_deck_motion.py examples/ai-product-vision.
 ```
 Expected: `MOTION: ... 0 errors` exit 0 for both.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add skills/deckforge/scripts/audit_deck_motion.py scripts/audit_deck_motion.py tests/test_examples.py
@@ -414,7 +414,7 @@ git commit -m "feat(validate): add audit_deck_motion.py for motion-ready decks"
 - Consumes: existing `corpus()`/`check()` helpers.
 - Produces: new required checks `default-motion` and `chrome-safe` in the editable-deck profile branch.
 
-- [ ] **Step 1: Add the checks**
+- [x] **Step 1: Add the checks**
 
 In `validate_output_contract.py`, in the `editable-deck` profile branch (after `present-current`):
 
@@ -426,7 +426,7 @@ In `validate_output_contract.py`, in the `editable-deck` profile branch (after `
 
 Keep the existing `reduced-motion` check (already present as `check('reduced-motion',...)` at line 33) — do not duplicate; only add `default-motion` and the chrome `required=False` informative check. `default-motion` should be `required=True` (default).
 
-- [ ] **Step 2: Write the test**
+- [x] **Step 2: Write the test**
 
 Add to `tests/test_examples.py`:
 
@@ -436,12 +436,12 @@ Add to `tests/test_examples.py`:
   self.assertEqual(result.returncode,0,result.stderr)
 ```
 
-- [ ] **Step 3: Run to verify it passes (after Task 6/7 implement motion)**
+- [x] **Step 3: Run to verify it passes (after Task 6/7 implement motion)**
 
 Note: this test depends on the 02-example presenter having real motion + chrome classes. If it fails before Task 6/7, that is expected. Run: `python -m unittest tests.test_examples -v`
 Expected: PASS after Tasks 6 and 7 are complete.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add skills/deckforge/scripts/validate_output_contract.py tests/test_examples.py
@@ -462,7 +462,7 @@ git commit -m "feat(validate): add default-motion and chrome-safe contract check
 - Consumes: `Block.animation` (types.ts), `presentation.defaultBuilds` from deck.json.
 - Produces: presenter navigation consumes build steps before advancing; slide transitions animate; blocks reveal with entrance animation. CSS classes: `slide`, `slide-enter`, `slide-exit`, `build-hidden`, `anim-in`.
 
-- [ ] **Step 1: Add build-step model to the presenter**
+- [x] **Step 1: Add build-step model to the presenter**
 
 In `PresenterApp.tsx`, add state and derive the per-slide build count:
 
@@ -493,7 +493,7 @@ const next = useCallback(() => {
 
 Reset `buildIndex` to 0 when navigating via `goTo`, `first`, `last`, and on `safeIndex` change. Pass `buildIndex` to `<SlideRenderer>`.
 
-- [ ] **Step 2: Render reveals and entrances in SlideRenderer**
+- [x] **Step 2: Render reveals and entrances in SlideRenderer**
 
 In `SlideRenderer.tsx`, accept a new prop `buildIndex?: number` (default `Number.MAX_SAFE_INTEGER`) and compute revealed state per block. For each block wrapper add:
 
@@ -519,7 +519,7 @@ function revealStepFor(block: Block, slide: DeckSlide, defaultBuilds: boolean): 
 
 Import `Block`/`DeckSlide` types as needed. Keep `memo` and existing props stable.
 
-- [ ] **Step 3: Add transition + build CSS**
+- [x] **Step 3: Add transition + build CSS**
 
 In `examples/02-example/src/styles.css`, under `/* ---------- Presenter ---------- */`, add:
 
@@ -554,7 +554,7 @@ In `examples/02-example/src/styles.css`, under `/* ---------- Presenter --------
 }
 ```
 
-- [ ] **Step 4: Wire the current-slide class in PresenterApp**
+- [x] **Step 4: Wire the current-slide class in PresenterApp**
 
 In `PresenterApp.tsx`, give the current slide wrapper `is-current` and a re-triggering `slide-enter` key:
 
@@ -564,12 +564,12 @@ In `PresenterApp.tsx`, give the current slide wrapper `is-current` and a re-trig
 
 and wrap in a div `className="presenter-stage-slide is-current slide-enter"` so the CSS transition fires on index change. Ensure `.presenter-stage` centers this wrapper (keep flex layout).
 
-- [ ] **Step 5: Build and verify**
+- [x] **Step 5: Build and verify**
 
 Run: `& npm.cmd run build` in `examples/02-example`
 Expected: `tsc` passes and Vite build succeeds.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add examples/02-example/src/render/SlideRenderer.tsx examples/02-example/src/presenter/PresenterApp.tsx examples/02-example/src/styles.css
@@ -590,7 +590,7 @@ git commit -m "feat(example): add slide transitions and build-step motion to pre
 - Consumes: existing presenter/editor components.
 - Produces: timer lives in the docked chrome bar (not absolute top-right); chrome auto-hides in fullscreen; notes strip is a direct grid child and collapsible; no empty grid band.
 
-- [ ] **Step 1: Move the timer into the chrome bar**
+- [x] **Step 1: Move the timer into the chrome bar**
 
 In `PresenterApp.tsx`, remove the standalone `<div className="presenter-timer">` block that sits above `.presenter-controls`; instead render the timer inside the chrome bar on the right:
 
@@ -603,7 +603,7 @@ In `PresenterApp.tsx`, remove the standalone `<div className="presenter-timer">`
 </div>
 ```
 
-- [ ] **Step 2: Update CSS for docked chrome + fullscreen auto-hide**
+- [x] **Step 2: Update CSS for docked chrome + fullscreen auto-hide**
 
 Replace the `.presenter-timer` rule:
 
@@ -630,7 +630,7 @@ Add fullscreen auto-hide behavior:
 }
 ```
 
-- [ ] **Step 3: Toggle chrome on pointer-move in fullscreen**
+- [x] **Step 3: Toggle chrome on pointer-move in fullscreen**
 
 In `PresenterApp.tsx`, add state and effect:
 
@@ -652,11 +652,11 @@ useEffect(() => {
 
 Add `is-chrome-active` to the shell className when `chromeActive`.
 
-- [ ] **Step 4: Fix editor notes as a direct grid child**
+- [x] **Step 4: Fix editor notes as a direct grid child**
 
 In `EditorApp.tsx`, move `<div className="editor-notes-area">...</div>` OUT of `<main className="editor-canvas">` and place it as a sibling of `<main>` and `<aside>` inside `.editor-shell`, immediately after `</main>`.
 
-- [ ] **Step 5: Make notes collapsible**
+- [x] **Step 5: Make notes collapsible**
 
 Add state `const [notesOpen, setNotesOpen] = useState(true);` in `EditorApp`. Give `.editor-notes-area` a header with a toggle button and add class `is-collapsed` when closed. In CSS:
 
@@ -665,14 +665,14 @@ Add state `const [notesOpen, setNotesOpen] = useState(true);` in `EditorApp`. Gi
 .editor-notes-area.is-collapsed textarea { display: none; }
 ```
 
-- [ ] **Step 6: Build and verify**
+- [x] **Step 6: Build and verify**
 
 Run: `& npm.cmd run build` in `examples/02-example`
 Expected: passes. Then:
 Run: `python skills/deckforge/scripts/validate_output_contract.py examples/02-example --profile editable-deck`
 Expected: PASS, no missing required checks.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add examples/02-example/src/presenter/PresenterApp.tsx examples/02-example/src/editor/EditorApp.tsx examples/02-example/src/styles.css
@@ -692,7 +692,7 @@ git commit -m "fix(example): dock presenter chrome and fix editor notes layout"
 - Consumes: existing build-step model (`computeBuildModel`, `applyState`).
 - Produces: blocks without explicit `animation` still animate on first reveal (fade-up) when motion is on; HUD/controls stay out of the slide area and auto-hide in fullscreen.
 
-- [ ] **Step 1: Default animation fallback in `applyState`**
+- [x] **Step 1: Default animation fallback in `applyState`**
 
 In `app.js` `applyState`, the block entrance branch currently requires `block.animation`:
 
@@ -718,7 +718,7 @@ if (anim && state.motion && !done.has(bid)) {
 
 Initialize `state.defaultAnimOrder = 0` and increment it per first-run block so blocks stagger.
 
-- [ ] **Step 2: Ensure timer chip stays in the HUD and hides in fullscreen**
+- [x] **Step 2: Ensure timer chip stays in the HUD and hides in fullscreen**
 
 In `styles.css`, `.deck-hud` and `.deck-controls` are already docked at the bottom. Add:
 
@@ -729,12 +729,12 @@ body:fullscreen .deck-hud { opacity: 0; }
 body:fullscreen:hover .deck-hud { opacity: 1; }
 ```
 
-- [ ] **Step 3: Syntax-check**
+- [x] **Step 3: Syntax-check**
 
 Run: `node --check examples/01-example/app.js`
 Expected: no output, exit 0.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add examples/01-example/app.js examples/01-example/styles.css
@@ -758,11 +758,11 @@ git commit -m "feat(example): default block motion and fullscreen chrome auto-hi
 - Consumes: `Block.animation`, `presentation.defaultBuilds`, `presentation.motionProfileId`.
 - Produces: reusable motion types/helpers, motion CSS classes, build-aware stage, docked presenter chrome, app-shell editor.
 
-- [ ] **Step 1: Add motion types to `deck-types.ts`**
+- [x] **Step 1: Add motion types to `deck-types.ts`**
 
 Add `motionProfileId?: string; defaultBuilds?: boolean;` to the `presentation` interface and ensure `BlockAnimation` has `order`/`trigger` (already present).
 
-- [ ] **Step 2: Expand `AnimationRuntime.tsx`**
+- [x] **Step 2: Expand `AnimationRuntime.tsx`**
 
 Add a build-step model helper:
 
@@ -784,7 +784,7 @@ export function isBlockRevealed(blockId: string, blocks: DeckBlock[], buildIndex
 }
 ```
 
-- [ ] **Step 3: Add motion CSS to `base.css`**
+- [x] **Step 3: Add motion CSS to `base.css`**
 
 Append:
 
@@ -798,7 +798,7 @@ Append:
 @media (prefers-reduced-motion:reduce) { .deck-block { animation:none !important; opacity:1 !important; } }
 ```
 
-- [ ] **Step 4: Make `DeckStage` build-aware**
+- [x] **Step 4: Make `DeckStage` build-aware**
 
 Add `buildIndex?: number` and `defaultBuilds?: boolean` props. Wrap each block in `AnimatedBlock` (from `AnimationRuntime`) and compute `revealed` via `isBlockRevealed`:
 
@@ -809,7 +809,7 @@ const revealed = isBlockRevealed(block.id, slide.blocks, buildIndex ?? Number.MA
 
 Keep existing layout-slot/freeform/background logic intact; apply the same wrapper in all three render paths (slot blocks, freeform, backgrounds).
 
-- [ ] **Step 5: Dock presenter chrome in `PresenterView.tsx`**
+- [x] **Step 5: Dock presenter chrome in `PresenterView.tsx`**
 
 Add `buildIndex` state and build-aware navigation; move the position/progress into a docked `.presenter-chrome` bar:
 
@@ -837,11 +837,11 @@ export function PresenterView({ deck, renderSlide }: { deck: DeckProject; render
 }
 ```
 
-- [ ] **Step 6: Verify `DeckEditorShell` grid is complete**
+- [x] **Step 6: Verify `DeckEditorShell` grid is complete**
 
 In `base.css`, confirm the editor grid maps every row (`appbar`, `rail/canvas/inspector`, `rail notes inspector`) to real elements and that `.deck-notes-area` is a direct grid child (it already is in `DeckEditorShell.tsx` as `<footer className="deck-notes-area">`). No change needed unless validation reveals a gap.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add skills/deckforge/starter-components/AnimationRuntime.tsx skills/deckforge/starter-components/base.css skills/deckforge/starter-components/DeckStage.tsx skills/deckforge/starter-components/PresenterView.tsx skills/deckforge/starter-components/DeckEditorShell.tsx skills/deckforge/starter-components/deck-types.ts
@@ -862,23 +862,23 @@ git commit -m "feat(starter): motion-aware stage and docked presenter chrome"
 - Consumes: nothing at runtime.
 - Produces: tightened agent guidance for theme vs template, charts inside slots, image fit/crop, and content budgets.
 
-- [ ] **Step 1: `template-and-theme.md`**
+- [x] **Step 1: `template-and-theme.md`**
 
 Add a rule: a theme must never replace narrative structure; select archetype + template first, then theme; document the theme's `antiPatterns` as blockers.
 
-- [ ] **Step 2: `data-and-diagrams.md`**
+- [x] **Step 2: `data-and-diagrams.md`**
 
 Add: charts/diagrams must stay inside their assigned slot frame; no decorative charts or invented metrics; every chart has a question, takeaway, units, source, and accessible summary.
 
-- [ ] **Step 3: `asset-and-media-workflow.md`**
+- [x] **Step 3: `asset-and-media-workflow.md`**
 
 Add: set `fit` (`cover`/`contain`) and focal point explicitly; never stretch images; respect alt text; lazy-load below-the-fold media.
 
-- [ ] **Step 4: `composition-and-layout-engine.md`**
+- [x] **Step 4: `composition-and-layout-engine.md`**
 
 Add: enforce `contentBudget` per slot; when content overflows, shorten/split/change layout, never shrink text below readable size; surface warnings in the editor.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add skills/deckforge/built-in-skills/template-and-theme.md skills/deckforge/built-in-skills/data-and-diagrams.md skills/deckforge/built-in-skills/asset-and-media-workflow.md skills/deckforge/built-in-skills/composition-and-layout-engine.md
@@ -896,12 +896,12 @@ git commit -m "docs(skills): tighten theme, chart, media, and layout guidance"
 - Consumes: all previous tasks.
 - Produces: green end-to-end validation.
 
-- [ ] **Step 1: Run the full validate suite**
+- [x] **Step 1: Run the full validate suite**
 
 Run: `npm.cmd run validate`
 Expected: exit 0, every `PASS`, `OK:`, and unittest PASS, with no ERROR lines.
 
-- [ ] **Step 2: Run motion audits on all example decks**
+- [x] **Step 2: Run motion audits on all example decks**
 
 Run:
 ```bash
@@ -910,22 +910,22 @@ python scripts/audit_deck_motion.py examples/ai-product-vision.deck.json
 ```
 Expected: `MOTION: ... 0 errors` both.
 
-- [ ] **Step 3: Run the layout audit in strict mode**
+- [x] **Step 3: Run the layout audit in strict mode**
 
 Run: `python scripts/audit_deck_layout.py examples/02-example/deck.json --strict`
 Expected: exit 0.
 
-- [ ] **Step 4: Build the editable example**
+- [x] **Step 4: Build the editable example**
 
 Run: `& npm.cmd run build` in `examples/02-example`
 Expected: `tsc` + Vite build succeed.
 
-- [ ] **Step 5: Confirm schema parity**
+- [x] **Step 5: Confirm schema parity**
 
 Run: `python -c "import json;print(json.load(open('schemas/deck-project.schema.json'))==json.load(open('skills/deckforge/assets/deck-project.schema.json')))"`
 Expected: `True`.
 
-- [ ] **Step 6: Report results**
+- [x] **Step 6: Report results**
 
 Report exact commands, exit codes, and any remaining limitations to the user. Do not claim browser/interaction testing that was not performed.
 
