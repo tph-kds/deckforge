@@ -14,7 +14,12 @@ Map project tokens to a small DeckForge semantic layer such as:
 - `deck.heading.*`, `deck.body.*`, `deck.code.*`;
 - `deck.space.*`, `deck.radius.*`, `deck.shadow.*`;
 - `deck.motion.fast`, `deck.motion.normal`, `deck.motion.ease`;
-- `deck.chart.series.*`, `deck.chart.positive`, `deck.chart.negative`.
+- `deck.chart.series.*`, `deck.chart.positive`, `deck.chart.negative`;
+- `deck.scroll.track`, `deck.scroll.thumb`, `deck.scroll.thumbGradient`,
+  `deck.scroll.thumbHover`, `deck.scroll.width`, `deck.scroll.radius`.
+
+Scrollbar styling must resolve from the theme's `scrollbar` mapping and these
+semantic tokens — never hard-coded colors scattered across components.
 
 Do not duplicate the complete design system or hard-code brand values throughout slide components. Theme overrides must remain declarative and validated.
 

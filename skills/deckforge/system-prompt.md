@@ -104,6 +104,16 @@ Navigation consumes build steps before moving slides. Backward arrival normally 
 
 Provide an in-product shortcut guide. Do not expect users to discover hidden keys from README files.
 
+## Scrollbars and scroll surfaces
+
+Scrollable editor and publishing surfaces use theme-aware custom scrollbars; the slide canvas and the fullscreen audience presentation never do.
+
+- Wrap every permitted scroll container in the semantic `ScrollSurface` wrapper and resolve the scrollbar style from the theme mapping (`assets/theme-manifest.json` `scrollbar` field) plus optional per-surface overrides (`assets/scrollbar-manifest.json`).
+- Keep scrolling native: never intercept wheel/trackpad input. Use `scroll-behavior: smooth` only for programmatic navigation and respect reduced motion.
+- Use `scrollbar-gutter: stable`, style both axes, and provide WebKit, Firefox (`scrollbar-color`), forced-colors, high-contrast, and coarse-pointer fallbacks. `system-native` is the safe fallback.
+- The fullscreen presenter must lock document scrolling, hide all presenter-tree scrollbars, and restore editor scroll position on exit.
+- A slide that overflows must be shortened, re-laid-out, or split — never scrolled.
+
 ## Motion
 
 Motion is required, not optional. Bind `presentation.motionProfileId` to the deck's

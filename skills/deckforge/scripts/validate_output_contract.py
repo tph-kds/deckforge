@@ -49,6 +49,12 @@ def main():
         check('present-current','Present from current slide',[r'present.*current',r'current.*present',r'presentfromslide'])
         check('default-motion','Runtime motion (transitions and builds)',[r'motionprofileid',r'slidetype=["\']animation',r'buildindex|buildstep|buildstepindex',r'step-visible|row-visible|build-hidden',r'anim-in|animate-in',r'transition.*(slide|class)|slide.*transition'])
         check('chrome-safe','Presenter chrome docked outside slide area',[r'presenter[-_ ]chrome',r'presenter[-_ ]controls',r'presenter[-_ ]stage',r'deck-controls'],required=False)
+        check('scrollbar-themed','Theme-aware custom scrollbars',[r'::-\s*webkit-scrollbar',r'scrollbar-color',r'data-scroll-surface',r'data-scrollbar-style',r'--scrollbar-width'])
+        check('scrollbar-cross-browser','Cross-browser scrollbar fallback',[r'::-\s*webkit-scrollbar[\s\S]{0,800}scrollbar-color|scrollbar-width[\s\S]{0,800}::-webkit-scrollbar'])
+        check('scrollbar-stage-hidden','Slide stage never scrollable',[r'slide[-_ ]stage[^{]{0,120}\{[^}]{0,300}overflow:\s*hidden'])
+        check('scrollbar-presenter-hidden','Fullscreen presenter hides scrollbars',[r'presenter[-_ ]?shell[^{]{0,120}\{[^}]{0,300}overflow:\s*hidden',r'presenter[-_ ]stage[^{]{0,120}\{[^}]{0,200}scrollbar-width:\s*none'])
+        check('scrollbar-reduced-motion','Scrollbar reduced-motion handling',[r'prefers-reduced-motion[\s\S]{0,500}scroll',r'data-smooth-scroll'])
+        check('scrollbar-forced-colors','Forced-colors scrollbar override',[r'forced-colors'])
     elif a.profile=='published-story':
         check('responsive-viewer','Responsive/self-guided viewer',[r'viewer',r'reflow',r'responsive'])
         check('deep-links','Deep-linked slides',[r'location\.hash',r'router.*slide',r'deeplink'])

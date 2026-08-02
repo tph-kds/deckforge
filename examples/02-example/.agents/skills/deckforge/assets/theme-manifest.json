@@ -1,6 +1,13 @@
 [
   {
     "id": "aurora-executive",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "slide-list": "gradient-slim",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Aurora Executive",
     "category": "Executive",
     "description": "Gradient-rich enterprise keynote with calm aurora accents",
@@ -53,6 +60,12 @@
   },
   {
     "id": "fintech-midnight",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "slide-list": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Fintech Midnight",
     "category": "FinTech",
     "description": "Dark navy fintech dashboard language with luminous data accents",
@@ -105,6 +118,14 @@
   },
   {
     "id": "saigon-neon",
+    "scrollbar": {
+      "default": "neon-edge",
+      "slide-list": "gradient-slim",
+      "inspector": "gradient-slim",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Saigon Neon",
     "category": "Modern Asia",
     "description": "Vibrant urban night style inspired by Southeast Asian tech events",
@@ -157,6 +178,13 @@
   },
   {
     "id": "minimal-founder",
+    "scrollbar": {
+      "default": "minimal-thin",
+      "grid": "gradient-slim",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Minimal Founder",
     "category": "Startup",
     "description": "Clean founder pitch deck with generous whitespace and sharp type",
@@ -209,6 +237,11 @@
   },
   {
     "id": "warm-product",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Warm Product",
     "category": "Product",
     "description": "Soft warm SaaS product storytelling with card-based layouts",
@@ -261,6 +294,12 @@
   },
   {
     "id": "research-lab",
+    "scrollbar": {
+      "default": "minimal-thin",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Research Lab",
     "category": "Research",
     "description": "Academic but modern research slides with precise grids",
@@ -313,6 +352,13 @@
   },
   {
     "id": "ai-cosmos",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "slide-list": "gradient-slim",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Ai Cosmos",
     "category": "AI",
     "description": "Futuristic AI cosmos with dark surfaces and neural glows",
@@ -365,6 +411,12 @@
   },
   {
     "id": "carbon-command",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "slide-list": "minimal-thin",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Carbon Command",
     "category": "Engineering",
     "description": "Carbon-black command center for deep technical demos",
@@ -417,6 +469,11 @@
   },
   {
     "id": "glass-enterprise",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Glass Enterprise",
     "category": "Enterprise",
     "description": "Glassmorphism business deck with blue/gray hierarchy",
@@ -469,6 +526,13 @@
   },
   {
     "id": "editorial-cream",
+    "scrollbar": {
+      "default": "minimal-thin",
+      "grid": "gradient-slim",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Editorial Cream",
     "category": "Editorial",
     "description": "Magazine-like narrative presentation with cream background",
@@ -521,6 +585,12 @@
   },
   {
     "id": "quantum-violet",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "slide-list": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Quantum Violet",
     "category": "AI",
     "description": "Deep violet scientific futurism",
@@ -571,6 +641,12 @@
   },
   {
     "id": "oceanic-blueprint",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "slide-list": "minimal-thin",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Oceanic Blueprint",
     "category": "Architecture",
     "description": "Blueprint grid over ocean blues",
@@ -623,6 +699,12 @@
   },
   {
     "id": "civic-slate",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "slide-list": "minimal-thin",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Civic Slate",
     "category": "Public Sector",
     "description": "Responsible civic dashboard clarity",
@@ -677,6 +759,11 @@
   },
   {
     "id": "greenfield-growth",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Greenfield Growth",
     "category": "Climate",
     "description": "Green innovation and sustainability",
@@ -727,6 +814,11 @@
   },
   {
     "id": "mono-ink",
+    "scrollbar": {
+      "default": "mono-ink",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Mono Ink",
     "category": "Minimal",
     "description": "Black-and-white consultant elegance",
@@ -779,6 +871,11 @@
   },
   {
     "id": "solar-optimist",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Solar Optimist",
     "category": "Startup",
     "description": "Sunny optimistic product launch",
@@ -833,6 +930,13 @@
   },
   {
     "id": "cyber-grid",
+    "scrollbar": {
+      "default": "neon-edge",
+      "slide-list": "gradient-slim",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Cyber Grid",
     "category": "Security",
     "description": "Cybersecurity command-grid aesthetic",
@@ -883,6 +987,11 @@
   },
   {
     "id": "healthcare-calm",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Healthcare Calm",
     "category": "Healthcare",
     "description": "Calm clinical modern interface",
@@ -935,6 +1044,11 @@
   },
   {
     "id": "education-playful",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Education Playful",
     "category": "Education",
     "description": "Bright learning-focused classroom style",
@@ -989,6 +1103,13 @@
   },
   {
     "id": "data-observatory",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "slide-list": "gradient-slim",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Data Observatory",
     "category": "Analytics",
     "description": "Astronomy-inspired analytics report",
@@ -1039,6 +1160,12 @@
   },
   {
     "id": "luxury-onyx",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "slide-list": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Luxury Onyx",
     "category": "Premium",
     "description": "Luxury black and gold executive deck",
@@ -1091,6 +1218,11 @@
   },
   {
     "id": "violet-studio",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Violet Studio",
     "category": "Creative",
     "description": "Studio portfolio with violet accents",
@@ -1145,6 +1277,11 @@
   },
   {
     "id": "coral-market",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Coral Market",
     "category": "Marketing",
     "description": "Friendly coral campaign narrative",
@@ -1195,6 +1332,12 @@
   },
   {
     "id": "deep-space-product",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Deep Space Product",
     "category": "Product",
     "description": "Dark product launch with cosmic depth",
@@ -1247,6 +1390,12 @@
   },
   {
     "id": "notion-clean",
+    "scrollbar": {
+      "default": "minimal-thin",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Notion Clean",
     "category": "Documentation",
     "description": "Clean knowledge-base style",
@@ -1301,6 +1450,11 @@
   },
   {
     "id": "blue-ocean-strategy",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Blue Ocean Strategy",
     "category": "Strategy",
     "description": "Consulting strategy with blue accents",
@@ -1351,6 +1505,13 @@
   },
   {
     "id": "terminal-green",
+    "scrollbar": {
+      "default": "neon-edge",
+      "slide-list": "gradient-slim",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Terminal Green",
     "category": "Engineering",
     "description": "Terminal-first hacker engineering mode",
@@ -1403,6 +1564,12 @@
   },
   {
     "id": "paper-research",
+    "scrollbar": {
+      "default": "minimal-thin",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Paper Research",
     "category": "Research",
     "description": "Paper-like research manuscript layout",
@@ -1457,6 +1624,11 @@
   },
   {
     "id": "gradient-saas",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Gradient Saas",
     "category": "SaaS",
     "description": "Soft gradients for SaaS landing storytelling",
@@ -1507,6 +1679,12 @@
   },
   {
     "id": "banking-trust",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "slide-list": "minimal-thin",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Banking Trust",
     "category": "FinTech",
     "description": "Conservative bank-grade trust design",
@@ -1559,6 +1737,12 @@
   },
   {
     "id": "robotics-lab",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "slide-list": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Robotics Lab",
     "category": "Robotics",
     "description": "Industrial robotics lab style",
@@ -1613,6 +1797,11 @@
   },
   {
     "id": "genz-pop",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Genz Pop",
     "category": "Community",
     "description": "High-energy pop community deck",
@@ -1663,6 +1852,11 @@
   },
   {
     "id": "founder-bold",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Founder Bold",
     "category": "Startup",
     "description": "Bold founder story with oversized typography",
@@ -1715,6 +1909,11 @@
   },
   {
     "id": "enterprise-report",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Enterprise Report",
     "category": "Enterprise",
     "description": "Annual-report inspired corporate design",
@@ -1769,6 +1968,12 @@
   },
   {
     "id": "blueprint-mcp",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "slide-list": "minimal-thin",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Blueprint Mcp",
     "category": "Developer Tool",
     "description": "Protocol architecture blueprint aesthetic",
@@ -1819,6 +2024,11 @@
   },
   {
     "id": "portfolio-dark",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Portfolio Dark",
     "category": "Portfolio",
     "description": "Designer portfolio with dark canvas",
@@ -1871,6 +2081,12 @@
   },
   {
     "id": "sunset-demo",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Sunset Demo",
     "category": "Product",
     "description": "Demo-day sunset gradients",
@@ -1925,6 +2141,11 @@
   },
   {
     "id": "neo-brutalist",
+    "scrollbar": {
+      "default": "mono-ink",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Neo Brutalist",
     "category": "Creative",
     "description": "Bold neo-brutalist web slide style",
@@ -1975,6 +2196,12 @@
   },
   {
     "id": "calm-ai-safety",
+    "scrollbar": {
+      "default": "minimal-thin",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Calm Ai Safety",
     "category": "AI Safety",
     "description": "Responsible AI safety with calm palette",
@@ -2027,6 +2254,13 @@
   },
   {
     "id": "vietnam-tech",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "slide-list": "gradient-slim",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Vietnam Tech",
     "category": "Regional",
     "description": "Vietnam tech ecosystem-inspired accents",
@@ -2081,6 +2315,11 @@
   },
   {
     "id": "market-map",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Market Map",
     "category": "Business",
     "description": "Market landscape grid and quadrants",
@@ -2131,6 +2370,11 @@
   },
   {
     "id": "customer-journey",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Customer Journey",
     "category": "Product",
     "description": "Journey-map friendly product design",
@@ -2183,6 +2427,11 @@
   },
   {
     "id": "pitch-night",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Pitch Night",
     "category": "Startup",
     "description": "Dark high-stakes pitch-night style",
@@ -2237,6 +2486,11 @@
   },
   {
     "id": "scientific-poster",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Scientific Poster",
     "category": "Research",
     "description": "Conference poster meets slide deck",
@@ -2287,6 +2541,12 @@
   },
   {
     "id": "cloud-infra",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "slide-list": "minimal-thin",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Cloud Infra",
     "category": "Cloud",
     "description": "Cloud platform diagrams and soft blue nodes",
@@ -2339,6 +2599,11 @@
   },
   {
     "id": "agent-orchestration",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Agent Orchestration",
     "category": "AI Agents",
     "description": "Multi-agent workflow visual language",
@@ -2393,6 +2658,13 @@
   },
   {
     "id": "rag-knowledge",
+    "scrollbar": {
+      "default": "neon-edge",
+      "slide-list": "gradient-slim",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Rag Knowledge",
     "category": "AI",
     "description": "Knowledge graph and RAG themed",
@@ -2443,6 +2715,11 @@
   },
   {
     "id": "video-ai-studio",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Video Ai Studio",
     "category": "Media AI",
     "description": "Video generation studio deck",
@@ -2495,6 +2772,11 @@
   },
   {
     "id": "edtech-scholar",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Edtech Scholar",
     "category": "Education",
     "description": "Scholarship and admissions style",
@@ -2549,6 +2831,12 @@
   },
   {
     "id": "global-south-ai",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "slide-list": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Global South Ai",
     "category": "Community",
     "description": "Inclusive global AI community design",
@@ -2599,6 +2887,11 @@
   },
   {
     "id": "paytech-ledger",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Paytech Ledger",
     "category": "FinTech",
     "description": "Ledger/payments grid language",
@@ -2651,6 +2944,12 @@
   },
   {
     "id": "startup-memo",
+    "scrollbar": {
+      "default": "minimal-thin",
+      "speaker-notes": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Startup Memo",
     "category": "VC",
     "description": "Investor memo visual style",
@@ -2705,6 +3004,12 @@
   },
   {
     "id": "conference-mainstage",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "slide-list": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Conference Mainstage",
     "category": "Event",
     "description": "Big-stage conference keynote",
@@ -2755,6 +3060,11 @@
   },
   {
     "id": "design-system",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Design System",
     "category": "Design",
     "description": "Design tokens and UI guideline deck",
@@ -2807,6 +3117,11 @@
   },
   {
     "id": "mobile-app-showcase",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Mobile App Showcase",
     "category": "Product",
     "description": "Mobile app screenshots and feature cards",
@@ -2861,6 +3176,12 @@
   },
   {
     "id": "api-platform",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "slide-list": "minimal-thin",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Api Platform",
     "category": "Developer Tool",
     "description": "API docs and platform launch style",
@@ -2911,6 +3232,12 @@
   },
   {
     "id": "risk-governance",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "slide-list": "minimal-thin",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Risk Governance",
     "category": "Compliance",
     "description": "Risk/compliance boardroom deck",
@@ -2963,6 +3290,11 @@
   },
   {
     "id": "spatial-web",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Spatial Web",
     "category": "XR",
     "description": "3D spatial web and immersive UI",
@@ -3017,6 +3349,11 @@
   },
   {
     "id": "open-source-builder",
+    "scrollbar": {
+      "default": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Open Source Builder",
     "category": "Developer",
     "description": "Open-source community builder style",
@@ -3067,6 +3404,12 @@
   },
   {
     "id": "rainforest-tech",
+    "scrollbar": {
+      "default": "aurora-glow",
+      "slide-list": "gradient-slim",
+      "presenter": "none",
+      "slide-stage": "none"
+    },
     "name": "Rainforest Tech",
     "category": "Climate",
     "description": "Natural green tech-modern mix",

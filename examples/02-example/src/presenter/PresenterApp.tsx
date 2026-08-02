@@ -6,6 +6,8 @@ import { PresenterSlideRenderer, ThumbnailSlideRenderer } from '../render/SlideR
 import { SlideStage } from '../render/SlideStage';
 import { ShortcutHelpDialog } from '../ui/ShortcutHelpDialog';
 import { useHotkeys } from '../ui/hotkeys';
+import { useDocumentScrollLock } from '../deck/scrollbars/scrollbarRuntime';
+import { ScrollSurface } from '../deck/scrollbars/ScrollSurface';
 import { useTimer } from './useTimer';
 import { formatElapsed } from './timerMachine';
 
@@ -56,6 +58,8 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
   const safeIndex = Math.min(index, total - 1);
   const slide = slides[safeIndex];
   const theme = getTheme(deck.theme.id);
+
+  useDocumentScrollLock(true);
 
   const buildCount = useMemo(
     () => buildCountFor(slide, deck.presentation.defaultBuilds ?? false),
@@ -255,7 +259,7 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
       )}
 
       {overview && !blackout ? (
-        <div className="presenter-overview" role="dialog" aria-modal="false" aria-label="Slide overview">
+        <ScrollSurface surface="grid" className="presenter-overview" aria-label="Slide overview">
           {slides.map((slideItem, slideIndex) => (
             <button
               type="button"
@@ -272,7 +276,7 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
               <span className="overview-title">{slideItem.title}</span>
             </button>
           ))}
-        </div>
+        </ScrollSurface>
       ) : null}
 
       {speakerOpen && !blackout ? (
@@ -308,10 +312,10 @@ function SpeakerPanel({ store, currentIndex, elapsedMs, onClose }: SpeakerPanelP
           <SlideStage deck={deck}>
             {(stageScale) => <PresenterSlideRenderer deck={deck} slide={slide} scale={stageScale} />}
           </SlideStage>
-          <div className="speaker-notes">
+          <ScrollSurface surface="speaker-notes" className="speaker-notes">
             <h4>Notes</h4>
             <p>{slide.speakerNotes || 'No notes for this slide.'}</p>
-          </div>
+          </ScrollSurface>
         </div>
         <div className="speaker-next">
           <h4>Up next</h4>

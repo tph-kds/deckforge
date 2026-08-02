@@ -4,7 +4,9 @@ import { getTheme } from './deck/themes';
 import { getMotionProfile, reducedMotionMode } from './deck/motion';
 import { EditorApp } from './editor/EditorApp';
 import { PresenterApp } from './presenter/PresenterApp';
+import { ScrollbarProvider } from './deck/scrollbars/scrollbarRuntime';
 import './styles.css';
+import './deck/scrollbars/scrollbars.css';
 
 export function App() {
   const store = useDeck();
@@ -23,6 +25,10 @@ export function App() {
 
   const reducedClass = motionReduced === 'always' ? 'is-reduced-motion' : motionReduced === 'never' ? 'is-animated' : '';
 
+  const scrollbarOverrides = (store.deck.theme.overrides?.scrollbar as
+    | import('./deck/scrollbars/resolveScrollbar').ScrollbarOverrideMap
+    | undefined);
+
   return (
     <div
       className={`app app-${route} ${reducedClass}`}
@@ -37,6 +43,12 @@ export function App() {
           '--theme-surface-elevated': theme.tokens.surfaceElevated,
           '--theme-border': theme.tokens.border,
           '--theme-focus': theme.tokens.focus,
+          '--theme-canvas': theme.tokens.background,
+          '--theme-accent': theme.tokens.secondary,
+          '--theme-accent-secondary': theme.tokens.primary,
+          '--theme-surface-muted': theme.tokens.muted,
+          '--theme-text-secondary': theme.tokens.muted,
+          '--theme-divider': theme.tokens.border,
           '--theme-gradient-hero': theme.gradients?.hero,
           '--theme-gradient-emphasis': theme.gradients?.emphasis,
           '--theme-gradient-progress': theme.gradients?.progress,
@@ -51,9 +63,13 @@ export function App() {
       }
     >
       {route === 'editor' ? (
-        <EditorApp store={store} navigate={navigate} />
+        <ScrollbarProvider mapping={theme.scrollbar} overrides={scrollbarOverrides}>
+          <EditorApp store={store} navigate={navigate} />
+        </ScrollbarProvider>
       ) : (
-        <PresenterApp store={store} navigate={navigate} />
+        <ScrollbarProvider mapping={theme.scrollbar} overrides={scrollbarOverrides}>
+          <PresenterApp store={store} navigate={navigate} />
+        </ScrollbarProvider>
       )}
     </div>
   );

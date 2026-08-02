@@ -92,6 +92,7 @@ Before rendering, verify:
 - Presenter/audience → `built-in-skills/presenter-experience.md`
 - Shortcuts/help → `built-in-skills/shortcut-help-and-discoverability.md`
 - Motion/builds → `built-in-skills/motion-and-transitions.md`
+- Scrollbars/scroll surfaces → `references/scrollbar-and-scroll-surfaces.md`
 - Charts/diagrams → `built-in-skills/data-and-diagrams.md`
 - Import/migration → `built-in-skills/import-and-migration.md`
 - Publish/embed → `built-in-skills/publish-and-embed.md`
@@ -165,3 +166,5 @@ Do not report completion while collision, clipped text, broken controls, placeho
 - Do not fabricate facts, citations, logos, screenshots, metrics, or testimonials.
 - Do not default AI topics to dark neon gradients or repetitive card grids.
 - Do not mix editor chrome into presenter mode.
+- Do not leave default browser scrollbars in scrollable surfaces; theme-aware custom scrollbars are required.
+- Do not make the slide canvas or the fullscreen presenter scrollable, and never intercept wheel input to fake smooth scrolling.

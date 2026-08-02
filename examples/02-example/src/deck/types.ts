@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { ScrollbarThemeMapping } from './scrollbars/scrollbarTypes';
 
 export type PositionMode = 'slot' | 'flow' | 'freeform' | 'background';
 export type FitPolicy = 'wrap' | 'contain' | 'cover' | 'scroll' | 'change-layout' | 'split-slide';
@@ -196,6 +197,7 @@ export interface ThemeDef {
   motionStyle?: string;
   gradients?: ThemeGradients;
   antiPatterns?: string[];
+  scrollbar?: ScrollbarThemeMapping;
 }
 
 export interface DeckProject {

@@ -10,6 +10,11 @@ All chrome — timer, position, controls, progress — lives in a docked band ou
 the letterboxed slide. Never float chrome over the slide canvas. Auto-hide chrome
 on idle in fullscreen and reveal on pointer-move.
 
+The fullscreen audience surface must never scroll and must never show a scrollbar.
+Lock document scrolling while presenting, hide every scrollbar in the presenter
+tree, and restore the editor's body overflow and scroll position when leaving
+fullscreen (Escape, `fullscreenchange`, unmount, or route change).
+
 Navigation must distinguish build-step progress from slide progress. Support next, previous, first, last, overview, fullscreen, exit, and deep-linked slide entry. Define behavior when a slide contains interactive content so clicking a control does not accidentally advance the deck.
 
 ## Speaker view

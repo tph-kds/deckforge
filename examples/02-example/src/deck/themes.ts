@@ -20,6 +20,13 @@ const cream: ThemeDef = {
   chartPalette: ['#2B2118', '#B45309', '#15803D', '#C2410C', '#EF4444', '#8B5CF6'],
   shapeLanguage: 'soft',
   motionStyle: 'cinematic',
+  scrollbar: {
+    default: 'minimal-thin',
+    grid: 'gradient-slim',
+    'speaker-notes': 'gradient-slim',
+    presenter: 'none',
+    'slide-stage': 'none',
+  },
   gradients: {
     hero: 'radial-gradient(120% 120% at 80% 0%, #FBE9D2 0%, #FAF3E7 48%, #F4E7D5 100%)',
     emphasis: 'linear-gradient(135deg, #F0E3D0 0%, #F6ECDC 100%)',
@@ -49,6 +56,12 @@ const oceanic: ThemeDef = {
   chartPalette: ['#111827', '#0891B2', '#15803D', '#D97706', '#EF4444', '#8B5CF6'],
   shapeLanguage: 'technical',
   motionStyle: 'precise',
+  scrollbar: {
+    default: 'gradient-slim',
+    'slide-list': 'minimal-thin',
+    presenter: 'none',
+    'slide-stage': 'none',
+  },
   gradients: {
     hero: 'radial-gradient(120% 120% at 70% 0%, #E0F7FA 0%, #FFFFFF 55%, #F0FBFC 100%)',
     emphasis: 'linear-gradient(135deg, #E8F8FA 0%, #F7FEFF 100%)',
@@ -78,6 +91,12 @@ const research: ThemeDef = {
   chartPalette: ['#0F172A', '#0284C7', '#15803D', '#D97706', '#EF4444', '#8B5CF6'],
   shapeLanguage: 'soft',
   motionStyle: 'cinematic',
+  scrollbar: {
+    default: 'minimal-thin',
+    'speaker-notes': 'gradient-slim',
+    presenter: 'none',
+    'slide-stage': 'none',
+  },
   gradients: {
     hero: 'radial-gradient(120% 120% at 75% 0%, #E0F2FE 0%, #F8FAFC 55%, #EDF5FC 100%)',
     emphasis: 'linear-gradient(135deg, #EAF3FB 0%, #F6FAFD 100%)',
@@ -107,6 +126,11 @@ const warm: ThemeDef = {
   chartPalette: ['#1F2937', '#C2410C', '#15803D', '#D97706', '#EF4444', '#8B5CF6'],
   shapeLanguage: 'sharp',
   motionStyle: 'subtle',
+  scrollbar: {
+    default: 'gradient-slim',
+    presenter: 'none',
+    'slide-stage': 'none',
+  },
   gradients: {
     hero: 'radial-gradient(120% 120% at 70% 0%, #FFEDD5 0%, #FFF7ED 55%, #FFF0E0 100%)',
     emphasis: 'linear-gradient(135deg, #FDEAD7 0%, #FFF5EC 100%)',
@@ -136,6 +160,12 @@ const carbon: ThemeDef = {
   chartPalette: ['#84CC16', '#38BDF8', '#22C55E', '#F59E0B', '#EF4444', '#8B5CF6'],
   shapeLanguage: 'technical',
   motionStyle: 'precise',
+  scrollbar: {
+    default: 'gradient-slim',
+    'slide-list': 'minimal-thin',
+    presenter: 'none',
+    'slide-stage': 'none',
+  },
   gradients: {
     hero: 'radial-gradient(120% 120% at 75% 0%, #1E293B 0%, #0A0A0A 55%, #111827 100%)',
     emphasis: 'linear-gradient(135deg, #27272A 0%, #1A1A1A 100%)',
@@ -165,6 +195,11 @@ const monoInk: ThemeDef = {
   chartPalette: ['#18181B', '#71717A', '#15803D', '#D97706', '#EF4444', '#8B5CF6'],
   shapeLanguage: 'editorial',
   motionStyle: 'snappy',
+  scrollbar: {
+    default: 'mono-ink',
+    presenter: 'none',
+    'slide-stage': 'none',
+  },
   gradients: {
     hero: 'radial-gradient(120% 120% at 80% 0%, #F4F4F5 0%, #FAFAFA 55%, #F0F0F0 100%)',
     emphasis: 'linear-gradient(135deg, #ECECEC 0%, #F7F7F7 100%)',
@@ -194,6 +229,11 @@ const greenfield: ThemeDef = {
   chartPalette: ['#34D399', '#A7F3D0', '#22C55E', '#F59E0B', '#EF4444', '#8B5CF6'],
   shapeLanguage: 'soft',
   motionStyle: 'cinematic',
+  scrollbar: {
+    default: 'gradient-slim',
+    presenter: 'none',
+    'slide-stage': 'none',
+  },
   gradients: {
     hero: 'radial-gradient(120% 120% at 75% 0%, #0B3B2E 0%, #022C22 55%, #063528 100%)',
     emphasis: 'linear-gradient(135deg, #1B4138 0%, #12342C 100%)',

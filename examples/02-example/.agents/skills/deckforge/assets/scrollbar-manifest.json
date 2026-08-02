@@ -1,0 +1,348 @@
+[
+  {
+    "id": "gradient-slim",
+    "name": "Gradient Slim",
+    "description": "A restrained rounded two-stop gradient scrollbar for modern editor surfaces.",
+    "renderMode": "native-themed",
+    "dimensions": {
+      "width": 8,
+      "height": 8,
+      "minimumThumbLength": 36,
+      "radius": 999
+    },
+    "track": {
+      "mode": "tinted",
+      "colorToken": "surfaceMuted",
+      "opacity": 0.28,
+      "inset": 2
+    },
+    "thumb": {
+      "type": "gradient",
+      "fromToken": "accent",
+      "toToken": "accentSecondary",
+      "angle": 180,
+      "borderToken": "canvas",
+      "borderWidth": 2,
+      "glow": {
+        "opacity": 0
+      }
+    },
+    "hover": {
+      "brightness": 1.08
+    },
+    "active": {
+      "brightness": 0.94
+    },
+    "behavior": {
+      "autoHide": false,
+      "hideDelayMs": 900,
+      "smoothProgrammaticScroll": true,
+      "reserveGutter": true
+    },
+    "supportedSurfaces": [
+      "app-page",
+      "slide-list",
+      "inspector",
+      "grid",
+      "speaker-notes",
+      "modal",
+      "asset-library",
+      "theme-library"
+    ],
+    "fallbackStyleId": "system-native"
+  },
+  {
+    "id": "aurora-glow",
+    "name": "Aurora Glow",
+    "description": "A premium wider scrollbar with a richer gradient and a soft accent glow for dark themes.",
+    "renderMode": "native-themed",
+    "dimensions": {
+      "width": 10,
+      "height": 10,
+      "minimumThumbLength": 40,
+      "radius": 999
+    },
+    "track": {
+      "mode": "tinted",
+      "colorToken": "surfaceElevated",
+      "opacity": 0.36,
+      "inset": 2
+    },
+    "thumb": {
+      "type": "gradient",
+      "fromToken": "accent",
+      "toToken": "accentSecondary",
+      "angle": 180,
+      "borderToken": "surfaceElevated",
+      "borderWidth": 1,
+      "glow": {
+        "opacity": 0.42
+      }
+    },
+    "hover": {
+      "brightness": 1.16
+    },
+    "active": {
+      "brightness": 0.96
+    },
+    "behavior": {
+      "autoHide": false,
+      "hideDelayMs": 1000,
+      "smoothProgrammaticScroll": true,
+      "reserveGutter": true
+    },
+    "supportedSurfaces": [
+      "app-page",
+      "slide-list",
+      "inspector",
+      "grid",
+      "speaker-notes",
+      "modal",
+      "asset-library",
+      "theme-library"
+    ],
+    "fallbackStyleId": "gradient-slim"
+  },
+  {
+    "id": "minimal-thin",
+    "name": "Minimal Thin",
+    "description": "A narrow hairline scrollbar with a near-invisible track, ideal for minimal and editorial themes.",
+    "renderMode": "native-themed",
+    "dimensions": {
+      "width": 5,
+      "height": 5,
+      "minimumThumbLength": 36,
+      "radius": 999
+    },
+    "track": {
+      "mode": "transparent",
+      "colorToken": "surfaceMuted",
+      "opacity": 0,
+      "inset": 0
+    },
+    "thumb": {
+      "type": "solid",
+      "fromToken": "textSecondary",
+      "borderToken": "transparent",
+      "borderWidth": 0,
+      "glow": {
+        "opacity": 0
+      }
+    },
+    "hover": {
+      "brightness": 1.12
+    },
+    "active": {
+      "brightness": 0.9
+    },
+    "behavior": {
+      "autoHide": true,
+      "hideDelayMs": 900,
+      "smoothProgrammaticScroll": true,
+      "reserveGutter": true
+    },
+    "supportedSurfaces": [
+      "app-page",
+      "slide-list",
+      "inspector",
+      "grid",
+      "speaker-notes",
+      "modal",
+      "asset-library",
+      "theme-library"
+    ],
+    "fallbackStyleId": "system-native"
+  },
+  {
+    "id": "neon-edge",
+    "name": "Neon Edge",
+    "description": "A saturated gradient scrollbar with a luminous accent edge for neon and experimental themes.",
+    "renderMode": "native-themed",
+    "dimensions": {
+      "width": 8,
+      "height": 8,
+      "minimumThumbLength": 38,
+      "radius": 999
+    },
+    "track": {
+      "mode": "tinted",
+      "colorToken": "surfaceElevated",
+      "opacity": 0.26,
+      "inset": 1
+    },
+    "thumb": {
+      "type": "gradient",
+      "fromToken": "accent",
+      "toToken": "accentSecondary",
+      "angle": 180,
+      "borderToken": "accentSecondary",
+      "borderWidth": 1,
+      "glow": {
+        "opacity": 0.52
+      }
+    },
+    "hover": {
+      "brightness": 1.18
+    },
+    "active": {
+      "brightness": 0.95
+    },
+    "behavior": {
+      "autoHide": false,
+      "hideDelayMs": 900,
+      "smoothProgrammaticScroll": true,
+      "reserveGutter": true
+    },
+    "supportedSurfaces": [
+      "app-page",
+      "slide-list",
+      "inspector",
+      "grid",
+      "speaker-notes",
+      "modal",
+      "asset-library",
+      "theme-library"
+    ],
+    "fallbackStyleId": "gradient-slim"
+  },
+  {
+    "id": "mono-ink",
+    "name": "Mono Ink",
+    "description": "A flat monochrome scrollbar with no glow for neutral, print-oriented, and monochrome themes.",
+    "renderMode": "native-themed",
+    "dimensions": {
+      "width": 8,
+      "height": 8,
+      "minimumThumbLength": 36,
+      "radius": 999
+    },
+    "track": {
+      "mode": "tinted",
+      "colorToken": "divider",
+      "opacity": 0.18,
+      "inset": 1
+    },
+    "thumb": {
+      "type": "solid",
+      "fromToken": "textSecondary",
+      "borderToken": "transparent",
+      "borderWidth": 0,
+      "glow": {
+        "opacity": 0
+      }
+    },
+    "hover": {
+      "brightness": 1.06
+    },
+    "active": {
+      "brightness": 0.88
+    },
+    "behavior": {
+      "autoHide": false,
+      "hideDelayMs": 900,
+      "smoothProgrammaticScroll": true,
+      "reserveGutter": true
+    },
+    "supportedSurfaces": [
+      "app-page",
+      "slide-list",
+      "inspector",
+      "grid",
+      "speaker-notes",
+      "modal",
+      "asset-library",
+      "theme-library"
+    ],
+    "fallbackStyleId": "system-native"
+  },
+  {
+    "id": "high-contrast",
+    "name": "High Contrast",
+    "description": "A solid, clearly visible scrollbar for accessibility mode and forced-colors environments.",
+    "renderMode": "native-themed",
+    "dimensions": {
+      "width": 12,
+      "height": 12,
+      "minimumThumbLength": 44,
+      "radius": 6
+    },
+    "track": {
+      "mode": "tinted",
+      "colorToken": "divider",
+      "opacity": 0.9,
+      "inset": 0
+    },
+    "thumb": {
+      "type": "solid",
+      "fromToken": "focus",
+      "borderToken": "canvas",
+      "borderWidth": 1,
+      "glow": {
+        "opacity": 0
+      }
+    },
+    "hover": {
+      "brightness": 1
+    },
+    "active": {
+      "brightness": 0.9
+    },
+    "behavior": {
+      "autoHide": false,
+      "hideDelayMs": 0,
+      "smoothProgrammaticScroll": false,
+      "reserveGutter": true
+    },
+    "supportedSurfaces": [
+      "app-page",
+      "slide-list",
+      "inspector",
+      "grid",
+      "speaker-notes",
+      "modal",
+      "asset-library",
+      "theme-library"
+    ],
+    "fallbackStyleId": "system-native"
+  },
+  {
+    "id": "system-native",
+    "name": "System Native",
+    "description": "The browser and operating-system default scrollbar. Safe fallback for touch devices and unsupported browsers.",
+    "renderMode": "system-native",
+    "behavior": {
+      "autoHide": false,
+      "hideDelayMs": 0,
+      "smoothProgrammaticScroll": true,
+      "reserveGutter": true
+    },
+    "supportedSurfaces": [
+      "app-page",
+      "slide-list",
+      "inspector",
+      "grid",
+      "speaker-notes",
+      "modal",
+      "asset-library",
+      "theme-library"
+    ],
+    "fallbackStyleId": "system-native"
+  },
+  {
+    "id": "none",
+    "name": "None",
+    "description": "No scrollbar. Restricted to non-scrollable surfaces: the fullscreen presenter and the slide stage.",
+    "renderMode": "none",
+    "behavior": {
+      "autoHide": false,
+      "hideDelayMs": 0,
+      "smoothProgrammaticScroll": false,
+      "reserveGutter": false
+    },
+    "supportedSurfaces": [
+      "presenter",
+      "slide-stage"
+    ],
+    "fallbackStyleId": "none"
+  }
+]

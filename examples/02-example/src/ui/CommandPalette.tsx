@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { ScrollSurface } from '../deck/scrollbars/ScrollSurface';
 
 export interface CommandItem {
   id: string;
@@ -86,7 +87,7 @@ export function CommandPalette({ open, onClose, commands }: CommandPaletteProps)
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
-        <div className="command-list">
+        <ScrollSurface surface="modal" className="command-list">
           {Array.from(groups.entries()).map(([group, items]) => (
             <div key={group} className="command-group">
               <div className="command-group-label">{group}</div>
@@ -114,7 +115,7 @@ export function CommandPalette({ open, onClose, commands }: CommandPaletteProps)
             </div>
           ))}
           {filtered.length === 0 ? <div className="command-empty">No commands match “{query}”.</div> : null}
-        </div>
+        </ScrollSurface>
       </div>
     </div>
   );

@@ -18,9 +18,58 @@ LIST_CHECKS={
  'delivery-profile-manifest.json':(4,'id'),
  'presentation-archetype-manifest.json':(10,'id'),
  'motion-profile-manifest.json':(8,'id'),
+ 'scrollbar-manifest.json':(8,'id'),
 }
 
 def load(name):return json.loads((BASE/name).read_text(encoding='utf-8'))
+
+SCROLLBAR_TOKEN_VOCAB={'accent','accentSecondary','canvas','surface','surfaceElevated','surfaceMuted','textSecondary','divider','focus','transparent'}
+SCROLLBAR_SURFACES={'app-page','slide-list','inspector','grid','speaker-notes','modal','asset-library','theme-library'}
+NON_SCROLLABLE_SURFACES={'presenter','slide-stage'}
+
+def validate_scrollbars(catalogs,errors):
+ styles={s['id']:s for s in catalogs['scrollbar-manifest.json']}
+ if 'high-contrast' not in styles:errors.append('scrollbar-manifest: high-contrast profile is required')
+ if 'system-native' not in styles:errors.append('scrollbar-manifest: system-native fallback profile is required')
+ for sid,s in styles.items():
+  fb=s.get('fallbackStyleId')
+  if fb not in styles:errors.append(f'scrollbar {sid}: unknown fallback {fb}')
+  supported=set(s.get('supportedSurfaces',[]))
+  if sid=='none':
+   if not supported.issubset(NON_SCROLLABLE_SURFACES):errors.append(f'scrollbar none: must only support non-scrollable surfaces')
+  elif supported & NON_SCROLLABLE_SURFACES:
+   errors.append(f'scrollbar {sid}: non-scrollable surfaces only support style none')
+  if s.get('renderMode')=='native-themed':
+   dims=s.get('dimensions',{})
+   w=dims.get('width',0)
+   if w<4 or w>14:errors.append(f'scrollbar {sid}: native-themed width must be 4-14px')
+   if dims.get('minimumThumbLength',0)<32:errors.append(f'scrollbar {sid}: minimum thumb length must be >= 32px')
+   thumb=s.get('thumb',{})
+   if thumb.get('type')=='gradient' and (not thumb.get('fromToken') or not thumb.get('toToken')):
+    errors.append(f'scrollbar {sid}: gradient thumb requires fromToken and toToken')
+   if s.get('behavior',{}).get('autoHide') and dims.get('minimumThumbLength',0)<32:
+    errors.append(f'scrollbar {sid}: auto-hide requires a visible thumb (minimum thumb length >= 32px)')
+   if thumb.get('glow',{}).get('opacity',0)>0:
+    fbstyle=styles.get(fb,{})
+    if fbstyle.get('thumb',{}).get('glow',{}).get('opacity',0)>0:
+     errors.append(f'scrollbar {sid}: glow style must fall back to a non-glow style')
+  for tk in [s.get('track',{}).get('colorToken'),s.get('thumb',{}).get('fromToken'),s.get('thumb',{}).get('toToken'),s.get('thumb',{}).get('borderToken')]:
+   if tk and tk!='transparent' and tk not in SCROLLBAR_TOKEN_VOCAB:
+    errors.append(f'scrollbar {sid}: unknown token reference {tk}')
+ for theme in catalogs['theme-manifest.json']:
+  m=theme.get('scrollbar')
+  if not m:
+   errors.append(f"theme {theme['id']}: missing scrollbar mapping");continue
+  default=m.get('default')
+  if default not in styles:errors.append(f"theme {theme['id']}: unknown default scrollbar {default}")
+  for surface in ('presenter','slide-stage'):
+   if m.get(surface)!='none':errors.append(f"theme {theme['id']}: {surface} must map to scrollbar 'none'")
+  for surface,style_id in m.items():
+   if surface in ('default','presenter','slide-stage'):continue
+   if surface not in SCROLLBAR_SURFACES:errors.append(f"theme {theme['id']}: unknown scrollbar surface {surface}");continue
+   if style_id not in styles:errors.append(f"theme {theme['id']}: unknown scrollbar style {style_id}");continue
+   if surface not in styles[style_id].get('supportedSurfaces',[]):
+    errors.append(f"theme {theme['id']}: surface {surface} not supported by scrollbar {style_id}")
 
 def main():
  errors=[];catalogs={}
@@ -80,10 +129,11 @@ def main():
   sample=load('sample-deck-project.json')
   if not isinstance(sample,dict) or sample.get('schemaVersion')!='2.1':
    errors.append('sample-deck-project.json: expected schema 2.1 object')
-  for slide in sample.get('slides',[]):
-   for block in slide.get('blocks',[]):
-    if block.get('type') not in block_types:errors.append(f"sample deck {slide.get('id')}: unknown block type {block.get('type')}")
-    for sid in block.get('sourceIds',[]):errors.append('sample deck: sourceIds are not allowed in the offline sample')
+   for slide in sample.get('slides',[]):
+    for block in slide.get('blocks',[]):
+     if block.get('type') not in block_types:errors.append(f"sample deck {slide.get('id')}: unknown block type {block.get('type')}")
+     for sid in block.get('sourceIds',[]):errors.append('sample deck: sourceIds are not allowed in the offline sample')
+  validate_scrollbars(catalogs,errors)
  if errors:
   print('\n'.join('ERROR: '+e for e in errors),file=sys.stderr);raise SystemExit(1)
  summary=', '.join(f"{n.replace('-manifest.json','')}={len(d)}" for n,d in catalogs.items())

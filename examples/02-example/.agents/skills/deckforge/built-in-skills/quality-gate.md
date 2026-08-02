@@ -25,7 +25,9 @@ Check that every declared capability exists:
 - `speakerView`, `overview`, `fullscreen`, and interactions must be runnable;
 - allowed block types require renderers and insert actions or must be removed from the declaration;
 - `motionProfileId` requires a runtime slide transition and default builds (or block-level animations); a deck that is fully static is blocking;
-- presenter chrome (timer, position, controls, progress) must be docked outside the slide area — floating chrome over slide content is blocking.
+- presenter chrome (timer, position, controls, progress) must be docked outside the slide area — floating chrome over slide content is blocking;
+- theme-aware custom scrollbars are required on scrollable editor/publishing surfaces — a default browser scrollbar on a scrollable surface is blocking;
+- the slide canvas and the fullscreen presenter must never be scrollable and must expose no scrollbar.
 
 Metadata alone never satisfies a feature.
 

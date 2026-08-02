@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useResolvedScrollbarStyle } from '../deck/scrollbars/useResolvedScrollbarStyle';
 
 interface ShortcutGroup {
   id: string;
@@ -20,6 +21,7 @@ interface ShortcutHelpDialogProps {
 
 export function ShortcutHelpDialog({ open, onClose, groups, rows }: ShortcutHelpDialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
+  const modalScroll = useResolvedScrollbarStyle('modal');
 
   useEffect(() => {
     if (!open) return;
@@ -61,7 +63,10 @@ export function ShortcutHelpDialog({ open, onClose, groups, rows }: ShortcutHelp
     <div className="overlay" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
       <div
         ref={dialogRef}
-        className="dialog shortcut-help"
+        className="dialog shortcut-help scroll-surface"
+        data-scroll-surface="modal"
+        data-scrollbar-style={modalScroll.styleId}
+        data-scroll-axis="vertical"
         role="dialog"
         aria-modal="true"
         aria-label="Keyboard shortcuts"

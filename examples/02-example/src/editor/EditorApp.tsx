@@ -12,6 +12,8 @@ import { SaveStatus } from '../ui/SaveStatus';
 import { CommandPalette, type CommandItem } from '../ui/CommandPalette';
 import { ShortcutHelpDialog } from '../ui/ShortcutHelpDialog';
 import { useHotkeys } from '../ui/hotkeys';
+import { ScrollSurface } from '../deck/scrollbars/ScrollSurface';
+import { useResolvedScrollbarStyle } from '../deck/scrollbars/useResolvedScrollbarStyle';
 
 interface EditorAppProps {
   store: DeckStore;
@@ -99,6 +101,8 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
   const [helpOpen, setHelpOpen] = useState(false);
   const [zoom, setZoom] = useState(0.62);
   const [notesOpen, setNotesOpen] = useState(true);
+
+  const notesScrollbar = useResolvedScrollbarStyle('speaker-notes');
 
   const activeSlide = deck.slides.find((slide) => slide.id === selection.slideId) ?? deck.slides[0];
   const activeBlock = activeSlide.blocks.find((block) => block.id === selection.blockIds[0]);
@@ -237,7 +241,7 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
         </div>
       </header>
 
-      <nav className="editor-slide-rail" aria-label="Slides">
+      <ScrollSurface as="nav" surface="slide-list" className="editor-slide-rail" aria-label="Slides">
         <div className="editor-rail-head">
           <strong>Slides</strong>
           <button type="button" onClick={() => commit({ type: 'addSlide', afterIndex: deck.slides.length - 1 })} aria-label="Add slide">＋</button>
@@ -259,9 +263,9 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
             </div>
           </div>
         ))}
-      </nav>
+      </ScrollSurface>
 
-      <main className="editor-canvas">
+      <ScrollSurface as="main" surface="app-page" axis="both" className="editor-canvas">
         <div className="editor-canvas-controls">
           <span className="zoom-label">Zoom {Math.round(zoom * 100)}%</span>
           <button type="button" onClick={() => setZoom((z) => Math.max(0.25, z - 0.08))} aria-label="Zoom out">−</button>
@@ -310,7 +314,7 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
             onBlockSelect={(blockId, additive) => selectBlock(activeSlide.id, blockId, additive)}
           />
         </div>
-      </main>
+      </ScrollSurface>
 
       <div className={`editor-notes-area ${notesOpen ? '' : 'is-collapsed'}`}>
         <div className="editor-notes-toggle">
@@ -326,13 +330,17 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
         </div>
         <textarea
           id="speaker-notes"
+          className="scroll-surface"
+          data-scroll-surface="speaker-notes"
+          data-scrollbar-style={notesScrollbar.styleId}
+          data-scroll-axis="vertical"
           value={activeSlide.speakerNotes ?? ''}
           placeholder="Notes for this slide (visible in presenter view)."
           onChange={(event) => updateActiveSlide({ notes: event.target.value })}
         />
       </div>
 
-      <aside className="editor-inspector" aria-label="Inspector">
+      <ScrollSurface as="aside" surface="inspector" className="editor-inspector" aria-label="Inspector">
         <div className="inspector-section">
           <h3>Slide</h3>
           <label>
@@ -409,7 +417,7 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
             </p>
           )}
         </div>
-      </aside>
+      </ScrollSurface>
 
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} commands={paletteCommands} />
       <ShortcutHelpDialog open={helpOpen} onClose={() => setHelpOpen(false)} groups={[]} rows={HELP_ROWS} />

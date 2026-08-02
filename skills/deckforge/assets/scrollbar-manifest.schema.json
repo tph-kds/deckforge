@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckforge.dev/schemas/scrollbar-manifest.schema.json",
+  "title": "DeckForge scrollbar style catalog",
+  "description": "Catalog of theme-aware native scrollbar styles. Each style declares its dimensions, track/thumb tokens, hover/active behavior, supported surfaces, and fallback.",
+  "type": "array",
+  "minItems": 1,
+  "uniqueItems": true,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "id",
+      "name",
+      "description",
+      "renderMode",
+      "behavior",
+      "supportedSurfaces",
+      "fallbackStyleId"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": {
+        "type": "string",
+        "minLength": 1
+      },
+      "renderMode": {
+        "enum": [
+          "native-themed",
+          "system-native",
+          "none"
+        ]
+      },
+      "dimensions": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "width": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 20
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 20
+          },
+          "minimumThumbLength": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 120
+          },
+          "radius": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 999
+          }
+        }
+      },
+      "track": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mode": {
+            "enum": [
+              "tinted",
+              "transparent"
+            ]
+          },
+          "colorToken": {
+            "type": "string"
+          },
+          "opacity": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "inset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          }
+        }
+      },
+      "thumb": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "enum": [
+              "gradient",
+              "solid"
+            ]
+          },
+          "fromToken": {
+            "type": "string"
+          },
+          "toToken": {
+            "type": "string"
+          },
+          "angle": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 360
+          },
+          "borderToken": {
+            "type": "string"
+          },
+          "borderWidth": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 8
+          },
+          "glow": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "opacity": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "brightness": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2
+          }
+        }
+      },
+      "active": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "brightness": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2
+          }
+        }
+      },
+      "behavior": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "autoHide",
+          "hideDelayMs",
+          "smoothProgrammaticScroll",
+          "reserveGutter"
+        ],
+        "properties": {
+          "autoHide": {
+            "type": "boolean"
+          },
+          "hideDelayMs": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "smoothProgrammaticScroll": {
+            "type": "boolean"
+          },
+          "reserveGutter": {
+            "type": "boolean"
+          }
+        }
+      },
+      "supportedSurfaces": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "enum": [
+            "app-page",
+            "slide-list",
+            "inspector",
+            "grid",
+            "speaker-notes",
+            "modal",
+            "asset-library",
+            "theme-library",
+            "presenter",
+            "slide-stage"
+          ]
+        }
+      },
+      "fallbackStyleId": {
+        "type": "string"
+      }
+    }
+  }
+}

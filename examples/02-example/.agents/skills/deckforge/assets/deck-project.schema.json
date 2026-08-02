@@ -202,7 +202,12 @@
           "minLength": 1
         },
         "overrides": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "scrollbar": {
+              "$ref": "#/$defs/scrollbarOverride"
+            }
+          }
         },
         "designSystemRef": {
           "type": "string"
@@ -978,6 +983,45 @@
         },
         "overrides": {
           "type": "object"
+        }
+      }
+    },
+    "scrollbarOverride": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "default": {
+          "type": "string"
+        },
+        "app-page": {
+          "type": "string"
+        },
+        "slide-list": {
+          "type": "string"
+        },
+        "inspector": {
+          "type": "string"
+        },
+        "grid": {
+          "type": "string"
+        },
+        "speaker-notes": {
+          "type": "string"
+        },
+        "modal": {
+          "type": "string"
+        },
+        "asset-library": {
+          "type": "string"
+        },
+        "theme-library": {
+          "type": "string"
+        },
+        "presenter": {
+          "const": "none"
+        },
+        "slide-stage": {
+          "const": "none"
         }
       }
     },

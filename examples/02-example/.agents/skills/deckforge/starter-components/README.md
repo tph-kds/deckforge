@@ -9,6 +9,7 @@ Included references cover:
 - command/history state boundaries;
 - local persistence and save status;
 - editor app bar, slide rail, canvas, inspector, notes, and Present action;
+- theme-aware scrollbar system (`ScrollSurface.tsx` + `scrollbars.css`) with stable gutters, WebKit/Firefox fallbacks, reduced-motion, forced-colors, coarse-pointer, and fullscreen presenter scroll isolation;
 - contextual toolbar groups;
 - accessible shortcut-help dialog;
 - presenter reducer, overview, speaker view, and hotkeys;

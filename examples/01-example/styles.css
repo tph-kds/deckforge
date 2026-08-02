@@ -583,6 +583,114 @@ body.motion-on .deck-table tr { transition: opacity 300ms ease; }
 .deck-controls button:hover { background: rgba(255, 255, 255, 0.14); }
 .deck-controls button:focus-visible { outline-color: var(--accent); }
 
+/* ---------- Theme-aware scrollbars (gradient-slim, oceanic-blueprint) ----------
+   Only genuinely scrollable surfaces are themed: overview grid, speaker
+   notes, and the reflow table scroller. The stage, slide, and fullscreen
+   viewport never scroll, so they never show a scrollbar. */
+
+.overview,
+.notes-text,
+.table-scroll {
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.overview::-webkit-scrollbar,
+.notes-text::-webkit-scrollbar,
+.table-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.overview::-webkit-scrollbar-track,
+.notes-text::-webkit-scrollbar-track,
+.table-scroll::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.08);
+  border-radius: 999px;
+}
+
+.overview::-webkit-scrollbar-thumb,
+.notes-text::-webkit-scrollbar-thumb,
+.table-scroll::-webkit-scrollbar-thumb {
+  min-height: 36px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent), var(--focus));
+  background-clip: padding-box;
+}
+
+.overview::-webkit-scrollbar-thumb:hover,
+.notes-text::-webkit-scrollbar-thumb:hover,
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.08);
+}
+
+.overview::-webkit-scrollbar-thumb:active,
+.notes-text::-webkit-scrollbar-thumb:active,
+.table-scroll::-webkit-scrollbar-thumb:active {
+  filter: brightness(0.94);
+}
+
+.overview,
+.notes-text,
+.table-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) rgba(15, 23, 42, 0.08);
+}
+
+/* The audience stage, slide canvas, and fullscreen chrome never scroll. */
+.deck-viewport,
+.stage,
+.slide {
+  scrollbar-width: none;
+}
+.deck-viewport::-webkit-scrollbar,
+.stage::-webkit-scrollbar,
+.slide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Forced colors (high-contrast) ---------- */
+
+@media (forced-colors: active) {
+  .overview::-webkit-scrollbar-thumb,
+  .notes-text::-webkit-scrollbar-thumb,
+  .table-scroll::-webkit-scrollbar-thumb {
+    background: CanvasText;
+    filter: none;
+  }
+  .overview,
+  .notes-text,
+  .table-scroll {
+    scrollbar-color: CanvasText Canvas;
+  }
+}
+
+/* ---------- Coarse pointers fall back to native scrollbars ---------- */
+
+@media (pointer: coarse) {
+  .overview::-webkit-scrollbar,
+  .notes-text::-webkit-scrollbar,
+  .table-scroll::-webkit-scrollbar {
+    width: auto;
+    height: auto;
+  }
+  .overview::-webkit-scrollbar-track,
+  .overview::-webkit-scrollbar-thumb,
+  .notes-text::-webkit-scrollbar-track,
+  .notes-text::-webkit-scrollbar-thumb,
+  .table-scroll::-webkit-scrollbar-track,
+  .table-scroll::-webkit-scrollbar-thumb {
+    background: auto;
+    border-radius: 0;
+  }
+  .overview,
+  .notes-text,
+  .table-scroll {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+}
+
 /* ---------- Fullscreen chrome auto-hide ---------- */
 
 :fullscreen .deck-controls { opacity: 0; transform: translateY(10px); }

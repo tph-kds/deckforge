@@ -57,6 +57,15 @@ A visible help action opens an accessible dialog listing editor and presenter sh
 - freeform blocks are explicitly marked;
 - responsive reading order comes from slot order, not absolute coordinates.
 
+### Required scrollbar behavior
+
+- every permitted scroll container uses the semantic scroll-surface wrapper and a theme-mapped scrollbar style;
+- scrollbars are theme-aware with WebKit, Firefox (`scrollbar-color`), forced-colors, high-contrast, and coarse-pointer fallbacks;
+- `scrollbar-gutter` stays stable so scrollbar appearance never shifts content;
+- scrolling stays native (no wheel interception); programmatic scroll is smooth only when motion is allowed;
+- the slide canvas is never scrollable and the fullscreen presenter never shows or scrolls a scrollbar;
+- entering and leaving fullscreen presentation locks and restores document scroll cleanly.
+
 ### Blocking failures
 
 - editor declared in data but not implemented;
@@ -72,7 +81,10 @@ A visible help action opens an accessible dialog listing editor and presenter sh
 - presenter chrome floating over the slide safe area;
 - editor with an unassigned grid row or a non-collapsible notes area;
 - duplicate slide titles or verbatim repeated claims;
-- metric blocks missing a value or label.
+- metric blocks missing a value or label;
+- default browser scrollbars on a scrollable surface (no theme-aware scrollbar styling);
+- a scrollable slide canvas or a fullscreen presenter that scrolls or shows a scrollbar;
+- `presentation.routes` present but a presenter surface that leaks document scroll.
 
 ## Validation commands
 
@@ -85,6 +97,7 @@ python <deckforge-skill>/scripts/audit_deck_content.py <deck.json>
 python <deckforge-skill>/scripts/audit_deck_assets.py <deck.json>
 python <deckforge-skill>/scripts/audit_deck_motion.py <deck.json>
 python <deckforge-skill>/scripts/validate_output_contract.py <target-project> --profile <profile>
+python <deckforge-skill>/scripts/audit_scrollbars.py <target-project>
 ```
 
 All must exit 0, plus the production build and the target project's own test suite.

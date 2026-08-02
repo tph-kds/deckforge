@@ -1,0 +1,251 @@
+/* DeckForge scrollbar system — canonical starter CSS.
+   Pairs with ScrollSurface.tsx. Theme tokens are resolved through the
+   --theme-* variables a theme sets on the application root; each
+   data-scrollbar-style block below maps a governed catalog profile onto
+   those tokens. Presenter and slide-stage surfaces must resolve to
+   data-scrollbar-style="none" and never scroll. */
+
+/* ---------- Base scroll surface ---------- */
+.scroll-surface {
+  min-width: 0;
+  min-height: 0;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-surface[data-scroll-axis="vertical"] {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.scroll-surface[data-scroll-axis="horizontal"] {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.scroll-surface[data-scroll-axis="both"] {
+  overflow: auto;
+}
+
+.scroll-surface[data-smooth-scroll="true"] {
+  scroll-behavior: smooth;
+}
+
+/* ---------- Chromium / Safari (WebKit) ---------- */
+.scroll-surface[data-scrollbar-style]:not([data-scrollbar-style="system-native"])::-webkit-scrollbar {
+  width: var(--scrollbar-width, 8px);
+  height: var(--scrollbar-height, 8px);
+}
+
+.scroll-surface[data-scrollbar-style]:not([data-scrollbar-style="system-native"])::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--scrollbar-track-color, transparent) calc(var(--scrollbar-track-opacity, 0.3) * 100%), transparent);
+  border-radius: var(--scrollbar-radius, 999px);
+}
+
+.scroll-surface[data-scrollbar-style]:not([data-scrollbar-style="system-native"])::-webkit-scrollbar-thumb {
+  min-height: var(--scrollbar-min-thumb, 36px);
+  background: var(--scrollbar-thumb-background, var(--scrollbar-thumb-color, currentColor));
+  border: var(--scrollbar-thumb-border-width, 0) solid var(--scrollbar-thumb-border-color, transparent);
+  border-radius: var(--scrollbar-radius, 999px);
+  box-shadow: var(--scrollbar-thumb-shadow, none);
+  background-clip: padding-box;
+}
+
+.scroll-surface[data-scrollbar-style]:not([data-scrollbar-style="system-native"])::-webkit-scrollbar-thumb:hover {
+  filter: brightness(var(--scrollbar-hover-brightness, 1.08));
+}
+
+.scroll-surface[data-scrollbar-style]:not([data-scrollbar-style="system-native"])::-webkit-scrollbar-thumb:active {
+  filter: brightness(var(--scrollbar-active-brightness, 0.94));
+}
+
+/* ---------- Firefox fallback ---------- */
+.scroll-surface[data-scrollbar-style]:not([data-scrollbar-style="system-native"]) {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-firefox-thumb, currentColor) var(--scrollbar-firefox-track, transparent);
+}
+
+[data-scrollbar-style="system-native"] {
+  scrollbar-width: auto;
+}
+
+[data-scrollbar-style="none"] {
+  scrollbar-width: none;
+}
+
+[data-scrollbar-style="none"]::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Catalog profiles ---------- */
+[data-scrollbar-style="gradient-slim"] {
+  --scrollbar-width: 8px;
+  --scrollbar-height: 8px;
+  --scrollbar-radius: 999px;
+  --scrollbar-min-thumb: 36px;
+  --scrollbar-track-color: var(--theme-surface-muted);
+  --scrollbar-track-opacity: 0.28;
+  --scrollbar-thumb-background: linear-gradient(180deg, var(--theme-accent), var(--theme-accent-secondary));
+  --scrollbar-thumb-color: var(--theme-accent);
+  --scrollbar-firefox-thumb: var(--theme-accent);
+  --scrollbar-firefox-track: transparent;
+  --scrollbar-thumb-border-width: 2px;
+  --scrollbar-thumb-border-color: var(--theme-canvas);
+  --scrollbar-thumb-shadow: none;
+  --scrollbar-hover-brightness: 1.1;
+  --scrollbar-active-brightness: 0.94;
+}
+
+[data-scrollbar-style="aurora-glow"] {
+  --scrollbar-width: 10px;
+  --scrollbar-height: 10px;
+  --scrollbar-radius: 999px;
+  --scrollbar-min-thumb: 40px;
+  --scrollbar-track-color: var(--theme-surface-elevated);
+  --scrollbar-track-opacity: 0.36;
+  --scrollbar-thumb-background: linear-gradient(180deg, var(--theme-accent), var(--theme-accent-secondary));
+  --scrollbar-thumb-color: var(--theme-accent);
+  --scrollbar-firefox-thumb: var(--theme-accent);
+  --scrollbar-firefox-track: transparent;
+  --scrollbar-thumb-border-width: 1px;
+  --scrollbar-thumb-border-color: var(--theme-surface-elevated);
+  --scrollbar-thumb-shadow: 0 0 12px color-mix(in srgb, var(--theme-accent) 42%, transparent);
+  --scrollbar-hover-brightness: 1.16;
+  --scrollbar-active-brightness: 0.96;
+}
+
+[data-scrollbar-style="minimal-thin"] {
+  --scrollbar-width: 5px;
+  --scrollbar-height: 5px;
+  --scrollbar-radius: 999px;
+  --scrollbar-min-thumb: 36px;
+  --scrollbar-track-color: transparent;
+  --scrollbar-track-opacity: 0;
+  --scrollbar-thumb-background: var(--theme-text-secondary);
+  --scrollbar-thumb-color: var(--theme-text-secondary);
+  --scrollbar-firefox-thumb: var(--theme-text-secondary);
+  --scrollbar-firefox-track: transparent;
+  --scrollbar-thumb-border-width: 0;
+  --scrollbar-thumb-border-color: transparent;
+  --scrollbar-thumb-shadow: none;
+  --scrollbar-hover-brightness: 1.12;
+  --scrollbar-active-brightness: 0.9;
+}
+
+[data-scrollbar-style="neon-edge"] {
+  --scrollbar-width: 8px;
+  --scrollbar-height: 8px;
+  --scrollbar-radius: 999px;
+  --scrollbar-min-thumb: 38px;
+  --scrollbar-track-color: var(--theme-surface-elevated);
+  --scrollbar-track-opacity: 0.26;
+  --scrollbar-thumb-background: linear-gradient(180deg, var(--theme-accent), var(--theme-accent-secondary));
+  --scrollbar-thumb-color: var(--theme-accent);
+  --scrollbar-firefox-thumb: var(--theme-accent);
+  --scrollbar-firefox-track: transparent;
+  --scrollbar-thumb-border-width: 1px;
+  --scrollbar-thumb-border-color: var(--theme-accent-secondary);
+  --scrollbar-thumb-shadow: 0 0 10px color-mix(in srgb, var(--theme-accent) 52%, transparent);
+  --scrollbar-hover-brightness: 1.18;
+  --scrollbar-active-brightness: 0.95;
+}
+
+[data-scrollbar-style="mono-ink"] {
+  --scrollbar-width: 8px;
+  --scrollbar-height: 8px;
+  --scrollbar-radius: 999px;
+  --scrollbar-min-thumb: 36px;
+  --scrollbar-track-color: var(--theme-divider);
+  --scrollbar-track-opacity: 0.18;
+  --scrollbar-thumb-background: var(--theme-text-secondary);
+  --scrollbar-thumb-color: var(--theme-text-secondary);
+  --scrollbar-firefox-thumb: var(--theme-text-secondary);
+  --scrollbar-firefox-track: transparent;
+  --scrollbar-thumb-border-width: 0;
+  --scrollbar-thumb-border-color: transparent;
+  --scrollbar-thumb-shadow: none;
+  --scrollbar-hover-brightness: 1.06;
+  --scrollbar-active-brightness: 0.88;
+}
+
+[data-scrollbar-style="high-contrast"] {
+  --scrollbar-width: 12px;
+  --scrollbar-height: 12px;
+  --scrollbar-radius: 6px;
+  --scrollbar-min-thumb: 44px;
+  --scrollbar-track-color: var(--theme-divider);
+  --scrollbar-track-opacity: 0.9;
+  --scrollbar-thumb-background: var(--theme-focus);
+  --scrollbar-thumb-color: var(--theme-focus);
+  --scrollbar-firefox-thumb: var(--theme-focus);
+  --scrollbar-firefox-track: var(--theme-divider);
+  --scrollbar-thumb-border-width: 1px;
+  --scrollbar-thumb-border-color: var(--theme-canvas);
+  --scrollbar-thumb-shadow: none;
+  --scrollbar-hover-brightness: 1;
+  --scrollbar-active-brightness: 0.9;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-surface {
+    scroll-behavior: auto;
+  }
+
+  .scroll-surface::-webkit-scrollbar-thumb {
+    transition: none;
+  }
+}
+
+/* ---------- Forced colors ---------- */
+@media (forced-colors: active) {
+  .scroll-surface {
+    scrollbar-color: ButtonText Canvas;
+  }
+
+  .scroll-surface::-webkit-scrollbar-thumb {
+    background: ButtonText;
+    border-color: Canvas;
+    box-shadow: none;
+  }
+}
+
+/* ---------- Touch / coarse pointer: prefer device native ---------- */
+@media (pointer: coarse) {
+  .scroll-surface[data-scrollbar-style] {
+    scrollbar-width: auto;
+  }
+}
+
+/* ---------- Presenter and stage isolation ---------- */
+html[data-presentation-mode="fullscreen"],
+html[data-presentation-mode="fullscreen"] body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.presenter-shell {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.presenter-stage,
+.presenter-stage .slide-stage {
+  overflow: hidden;
+  scrollbar-width: none;
+}
+
+.presenter-stage::-webkit-scrollbar,
+.presenter-stage *::-webkit-scrollbar {
+  display: none;
+}
+
+.slide-stage {
+  overflow: hidden;
+}
