@@ -514,6 +514,30 @@ kbd {
   background: var(--ui-bg);
 }
 
+.editor-notes-area .editor-notes-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.editor-notes-area .editor-notes-toggle-button {
+  background: none;
+  border: none;
+  color: var(--ui-focus);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 0;
+}
+
+.editor-notes-area.is-collapsed {
+  height: 44px;
+}
+
+.editor-notes-area.is-collapsed textarea {
+  display: none;
+}
+
 .editor-inspector {
   grid-area: inspector;
   border-left: 1px solid var(--ui-border);
@@ -896,12 +920,22 @@ kbd {
 }
 
 .presenter-timer {
-  position: absolute;
-  top: 14px;
-  right: 20px;
+  margin-left: auto;
   color: #94a3b8;
   font-family: var(--font-code);
   font-size: 13px;
+  padding: 0 4px;
+}
+
+:fullscreen .presenter-chrome {
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.presenter-shell.is-chrome-active .presenter-chrome {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .timer-hidden {

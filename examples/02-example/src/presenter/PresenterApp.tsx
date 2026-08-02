@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { DeckStore } from '../deck/useDeck';
 import type { DeckSlide } from '../deck/types';
 import { getTheme } from '../deck/themes';
@@ -42,6 +42,8 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
   const [timerVisible, setTimerVisible] = useState(false);
   const [speakerOpen, setSpeakerOpen] = useState(false);
   const [buildIndex, setBuildIndex] = useState(0);
+  const [chromeActive, setChromeActive] = useState(true);
+  const chromeTimer = useRef<number | undefined>(undefined);
 
   const slides = deck.slides;
   const total = slides.length;
@@ -80,6 +82,21 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
     const timer = window.setInterval(() => setElapsed(Math.floor((Date.now() - start) / 1000)), 1000);
     return () => window.clearInterval(timer);
   }, [speakerOpen, blackout]);
+
+  useEffect(() => {
+    const onMove = () => {
+      setChromeActive(true);
+      window.clearTimeout(chromeTimer.current);
+      chromeTimer.current = window.setTimeout(() => {
+        if (document.fullscreenElement) setChromeActive(false);
+      }, 2500);
+    };
+    window.addEventListener('pointermove', onMove);
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      window.clearTimeout(chromeTimer.current);
+    };
+  }, []);
 
   const advance = (step: number) => {
     let nextIndex = safeIndex;
@@ -163,7 +180,7 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
   const progress = total > 1 ? (safeIndex / (total - 1)) * 100 : 0;
 
   return (
-    <div className={`presenter-shell ${overview ? 'is-overview' : ''} ${blackout ? 'is-blackout' : ''}`}>
+    <div className={`presenter-shell ${overview ? 'is-overview' : ''} ${blackout ? 'is-blackout' : ''} ${chromeActive ? 'is-chrome-active' : ''}`}>
       {blackout ? (
         <div className="presenter-blackout" role="presentation">
           <div className="blackout-message">Paused — press <kbd>B</kbd> to resume</div>
@@ -176,15 +193,6 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
             </div>
           </div>
           <div className="presenter-chrome">
-            <div className="presenter-timer">
-              {timerVisible ? (
-                <span className="timer-label">
-                  {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}
-                </span>
-              ) : (
-                <span className="timer-label timer-hidden">T to show timer</span>
-              )}
-            </div>
             <div className="presenter-controls" role="toolbar" aria-label="Presenter controls">
               <button type="button" onClick={() => first()} disabled={safeIndex === 0} aria-label="First slide" title="Home">⏮</button>
               <button type="button" onClick={() => previous()} disabled={safeIndex === 0} aria-label="Previous slide" title="←">◀</button>
@@ -202,6 +210,15 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
               <button type="button" onClick={() => navigate('editor')} aria-label="Back to editor" title="Back to editor">
                 Edit
               </button>
+            </div>
+            <div className="presenter-timer">
+              {timerVisible ? (
+                <span className="timer-label">
+                  {Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}
+                </span>
+              ) : (
+                <span className="timer-label timer-hidden">T to show timer</span>
+              )}
             </div>
           </div>
           <div className="presenter-progress" aria-hidden="true">
