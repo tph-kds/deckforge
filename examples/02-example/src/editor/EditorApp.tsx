@@ -4,6 +4,8 @@ import { listLayouts, auditSlideLayout } from '../deck/layout';
 import { listThemes, getTheme } from '../deck/themes';
 import { newId } from '../deck/seed';
 import type { Block } from '../deck/types';
+import { measureSlide, summarizeIssues } from '../deck/measure';
+import { repairSlide } from '../deck/repair';
 import { EditorSlideRenderer } from '../render/SlideRenderer';
 import { SaveStatus } from '../ui/SaveStatus';
 import { CommandPalette, type CommandItem } from '../ui/CommandPalette';
@@ -102,6 +104,21 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
   const layouts = listLayouts();
   const themes = listThemes();
   const issues = useMemo(() => auditSlideLayout(activeSlide, deck.canvas), [activeSlide, deck.canvas]);
+  const measured = useMemo(() => measureSlide(deck, activeSlide), [deck, activeSlide]);
+  const measuredCounts = useMemo(() => summarizeIssues(measured), [measured]);
+
+  const repairActiveSlide = () => {
+    const result = repairSlide(deck, activeSlide.id);
+    if (result.accepted) {
+      commit({ type: 'replaceDeck', deck: result.deck });
+    } else {
+      window.alert(
+        `Could not repair this slide automatically.\n\n${result.finalIssues
+          .map((issue) => `• ${issue.code}: ${issue.message}`)
+          .join('\n')}`,
+      );
+    }
+  };
 
   const insertBlock = (type: string) => {
     const block = makeBlockForType(type);
@@ -256,6 +273,30 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
               ⚠ {issues.length} layout issue{issues.length > 1 ? 's' : ''}
             </span>
           ) : null}
+          {measuredCounts.errors > 0 ? (
+            <span
+              className="layout-issues layout-issues-error"
+              title={measured.filter((issue) => issue.severity === 'error').map((issue) => `${issue.code}: ${issue.message}`).join('\n')}
+            >
+              ⛔ {measuredCounts.errors} blocking issue{measuredCounts.errors > 1 ? 's' : ''}
+            </span>
+          ) : null}
+          {measuredCounts.warnings > 0 ? (
+            <span
+              className="layout-issues"
+              title={measured.filter((issue) => issue.severity === 'warning').map((issue) => `${issue.code}: ${issue.message}`).join('\n')}
+            >
+              ⚠ {measuredCounts.warnings} warning{measuredCounts.warnings > 1 ? 's' : ''}
+            </span>
+          ) : null}
+          <button
+            type="button"
+            className="repair-button"
+            disabled={measuredCounts.errors === 0}
+            onClick={repairActiveSlide}
+          >
+            ✨ Repair slide
+          </button>
         </div>
         <div className="canvas-stage" onClick={() => selectNone()}>
           <EditorSlideRenderer

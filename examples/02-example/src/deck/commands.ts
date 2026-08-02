@@ -1,4 +1,4 @@
-import type { Block, DeckProject, DeckSlide } from './types';
+﻿import type { Block, DeckProject, DeckSlide } from './types';
 import { newId } from './seed';
 
 export type Command =
@@ -19,7 +19,8 @@ export type Command =
   | { type: 'removeSlide'; slideId: string }
   | { type: 'moveSlide'; fromIndex: number; toIndex: number }
   | { type: 'updateMeta'; title?: string; description?: string }
-  | { type: 'updateBlockAnimation'; slideId: string; blockId: string; animation: Block['animation'] | null };
+  | { type: 'updateBlockAnimation'; slideId: string; blockId: string; animation: Block['animation'] | null }
+  | { type: 'replaceDeck'; deck: DeckProject };
 
 function mapSlide(deck: DeckProject, slideId: string, fn: (slide: DeckSlide) => DeckSlide): DeckProject {
   return {
@@ -161,6 +162,8 @@ export function applyCommand(deck: DeckProject, command: Command): DeckProject {
         }
         return { ...block, animation: command.animation };
       });
+    case 'replaceDeck':
+      return command.deck;
     default:
       return deck;
   }
