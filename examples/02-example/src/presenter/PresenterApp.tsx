@@ -249,7 +249,7 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
             </div>
           </div>
           <div className="presenter-progress" aria-hidden="true">
-            <div className="presenter-progress-bar" style={{ width: `${progress}%` }} />
+            <div className={`presenter-progress-bar is-gradient-progress`} style={{ width: `${progress}%` }} />
           </div>
         </>
       )}

@@ -14,6 +14,8 @@ export type Command =
   | { type: 'duplicateBlock'; slideId: string; blockId: string }
   | { type: 'setTheme'; themeId: string }
   | { type: 'setTransition'; transition: string }
+  | { type: 'setMotionProfile'; motionProfileId: string }
+  | { type: 'setReducedMotion'; reducedMotion: 'respect-system' | 'always' | 'never' }
   | { type: 'addSlide'; afterIndex?: number }
   | { type: 'duplicateSlide'; slideId: string }
   | { type: 'removeSlide'; slideId: string }
@@ -120,6 +122,10 @@ export function applyCommand(deck: DeckProject, command: Command): DeckProject {
       return { ...deck, theme: { ...deck.theme, id: command.themeId } };
     case 'setTransition':
       return { ...deck, presentation: { ...deck.presentation, transition: command.transition } };
+    case 'setMotionProfile':
+      return { ...deck, presentation: { ...deck.presentation, motionProfileId: command.motionProfileId } };
+    case 'setReducedMotion':
+      return { ...deck, presentation: { ...deck.presentation, reducedMotion: command.reducedMotion } };
     case 'addSlide':
       return {
         ...deck,

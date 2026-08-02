@@ -1,7 +1,8 @@
 import { memo } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import type { Block, DeckProject, DeckSlide, Frame, LayoutBinding } from '../deck/types';
-import { resolveSlidePlacements } from '../deck/layout';
+import { resolveSlidePlacements, getLayoutContract } from '../deck/layout';
+import { getMotionProfile } from '../deck/motion';
 import { BlockRenderer } from './BlockRenderer';
 
 /**
@@ -110,6 +111,8 @@ export const SlideRenderer = memo(function SlideRenderer({
   const isThumbnail = surface === 'thumbnail';
   const defaultBuilds = deck.presentation.defaultBuilds ?? false;
   const isBuildAware = buildIndex !== undefined;
+  const profile = getMotionProfile(deck.presentation.motionProfileId);
+  const motionOn = isBuildAware && profile.entranceDurationMs > 0;
 
   const children = [...groups.values()].map((group) => {
     const slotFlow = group.binding?.flow ?? 'stack';
@@ -136,7 +139,9 @@ export const SlideRenderer = memo(function SlideRenderer({
               ? { position: 'absolute', inset: 0 }
               : { position: 'relative', width: '100%', minWidth: 0, minHeight: 0 }),
             ...(slotFlow === 'stack' || slotFlow === 'row' ? { flex: '1 1 0%' } : {}),
-            ...(isBuildAware ? { animationDelay: `${(block.animation?.order ?? 0) * 120}ms` } : {}),
+            ...(motionOn
+              ? { animationDelay: `${(block.animation?.order ?? 0) * profile.staggerDelayMs}ms`, animationDuration: `${profile.entranceDurationMs}ms`, animationTimingFunction: profile.easing }
+              : {}),
           };
 
           const wrapperProps: Record<string, unknown> = {
@@ -177,7 +182,6 @@ export const SlideRenderer = memo(function SlideRenderer({
     transform: `scale(${scale})`,
     transformOrigin: 'top left',
   };
-
   const frameStyle: CSSProperties = {
     width: deck.canvas.width * scale,
     height: deck.canvas.height * scale,
@@ -185,9 +189,14 @@ export const SlideRenderer = memo(function SlideRenderer({
     ...(isThumbnail ? { contain: 'layout paint size' as const, pointerEvents: 'none' as const } : {}),
   };
 
+  const transitionClass = `slide-transition-${profile.slideTransition}`;
+
+  const contract = getLayoutContract(slide.layout);
+  const gradientHero = !isThumbnail && ['Opening', 'Closing'].includes(contract?.category ?? '');
+
   return (
-    <div className={`deck-slide-frame ${isThumbnail ? 'is-thumbnail' : ''}`} style={frameStyle}>
-      <div className="deck-slide" style={logicalStyle}>
+    <div className={`deck-slide-frame ${isThumbnail ? 'is-thumbnail' : ''} ${transitionClass}`} style={frameStyle}>
+      <div className={`deck-slide ${gradientHero ? 'is-gradient-hero' : ''}`} style={logicalStyle}>
         {children}
       </div>
     </div>

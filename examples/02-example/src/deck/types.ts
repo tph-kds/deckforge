@@ -170,6 +170,19 @@ export interface ThemeTokens {
   focus: string;
 }
 
+/**
+ * Approved gradient uses (plan §10.3): hero backgrounds, small emphasis
+ * surfaces, progress bars, highlight sweeps, and decorative accents.
+ * Gradients must never cover body paragraphs, bullet lists, or data tables.
+ */
+export interface ThemeGradients {
+  hero?: string;
+  emphasis?: string;
+  progress?: string;
+  highlight?: string;
+  accent?: string;
+}
+
 export interface ThemeDef {
   id: string;
   name: string;
@@ -181,6 +194,7 @@ export interface ThemeDef {
   chartPalette: string[];
   shapeLanguage?: string;
   motionStyle?: string;
+  gradients?: ThemeGradients;
   antiPatterns?: string[];
 }
 

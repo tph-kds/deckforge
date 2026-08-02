@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import type { DeckStore } from '../deck/useDeck';
 import { listLayouts, auditSlideLayout } from '../deck/layout';
 import { listThemes, getTheme } from '../deck/themes';
+import { listMotionProfiles } from '../deck/motion';
 import { newId } from '../deck/seed';
 import type { Block } from '../deck/types';
 import { measureSlide, summarizeIssues } from '../deck/measure';
@@ -103,6 +104,7 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
   const activeBlock = activeSlide.blocks.find((block) => block.id === selection.blockIds[0]);
   const layouts = listLayouts();
   const themes = listThemes();
+  const motionProfiles = listMotionProfiles();
   const issues = useMemo(() => auditSlideLayout(activeSlide, deck.canvas), [activeSlide, deck.canvas]);
   const measured = useMemo(() => measureSlide(deck, activeSlide), [deck, activeSlide]);
   const measuredCounts = useMemo(() => summarizeIssues(measured), [measured]);
@@ -358,6 +360,30 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
                   {t.name}
                 </option>
               ))}
+            </select>
+          </label>
+          <label>
+            Motion profile
+            <select
+              value={deck.presentation.motionProfileId ?? ''}
+              onChange={(event) => commit({ type: 'setMotionProfile', motionProfileId: event.target.value })}
+            >
+              {motionProfiles.map((profile) => (
+                <option key={profile.id} value={profile.id}>
+                  {profile.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Reduced motion
+            <select
+              value={deck.presentation.reducedMotion ?? 'respect-system'}
+              onChange={(event) => commit({ type: 'setReducedMotion', reducedMotion: event.target.value as 'respect-system' | 'always' | 'never' })}
+            >
+              <option value="respect-system">Respect system setting</option>
+              <option value="always">Always reduced</option>
+              <option value="never">Always animated</option>
             </select>
           </label>
         </div>

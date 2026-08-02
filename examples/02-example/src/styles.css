@@ -942,6 +942,28 @@ kbd {
   animation: deck-slide-in 380ms ease-out both;
 }
 
+/* Profile-driven slide transitions (plan §14.1). Animate only opacity and
+   transform so layout never shifts during motion (plan §14.4). */
+.slide-transition-none .deck-slide {
+  animation: none;
+}
+
+.slide-transition-fade .deck-slide {
+  animation: deck-slide-fade var(--motion-slide-duration, 380ms) var(--motion-slide-easing, ease-out) both;
+}
+
+.slide-transition-slide-up .deck-slide {
+  animation: deck-slide-up var(--motion-slide-duration, 380ms) var(--motion-slide-easing, ease-out) both;
+}
+
+.slide-transition-slide-left .deck-slide {
+  animation: deck-slide-left var(--motion-slide-duration, 380ms) var(--motion-slide-easing, ease-out) both;
+}
+
+.slide-transition-zoom .deck-slide {
+  animation: deck-slide-zoom var(--motion-slide-duration, 380ms) var(--motion-slide-easing, ease-out) both;
+}
+
 @keyframes deck-slide-in {
   from {
     opacity: 0;
@@ -950,6 +972,48 @@ kbd {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes deck-slide-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes deck-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes deck-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes deck-slide-zoom {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -973,13 +1037,41 @@ kbd {
   }
 }
 
+/* Approved gradient surfaces (plan §10.3): hero backgrounds, small emphasis
+   panels, and progress bars. Never applied to body text or tables. */
+.deck-slide.is-gradient-hero {
+  background: var(--theme-gradient-hero, var(--theme-background));
+}
+
+.deck-block-wrap.is-gradient-emphasis {
+  background: var(--theme-gradient-emphasis, var(--theme-surface));
+  border-radius: 12px;
+}
+
+.presenter-progress-bar.is-gradient-progress {
+  background: var(--theme-gradient-progress, currentColor);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .presenter-stage-slide,
-  .deck-block-wrap {
+  .deck-block-wrap,
+  .deck-slide-frame .deck-slide {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
+    transform: none !important;
   }
+}
+
+/* Deck-level reduced motion (plan §14.5): the deck can force reduced motion
+   regardless of the system setting. */
+.app.is-reduced-motion .presenter-stage-slide,
+.app.is-reduced-motion .deck-block-wrap,
+.app.is-reduced-motion .deck-slide-frame .deck-slide {
+  animation: none !important;
+  transition: none !important;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 .presenter-chrome {
