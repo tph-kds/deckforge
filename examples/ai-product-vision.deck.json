@@ -26,6 +26,7 @@
     "mode": "horizontal",
     "transition": "crossfade",
     "motionProfileId": "pitch-dynamic",
+    "defaultBuilds": true,
     "keyboard": true,
     "touch": true,
     "deepLinks": true,
