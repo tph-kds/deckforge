@@ -37,4 +37,16 @@ class ExampleTests(unittest.TestCase):
    p=os.path.join(d,'deck.json');Path(p).write_text(json.dumps(static),encoding='utf-8')
    r=subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),p],capture_output=True,text=True)
    self.assertNotEqual(r.returncode,0)
+ def test_embedded_skill_copy_in_sync(self):
+  import hashlib
+  canon=ROOT/'skills/deckforge';embed=ROOT/'examples/02-example/.agents/skills/deckforge'
+  def md5(p):return hashlib.md5(p.read_bytes()).hexdigest()
+  missing=[str(c.relative_to(canon)) for c in canon.rglob('*') if c.is_file() and not (embed/c.relative_to(canon)).exists()]
+  drift=[]
+  for c in canon.rglob('*'):
+   if not c.is_file():continue
+   rel=c.relative_to(canon);d=embed/rel
+   if d.exists() and md5(c)!=md5(d):drift.append(str(rel))
+  stale=[str(d.relative_to(embed)) for d in embed.rglob('*') if d.is_file() and not (canon/d.relative_to(embed)).exists()]
+  self.assertEqual(missing+drift+stale,[])
 if __name__=='__main__':unittest.main()

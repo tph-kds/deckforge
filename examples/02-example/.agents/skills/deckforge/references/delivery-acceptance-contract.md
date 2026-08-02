@@ -67,7 +67,10 @@ A visible help action opens an accessible dialog listing editor and presenter sh
 - content is clipped or hidden;
 - placeholders remain without being clearly marked;
 - shortcut help is absent;
-- production build fails.
+- production build fails;
+- no `motionProfileId` or a fully static presenter (no transition, no builds);
+- presenter chrome floating over the slide safe area;
+- editor with an unassigned grid row or a non-collapsible notes area.
 
 ## Profile: presentation-runtime
 

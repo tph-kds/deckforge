@@ -111,6 +111,8 @@ export type DeckProject = {
     progress?: boolean;
     controls?: boolean;
     reducedMotion: 'respect-system' | 'always' | 'never';
+    motionProfileId?: string;
+    defaultBuilds?: boolean;
   };
   editor: {
     enabled: boolean;

@@ -25,6 +25,8 @@ Use user-provided assets, properly licensed sources, generated assets with permi
 
 Images must occupy a meaningful visual slot. Avoid tiny decorative images surrounded by unused space. Preserve aspect ratio unless a deliberate crop is chosen. Never stretch media.
 
+Set the media `fit` explicitly (`cover` or `contain`) and choose the focal point before rendering; never stretch an image to fill a slot. Alt text is mandatory for every image, and purely decorative images must be marked as decorative so assistive technology skips them. Lazy-load below-the-fold media.
+
 ## Screenshot and demo treatment
 
 - show enough interface context to orient the audience;

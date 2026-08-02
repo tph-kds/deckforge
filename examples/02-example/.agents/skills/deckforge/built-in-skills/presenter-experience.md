@@ -6,6 +6,10 @@ The presenter surface is an audience-facing product, not a full-screen editor. I
 
 Render only the slide, intentional progress affordances, and controls that appear on demand. Hide selection outlines, comments, autosave, edit panels, and authoring metadata. Support keyboard, click/tap, touch gestures, and visible controls without stealing browser-reserved shortcuts unnecessarily.
 
+All chrome — timer, position, controls, progress — lives in a docked band outside
+the letterboxed slide. Never float chrome over the slide canvas. Auto-hide chrome
+on idle in fullscreen and reveal on pointer-move.
+
 Navigation must distinguish build-step progress from slide progress. Support next, previous, first, last, overview, fullscreen, exit, and deep-linked slide entry. Define behavior when a slide contains interactive content so clicking a control does not accidentally advance the deck.
 
 ## Speaker view

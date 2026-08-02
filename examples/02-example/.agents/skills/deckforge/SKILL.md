@@ -57,6 +57,11 @@ Read:
 
 Create a slide blueprint before code. Every slide must have a role, claim-led title, evidence/content type, density target, selected layout, and reason for that layout.
 
+Read `assets/motion-profile-manifest.json`, select the profile whose `useFor`
+matches the presentation archetype, and record it as `presentation.motionProfileId`.
+Apply the profile's default slide transition and block builds even when the user
+did not request motion.
+
 ## 6. Use semantic composition, not arbitrary coordinates
 
 Read:

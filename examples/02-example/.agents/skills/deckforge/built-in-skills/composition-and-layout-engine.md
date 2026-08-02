@@ -62,7 +62,7 @@ Use CSS Grid/Flexbox or an equivalent constraint solver inside each slot. Keep a
 
 ## Step 5 — Apply content budgets
 
-Use layout and block budgets to catch likely fit issues before rendering. Budgets include:
+Enforce each slot's `contentBudget` from the layout contract. Use layout and block budgets to catch likely fit issues before rendering. Budgets include:
 
 - maximum title lines;
 - maximum title characters;
@@ -74,6 +74,8 @@ Use layout and block budgets to catch likely fit issues before rendering. Budget
 - caption/source allowance.
 
 When over budget, rewrite, split, move details to notes, or choose a denser layout. Do not reduce font size below the theme's presentation minimum.
+
+The editor must surface budget warnings per slot so authors and agents catch overflow before rendering. Treat these as indicators to shorten, split, or change layout, not as license to ignore the budget.
 
 ## Step 6 — Run collision and balance checks
 
