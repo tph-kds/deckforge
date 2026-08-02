@@ -46,8 +46,12 @@ class ExampleTests(unittest.TestCase):
    r=subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),p],capture_output=True,text=True)
    self.assertNotEqual(r.returncode,0)
  def test_content_audit_passes_for_real_decks(self):
-  for name in ('02-example/deck.json','acme-platform-migration.deck.json'):
+  for name in ('ai-product-vision.deck.json','02-example/deck.json','acme-platform-migration.deck.json'):
    subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_content.py'),str(ROOT/'examples'/name)],check=True)
+ def test_ai_product_vision_passes_all_audits(self):
+  path=ROOT/'examples/ai-product-vision.deck.json'
+  subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_layout.py'),str(path),'--strict'],check=True)
+  subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),str(path)],check=True)
  def test_content_audit_fails_for_violation_fixture(self):
   path=ROOT/'tests/fixtures/content-violations/deck.json'
   r=subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_content.py'),str(path)],capture_output=True,text=True)

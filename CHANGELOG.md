@@ -17,6 +17,7 @@
 - Added repo-level `npm run test` (Python suite + the `02-example` vitest suite, 76 tests) and `npm run test:visual` (strict layout, asset, and contrast audits) to complete the M7 exit-condition commands.
 - Added `docs/EXTENDING.md` documenting how to extend catalog manifests, embedded copies, and built-in skill workflows, with the verification commands that gate each change.
 - Added a deterministic content audit (`skills/deckforge/scripts/audit_deck_content.py`, wrapped at `scripts/audit_deck_content.py`) covering plan §5.5/§20.1 checks: duplicate slide titles, generic context-free titles, verbatim repeated claims, empty text content, incomplete metrics, chart captions, and density budgets. Wired into `npm run validate`, `npm run test:visual`, and the regression suite with a violations fixture; documented in `quality-gate.md`.
+- Fixed the `ai-product-vision` reference deck, which bound a diagram to the text-only `kicker` slot while its required `title`/`diagram` slots were empty and mis-assigned two blocks to the single-item `title` slot; it now passes strict layout, content, motion, and schema audits and is covered by the validate gate.
 
 ## 2.2.0 — 2026-08-02
 
