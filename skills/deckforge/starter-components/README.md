@@ -12,6 +12,7 @@ Included references cover:
 - contextual toolbar groups;
 - accessible shortcut-help dialog;
 - presenter reducer, overview, speaker view, and hotkeys;
-- block registry, animations, and export contracts.
+- block registry, animations, and export contracts;
+- deterministic content measurement (overflow, collision, budget, boundary, orphan) and its repair pass (move/trim/truncate with a fixed-point loop).
 
 A production implementation must still adapt authentication, API persistence, collaboration, rich-text/media adapters, schema validation, authorization, asset upload, visual regression, and runtime security to the target product.
