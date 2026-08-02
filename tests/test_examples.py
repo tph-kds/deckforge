@@ -30,6 +30,14 @@ class ExampleTests(unittest.TestCase):
   self.assertEqual(len(ids),len(set(ids)))
   subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_layout.py'),str(path),'--strict'],check=True)
   subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),str(path)],check=True)
+ def test_theme_variant_example_passes_audits(self):
+  path=ROOT/'examples/acme-platform-migration.deck.json'
+  data=json.loads(path.read_text())
+  self.assertEqual(data['schemaVersion'],'2.1')
+  self.assertEqual(data['presentation']['motionProfileId'],'seminar-editorial')
+  self.assertEqual(data['theme']['id'],'editorial-cream')
+  subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_layout.py'),str(path),'--strict'],check=True)
+  subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),str(path)],check=True)
  def test_motion_audit_fails_for_static_deck(self):
   import tempfile, json, os
   static={'presentation':{'mode':'horizontal','transition':'','reducedMotion':'respect-system'},'slides':[{'id':'s1','title':'t','layout':'title-hero','blocks':[{'id':'b1','type':'text','content':'x'}]}]}

@@ -1,0 +1,464 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {
+    "id": "deck-acme-migration",
+    "slug": "acme-platform-migration",
+    "title": "Acme Platform Migration — Case Study",
+    "description": "A customer case-study deck demonstrating the portfolio-case-study archetype, editorial-cream theme, and seminar-editorial motion profile.",
+    "language": "en",
+    "audience": "Enterprise sales and implementation partners",
+    "objective": "Show how Acme moved 40k users to the new platform in 90 days.",
+    "templateId": "customer-case-study"
+  },
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1600,
+    "height": 900,
+    "safeMargin": 64,
+    "grid": 8,
+    "layoutMode": "semantic-slots"
+  },
+  "theme": {
+    "id": "editorial-cream",
+    "overrides": {}
+  },
+  "presentation": {
+    "mode": "horizontal",
+    "transition": "crossfade",
+    "motionProfileId": "seminar-editorial",
+    "defaultBuilds": true,
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "progress": true,
+    "controls": true,
+    "reducedMotion": "respect-system"
+  },
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "snapToGrid": true,
+    "guides": true,
+    "comments": false,
+    "collaboration": false,
+    "autosave": true,
+    "allowedBlockTypes": [
+      "heading",
+      "text",
+      "metric",
+      "timeline",
+      "image",
+      "citation",
+      "quote"
+    ],
+    "sidePanel": true,
+    "assetLibrary": true,
+    "themePicker": true,
+    "layoutPicker": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "requiredZones": [
+      "app-bar",
+      "slide-rail",
+      "canvas",
+      "inspector",
+      "notes",
+      "save-status"
+    ]
+  },
+  "assets": [],
+  "slides": [
+    {
+      "id": "s1",
+      "title": "A migration that shipped on time",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b1",
+          "type": "heading",
+          "content": "Acme moved 40,000 users to the new platform in 90 days.",
+          "frame": {
+            "x": 80,
+            "y": 150,
+            "w": 980,
+            "h": 200
+          },
+          "style": {
+            "level": 1
+          },
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b2",
+          "type": "text",
+          "content": "A customer case study: planning, enablement, and zero-downtime cutover.",
+          "frame": {
+            "x": 84,
+            "y": 400,
+            "w": 720,
+            "h": 100
+          },
+          "style": {},
+          "sourceIds": [],
+          "slot": "subtitle",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b3",
+          "type": "text",
+          "content": "Acme · 90 days · 40k users",
+          "frame": {
+            "x": 84,
+            "y": 560,
+            "w": 720,
+            "h": 60
+          },
+          "style": {},
+          "sourceIds": [],
+          "slot": "meta",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b12",
+          "type": "diagram",
+          "content": {
+            "nodes": [
+              "Legacy",
+              "Bridge",
+              "New platform"
+            ],
+            "edges": [
+              "Legacy->Bridge",
+              "Bridge->New platform"
+            ]
+          },
+          "frame": {
+            "x": 980,
+            "y": 220,
+            "w": 520,
+            "h": 440
+          },
+          "style": {},
+          "alt": "Migration path from the legacy system through a bridge into the new platform.",
+          "sourceIds": [],
+          "slot": "visual",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Open with the outcome, not the process. The headline is the result.",
+      "sources": [],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "title",
+          "blockIds": [
+            "b1"
+          ],
+          "flow": "stack",
+          "gap": 16
+        },
+        {
+          "slot": "subtitle",
+          "blockIds": [
+            "b2"
+          ],
+          "flow": "stack",
+          "gap": 16
+        },
+        {
+          "slot": "meta",
+          "blockIds": [
+            "b3"
+          ],
+          "flow": "stack",
+          "gap": 16
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b12"
+          ],
+          "flow": "stack",
+          "gap": 16
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "The headline numbers",
+      "layout": "metric-grid",
+      "blocks": [
+        {
+          "id": "b4",
+          "type": "heading",
+          "content": "Results that held up in production",
+          "frame": {
+            "x": 84,
+            "y": 90,
+            "w": 900,
+            "h": 80
+          },
+          "style": {
+            "level": 2
+          },
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b5",
+          "type": "metric",
+          "content": {
+            "value": "99.99%",
+            "label": "uptime through cutover"
+          },
+          "frame": {
+            "x": 120,
+            "y": 260,
+            "w": 320,
+            "h": 180
+          },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b6",
+          "type": "metric",
+          "content": {
+            "value": "2.1x",
+            "label": "faster checkout flow"
+          },
+          "frame": {
+            "x": 480,
+            "y": 260,
+            "w": 320,
+            "h": 180
+          },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b7",
+          "type": "metric",
+          "content": {
+            "value": "31%",
+            "label": "lower support ticket volume"
+          },
+          "frame": {
+            "x": 840,
+            "y": 260,
+            "w": 340,
+            "h": 180
+          },
+          "style": {},
+          "sourceIds": [],
+          "slot": "metrics",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Metrics anchor the narrative. Read them before diving into how.",
+      "sources": [],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "title",
+          "blockIds": [
+            "b4"
+          ],
+          "flow": "stack",
+          "gap": 16
+        },
+        {
+          "slot": "metrics",
+          "blockIds": [
+            "b5",
+            "b6",
+            "b7"
+          ],
+          "flow": "grid",
+          "gap": 16
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "How we sequenced the work",
+      "layout": "timeline-horizontal",
+      "blocks": [
+        {
+          "id": "b8",
+          "type": "heading",
+          "content": "Four phases, no rework",
+          "frame": {
+            "x": 84,
+            "y": 90,
+            "w": 700,
+            "h": 80
+          },
+          "style": {
+            "level": 2
+          },
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b9",
+          "type": "timeline",
+          "content": {
+            "items": [
+              "Weeks 1-2 · audit legacy flows",
+              "Weeks 3-6 · rebuild core journey",
+              "Weeks 7-8 · staged rollout",
+              "Weeks 9-12 · cutover and scale"
+            ]
+          },
+          "frame": {
+            "x": 120,
+            "y": 260,
+            "w": 1360,
+            "h": 320
+          },
+          "style": {},
+          "sourceIds": [],
+          "slot": "timeline",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Sequencing is the differentiator: de-risking early, cutting over in stages.",
+      "sources": [],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "title",
+          "blockIds": [
+            "b8"
+          ],
+          "flow": "stack",
+          "gap": 16
+        },
+        {
+          "slot": "timeline",
+          "blockIds": [
+            "b9"
+          ],
+          "flow": "stack",
+          "gap": 16
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "What the team said",
+      "layout": "centered-quote",
+      "blocks": [
+        {
+          "id": "b10",
+          "type": "quote",
+          "content": "The cutover was the calmest launch we have ever run. The plan did not just cover the migration — it covered our team.",
+          "frame": {
+            "x": 240,
+            "y": 200,
+            "w": 1120,
+            "h": 260
+          },
+          "style": {},
+          "sourceIds": [],
+          "slot": "quote",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b11",
+          "type": "text",
+          "content": "Priya Raman, VP Platform, Acme",
+          "frame": {
+            "x": 240,
+            "y": 520,
+            "w": 720,
+            "h": 60
+          },
+          "style": {},
+          "sourceIds": [],
+          "slot": "source",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Close on the human signal. The plan earned the trust that made the migration routine.",
+      "sources": [],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "quote",
+          "blockIds": [
+            "b10"
+          ],
+          "flow": "stack",
+          "gap": 16
+        },
+        {
+          "slot": "source",
+          "blockIds": [
+            "b11"
+          ],
+          "flow": "stack",
+          "gap": 16
+        }
+      ]
+    }
+  ],
+  "sources": [],
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "acme-platform-migration",
+    "embed": {
+      "enabled": true,
+      "allowedOrigins": [
+        "https://example.com"
+      ],
+      "sandbox": [
+        "allow-scripts",
+        "allow-forms",
+        "allow-popups"
+      ],
+      "responsive": true
+    },
+    "analytics": true,
+    "allowDownload": false
+  },
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": [
+      "editor",
+      "presenter"
+    ],
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "capabilities": [
+      "semantic-layout",
+      "persistent-editing",
+      "shortcut-help"
+    ]
+  },
+  "shortcuts": {
+    "helpEnabled": true,
+    "helpKey": "?",
+    "editorPreset": "deckforge-default",
+    "presenterPreset": "deckforge-default"
+  }
+}

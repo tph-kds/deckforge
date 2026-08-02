@@ -13,6 +13,7 @@
 - Strengthened quality gates to block fake editor controls, layout collisions, persistence defects, missing shortcut guidance, and skipped builds.
 - Added a 30-slide stress-test deck (`examples/stress-test-30.deck.json`) and a generator (`scripts/generate_stress_deck.py`) to exercise grid, overview, layout, and motion audits at scale; wired into `npm run validate` and the regression test suite.
 - Added `scripts/sync_embedded_skills.py` to keep the `02-example` embedded skill copy in sync with `skills/deckforge`; the copy had drifted stale and is now regenerated, with a sync check wired into `npm run validate` and covered by a regression test.
+- Added a theme-variant example deck (`examples/acme-platform-migration.deck.json`) demonstrating the `portfolio-case-study` archetype, `editorial-cream` theme, and `seminar-editorial` motion profile as an alternative reference to the default `02-example`; wired into `npm run validate` and the regression test suite.
 
 ## 2.2.0 — 2026-08-02
 
