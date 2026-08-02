@@ -43,6 +43,40 @@ export interface ChartContent {
   summary?: string;
 }
 
+export type AssetKind = 'image' | 'video' | 'audio' | 'font' | 'data' | 'document' | 'model' | 'embed-poster';
+
+/** Asset manifest entry (plan §9.1 AssetManifestItem). */
+export interface DeckAsset {
+  id: string;
+  kind: AssetKind;
+  src: string;
+  mimeType?: string;
+  width?: number;
+  height?: number;
+  durationMs?: number;
+  alt?: string;
+  credit?: string;
+  license?: string;
+  integrity?: string;
+  posterSrc?: string;
+  transcriptSrc?: string;
+  focalPoint?: { x: number; y: number };
+  status?: 'ready' | 'failed' | 'placeholder';
+}
+
+/** Content shape for image blocks (plan §9.2 ImageBlockData). */
+export interface ImageBlockContent {
+  assetId?: string;
+  src?: string;
+  fit?: 'cover' | 'contain';
+  focalPoint?: { x: number; y: number };
+  caption?: string;
+  attribution?: string;
+  alt?: string;
+  decorative?: boolean;
+  rounded?: boolean;
+}
+
 export interface MetricContent {
   value: string;
   label?: string;
@@ -214,7 +248,7 @@ export interface DeckProject {
     routes?: Record<string, string>;
     requiredZones?: string[];
   };
-  assets?: unknown[];
+  assets?: DeckAsset[];
   slides: DeckSlide[];
   sources?: SourceRef[];
   publish?: {

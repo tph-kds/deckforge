@@ -69,7 +69,7 @@ function makeBlockForType(type: string): Block {
         positionMode: 'slot',
       };
     case 'image':
-      return { id, type, content: { src: '', fit: 'cover' }, style: {}, alt: 'Image', sourceIds: [], positionMode: 'slot' };
+      return { id, type, content: { assetId: '', fit: 'cover', focalPoint: { x: 0.5, y: 0.5 } }, style: {}, alt: 'Image', sourceIds: [], positionMode: 'slot' };
     case 'callout':
       return { id, type, content: 'Add a callout.', style: {}, sourceIds: [], positionMode: 'slot' };
     case 'citation':

@@ -90,7 +90,20 @@
       "save-status"
     ]
   },
-  "assets": [],
+  "assets": [
+    {
+      "id": "asset-book-cover",
+      "kind": "image",
+      "src": "https://images.unsplash.com/photo-1519326844852-704caea5675e?auto=format&fit=crop&w=720&q=70",
+      "mimeType": "image/jpeg",
+      "width": 720,
+      "height": 480,
+      "alt": "A page of a book photographed at close range, evoking the idea of a lighter, more careful web.",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "focalPoint": { "x": 0.5, "y": 0.4 }
+    }
+  ],
   "slides": [
     {
       "id": "s1",
@@ -625,8 +638,11 @@
           "id": "b36",
           "type": "image",
           "content": {
-            "src": "https://images.unsplash.com/photo-1519326844852-704caea5675e?auto=format&fit=crop&w=720&q=70",
-            "fit": "cover"
+            "assetId": "asset-book-cover",
+            "fit": "cover",
+            "focalPoint": { "x": 0.5, "y": 0.4 },
+            "caption": "A lighter, more careful web.",
+            "attribution": "Photo: Unsplash"
           },
           "style": {},
           "alt": "A page of a book photographed at close range, evoking the idea of a lighter, more careful web.",

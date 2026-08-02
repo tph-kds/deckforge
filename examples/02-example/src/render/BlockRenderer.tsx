@@ -1,11 +1,14 @@
-import type { ReactNode } from 'react';
-import type { Block, DeckSlide } from '../deck/types';
+import { useCallback, useState } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
+import type { Block, DeckProject, DeckSlide, ImageBlockContent } from '../deck/types';
 import type { RenderSurface } from './SlideRenderer';
+import { clampFocalPoint, focalPointToCss, imageContentOf, resolveImage, resolveAsset } from '../deck/assets';
 import { ChartRenderer } from './Chart';
 
 interface BlockViewProps {
   block: Block;
   slide: DeckSlide;
+  deck?: DeckProject;
   themeId: string;
   surface?: RenderSurface;
 }
@@ -94,23 +97,86 @@ function CitationBlock({ block }: BlockViewProps) {
   return <div className="block-citation" aria-label={block.ariaLabel}>{String(block.content)}</div>;
 }
 
-function ImageBlock({ block }: BlockViewProps) {
-  const content = block.content as { src?: string; fit?: string };
-  const fit = content?.fit ?? 'cover';
+function ImageBlock({ block, deck }: BlockViewProps) {
+  const content: ImageBlockContent = imageContentOf(block);
+  const assetDeck = deck ?? { assets: [] as DeckProject['assets'] };
+  const resolved = resolveImage(assetDeck, block);
+  const asset = resolved.asset ?? resolveAsset(assetDeck, content.assetId);
+  const [loadState, setLoadState] = useState<'loading' | 'loaded' | 'error'>(
+    resolved.status === 'placeholder' || resolved.status === 'failed' ? 'error' : 'loading',
+  );
+
+  const handleLoad = useCallback(() => setLoadState('loaded'), []);
+  const handleError = useCallback(() => setLoadState('error'), []);
+
+  const decorative = content.decorative === true || block.decorative === true;
+  const focal = clampFocalPoint(content.focalPoint ?? asset?.focalPoint);
+  const fit = content.fit ?? 'cover';
+  const caption = content.caption;
+  const attribution = content.attribution ?? asset?.credit;
+  const rounded = content.rounded === true;
+  const alt = decorative ? '' : block.alt ?? content.alt ?? asset?.alt ?? '';
+
+  const baseStyle: CSSProperties = {
+    objectPosition: focalPointToCss(focal),
+    objectFit: fit === 'contain' ? 'contain' : 'cover',
+  };
+
+  if (resolved.status === 'placeholder') {
+    return (
+      <figure className={`block-image is-placeholder${rounded ? ' is-rounded' : ''}`}>
+        <div className="image-placeholder" role="presentation" aria-hidden="true">
+          <span className="image-placeholder-mark" aria-hidden="true">◍</span>
+          <span className="image-placeholder-label">Image</span>
+        </div>
+        <ImageMeta caption={caption} attribution={attribution} />
+      </figure>
+    );
+  }
+
+  if (resolved.status === 'failed' || loadState === 'error' || !resolved.src) {
+    return (
+      <figure className={`block-image is-error${rounded ? ' is-rounded' : ''}`}>
+        <div className="image-placeholder is-error" role="img" aria-label={alt || 'Image unavailable'}>
+          <span className="image-placeholder-mark" aria-hidden="true">✕</span>
+          <span className="image-placeholder-label">Image unavailable</span>
+        </div>
+        <ImageMeta caption={caption} attribution={attribution} />
+      </figure>
+    );
+  }
+
   return (
-    <div className="block-image">
-      <img
-        src={content?.src}
-        alt={block.alt ?? block.ariaLabel ?? ''}
-        loading="lazy"
-        draggable={false}
-        style={{ objectFit: fit === 'contain' ? 'contain' : 'cover' }}
-      />
-    </div>
+    <figure className={`block-image${rounded ? ' is-rounded' : ''}`}>
+      <div className={`image-frame ${loadState === 'loading' ? 'is-loading' : ''}`}>
+        {loadState === 'loading' ? <div className="image-skeleton" aria-hidden="true" /> : null}
+        <img
+          src={resolved.src}
+          alt={alt}
+          loading="lazy"
+          draggable={false}
+          style={baseStyle}
+          onLoad={handleLoad}
+          onError={handleError}
+          {...(decorative ? { role: 'presentation', 'aria-hidden': true } : {})}
+        />
+      </div>
+      <ImageMeta caption={caption} attribution={attribution} />
+    </figure>
   );
 }
 
-export function BlockRenderer({ block, slide, themeId, surface = 'editor' }: BlockViewProps): ReactNode {
+function ImageMeta({ caption, attribution }: { caption?: string; attribution?: string }) {
+  if (!caption && !attribution) return null;
+  return (
+    <figcaption className="image-meta">
+      {caption ? <span className="image-caption">{caption}</span> : null}
+      {attribution ? <span className="image-attribution">{attribution}</span> : null}
+    </figcaption>
+  );
+}
+
+export function BlockRenderer({ block, slide, deck, themeId, surface = 'editor' }: BlockViewProps): ReactNode {
   const style = styleFrom(block.style);
   void surface;
   const className = `deck-block block-${block.type}`;
@@ -146,7 +212,7 @@ export function BlockRenderer({ block, slide, themeId, surface = 'editor' }: Blo
     case 'citation':
       return <CitationBlock block={block} slide={slide} themeId={themeId} />;
     case 'image':
-      return <ImageBlock block={block} slide={slide} themeId={themeId} />;
+      return <ImageBlock block={block} slide={slide} deck={deck} themeId={themeId} />;
     default:
       return (
         <div className={`${className} block-unknown`}>

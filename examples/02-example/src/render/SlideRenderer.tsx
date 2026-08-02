@@ -158,7 +158,7 @@ export const SlideRenderer = memo(function SlideRenderer({
 
           return (
             <div key={block.id} {...wrapperProps}>
-              <BlockRenderer block={block} slide={slide} themeId={deck.theme.id} surface={surface} />
+              <BlockRenderer block={block} slide={slide} deck={deck} themeId={deck.theme.id} surface={surface} />
             </div>
           );
         })}
