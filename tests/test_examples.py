@@ -26,7 +26,7 @@ class ExampleTests(unittest.TestCase):
   import tempfile, json, os
   static={'presentation':{'mode':'horizontal','transition':'','reducedMotion':'respect-system'},'slides':[{'id':'s1','title':'t','layout':'title-hero','blocks':[{'id':'b1','type':'text','content':'x'}]}]}
   with tempfile.TemporaryDirectory() as d:
-   p=os.path.join(d,'deck.json');open(p,'w',encoding='utf-8').write(json.dumps(static))
+   p=os.path.join(d,'deck.json');Path(p).write_text(json.dumps(static),encoding='utf-8')
    r=subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),p],capture_output=True,text=True)
    self.assertNotEqual(r.returncode,0)
 if __name__=='__main__':unittest.main()

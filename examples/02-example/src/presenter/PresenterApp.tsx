@@ -106,6 +106,7 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
       const prevSlide = nextIndex < safeIndex ? slides[nextIndex] : undefined;
       nextBuild = prevSlide ? Math.max(0, buildCountFor(prevSlide, deck.presentation.defaultBuilds ?? false) - 1) : 0;
     } else if (nextBuild >= buildCount) {
+      if (safeIndex === total - 1) return;
       nextIndex = Math.min(safeIndex + 1, total - 1);
       nextBuild = 0;
     }

@@ -1122,6 +1122,10 @@ kbd {
       'canvas';
   }
 
+  .editor-shell.notes-collapsed {
+    grid-template-rows: 56px 1fr;
+  }
+
   .editor-slide-rail,
   .editor-inspector,
   .editor-notes-area {

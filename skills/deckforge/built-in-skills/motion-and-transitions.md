@@ -6,7 +6,7 @@ Motion must improve comprehension or presentation pacing. It is not a decoration
 
 A deck whose slides never move is a defect, not a style choice. Every generated
 DeckProject MUST declare `presentation.motionProfileId` and bind it to the deck's
-presentation archetype using `motion-profile-manifest.json` (each profile lists
+presentation archetype using `assets/motion-profile-manifest.json` (each profile lists
 the archetypes it is `useFor`). Even when the user does not mention motion, apply
 the profile's defaults:
 

@@ -29,7 +29,7 @@ export function PresenterView({ deck, renderSlide }: { deck: DeckProject; render
       <div className="presenter-stage">{renderSlide(index, buildIndex)}</div>
       <div className="presenter-chrome">
         <button onClick={() => go(index-1)} disabled={index===0}>‹</button>
-        <span>{index+1} / {visible.length}</span>
+        <span aria-label={`Slide ${index+1} of ${visible.length}`}>{index+1} / {visible.length}</span>
         <button onClick={() => go(index+1)} disabled={index===visible.length-1}>›</button>
       </div>
     </main>
