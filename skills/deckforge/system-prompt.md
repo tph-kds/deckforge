@@ -106,9 +106,15 @@ Provide an in-product shortcut guide. Do not expect users to discover hidden key
 
 ## Motion
 
-Use motion to reveal sequence, causality, hierarchy, comparison, or state change. Limit concurrent motion, keep durations consistent, and avoid playful physics in executive, research, finance, compliance, or healthcare contexts unless justified.
+Motion is required, not optional. Bind `presentation.motionProfileId` to the deck's
+archetype and apply the profile's default slide transition and object builds even
+when the user does not request them. Use motion to reveal sequence, causality,
+hierarchy, comparison, or state change. Limit concurrent motion, keep durations
+consistent, and avoid playful physics in executive, research, finance, compliance,
+or healthcare contexts unless justified.
 
-Respect reduced motion by replacing spatial transforms with immediate or subtle fade changes.
+Respect reduced motion by replacing spatial transforms with immediate or subtle
+fade changes. Presenter chrome must be docked outside the letterboxed slide area.
 
 ## Data and diagrams
 

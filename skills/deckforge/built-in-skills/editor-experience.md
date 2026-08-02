@@ -12,6 +12,11 @@ Use a stable application shell:
 4. **Right inspector** — context-sensitive panels for content, layout, style/theme, animation, media, accessibility, and source metadata.
 5. **Notes/footer area** — speaker notes, comments when requested, validation/status messages.
 
+The editor is a stable app shell. Every layout row maps to a real element: appbar,
+slide rail, canvas, inspector, and a collapsible speaker-notes strip that is a
+direct grid child. The canvas row must be `minmax(0,1fr)` with `overflow:auto`;
+no reserved-but-empty bands may exist.
+
 The canvas remains visually dominant. Panels may collapse but cannot disappear without a way to reopen them.
 
 ## Minimum viable editing contract

@@ -22,7 +22,9 @@ Check that every declared capability exists:
 - `autosave` requires persistence and status feedback;
 - `shortcutHelp` requires an in-product accessible help UI;
 - `speakerView`, `overview`, `fullscreen`, and interactions must be runnable;
-- allowed block types require renderers and insert actions or must be removed from the declaration.
+- allowed block types require renderers and insert actions or must be removed from the declaration;
+- `motionProfileId` requires a runtime slide transition and default builds (or block-level animations); a deck that is fully static is blocking;
+- presenter chrome (timer, position, controls, progress) must be docked outside the slide area — floating chrome over slide content is blocking.
 
 Metadata alone never satisfies a feature.
 

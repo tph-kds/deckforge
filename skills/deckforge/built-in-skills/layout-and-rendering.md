@@ -49,6 +49,9 @@ Never repeatedly shrink text until it fits. Detect and show overflow warnings.
 
 Do not hide essential content on narrow screens.
 
+Presenter reserves a docked chrome band outside the letterboxed stage. The slide
+canvas must never be covered by chrome at any viewport or fullscreen state.
+
 ## Rendering architecture
 
 Use a semantic block registry. Keep block rendering independent from editor selection. Render selection handles, snap lines, and resize affordances in a separate overlay layer so they never change presenter geometry.

@@ -2,6 +2,25 @@
 
 Motion must improve comprehension or presentation pacing. It is not a decoration quota.
 
+## Default motion is mandatory
+
+A deck whose slides never move is a defect, not a style choice. Every generated
+DeckProject MUST declare `presentation.motionProfileId` and bind it to the deck's
+presentation archetype using `motion-profile-manifest.json` (each profile lists
+the archetypes it is `useFor`). Even when the user does not mention motion, apply
+the profile's defaults:
+
+- one slide transition (from the profile's `slideTransition`);
+- entrance/build motion on key blocks (heading, lead, primary visual, evidence)
+  using the profile's `objectBuilds` and `durationRangeMs`;
+- staggered reveals only where they aid sequence or comparison;
+- a `reducedMotion` fallback for every animation.
+
+Set `presentation.defaultBuilds: true` so the runtime applies default builds to
+blocks that carry no explicit `animation`. Do not ship a deck with a motion
+profile of `none-accessible` unless the audience/context requires zero spatial
+motion.
+
 ## Select a motion profile
 
 Read `assets/motion-profile-manifest.json`. Choose a profile based on presentation archetype, domain, audience, and delivery mode. Use one primary profile throughout the deck with rare justified exceptions.
@@ -40,6 +59,7 @@ When animation editing is in scope, the inspector must support:
 - Precompute diagram paths and chart geometry when possible.
 - Cancel or settle animations cleanly when navigating quickly.
 - Never make essential information available only after an animation the viewer cannot trigger.
+- Docked presenter chrome must never animate over the slide canvas.
 
 ## Builds
 
