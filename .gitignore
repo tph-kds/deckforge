@@ -1,0 +1,15 @@
+skill-zips/
+__pycache__/
+.DS_Store
+.env
+
+# skills zip file
+skills.zips/*
+
+
+# local markdown file 
+AUDIT_AND_REDESIGN_REPORT.md
+GITHUB_PUBLISHING.md
+VALIDATION_REPORT.md
+
+

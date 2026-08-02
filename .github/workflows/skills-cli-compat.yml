@@ -1,0 +1,25 @@
+name: skills-cli-compat
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate-skills-cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install validation dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Validate repository artifacts
+        run: npm run validate
+      - name: Validate discovery by Agent Skills CLI
+        run: bash scripts/check-skills-cli-compat.sh .

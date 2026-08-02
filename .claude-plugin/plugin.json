@@ -1,0 +1,14 @@
+{
+  "name": "deckforge",
+  "version": "2.2.0",
+  "description": "Web-native slide application design, editor, presenter, templates, and quality skills.",
+  "author": {
+    "name": "DeckForge contributors"
+  },
+  "skills": [
+    "./skills/deckforge",
+    "./skills/deckforge-audit",
+    "./skills/deckforge-runtime-planner",
+    "./skills/deckforge-publish"
+  ]
+}

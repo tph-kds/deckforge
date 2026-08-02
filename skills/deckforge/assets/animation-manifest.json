@@ -1,0 +1,314 @@
+[
+  {
+    "id": "appear",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "fade-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "fade-out",
+    "category": "exit",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "disappear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "slide-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "slide-out",
+    "category": "exit",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "disappear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "zoom-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "zoom-out",
+    "category": "exit",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "disappear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "wipe-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "blur-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "float-in",
+    "category": "entrance",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "scale-emphasis",
+    "category": "emphasis",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "pulse",
+    "category": "emphasis",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "highlight",
+    "category": "emphasis",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "counter",
+    "category": "data",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "bar-grow",
+    "category": "data",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "line-draw",
+    "category": "data",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "stagger",
+    "category": "sequence",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "path",
+    "category": "motion",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "appear",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "morph",
+    "category": "transition",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "fade",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "crossfade",
+    "category": "transition",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "fade",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "push",
+    "category": "transition",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "fade",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "cover",
+    "category": "transition",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "fade",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "parallax",
+    "category": "transition",
+    "defaultDurationMs": 700,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  },
+  {
+    "id": "none",
+    "category": "none",
+    "defaultDurationMs": 500,
+    "allowedTriggers": [
+      "on-enter",
+      "on-click",
+      "with-previous",
+      "after-previous"
+    ],
+    "reducedMotionFallback": "none",
+    "qualityRule": "Animation must clarify sequence, causality, focus, or comparison; never animate every object by default."
+  }
+]

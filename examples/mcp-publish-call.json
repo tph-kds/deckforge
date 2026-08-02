@@ -1,0 +1,32 @@
+{
+  "tool": "publish_deck",
+  "arguments": {
+    "deck": {
+      "$ref": "./ai-product-vision.deck.json"
+    },
+    "publish": {
+      "visibility": "unlisted",
+      "slug": "ai-product-vision",
+      "embed": {
+        "enabled": true,
+        "allowedOrigins": [
+          "https://example.com"
+        ],
+        "responsive": true
+      },
+      "createVersion": true,
+      "versionMessage": "Publish reviewed product-vision deck"
+    }
+  },
+  "expectedResult": {
+    "deckId": "deck-ai-product-vision",
+    "url": "https://slides.example.com/d/ai-product-vision",
+    "embedUrl": "https://slides.example.com/embed/ai-product-vision",
+    "versionId": "generated-by-runtime"
+  },
+  "notes": [
+    "The runtime must resolve and validate the referenced DeckProject 2.0 document before publishing.",
+    "Authentication, authorization, sanitization, origin policy, rate limiting, and audit logging belong to the runtime—not the skill repository.",
+    "Never expose runtime credentials or unrestricted embed tokens inside a deck document."
+  ]
+}

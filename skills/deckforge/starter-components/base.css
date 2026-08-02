@@ -1,0 +1,12 @@
+.deck-editor-shell { display: grid; grid-template: auto 1fr / 16rem minmax(0, 1fr) 18rem; min-height: 100dvh; background: var(--df-app-bg, #eef1f5); color: var(--df-fg, #0f172a); }
+.deck-editor-toolbar { grid-column: 1 / -1; min-height: 3.25rem; display: flex; align-items: center; border-bottom: 1px solid var(--df-border, #d7dde6); background: var(--df-panel, #fff); }
+.deck-slide-rail { overflow: auto; border-right: 1px solid var(--df-border, #d7dde6); background: var(--df-panel, #fff); }
+.deck-slide-rail button { width: 100%; padding: .75rem; text-align: left; border: 0; background: transparent; }
+.deck-slide-rail button[aria-current="page"] { background: var(--df-selected, #e7efff); }
+.deck-editor-canvas { display: grid; place-items: center; overflow: auto; padding: 2rem; }
+.deck-properties-panel { overflow: auto; border-left: 1px solid var(--df-border, #d7dde6); background: var(--df-panel, #fff); }
+.deck-stage { width: min(100%, 100rem); background: var(--df-slide-bg, #fff); box-shadow: 0 20px 60px rgb(15 23 42 / 16%); }
+.presenter-view { min-height: 100dvh; display: grid; place-items: center; background: #000; }
+.presenter-progress { position: fixed; right: 1rem; bottom: 1rem; padding: .35rem .6rem; border-radius: .4rem; background: rgb(0 0 0 / 55%); color: #fff; font: 500 .8rem/1 system-ui; }
+@media (max-width: 900px) { .deck-editor-shell { grid-template: auto auto 1fr / 1fr; } .deck-slide-rail { display: flex; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--df-border, #d7dde6); } .deck-slide-rail button { min-width: 12rem; } .deck-properties-panel { display: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }

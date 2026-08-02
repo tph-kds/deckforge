@@ -1,0 +1,698 @@
+{
+  "groups": [
+    {
+      "id": "history",
+      "actions": [
+        "undo",
+        "redo"
+      ]
+    },
+    {
+      "id": "slides",
+      "actions": [
+        "add-slide",
+        "duplicate-slide",
+        "delete-slide",
+        "move-slide"
+      ]
+    },
+    {
+      "id": "insert",
+      "actions": [
+        "text",
+        "image",
+        "shape",
+        "chart",
+        "table",
+        "diagram",
+        "video",
+        "embed"
+      ]
+    },
+    {
+      "id": "format",
+      "actions": [
+        "font",
+        "size",
+        "weight",
+        "color",
+        "alignment",
+        "spacing",
+        "list"
+      ]
+    },
+    {
+      "id": "arrange",
+      "actions": [
+        "bring-forward",
+        "send-backward",
+        "align",
+        "distribute",
+        "group",
+        "lock"
+      ]
+    },
+    {
+      "id": "design",
+      "actions": [
+        "layout",
+        "theme",
+        "background",
+        "canvas-size"
+      ]
+    },
+    {
+      "id": "motion",
+      "actions": [
+        "animate",
+        "transition",
+        "timing"
+      ]
+    },
+    {
+      "id": "review",
+      "actions": [
+        "notes",
+        "comments",
+        "accessibility-check"
+      ]
+    },
+    {
+      "id": "view",
+      "actions": [
+        "zoom",
+        "grid",
+        "guides",
+        "outline",
+        "presenter-view"
+      ]
+    },
+    {
+      "id": "delivery",
+      "actions": [
+        "present",
+        "share",
+        "embed",
+        "export"
+      ]
+    }
+  ],
+  "commandPalette": true,
+  "mobileBehavior": "Collapse to contextual bottom bar; editing remains optional, presenting remains fully supported.",
+  "coreShortcuts": {
+    "present": "F",
+    "next": "ArrowRight / Space",
+    "previous": "ArrowLeft / Shift+Space",
+    "overview": "O",
+    "speakerNotes": "S",
+    "commandPalette": "Ctrl/Cmd+K",
+    "undo": "Ctrl/Cmd+Z",
+    "redo": "Ctrl/Cmd+Shift+Z",
+    "duplicate": "Ctrl/Cmd+D",
+    "delete": "Backspace/Delete"
+  },
+  "actions": [
+    {
+      "id": "undo",
+      "label": "Undo",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": "Ctrl/Cmd+Z",
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "redo",
+      "label": "Redo",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": "Ctrl/Cmd+Shift+Z",
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "add-slide",
+      "label": "Add slide",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": "Ctrl/Cmd+M",
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "duplicate-slide",
+      "label": "Duplicate slide",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": "Ctrl/Cmd+Shift+D",
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "delete-slide",
+      "label": "Delete slide",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": "Delete",
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "move-slide",
+      "label": "Move slide",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "text",
+      "label": "Insert text",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "image",
+      "label": "Insert image",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "shape",
+      "label": "Insert shape",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "chart",
+      "label": "Insert chart",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "table",
+      "label": "Insert table",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "diagram",
+      "label": "Insert diagram",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "video",
+      "label": "Insert video",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "embed",
+      "label": "Embed",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": false,
+      "requiresSelection": false,
+      "requiresRuntime": true,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "font",
+      "label": "Font family",
+      "contexts": [
+        "editor",
+        "text-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "size",
+      "label": "Text size",
+      "contexts": [
+        "editor",
+        "text-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "weight",
+      "label": "Font weight",
+      "contexts": [
+        "editor",
+        "text-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "color",
+      "label": "Text color",
+      "contexts": [
+        "editor",
+        "text-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "alignment",
+      "label": "Text alignment",
+      "contexts": [
+        "editor",
+        "text-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "spacing",
+      "label": "Paragraph spacing",
+      "contexts": [
+        "editor",
+        "text-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "list",
+      "label": "List style",
+      "contexts": [
+        "editor",
+        "text-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "bring-forward",
+      "label": "Bring forward",
+      "contexts": [
+        "editor",
+        "object-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "send-backward",
+      "label": "Send backward",
+      "contexts": [
+        "editor",
+        "object-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "align",
+      "label": "Align objects",
+      "contexts": [
+        "editor",
+        "object-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "distribute",
+      "label": "Distribute objects",
+      "contexts": [
+        "editor",
+        "object-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "group",
+      "label": "Group selection",
+      "contexts": [
+        "editor",
+        "object-selection"
+      ],
+      "shortcut": "Ctrl/Cmd+G",
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "lock",
+      "label": "Lock selection",
+      "contexts": [
+        "editor",
+        "object-selection"
+      ],
+      "shortcut": "Ctrl/Cmd+L",
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "layout",
+      "label": "Change layout",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "theme",
+      "label": "Change theme",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "background",
+      "label": "Slide background",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "canvas-size",
+      "label": "Canvas size",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "animate",
+      "label": "Animate object",
+      "contexts": [
+        "editor",
+        "object-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "transition",
+      "label": "Slide transition",
+      "contexts": [
+        "editor",
+        "object-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "timing",
+      "label": "Animation timing",
+      "contexts": [
+        "editor",
+        "object-selection"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": true,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "notes",
+      "label": "Speaker notes",
+      "contexts": [
+        "editor",
+        "reviewer"
+      ],
+      "shortcut": "Ctrl/Cmd+Alt+N",
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "comments",
+      "label": "Comments",
+      "contexts": [
+        "editor",
+        "reviewer"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": true,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "accessibility-check",
+      "label": "Accessibility check",
+      "contexts": [
+        "editor",
+        "reviewer"
+      ],
+      "shortcut": null,
+      "reversible": false,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "zoom",
+      "label": "Zoom",
+      "contexts": [
+        "editor",
+        "presenter"
+      ],
+      "shortcut": "Ctrl/Cmd++ / Ctrl/Cmd+-",
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "grid",
+      "label": "Grid",
+      "contexts": [
+        "editor",
+        "presenter"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "guides",
+      "label": "Guides",
+      "contexts": [
+        "editor",
+        "presenter"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "outline",
+      "label": "Outline view",
+      "contexts": [
+        "editor",
+        "presenter"
+      ],
+      "shortcut": null,
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "presenter-view",
+      "label": "Speaker view",
+      "contexts": [
+        "editor",
+        "presenter"
+      ],
+      "shortcut": "S",
+      "reversible": true,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "present",
+      "label": "Present",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": "F",
+      "reversible": false,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "share",
+      "label": "Share",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": null,
+      "reversible": false,
+      "requiresSelection": false,
+      "requiresRuntime": true,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    },
+    {
+      "id": "export",
+      "label": "Export",
+      "contexts": [
+        "editor"
+      ],
+      "shortcut": "Ctrl/Cmd+Shift+E",
+      "reversible": false,
+      "requiresSelection": false,
+      "requiresRuntime": false,
+      "accessibilityRule": "Expose an accessible name, visible focus, disabled reason, and keyboard path."
+    }
+  ],
+  "selectionModes": [
+    "none",
+    "slide",
+    "single-block",
+    "multi-block",
+    "text-editing",
+    "group",
+    "locked-block",
+    "canvas"
+  ],
+  "statusItems": [
+    "autosave-state",
+    "validation-state",
+    "collaboration-state",
+    "zoom-level",
+    "current-slide",
+    "publish-state"
+  ]
+}

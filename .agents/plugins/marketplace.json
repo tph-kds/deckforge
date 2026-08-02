@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "name": "deckforge-web-slides-skills",
+  "displayName": "DeckForge Web Slides Agent Skills",
+  "version": "2.2.0",
+  "description": "Agent Skills for planning, designing, implementing, auditing, and publishing modern browser-native slide applications.",
+  "repository": "tph-kds/deckforge",
+  "homepage": "https://github.com/tph-kds/deckforge",
+  "defaultSkill": "deckforge",
+  "skills": [
+    {
+      "id": "deckforge",
+      "path": "./skills/deckforge",
+      "title": "DeckForge",
+      "description": "Primary orchestration skill for web-native slide products.",
+      "tags": ["slides", "presentation", "web-ui", "design-system", "editor", "presenter"]
+    },
+    {
+      "id": "deckforge-audit",
+      "path": "./skills/deckforge-audit",
+      "title": "DeckForge Audit",
+      "description": "Review and quality-assurance skill for existing slide applications.",
+      "tags": ["audit", "quality", "review", "accessibility", "performance"]
+    },
+    {
+      "id": "deckforge-runtime-planner",
+      "path": "./skills/deckforge-runtime-planner",
+      "title": "DeckForge Runtime Planner",
+      "description": "Architecture planning skill for editor, presenter, and publishing runtime.",
+      "tags": ["planning", "architecture", "runtime", "frontend"]
+    },
+    {
+      "id": "deckforge-publish",
+      "path": "./skills/deckforge-publish",
+      "title": "DeckForge Publish",
+      "description": "Publishing, export, and release skill for browser-native slide apps.",
+      "tags": ["publish", "export", "embed", "deploy"]
+    }
+  ],
+  "agents": {
+    "claude-code": {"supported": true, "install": "npx skills@latest add tph-kds/deckforge --skill deckforge --agent claude-code"},
+    "codex": {"supported": true, "install": "npx skills@latest add tph-kds/deckforge --skill deckforge --agent codex"},
+    "cursor": {"supported": true, "install": "npx skills@latest add tph-kds/deckforge --skill deckforge --agent cursor"},
+    "opencode": {"supported": true, "install": "npx skills@latest add tph-kds/deckforge --skill deckforge --agent opencode"},
+    "windsurf": {"supported": true, "install": "npx skills@latest add tph-kds/deckforge --skill deckforge --agent windsurf"},
+    "cline": {"supported": true, "install": "npx skills@latest add tph-kds/deckforge --skill deckforge --agent cline"},
+    "roo": {"supported": true, "install": "npx skills@latest add tph-kds/deckforge --skill deckforge --agent roo"},
+    "aider": {"supported": true, "install": "npx skills@latest add tph-kds/deckforge --skill deckforge --agent aider"},
+    "gemini-cli": {"supported": true, "install": "npx skills@latest add tph-kds/deckforge --skill deckforge --agent gemini-cli"},
+    "grok": {"supported": true, "install": "Use the OpenAI-compatible or Anthropic-compatible mode in your Grok/xAI coding setup, then install the repository files or import the skills directory directly."}
+  }
+}

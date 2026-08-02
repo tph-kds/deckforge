@@ -1,0 +1,6 @@
+{
+  "name": "deckforge",
+  "version": "2.2.0",
+  "description": "Web-native slide application skills for Codex and compatible agents.",
+  "skillsDirectory": "skills"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "deckforge-agent-skills",
+  "version": "2.2.0",
+  "private": true,
+  "description": "Agent Skills for professional web-native presentations.",
+  "scripts": {
+    "validate": "python scripts/check_rules.py && python scripts/lint_skills.py && python scripts/validate_repository_assets.py && python scripts/validate_catalogs.py && python scripts/validate_deck_project.py examples/ai-product-vision.deck.json && python -m unittest discover -s tests -p \"test_*.py\"",
+    "package-skills": "python scripts/package_skill_zips.py"
+  },
+  "license": "MIT"
+}
