@@ -58,7 +58,10 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
     const match = window.location.hash.match(/^#\/(\d+)$/);
     if (match) {
       const parsed = Number(match[1]);
-      if (parsed >= 0 && parsed < total) setIndex(parsed);
+      if (parsed >= 0 && parsed < total) {
+        setIndex(parsed);
+        setBuildIndex(0);
+      }
     }
   }, [total]);
 
@@ -73,36 +76,41 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
   }, [safeIndex]);
 
   useEffect(() => {
-    setBuildIndex(0);
-  }, [safeIndex]);
-
-  useEffect(() => {
     const start = Date.now();
     const timer = window.setInterval(() => setElapsed(Math.floor((Date.now() - start) / 1000)), 1000);
     return () => window.clearInterval(timer);
   }, [speakerOpen, blackout]);
 
-  const next = useCallback(() => {
-    setBlackout(false);
-    setBuildIndex((b) => {
-      if (b + 1 < buildCount) return b + 1;
-      setIndex((i) => Math.min(i + 1, total - 1));
-      return 0;
-    });
-  }, [buildCount, total]);
+  const advance = (step: number) => {
+    let nextIndex = safeIndex;
+    let nextBuild = buildIndex + step;
+    if (nextBuild < 0) {
+      nextIndex = Math.max(safeIndex - 1, 0);
+      const prevSlide = nextIndex < safeIndex ? slides[nextIndex] : undefined;
+      nextBuild = prevSlide ? Math.max(0, buildCountFor(prevSlide, deck.presentation.defaultBuilds ?? false) - 1) : 0;
+    } else if (nextBuild >= buildCount) {
+      nextIndex = Math.min(safeIndex + 1, total - 1);
+      nextBuild = 0;
+    }
+    setIndex(nextIndex);
+    setBuildIndex(nextBuild);
+  };
 
-  const previous = useCallback(() => {
-    setBlackout(false);
-    setBuildIndex((b) => {
-      if (b > 0) return b - 1;
-      const prevSlide = slides[safeIndex - 1];
-      if (prevSlide) {
-        setIndex((i) => Math.max(i - 1, 0));
-        return Math.max(0, buildCountFor(prevSlide, deck.presentation.defaultBuilds ?? false) - 1);
-      }
-      return 0;
-    });
-  }, [slides, safeIndex, deck.presentation.defaultBuilds]);
+  const next = useCallback(
+    () => {
+      setBlackout(false);
+      advance(+1);
+    },
+    [buildIndex, safeIndex, buildCount, slides, total, deck.presentation.defaultBuilds],
+  );
+
+  const previous = useCallback(
+    () => {
+      setBlackout(false);
+      advance(-1);
+    },
+    [buildIndex, safeIndex, buildCount, slides, total, deck.presentation.defaultBuilds],
+  );
 
   const first = useCallback(() => {
     setBlackout(false);
@@ -113,8 +121,8 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
   const last = useCallback(() => {
     setBlackout(false);
     setIndex(total - 1);
-    setBuildIndex(0);
-  }, [total]);
+    setBuildIndex(buildCountFor(slides[total - 1], deck.presentation.defaultBuilds ?? false) - 1);
+  }, [total, slides, deck.presentation.defaultBuilds]);
 
   const toggleFullscreen = useCallback(() => {
     if (document.fullscreenElement) {

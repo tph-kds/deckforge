@@ -45,7 +45,7 @@ export const SlideRenderer = memo(function SlideRenderer({
   interactive = false,
   selectedBlockIds = [],
   onBlockSelect,
-  buildIndex = Number.MAX_SAFE_INTEGER,
+  buildIndex,
 }: SlideRendererProps) {
   const placements = resolveSlidePlacements(slide, deck.canvas);
   const byId = new Map(slide.blocks.map((block) => [block.id, block]));
@@ -77,11 +77,13 @@ export const SlideRenderer = memo(function SlideRenderer({
         const binding = bindingBySlot.get(placement.slotId);
         const frame = placement.frame;
         const selected = selectedBlockIds.includes(block.id);
-        const revealed = buildIndex >= revealStepFor(block, slide, deck.presentation.defaultBuilds ?? false);
+        const isBuildAware = buildIndex !== undefined;
+        const revealed = isBuildAware ? buildIndex >= revealStepFor(block, slide, deck.presentation.defaultBuilds ?? false) : true;
+        const stateClass = isBuildAware ? (revealed ? 'anim-in' : 'build-hidden') : '';
         return (
           <div
             key={block.id}
-            className={`deck-block-wrap ${selected ? 'is-selected' : ''} slot-${placement.slotId} ${revealed ? 'anim-in' : 'build-hidden'}`}
+            className={`deck-block-wrap ${selected ? 'is-selected' : ''} slot-${placement.slotId}${stateClass ? ` ${stateClass}` : ''}`}
             style={{
               position: 'absolute',
               left: frame.x * scale,
@@ -91,7 +93,7 @@ export const SlideRenderer = memo(function SlideRenderer({
               ...flowStyles(binding?.flow, binding?.gap),
               pointerEvents: interactive ? 'auto' : 'none',
               cursor: interactive ? 'pointer' : 'default',
-              animationDelay: `${(block.animation?.order ?? 0) * 120}ms`,
+              ...(isBuildAware ? { animationDelay: `${(block.animation?.order ?? 0) * 120}ms` } : {}),
             }}
             data-block-id={block.id}
             onClick={(event) => {
