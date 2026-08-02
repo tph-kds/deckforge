@@ -32,6 +32,7 @@
     blackout: "none",
     notesVisible: false,
     fullscreen: false,
+    defaultAnimOrder: 0,
     timerStartedAt: null,
     timerInterval: null,
     reflow: false,
@@ -488,11 +489,17 @@
       if (v.visible) {
         bEl.classList.add("build-visible");
         bEl.classList.remove("build-hidden");
-        if (block && block.animation && state.motion && !done.has(bid)) {
+        const anim = block && block.animation;
+        const useDefault = state.motion && (!anim || anim.trigger === "on-enter") && !done.has(bid);
+        if (anim && state.motion && !done.has(bid)) {
           bEl.classList.add("anim-in");
-          const delay = (block.animation.order ?? 0) * 160;
-          bEl.style.animationDelay = delay + "ms";
+          bEl.style.animationDelay = ((anim.order ?? 0) * 160) + "ms";
           done.add(bid);
+        } else if (useDefault) {
+          bEl.classList.add("anim-in");
+          bEl.style.animationDelay = ((state.defaultAnimOrder ?? 0) * 160) + "ms";
+          done.add(bid);
+          state.defaultAnimOrder += 1;
         }
         if (v.sub && v.count != null) {
           (bEl._sub || []).forEach((it, i) => it.setVisible(i < v.count));
@@ -510,6 +517,7 @@
   }
 
   function renderCurrentSlide(opts) {
+    state.defaultAnimOrder = 0;
     const { completed, animate } = opts || {};
     const slide = state.deck.slides[state.slideIndex];
     const slideEl = buildSlideEl(slide, completed);

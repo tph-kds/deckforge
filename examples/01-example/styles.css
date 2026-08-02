@@ -583,6 +583,13 @@ body.motion-on .deck-table tr { transition: opacity 300ms ease; }
 .deck-controls button:hover { background: rgba(255, 255, 255, 0.14); }
 .deck-controls button:focus-visible { outline-color: var(--accent); }
 
+/* ---------- Fullscreen chrome auto-hide ---------- */
+
+:fullscreen .deck-controls { opacity: 0; transform: translateY(10px); }
+:fullscreen:hover .deck-controls { opacity: 1; transform: translateY(0); }
+:fullscreen .deck-hud { opacity: 0; }
+:fullscreen:hover .deck-hud { opacity: 1; }
+
 /* ---------- Notes panel ---------- */
 
 .notes-panel {
