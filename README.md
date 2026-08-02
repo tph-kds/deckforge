@@ -256,6 +256,7 @@ For repository-specific guidance, also read:
 - [`AGENTS.md`](./AGENTS.md)
 - [`rules/README.md`](./rules/README.md)
 - [`docs/TEMPLATE_AUTHORING.md`](./docs/TEMPLATE_AUTHORING.md)
+- [`docs/EXTENDING.md`](./docs/EXTENDING.md)
 - [`docs/QUALITY_MODEL.md`](./docs/QUALITY_MODEL.md)
 - [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
 
@@ -284,6 +285,7 @@ DeckForge contributions should preserve these principles:
 | [`docs/FEATURE_BACKLOG.md`](./docs/FEATURE_BACKLOG.md) | Prioritized product and skill improvements. |
 | [`docs/QUALITY_MODEL.md`](./docs/QUALITY_MODEL.md) | Quality criteria for generated presentation products. |
 | [`docs/TEMPLATE_AUTHORING.md`](./docs/TEMPLATE_AUTHORING.md) | Guidance for adding and maintaining templates. |
+| [`docs/EXTENDING.md`](./docs/EXTENDING.md) | How to extend catalogs, embedded copies, and built-in skill workflows. |
 | [`docs/DECKFORGE_3_UPGRADE.md`](./docs/DECKFORGE_3_UPGRADE.md) | DeckForge 3 acceptance contracts, semantic layouts, editor truth, and validation. |
 | [`docs/END_USER_FEATURE_MATRIX.md`](./docs/END_USER_FEATURE_MATRIX.md) | Required end-user editor and presenter capabilities. |
 | [`docs/GENERATED_OUTPUT_FAILURE_ANALYSIS.md`](./docs/GENERATED_OUTPUT_FAILURE_ANALYSIS.md) | Failure patterns and the safeguards that prevent them. |

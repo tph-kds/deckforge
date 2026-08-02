@@ -15,6 +15,7 @@
 - Added `scripts/sync_embedded_skills.py` to keep the `02-example` embedded skill copy in sync with `skills/deckforge`; the copy had drifted stale and is now regenerated, with a sync check wired into `npm run validate` and covered by a regression test.
 - Added a theme-variant example deck (`examples/acme-platform-migration.deck.json`) demonstrating the `portfolio-case-study` archetype, `editorial-cream` theme, and `seminar-editorial` motion profile as an alternative reference to the default `02-example`; wired into `npm run validate` and the regression test suite.
 - Added repo-level `npm run test` (Python suite + the `02-example` vitest suite, 76 tests) and `npm run test:visual` (strict layout, asset, and contrast audits) to complete the M7 exit-condition commands.
+- Added `docs/EXTENDING.md` documenting how to extend catalog manifests, embedded copies, and built-in skill workflows, with the verification commands that gate each change.
 
 ## 2.2.0 — 2026-08-02
 
