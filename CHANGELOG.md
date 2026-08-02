@@ -11,6 +11,7 @@
 - Added complete editor/presenter reference components and the functional `examples/editable-deck-studio` example.
 - Added failure-analysis, feature-matrix, and v3 upgrade documentation.
 - Strengthened quality gates to block fake editor controls, layout collisions, persistence defects, missing shortcut guidance, and skipped builds.
+- Added a 30-slide stress-test deck (`examples/stress-test-30.deck.json`) and a generator (`scripts/generate_stress_deck.py`) to exercise grid, overview, layout, and motion audits at scale; wired into `npm run validate` and the regression test suite.
 
 ## 2.2.0 — 2026-08-02
 

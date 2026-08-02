@@ -1,0 +1,4229 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {
+    "id": "deck-weight-of-the-web",
+    "slug": "weight-of-the-web",
+    "title": "The Weight of the Web",
+    "description": "Why modern pages got heavy, what that costs users and the planet, and how a performance budget fixes it.",
+    "language": "en",
+    "audience": "Engineers, designers, and product owners shipping web products",
+    "objective": "Adopt a measurable performance budget as a release gate.",
+    "templateId": "feature-deep-dive",
+    "authors": [
+      "DeckForge Studio"
+    ],
+    "tags": [
+      "web-performance",
+      "sustainability",
+      "engineering"
+    ],
+    "createdAt": "2026-08-02T00:00:00.000Z",
+    "updatedAt": "2026-08-02T00:00:00.000Z"
+  },
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1600,
+    "height": 900,
+    "safeMargin": 64,
+    "grid": 8,
+    "responsiveMode": "hybrid",
+    "layoutMode": "semantic-slots"
+  },
+  "theme": {
+    "id": "editorial-cream",
+    "overrides": {}
+  },
+  "presentation": {
+    "mode": "horizontal",
+    "transition": "push",
+    "motionProfileId": "technical-precise",
+    "defaultBuilds": true,
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "progress": true,
+    "controls": true,
+    "reducedMotion": "respect-system",
+    "autoplay": {
+      "enabled": false,
+      "intervalMs": 5000,
+      "loop": false,
+      "pauseOnInteraction": true
+    }
+  },
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "snapToGrid": true,
+    "guides": true,
+    "comments": false,
+    "collaboration": false,
+    "autosave": true,
+    "commandPalette": true,
+    "notes": true,
+    "allowedBlockTypes": [
+      "heading",
+      "text",
+      "bullets",
+      "metric",
+      "chart",
+      "image",
+      "callout",
+      "caption",
+      "citation",
+      "process"
+    ],
+    "sidePanel": true,
+    "assetLibrary": true,
+    "themePicker": true,
+    "layoutPicker": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "requiredZones": [
+      "app-bar",
+      "slide-rail",
+      "canvas",
+      "inspector",
+      "notes",
+      "save-status"
+    ]
+  },
+  "assets": [
+    {
+      "id": "asset-book-cover",
+      "kind": "image",
+      "src": "https://images.unsplash.com/photo-1519326844852-704caea5675e?auto=format&fit=crop&w=720&q=70",
+      "mimeType": "image/jpeg",
+      "width": 720,
+      "height": 480,
+      "alt": "A page of a book photographed at close range, evoking the idea of a lighter, more careful web.",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "focalPoint": {
+        "x": 0.5,
+        "y": 0.4
+      }
+    }
+  ],
+  "slides": [
+    {
+      "id": "s-stress-01",
+      "title": "The page you ship has a weight 1",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b-stress-01-01",
+          "type": "text",
+          "content": "WEB PERFORMANCE · A DATA STORY",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-01-02",
+          "type": "heading",
+          "content": "The page you ship has a weight.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-01-03",
+          "type": "text",
+          "content": "Every byte you ship travels over a network, costs energy to serve and render, and competes with your user's attention. This talk is about one number that controls all of it: the median page weight.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "subtitle",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-01-04",
+          "type": "text",
+          "content": "A practical guide to measuring, budgeting, and shipping lighter pages.",
+          "style": {
+            "variant": "meta"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "meta",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-01-05",
+          "type": "chart",
+          "content": {
+            "type": "bar",
+            "title": "Median desktop page weight",
+            "unit": "MB",
+            "values": [
+              {
+                "label": "2016",
+                "value": 1.6
+              },
+              {
+                "label": "2018",
+                "value": 1.9
+              },
+              {
+                "label": "2020",
+                "value": 2.1
+              },
+              {
+                "label": "2022",
+                "value": 2.3
+              },
+              {
+                "label": "2024",
+                "value": 2.4
+              }
+            ],
+            "highlightIndex": 4,
+            "summary": "Median desktop page weight grew from about 1.6 megabytes in 2016 to 2.4 megabytes in 2024."
+          },
+          "style": {},
+          "alt": "Bar chart showing median desktop page weight rising from 1.6 MB in 2016 to 2.4 MB in 2024.",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "visual",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Open with the physical reality behind every page load: bytes, networks, energy, and attention. The median page is not a small file — it is a 2.4 MB download that has to happen before a single sentence is readable.",
+      "sources": [
+        "src-httparchive"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-01-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-01-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "subtitle",
+          "blockIds": [
+            "b-stress-01-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "meta",
+          "blockIds": [
+            "b-stress-01-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-01-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-02",
+      "title": "The median page weighs 2.4 MB 2",
+      "layout": "big-number",
+      "blocks": [
+        {
+          "id": "b-stress-02-01",
+          "type": "text",
+          "content": "MEDIAN TOTAL PAGE WEIGHT, DESKTOP",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "context",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-02-02",
+          "type": "metric",
+          "content": {
+            "value": "2.4 MB",
+            "label": "median desktop page weight in 2024",
+            "delta": "+50% since 2016"
+          },
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "metric",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-02-03",
+          "type": "heading",
+          "content": "Half of it is images, a quarter is JavaScript.",
+          "style": {
+            "level": 3
+          },
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "meaning",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-02-04",
+          "type": "text",
+          "content": "Images and JavaScript together account for roughly three quarters of the median page's transfer size — and most of its energy cost.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "meaning",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-02-05",
+          "type": "citation",
+          "content": "HTTP Archive · Web Almanac, median desktop page weight, 2016–2024 (approximate).",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive",
+            "src-webalmanac"
+          ],
+          "slot": "footer",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "One number frames the whole talk. Everything that follows is a consequence of this number: network cost, device energy, rendering time, and cognitive load.",
+      "sources": [
+        "src-httparchive",
+        "src-webalmanac"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "context",
+          "blockIds": [
+            "b-stress-02-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "metric",
+          "blockIds": [
+            "b-stress-02-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "meaning",
+          "blockIds": [
+            "b-stress-02-03",
+            "b-stress-02-04"
+          ],
+          "flow": "stack",
+          "gap": 12
+        },
+        {
+          "slot": "footer",
+          "blockIds": [
+            "b-stress-02-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-03",
+      "title": "Pages did not get bigger on purpose 3",
+      "layout": "chart-focus",
+      "blocks": [
+        {
+          "id": "b-stress-03-01",
+          "type": "text",
+          "content": "FIVE YEARS OF TREND",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-03-02",
+          "type": "heading",
+          "content": "Pages did not get heavier on purpose.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-03-03",
+          "type": "chart",
+          "content": {
+            "type": "bar",
+            "title": "Median desktop page weight, by year",
+            "unit": "MB",
+            "values": [
+              {
+                "label": "2016",
+                "value": 1.6
+              },
+              {
+                "label": "2017",
+                "value": 1.7
+              },
+              {
+                "label": "2018",
+                "value": 1.9
+              },
+              {
+                "label": "2019",
+                "value": 2.0
+              },
+              {
+                "label": "2020",
+                "value": 2.1
+              },
+              {
+                "label": "2021",
+                "value": 2.2
+              },
+              {
+                "label": "2022",
+                "value": 2.3
+              },
+              {
+                "label": "2023",
+                "value": 2.4
+              },
+              {
+                "label": "2024",
+                "value": 2.4
+              }
+            ],
+            "highlightIndex": 8,
+            "summary": "Median desktop page weight rose nearly every year, from 1.6 MB in 2016 to 2.4 MB in 2024."
+          },
+          "style": {},
+          "alt": "Bar chart of median desktop page weight from 2016 to 2024, climbing steadily to 2.4 megabytes.",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "chart",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-03-04",
+          "type": "text",
+          "content": "No single team made this happen. It is the aggregate of a thousand small, individually reasonable additions.",
+          "style": {
+            "variant": "callout"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "annotation",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-03-05",
+          "type": "citation",
+          "content": "HTTP Archive, median desktop page weight by year (approximate).",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "source",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Nobody adds 'more megabytes' to their backlog. Weight accretes one dependency, one hero image, one tracking script at a time. This is why the fix must be a measurable budget, not a series of individual decisions.",
+      "sources": [
+        "src-httparchive"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-03-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-03-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "chart",
+          "blockIds": [
+            "b-stress-03-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "annotation",
+          "blockIds": [
+            "b-stress-03-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "source",
+          "blockIds": [
+            "b-stress-03-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-04",
+      "title": "Images and JavaScript carry most of the cost 4",
+      "layout": "split-visual",
+      "blocks": [
+        {
+          "id": "b-stress-04-01",
+          "type": "text",
+          "content": "ANATOMY OF A MEDIAN PAGE",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-04-02",
+          "type": "heading",
+          "content": "Images and JavaScript carry most of the cost.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-04-03",
+          "type": "chart",
+          "content": {
+            "type": "bar-horizontal",
+            "title": "Share of median page weight",
+            "unit": "%",
+            "values": [
+              {
+                "label": "Images",
+                "value": 50
+              },
+              {
+                "label": "JavaScript",
+                "value": 25
+              },
+              {
+                "label": "Fonts",
+                "value": 7
+              },
+              {
+                "label": "CSS",
+                "value": 4
+              },
+              {
+                "label": "Video & other",
+                "value": 14
+              }
+            ],
+            "highlightIndex": 0,
+            "summary": "Images are about half of median page weight, JavaScript about a quarter, with fonts, CSS, and other resources making up the rest."
+          },
+          "style": {},
+          "alt": "Horizontal bar chart showing images at fifty percent of page weight, JavaScript twenty-five percent, and the rest split among fonts, CSS, and video.",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "visual",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-04-04",
+          "type": "bullets",
+          "content": [
+            "Images dominate bytes because most are shipped larger than the rendered size.",
+            "JavaScript adds weight twice: download time, then parse and execute time.",
+            "Fonts and CSS feel small, but they block first paint."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "interpretation",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Point at the two bars that matter. Images are a delivery problem; JavaScript is a delivery plus execution problem. Fonts and CSS are small but block rendering, which makes them feel expensive out of proportion to their bytes.",
+      "sources": [
+        "src-webalmanac"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-04-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-04-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-04-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "interpretation",
+          "blockIds": [
+            "b-stress-04-04"
+          ],
+          "flow": "stack",
+          "gap": 10
+        }
+      ]
+    },
+    {
+      "id": "s-stress-05",
+      "title": "Budget first, optimize later 5",
+      "layout": "process-steps",
+      "blocks": [
+        {
+          "id": "b-stress-05-01",
+          "type": "text",
+          "content": "THE WORKFLOW",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-05-02",
+          "type": "heading",
+          "content": "Budget first, optimize later.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-05-03",
+          "type": "process",
+          "content": {
+            "steps": [
+              {
+                "title": "Measure",
+                "detail": "Track page weight, image bytes, and JS on a real device."
+              },
+              {
+                "title": "Set the number",
+                "detail": "Pick a budget: e.g. 1.5 MB total, 500 KB JavaScript."
+              },
+              {
+                "title": "Ship lean",
+                "detail": "Treat budget overruns like test failures, not suggestions."
+              },
+              {
+                "title": "Verify in CI",
+                "detail": "Fail the build when the budget is exceeded."
+              },
+              {
+                "title": "Repeat monthly",
+                "detail": "Re-baseline against a real device every month."
+              }
+            ]
+          },
+          "style": {},
+          "alt": "Five-step workflow: measure, set a budget number, ship lean, verify in CI, and repeat monthly.",
+          "sourceIds": [
+            "src-webperfbudget"
+          ],
+          "slot": "steps",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-05-04",
+          "type": "callout",
+          "content": "A budget turns an aspiration ('be faster') into a measurable, enforceable number.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "outcome",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "The performance budget framework, popularized by Tim Kadlec and Google's Web Fundamentals, is the operational heart of the talk. Without a number, performance is a vibe; with a number, it is an engineering constraint.",
+      "sources": [
+        "src-webperfbudget"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-05-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-05-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "steps",
+          "blockIds": [
+            "b-stress-05-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "outcome",
+          "blockIds": [
+            "b-stress-05-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-06",
+      "title": "Budget teams ship a different web 6",
+      "layout": "comparison",
+      "blocks": [
+        {
+          "id": "b-stress-06-01",
+          "type": "text",
+          "content": "TWO CULTURES, SAME CODEBASE",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-06-02",
+          "type": "heading",
+          "content": "Budget teams ship a different web.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-06-03",
+          "type": "bullets",
+          "content": [
+            "Adds images in AVIF/WebP, sized to layout.",
+            "Challenges new JavaScript with a review.",
+            "Treats the budget as a release gate.",
+            "Ships smaller bundles and fewer requests."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-a",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-06-04",
+          "type": "bullets",
+          "content": [
+            "Adds whatever the design produces.",
+            "Ships original-resolution assets.",
+            "Optimizes 'when there is time'.",
+            "Discovers weight after launch."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-b",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-06-05",
+          "type": "text",
+          "content": "Budget-first team",
+          "style": {
+            "variant": "caption"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-a",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-06-06",
+          "type": "text",
+          "content": "Business-as-usual team",
+          "style": {
+            "variant": "caption"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-b",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-06-07",
+          "type": "callout",
+          "content": "The difference is not skill. It is a decision about when a page is 'done'.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "decision",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "This comparison is deliberately about culture, not intelligence. Both teams contain the same quality of engineers. The budget team simply has a definition of done that includes a number.",
+      "sources": [],
+      "interactions": [],
+      "density": "high",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-06-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-06-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "option-a",
+          "blockIds": [
+            "b-stress-06-03",
+            "b-stress-06-05"
+          ],
+          "flow": "stack",
+          "gap": 10
+        },
+        {
+          "slot": "option-b",
+          "blockIds": [
+            "b-stress-06-04",
+            "b-stress-06-06"
+          ],
+          "flow": "stack",
+          "gap": 10
+        },
+        {
+          "slot": "decision",
+          "blockIds": [
+            "b-stress-06-07"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-07",
+      "title": "Ship a page 40% lighter this sprint 7",
+      "layout": "closing-cta",
+      "blocks": [
+        {
+          "id": "b-stress-07-01",
+          "type": "text",
+          "content": "YOUR NEXT ACTION",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "context",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-07-02",
+          "type": "heading",
+          "content": "Ship a page 40% lighter this sprint.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-07-03",
+          "type": "callout",
+          "content": "Pick one public page. Measure it. Cut 40% of its weight by removing, compressing, or deferring what does not help the user. Then set that number as the budget.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "action",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-07-04",
+          "type": "text",
+          "content": "Owner: your team · Do it now · Budget in CI by next sprint",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "owner-date",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-07-05",
+          "type": "citation",
+          "content": "Sources: HTTP Archive, Web Almanac, Web Performance Budgets.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive",
+            "src-webalmanac",
+            "src-webperfbudget"
+          ],
+          "slot": "contact",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-07-06",
+          "type": "image",
+          "content": {
+            "assetId": "asset-book-cover",
+            "fit": "cover",
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.4
+            },
+            "caption": "A lighter, more careful web.",
+            "attribution": "Photo: Unsplash"
+          },
+          "style": {},
+          "alt": "A page of a book photographed at close range, evoking the idea of a lighter, more careful web.",
+          "sourceIds": [],
+          "slot": "visual",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "End with a specific, testable action. The 'one public page, cut 40%' framing gives a concrete first move that produces a measurable number by the end of a single sprint.",
+      "sources": [
+        "src-httparchive",
+        "src-webalmanac",
+        "src-webperfbudget"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "context",
+          "blockIds": [
+            "b-stress-07-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-07-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "action",
+          "blockIds": [
+            "b-stress-07-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "owner-date",
+          "blockIds": [
+            "b-stress-07-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "contact",
+          "blockIds": [
+            "b-stress-07-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-07-06"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-08",
+      "title": "The page you ship has a weight 8",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b-stress-08-01",
+          "type": "text",
+          "content": "WEB PERFORMANCE · A DATA STORY",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-08-02",
+          "type": "heading",
+          "content": "The page you ship has a weight.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-08-03",
+          "type": "text",
+          "content": "Every byte you ship travels over a network, costs energy to serve and render, and competes with your user's attention. This talk is about one number that controls all of it: the median page weight.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "subtitle",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-08-04",
+          "type": "text",
+          "content": "A practical guide to measuring, budgeting, and shipping lighter pages.",
+          "style": {
+            "variant": "meta"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "meta",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-08-05",
+          "type": "chart",
+          "content": {
+            "type": "bar",
+            "title": "Median desktop page weight",
+            "unit": "MB",
+            "values": [
+              {
+                "label": "2016",
+                "value": 1.6
+              },
+              {
+                "label": "2018",
+                "value": 1.9
+              },
+              {
+                "label": "2020",
+                "value": 2.1
+              },
+              {
+                "label": "2022",
+                "value": 2.3
+              },
+              {
+                "label": "2024",
+                "value": 2.4
+              }
+            ],
+            "highlightIndex": 4,
+            "summary": "Median desktop page weight grew from about 1.6 megabytes in 2016 to 2.4 megabytes in 2024."
+          },
+          "style": {},
+          "alt": "Bar chart showing median desktop page weight rising from 1.6 MB in 2016 to 2.4 MB in 2024.",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "visual",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Open with the physical reality behind every page load: bytes, networks, energy, and attention. The median page is not a small file — it is a 2.4 MB download that has to happen before a single sentence is readable.",
+      "sources": [
+        "src-httparchive"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-08-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-08-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "subtitle",
+          "blockIds": [
+            "b-stress-08-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "meta",
+          "blockIds": [
+            "b-stress-08-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-08-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-09",
+      "title": "The median page weighs 2.4 MB 9",
+      "layout": "big-number",
+      "blocks": [
+        {
+          "id": "b-stress-09-01",
+          "type": "text",
+          "content": "MEDIAN TOTAL PAGE WEIGHT, DESKTOP",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "context",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-09-02",
+          "type": "metric",
+          "content": {
+            "value": "2.4 MB",
+            "label": "median desktop page weight in 2024",
+            "delta": "+50% since 2016"
+          },
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "metric",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-09-03",
+          "type": "heading",
+          "content": "Half of it is images, a quarter is JavaScript.",
+          "style": {
+            "level": 3
+          },
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "meaning",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-09-04",
+          "type": "text",
+          "content": "Images and JavaScript together account for roughly three quarters of the median page's transfer size — and most of its energy cost.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "meaning",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-09-05",
+          "type": "citation",
+          "content": "HTTP Archive · Web Almanac, median desktop page weight, 2016–2024 (approximate).",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive",
+            "src-webalmanac"
+          ],
+          "slot": "footer",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "One number frames the whole talk. Everything that follows is a consequence of this number: network cost, device energy, rendering time, and cognitive load.",
+      "sources": [
+        "src-httparchive",
+        "src-webalmanac"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "context",
+          "blockIds": [
+            "b-stress-09-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "metric",
+          "blockIds": [
+            "b-stress-09-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "meaning",
+          "blockIds": [
+            "b-stress-09-03",
+            "b-stress-09-04"
+          ],
+          "flow": "stack",
+          "gap": 12
+        },
+        {
+          "slot": "footer",
+          "blockIds": [
+            "b-stress-09-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-10",
+      "title": "Pages did not get bigger on purpose 10",
+      "layout": "chart-focus",
+      "blocks": [
+        {
+          "id": "b-stress-10-01",
+          "type": "text",
+          "content": "FIVE YEARS OF TREND",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-10-02",
+          "type": "heading",
+          "content": "Pages did not get heavier on purpose.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-10-03",
+          "type": "chart",
+          "content": {
+            "type": "bar",
+            "title": "Median desktop page weight, by year",
+            "unit": "MB",
+            "values": [
+              {
+                "label": "2016",
+                "value": 1.6
+              },
+              {
+                "label": "2017",
+                "value": 1.7
+              },
+              {
+                "label": "2018",
+                "value": 1.9
+              },
+              {
+                "label": "2019",
+                "value": 2.0
+              },
+              {
+                "label": "2020",
+                "value": 2.1
+              },
+              {
+                "label": "2021",
+                "value": 2.2
+              },
+              {
+                "label": "2022",
+                "value": 2.3
+              },
+              {
+                "label": "2023",
+                "value": 2.4
+              },
+              {
+                "label": "2024",
+                "value": 2.4
+              }
+            ],
+            "highlightIndex": 8,
+            "summary": "Median desktop page weight rose nearly every year, from 1.6 MB in 2016 to 2.4 MB in 2024."
+          },
+          "style": {},
+          "alt": "Bar chart of median desktop page weight from 2016 to 2024, climbing steadily to 2.4 megabytes.",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "chart",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-10-04",
+          "type": "text",
+          "content": "No single team made this happen. It is the aggregate of a thousand small, individually reasonable additions.",
+          "style": {
+            "variant": "callout"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "annotation",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-10-05",
+          "type": "citation",
+          "content": "HTTP Archive, median desktop page weight by year (approximate).",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "source",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Nobody adds 'more megabytes' to their backlog. Weight accretes one dependency, one hero image, one tracking script at a time. This is why the fix must be a measurable budget, not a series of individual decisions.",
+      "sources": [
+        "src-httparchive"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-10-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-10-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "chart",
+          "blockIds": [
+            "b-stress-10-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "annotation",
+          "blockIds": [
+            "b-stress-10-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "source",
+          "blockIds": [
+            "b-stress-10-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-11",
+      "title": "Images and JavaScript carry most of the cost 11",
+      "layout": "split-visual",
+      "blocks": [
+        {
+          "id": "b-stress-11-01",
+          "type": "text",
+          "content": "ANATOMY OF A MEDIAN PAGE",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-11-02",
+          "type": "heading",
+          "content": "Images and JavaScript carry most of the cost.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-11-03",
+          "type": "chart",
+          "content": {
+            "type": "bar-horizontal",
+            "title": "Share of median page weight",
+            "unit": "%",
+            "values": [
+              {
+                "label": "Images",
+                "value": 50
+              },
+              {
+                "label": "JavaScript",
+                "value": 25
+              },
+              {
+                "label": "Fonts",
+                "value": 7
+              },
+              {
+                "label": "CSS",
+                "value": 4
+              },
+              {
+                "label": "Video & other",
+                "value": 14
+              }
+            ],
+            "highlightIndex": 0,
+            "summary": "Images are about half of median page weight, JavaScript about a quarter, with fonts, CSS, and other resources making up the rest."
+          },
+          "style": {},
+          "alt": "Horizontal bar chart showing images at fifty percent of page weight, JavaScript twenty-five percent, and the rest split among fonts, CSS, and video.",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "visual",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-11-04",
+          "type": "bullets",
+          "content": [
+            "Images dominate bytes because most are shipped larger than the rendered size.",
+            "JavaScript adds weight twice: download time, then parse and execute time.",
+            "Fonts and CSS feel small, but they block first paint."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "interpretation",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Point at the two bars that matter. Images are a delivery problem; JavaScript is a delivery plus execution problem. Fonts and CSS are small but block rendering, which makes them feel expensive out of proportion to their bytes.",
+      "sources": [
+        "src-webalmanac"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-11-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-11-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-11-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "interpretation",
+          "blockIds": [
+            "b-stress-11-04"
+          ],
+          "flow": "stack",
+          "gap": 10
+        }
+      ]
+    },
+    {
+      "id": "s-stress-12",
+      "title": "Budget first, optimize later 12",
+      "layout": "process-steps",
+      "blocks": [
+        {
+          "id": "b-stress-12-01",
+          "type": "text",
+          "content": "THE WORKFLOW",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-12-02",
+          "type": "heading",
+          "content": "Budget first, optimize later.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-12-03",
+          "type": "process",
+          "content": {
+            "steps": [
+              {
+                "title": "Measure",
+                "detail": "Track page weight, image bytes, and JS on a real device."
+              },
+              {
+                "title": "Set the number",
+                "detail": "Pick a budget: e.g. 1.5 MB total, 500 KB JavaScript."
+              },
+              {
+                "title": "Ship lean",
+                "detail": "Treat budget overruns like test failures, not suggestions."
+              },
+              {
+                "title": "Verify in CI",
+                "detail": "Fail the build when the budget is exceeded."
+              },
+              {
+                "title": "Repeat monthly",
+                "detail": "Re-baseline against a real device every month."
+              }
+            ]
+          },
+          "style": {},
+          "alt": "Five-step workflow: measure, set a budget number, ship lean, verify in CI, and repeat monthly.",
+          "sourceIds": [
+            "src-webperfbudget"
+          ],
+          "slot": "steps",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-12-04",
+          "type": "callout",
+          "content": "A budget turns an aspiration ('be faster') into a measurable, enforceable number.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "outcome",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "The performance budget framework, popularized by Tim Kadlec and Google's Web Fundamentals, is the operational heart of the talk. Without a number, performance is a vibe; with a number, it is an engineering constraint.",
+      "sources": [
+        "src-webperfbudget"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-12-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-12-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "steps",
+          "blockIds": [
+            "b-stress-12-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "outcome",
+          "blockIds": [
+            "b-stress-12-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-13",
+      "title": "Budget teams ship a different web 13",
+      "layout": "comparison",
+      "blocks": [
+        {
+          "id": "b-stress-13-01",
+          "type": "text",
+          "content": "TWO CULTURES, SAME CODEBASE",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-13-02",
+          "type": "heading",
+          "content": "Budget teams ship a different web.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-13-03",
+          "type": "bullets",
+          "content": [
+            "Adds images in AVIF/WebP, sized to layout.",
+            "Challenges new JavaScript with a review.",
+            "Treats the budget as a release gate.",
+            "Ships smaller bundles and fewer requests."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-a",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-13-04",
+          "type": "bullets",
+          "content": [
+            "Adds whatever the design produces.",
+            "Ships original-resolution assets.",
+            "Optimizes 'when there is time'.",
+            "Discovers weight after launch."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-b",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-13-05",
+          "type": "text",
+          "content": "Budget-first team",
+          "style": {
+            "variant": "caption"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-a",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-13-06",
+          "type": "text",
+          "content": "Business-as-usual team",
+          "style": {
+            "variant": "caption"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-b",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-13-07",
+          "type": "callout",
+          "content": "The difference is not skill. It is a decision about when a page is 'done'.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "decision",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "This comparison is deliberately about culture, not intelligence. Both teams contain the same quality of engineers. The budget team simply has a definition of done that includes a number.",
+      "sources": [],
+      "interactions": [],
+      "density": "high",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-13-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-13-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "option-a",
+          "blockIds": [
+            "b-stress-13-03",
+            "b-stress-13-05"
+          ],
+          "flow": "stack",
+          "gap": 10
+        },
+        {
+          "slot": "option-b",
+          "blockIds": [
+            "b-stress-13-04",
+            "b-stress-13-06"
+          ],
+          "flow": "stack",
+          "gap": 10
+        },
+        {
+          "slot": "decision",
+          "blockIds": [
+            "b-stress-13-07"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-14",
+      "title": "Ship a page 40% lighter this sprint 14",
+      "layout": "closing-cta",
+      "blocks": [
+        {
+          "id": "b-stress-14-01",
+          "type": "text",
+          "content": "YOUR NEXT ACTION",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "context",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-14-02",
+          "type": "heading",
+          "content": "Ship a page 40% lighter this sprint.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-14-03",
+          "type": "callout",
+          "content": "Pick one public page. Measure it. Cut 40% of its weight by removing, compressing, or deferring what does not help the user. Then set that number as the budget.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "action",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-14-04",
+          "type": "text",
+          "content": "Owner: your team · Do it now · Budget in CI by next sprint",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "owner-date",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-14-05",
+          "type": "citation",
+          "content": "Sources: HTTP Archive, Web Almanac, Web Performance Budgets.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive",
+            "src-webalmanac",
+            "src-webperfbudget"
+          ],
+          "slot": "contact",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-14-06",
+          "type": "image",
+          "content": {
+            "assetId": "asset-book-cover",
+            "fit": "cover",
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.4
+            },
+            "caption": "A lighter, more careful web.",
+            "attribution": "Photo: Unsplash"
+          },
+          "style": {},
+          "alt": "A page of a book photographed at close range, evoking the idea of a lighter, more careful web.",
+          "sourceIds": [],
+          "slot": "visual",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "End with a specific, testable action. The 'one public page, cut 40%' framing gives a concrete first move that produces a measurable number by the end of a single sprint.",
+      "sources": [
+        "src-httparchive",
+        "src-webalmanac",
+        "src-webperfbudget"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "context",
+          "blockIds": [
+            "b-stress-14-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-14-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "action",
+          "blockIds": [
+            "b-stress-14-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "owner-date",
+          "blockIds": [
+            "b-stress-14-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "contact",
+          "blockIds": [
+            "b-stress-14-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-14-06"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-15",
+      "title": "The page you ship has a weight 15",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b-stress-15-01",
+          "type": "text",
+          "content": "WEB PERFORMANCE · A DATA STORY",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-15-02",
+          "type": "heading",
+          "content": "The page you ship has a weight.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-15-03",
+          "type": "text",
+          "content": "Every byte you ship travels over a network, costs energy to serve and render, and competes with your user's attention. This talk is about one number that controls all of it: the median page weight.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "subtitle",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-15-04",
+          "type": "text",
+          "content": "A practical guide to measuring, budgeting, and shipping lighter pages.",
+          "style": {
+            "variant": "meta"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "meta",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-15-05",
+          "type": "chart",
+          "content": {
+            "type": "bar",
+            "title": "Median desktop page weight",
+            "unit": "MB",
+            "values": [
+              {
+                "label": "2016",
+                "value": 1.6
+              },
+              {
+                "label": "2018",
+                "value": 1.9
+              },
+              {
+                "label": "2020",
+                "value": 2.1
+              },
+              {
+                "label": "2022",
+                "value": 2.3
+              },
+              {
+                "label": "2024",
+                "value": 2.4
+              }
+            ],
+            "highlightIndex": 4,
+            "summary": "Median desktop page weight grew from about 1.6 megabytes in 2016 to 2.4 megabytes in 2024."
+          },
+          "style": {},
+          "alt": "Bar chart showing median desktop page weight rising from 1.6 MB in 2016 to 2.4 MB in 2024.",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "visual",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Open with the physical reality behind every page load: bytes, networks, energy, and attention. The median page is not a small file — it is a 2.4 MB download that has to happen before a single sentence is readable.",
+      "sources": [
+        "src-httparchive"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-15-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-15-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "subtitle",
+          "blockIds": [
+            "b-stress-15-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "meta",
+          "blockIds": [
+            "b-stress-15-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-15-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-16",
+      "title": "The median page weighs 2.4 MB 16",
+      "layout": "big-number",
+      "blocks": [
+        {
+          "id": "b-stress-16-01",
+          "type": "text",
+          "content": "MEDIAN TOTAL PAGE WEIGHT, DESKTOP",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "context",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-16-02",
+          "type": "metric",
+          "content": {
+            "value": "2.4 MB",
+            "label": "median desktop page weight in 2024",
+            "delta": "+50% since 2016"
+          },
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "metric",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-16-03",
+          "type": "heading",
+          "content": "Half of it is images, a quarter is JavaScript.",
+          "style": {
+            "level": 3
+          },
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "meaning",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-16-04",
+          "type": "text",
+          "content": "Images and JavaScript together account for roughly three quarters of the median page's transfer size — and most of its energy cost.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "meaning",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-16-05",
+          "type": "citation",
+          "content": "HTTP Archive · Web Almanac, median desktop page weight, 2016–2024 (approximate).",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive",
+            "src-webalmanac"
+          ],
+          "slot": "footer",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "One number frames the whole talk. Everything that follows is a consequence of this number: network cost, device energy, rendering time, and cognitive load.",
+      "sources": [
+        "src-httparchive",
+        "src-webalmanac"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "context",
+          "blockIds": [
+            "b-stress-16-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "metric",
+          "blockIds": [
+            "b-stress-16-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "meaning",
+          "blockIds": [
+            "b-stress-16-03",
+            "b-stress-16-04"
+          ],
+          "flow": "stack",
+          "gap": 12
+        },
+        {
+          "slot": "footer",
+          "blockIds": [
+            "b-stress-16-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-17",
+      "title": "Pages did not get bigger on purpose 17",
+      "layout": "chart-focus",
+      "blocks": [
+        {
+          "id": "b-stress-17-01",
+          "type": "text",
+          "content": "FIVE YEARS OF TREND",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-17-02",
+          "type": "heading",
+          "content": "Pages did not get heavier on purpose.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-17-03",
+          "type": "chart",
+          "content": {
+            "type": "bar",
+            "title": "Median desktop page weight, by year",
+            "unit": "MB",
+            "values": [
+              {
+                "label": "2016",
+                "value": 1.6
+              },
+              {
+                "label": "2017",
+                "value": 1.7
+              },
+              {
+                "label": "2018",
+                "value": 1.9
+              },
+              {
+                "label": "2019",
+                "value": 2.0
+              },
+              {
+                "label": "2020",
+                "value": 2.1
+              },
+              {
+                "label": "2021",
+                "value": 2.2
+              },
+              {
+                "label": "2022",
+                "value": 2.3
+              },
+              {
+                "label": "2023",
+                "value": 2.4
+              },
+              {
+                "label": "2024",
+                "value": 2.4
+              }
+            ],
+            "highlightIndex": 8,
+            "summary": "Median desktop page weight rose nearly every year, from 1.6 MB in 2016 to 2.4 MB in 2024."
+          },
+          "style": {},
+          "alt": "Bar chart of median desktop page weight from 2016 to 2024, climbing steadily to 2.4 megabytes.",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "chart",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-17-04",
+          "type": "text",
+          "content": "No single team made this happen. It is the aggregate of a thousand small, individually reasonable additions.",
+          "style": {
+            "variant": "callout"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "annotation",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-17-05",
+          "type": "citation",
+          "content": "HTTP Archive, median desktop page weight by year (approximate).",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "source",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Nobody adds 'more megabytes' to their backlog. Weight accretes one dependency, one hero image, one tracking script at a time. This is why the fix must be a measurable budget, not a series of individual decisions.",
+      "sources": [
+        "src-httparchive"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-17-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-17-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "chart",
+          "blockIds": [
+            "b-stress-17-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "annotation",
+          "blockIds": [
+            "b-stress-17-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "source",
+          "blockIds": [
+            "b-stress-17-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-18",
+      "title": "Images and JavaScript carry most of the cost 18",
+      "layout": "split-visual",
+      "blocks": [
+        {
+          "id": "b-stress-18-01",
+          "type": "text",
+          "content": "ANATOMY OF A MEDIAN PAGE",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-18-02",
+          "type": "heading",
+          "content": "Images and JavaScript carry most of the cost.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-18-03",
+          "type": "chart",
+          "content": {
+            "type": "bar-horizontal",
+            "title": "Share of median page weight",
+            "unit": "%",
+            "values": [
+              {
+                "label": "Images",
+                "value": 50
+              },
+              {
+                "label": "JavaScript",
+                "value": 25
+              },
+              {
+                "label": "Fonts",
+                "value": 7
+              },
+              {
+                "label": "CSS",
+                "value": 4
+              },
+              {
+                "label": "Video & other",
+                "value": 14
+              }
+            ],
+            "highlightIndex": 0,
+            "summary": "Images are about half of median page weight, JavaScript about a quarter, with fonts, CSS, and other resources making up the rest."
+          },
+          "style": {},
+          "alt": "Horizontal bar chart showing images at fifty percent of page weight, JavaScript twenty-five percent, and the rest split among fonts, CSS, and video.",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "visual",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-18-04",
+          "type": "bullets",
+          "content": [
+            "Images dominate bytes because most are shipped larger than the rendered size.",
+            "JavaScript adds weight twice: download time, then parse and execute time.",
+            "Fonts and CSS feel small, but they block first paint."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "interpretation",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Point at the two bars that matter. Images are a delivery problem; JavaScript is a delivery plus execution problem. Fonts and CSS are small but block rendering, which makes them feel expensive out of proportion to their bytes.",
+      "sources": [
+        "src-webalmanac"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-18-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-18-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-18-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "interpretation",
+          "blockIds": [
+            "b-stress-18-04"
+          ],
+          "flow": "stack",
+          "gap": 10
+        }
+      ]
+    },
+    {
+      "id": "s-stress-19",
+      "title": "Budget first, optimize later 19",
+      "layout": "process-steps",
+      "blocks": [
+        {
+          "id": "b-stress-19-01",
+          "type": "text",
+          "content": "THE WORKFLOW",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-19-02",
+          "type": "heading",
+          "content": "Budget first, optimize later.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-19-03",
+          "type": "process",
+          "content": {
+            "steps": [
+              {
+                "title": "Measure",
+                "detail": "Track page weight, image bytes, and JS on a real device."
+              },
+              {
+                "title": "Set the number",
+                "detail": "Pick a budget: e.g. 1.5 MB total, 500 KB JavaScript."
+              },
+              {
+                "title": "Ship lean",
+                "detail": "Treat budget overruns like test failures, not suggestions."
+              },
+              {
+                "title": "Verify in CI",
+                "detail": "Fail the build when the budget is exceeded."
+              },
+              {
+                "title": "Repeat monthly",
+                "detail": "Re-baseline against a real device every month."
+              }
+            ]
+          },
+          "style": {},
+          "alt": "Five-step workflow: measure, set a budget number, ship lean, verify in CI, and repeat monthly.",
+          "sourceIds": [
+            "src-webperfbudget"
+          ],
+          "slot": "steps",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-19-04",
+          "type": "callout",
+          "content": "A budget turns an aspiration ('be faster') into a measurable, enforceable number.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "outcome",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "The performance budget framework, popularized by Tim Kadlec and Google's Web Fundamentals, is the operational heart of the talk. Without a number, performance is a vibe; with a number, it is an engineering constraint.",
+      "sources": [
+        "src-webperfbudget"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-19-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-19-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "steps",
+          "blockIds": [
+            "b-stress-19-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "outcome",
+          "blockIds": [
+            "b-stress-19-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-20",
+      "title": "Budget teams ship a different web 20",
+      "layout": "comparison",
+      "blocks": [
+        {
+          "id": "b-stress-20-01",
+          "type": "text",
+          "content": "TWO CULTURES, SAME CODEBASE",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-20-02",
+          "type": "heading",
+          "content": "Budget teams ship a different web.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-20-03",
+          "type": "bullets",
+          "content": [
+            "Adds images in AVIF/WebP, sized to layout.",
+            "Challenges new JavaScript with a review.",
+            "Treats the budget as a release gate.",
+            "Ships smaller bundles and fewer requests."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-a",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-20-04",
+          "type": "bullets",
+          "content": [
+            "Adds whatever the design produces.",
+            "Ships original-resolution assets.",
+            "Optimizes 'when there is time'.",
+            "Discovers weight after launch."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-b",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-20-05",
+          "type": "text",
+          "content": "Budget-first team",
+          "style": {
+            "variant": "caption"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-a",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-20-06",
+          "type": "text",
+          "content": "Business-as-usual team",
+          "style": {
+            "variant": "caption"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-b",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-20-07",
+          "type": "callout",
+          "content": "The difference is not skill. It is a decision about when a page is 'done'.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "decision",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "This comparison is deliberately about culture, not intelligence. Both teams contain the same quality of engineers. The budget team simply has a definition of done that includes a number.",
+      "sources": [],
+      "interactions": [],
+      "density": "high",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-20-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-20-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "option-a",
+          "blockIds": [
+            "b-stress-20-03",
+            "b-stress-20-05"
+          ],
+          "flow": "stack",
+          "gap": 10
+        },
+        {
+          "slot": "option-b",
+          "blockIds": [
+            "b-stress-20-04",
+            "b-stress-20-06"
+          ],
+          "flow": "stack",
+          "gap": 10
+        },
+        {
+          "slot": "decision",
+          "blockIds": [
+            "b-stress-20-07"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-21",
+      "title": "Ship a page 40% lighter this sprint 21",
+      "layout": "closing-cta",
+      "blocks": [
+        {
+          "id": "b-stress-21-01",
+          "type": "text",
+          "content": "YOUR NEXT ACTION",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "context",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-21-02",
+          "type": "heading",
+          "content": "Ship a page 40% lighter this sprint.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-21-03",
+          "type": "callout",
+          "content": "Pick one public page. Measure it. Cut 40% of its weight by removing, compressing, or deferring what does not help the user. Then set that number as the budget.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "action",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-21-04",
+          "type": "text",
+          "content": "Owner: your team · Do it now · Budget in CI by next sprint",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "owner-date",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-21-05",
+          "type": "citation",
+          "content": "Sources: HTTP Archive, Web Almanac, Web Performance Budgets.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive",
+            "src-webalmanac",
+            "src-webperfbudget"
+          ],
+          "slot": "contact",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-21-06",
+          "type": "image",
+          "content": {
+            "assetId": "asset-book-cover",
+            "fit": "cover",
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.4
+            },
+            "caption": "A lighter, more careful web.",
+            "attribution": "Photo: Unsplash"
+          },
+          "style": {},
+          "alt": "A page of a book photographed at close range, evoking the idea of a lighter, more careful web.",
+          "sourceIds": [],
+          "slot": "visual",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "End with a specific, testable action. The 'one public page, cut 40%' framing gives a concrete first move that produces a measurable number by the end of a single sprint.",
+      "sources": [
+        "src-httparchive",
+        "src-webalmanac",
+        "src-webperfbudget"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "context",
+          "blockIds": [
+            "b-stress-21-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-21-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "action",
+          "blockIds": [
+            "b-stress-21-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "owner-date",
+          "blockIds": [
+            "b-stress-21-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "contact",
+          "blockIds": [
+            "b-stress-21-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-21-06"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-22",
+      "title": "The page you ship has a weight 22",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b-stress-22-01",
+          "type": "text",
+          "content": "WEB PERFORMANCE · A DATA STORY",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-22-02",
+          "type": "heading",
+          "content": "The page you ship has a weight.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-22-03",
+          "type": "text",
+          "content": "Every byte you ship travels over a network, costs energy to serve and render, and competes with your user's attention. This talk is about one number that controls all of it: the median page weight.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "subtitle",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-22-04",
+          "type": "text",
+          "content": "A practical guide to measuring, budgeting, and shipping lighter pages.",
+          "style": {
+            "variant": "meta"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "meta",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-22-05",
+          "type": "chart",
+          "content": {
+            "type": "bar",
+            "title": "Median desktop page weight",
+            "unit": "MB",
+            "values": [
+              {
+                "label": "2016",
+                "value": 1.6
+              },
+              {
+                "label": "2018",
+                "value": 1.9
+              },
+              {
+                "label": "2020",
+                "value": 2.1
+              },
+              {
+                "label": "2022",
+                "value": 2.3
+              },
+              {
+                "label": "2024",
+                "value": 2.4
+              }
+            ],
+            "highlightIndex": 4,
+            "summary": "Median desktop page weight grew from about 1.6 megabytes in 2016 to 2.4 megabytes in 2024."
+          },
+          "style": {},
+          "alt": "Bar chart showing median desktop page weight rising from 1.6 MB in 2016 to 2.4 MB in 2024.",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "visual",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Open with the physical reality behind every page load: bytes, networks, energy, and attention. The median page is not a small file — it is a 2.4 MB download that has to happen before a single sentence is readable.",
+      "sources": [
+        "src-httparchive"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-22-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-22-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "subtitle",
+          "blockIds": [
+            "b-stress-22-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "meta",
+          "blockIds": [
+            "b-stress-22-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-22-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-23",
+      "title": "The median page weighs 2.4 MB 23",
+      "layout": "big-number",
+      "blocks": [
+        {
+          "id": "b-stress-23-01",
+          "type": "text",
+          "content": "MEDIAN TOTAL PAGE WEIGHT, DESKTOP",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "context",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-23-02",
+          "type": "metric",
+          "content": {
+            "value": "2.4 MB",
+            "label": "median desktop page weight in 2024",
+            "delta": "+50% since 2016"
+          },
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "metric",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-23-03",
+          "type": "heading",
+          "content": "Half of it is images, a quarter is JavaScript.",
+          "style": {
+            "level": 3
+          },
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "meaning",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-23-04",
+          "type": "text",
+          "content": "Images and JavaScript together account for roughly three quarters of the median page's transfer size — and most of its energy cost.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "meaning",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-23-05",
+          "type": "citation",
+          "content": "HTTP Archive · Web Almanac, median desktop page weight, 2016–2024 (approximate).",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive",
+            "src-webalmanac"
+          ],
+          "slot": "footer",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "One number frames the whole talk. Everything that follows is a consequence of this number: network cost, device energy, rendering time, and cognitive load.",
+      "sources": [
+        "src-httparchive",
+        "src-webalmanac"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "context",
+          "blockIds": [
+            "b-stress-23-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "metric",
+          "blockIds": [
+            "b-stress-23-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "meaning",
+          "blockIds": [
+            "b-stress-23-03",
+            "b-stress-23-04"
+          ],
+          "flow": "stack",
+          "gap": 12
+        },
+        {
+          "slot": "footer",
+          "blockIds": [
+            "b-stress-23-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-24",
+      "title": "Pages did not get bigger on purpose 24",
+      "layout": "chart-focus",
+      "blocks": [
+        {
+          "id": "b-stress-24-01",
+          "type": "text",
+          "content": "FIVE YEARS OF TREND",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-24-02",
+          "type": "heading",
+          "content": "Pages did not get heavier on purpose.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-24-03",
+          "type": "chart",
+          "content": {
+            "type": "bar",
+            "title": "Median desktop page weight, by year",
+            "unit": "MB",
+            "values": [
+              {
+                "label": "2016",
+                "value": 1.6
+              },
+              {
+                "label": "2017",
+                "value": 1.7
+              },
+              {
+                "label": "2018",
+                "value": 1.9
+              },
+              {
+                "label": "2019",
+                "value": 2.0
+              },
+              {
+                "label": "2020",
+                "value": 2.1
+              },
+              {
+                "label": "2021",
+                "value": 2.2
+              },
+              {
+                "label": "2022",
+                "value": 2.3
+              },
+              {
+                "label": "2023",
+                "value": 2.4
+              },
+              {
+                "label": "2024",
+                "value": 2.4
+              }
+            ],
+            "highlightIndex": 8,
+            "summary": "Median desktop page weight rose nearly every year, from 1.6 MB in 2016 to 2.4 MB in 2024."
+          },
+          "style": {},
+          "alt": "Bar chart of median desktop page weight from 2016 to 2024, climbing steadily to 2.4 megabytes.",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "chart",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-24-04",
+          "type": "text",
+          "content": "No single team made this happen. It is the aggregate of a thousand small, individually reasonable additions.",
+          "style": {
+            "variant": "callout"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "annotation",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-24-05",
+          "type": "citation",
+          "content": "HTTP Archive, median desktop page weight by year (approximate).",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "source",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Nobody adds 'more megabytes' to their backlog. Weight accretes one dependency, one hero image, one tracking script at a time. This is why the fix must be a measurable budget, not a series of individual decisions.",
+      "sources": [
+        "src-httparchive"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-24-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-24-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "chart",
+          "blockIds": [
+            "b-stress-24-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "annotation",
+          "blockIds": [
+            "b-stress-24-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "source",
+          "blockIds": [
+            "b-stress-24-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-25",
+      "title": "Images and JavaScript carry most of the cost 25",
+      "layout": "split-visual",
+      "blocks": [
+        {
+          "id": "b-stress-25-01",
+          "type": "text",
+          "content": "ANATOMY OF A MEDIAN PAGE",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-25-02",
+          "type": "heading",
+          "content": "Images and JavaScript carry most of the cost.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-25-03",
+          "type": "chart",
+          "content": {
+            "type": "bar-horizontal",
+            "title": "Share of median page weight",
+            "unit": "%",
+            "values": [
+              {
+                "label": "Images",
+                "value": 50
+              },
+              {
+                "label": "JavaScript",
+                "value": 25
+              },
+              {
+                "label": "Fonts",
+                "value": 7
+              },
+              {
+                "label": "CSS",
+                "value": 4
+              },
+              {
+                "label": "Video & other",
+                "value": 14
+              }
+            ],
+            "highlightIndex": 0,
+            "summary": "Images are about half of median page weight, JavaScript about a quarter, with fonts, CSS, and other resources making up the rest."
+          },
+          "style": {},
+          "alt": "Horizontal bar chart showing images at fifty percent of page weight, JavaScript twenty-five percent, and the rest split among fonts, CSS, and video.",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "visual",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-25-04",
+          "type": "bullets",
+          "content": [
+            "Images dominate bytes because most are shipped larger than the rendered size.",
+            "JavaScript adds weight twice: download time, then parse and execute time.",
+            "Fonts and CSS feel small, but they block first paint."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "interpretation",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Point at the two bars that matter. Images are a delivery problem; JavaScript is a delivery plus execution problem. Fonts and CSS are small but block rendering, which makes them feel expensive out of proportion to their bytes.",
+      "sources": [
+        "src-webalmanac"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-25-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-25-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-25-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "interpretation",
+          "blockIds": [
+            "b-stress-25-04"
+          ],
+          "flow": "stack",
+          "gap": 10
+        }
+      ]
+    },
+    {
+      "id": "s-stress-26",
+      "title": "Budget first, optimize later 26",
+      "layout": "process-steps",
+      "blocks": [
+        {
+          "id": "b-stress-26-01",
+          "type": "text",
+          "content": "THE WORKFLOW",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-26-02",
+          "type": "heading",
+          "content": "Budget first, optimize later.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-26-03",
+          "type": "process",
+          "content": {
+            "steps": [
+              {
+                "title": "Measure",
+                "detail": "Track page weight, image bytes, and JS on a real device."
+              },
+              {
+                "title": "Set the number",
+                "detail": "Pick a budget: e.g. 1.5 MB total, 500 KB JavaScript."
+              },
+              {
+                "title": "Ship lean",
+                "detail": "Treat budget overruns like test failures, not suggestions."
+              },
+              {
+                "title": "Verify in CI",
+                "detail": "Fail the build when the budget is exceeded."
+              },
+              {
+                "title": "Repeat monthly",
+                "detail": "Re-baseline against a real device every month."
+              }
+            ]
+          },
+          "style": {},
+          "alt": "Five-step workflow: measure, set a budget number, ship lean, verify in CI, and repeat monthly.",
+          "sourceIds": [
+            "src-webperfbudget"
+          ],
+          "slot": "steps",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-26-04",
+          "type": "callout",
+          "content": "A budget turns an aspiration ('be faster') into a measurable, enforceable number.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "outcome",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "The performance budget framework, popularized by Tim Kadlec and Google's Web Fundamentals, is the operational heart of the talk. Without a number, performance is a vibe; with a number, it is an engineering constraint.",
+      "sources": [
+        "src-webperfbudget"
+      ],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-26-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-26-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "steps",
+          "blockIds": [
+            "b-stress-26-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "outcome",
+          "blockIds": [
+            "b-stress-26-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-27",
+      "title": "Budget teams ship a different web 27",
+      "layout": "comparison",
+      "blocks": [
+        {
+          "id": "b-stress-27-01",
+          "type": "text",
+          "content": "TWO CULTURES, SAME CODEBASE",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-27-02",
+          "type": "heading",
+          "content": "Budget teams ship a different web.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-27-03",
+          "type": "bullets",
+          "content": [
+            "Adds images in AVIF/WebP, sized to layout.",
+            "Challenges new JavaScript with a review.",
+            "Treats the budget as a release gate.",
+            "Ships smaller bundles and fewer requests."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-a",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-27-04",
+          "type": "bullets",
+          "content": [
+            "Adds whatever the design produces.",
+            "Ships original-resolution assets.",
+            "Optimizes 'when there is time'.",
+            "Discovers weight after launch."
+          ],
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-b",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-27-05",
+          "type": "text",
+          "content": "Budget-first team",
+          "style": {
+            "variant": "caption"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-a",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-27-06",
+          "type": "text",
+          "content": "Business-as-usual team",
+          "style": {
+            "variant": "caption"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "option-b",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-27-07",
+          "type": "callout",
+          "content": "The difference is not skill. It is a decision about when a page is 'done'.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "decision",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "This comparison is deliberately about culture, not intelligence. Both teams contain the same quality of engineers. The budget team simply has a definition of done that includes a number.",
+      "sources": [],
+      "interactions": [],
+      "density": "high",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-27-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-27-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "option-a",
+          "blockIds": [
+            "b-stress-27-03",
+            "b-stress-27-05"
+          ],
+          "flow": "stack",
+          "gap": 10
+        },
+        {
+          "slot": "option-b",
+          "blockIds": [
+            "b-stress-27-04",
+            "b-stress-27-06"
+          ],
+          "flow": "stack",
+          "gap": 10
+        },
+        {
+          "slot": "decision",
+          "blockIds": [
+            "b-stress-27-07"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-28",
+      "title": "Ship a page 40% lighter this sprint 28",
+      "layout": "closing-cta",
+      "blocks": [
+        {
+          "id": "b-stress-28-01",
+          "type": "text",
+          "content": "YOUR NEXT ACTION",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "context",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-28-02",
+          "type": "heading",
+          "content": "Ship a page 40% lighter this sprint.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-28-03",
+          "type": "callout",
+          "content": "Pick one public page. Measure it. Cut 40% of its weight by removing, compressing, or deferring what does not help the user. Then set that number as the budget.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "action",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-28-04",
+          "type": "text",
+          "content": "Owner: your team · Do it now · Budget in CI by next sprint",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "owner-date",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-28-05",
+          "type": "citation",
+          "content": "Sources: HTTP Archive, Web Almanac, Web Performance Budgets.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive",
+            "src-webalmanac",
+            "src-webperfbudget"
+          ],
+          "slot": "contact",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-28-06",
+          "type": "image",
+          "content": {
+            "assetId": "asset-book-cover",
+            "fit": "cover",
+            "focalPoint": {
+              "x": 0.5,
+              "y": 0.4
+            },
+            "caption": "A lighter, more careful web.",
+            "attribution": "Photo: Unsplash"
+          },
+          "style": {},
+          "alt": "A page of a book photographed at close range, evoking the idea of a lighter, more careful web.",
+          "sourceIds": [],
+          "slot": "visual",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "End with a specific, testable action. The 'one public page, cut 40%' framing gives a concrete first move that produces a measurable number by the end of a single sprint.",
+      "sources": [
+        "src-httparchive",
+        "src-webalmanac",
+        "src-webperfbudget"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "context",
+          "blockIds": [
+            "b-stress-28-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-28-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "action",
+          "blockIds": [
+            "b-stress-28-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "owner-date",
+          "blockIds": [
+            "b-stress-28-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "contact",
+          "blockIds": [
+            "b-stress-28-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-28-06"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-29",
+      "title": "The page you ship has a weight 29",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b-stress-29-01",
+          "type": "text",
+          "content": "WEB PERFORMANCE · A DATA STORY",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-29-02",
+          "type": "heading",
+          "content": "The page you ship has a weight.",
+          "style": {
+            "level": 1
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-29-03",
+          "type": "text",
+          "content": "Every byte you ship travels over a network, costs energy to serve and render, and competes with your user's attention. This talk is about one number that controls all of it: the median page weight.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "subtitle",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-29-04",
+          "type": "text",
+          "content": "A practical guide to measuring, budgeting, and shipping lighter pages.",
+          "style": {
+            "variant": "meta"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "meta",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-29-05",
+          "type": "chart",
+          "content": {
+            "type": "bar",
+            "title": "Median desktop page weight",
+            "unit": "MB",
+            "values": [
+              {
+                "label": "2016",
+                "value": 1.6
+              },
+              {
+                "label": "2018",
+                "value": 1.9
+              },
+              {
+                "label": "2020",
+                "value": 2.1
+              },
+              {
+                "label": "2022",
+                "value": 2.3
+              },
+              {
+                "label": "2024",
+                "value": 2.4
+              }
+            ],
+            "highlightIndex": 4,
+            "summary": "Median desktop page weight grew from about 1.6 megabytes in 2016 to 2.4 megabytes in 2024."
+          },
+          "style": {},
+          "alt": "Bar chart showing median desktop page weight rising from 1.6 MB in 2016 to 2.4 MB in 2024.",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "visual",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Open with the physical reality behind every page load: bytes, networks, energy, and attention. The median page is not a small file — it is a 2.4 MB download that has to happen before a single sentence is readable.",
+      "sources": [
+        "src-httparchive"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "kicker",
+          "blockIds": [
+            "b-stress-29-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "title",
+          "blockIds": [
+            "b-stress-29-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "subtitle",
+          "blockIds": [
+            "b-stress-29-03"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "meta",
+          "blockIds": [
+            "b-stress-29-04"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "visual",
+          "blockIds": [
+            "b-stress-29-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    },
+    {
+      "id": "s-stress-30",
+      "title": "The median page weighs 2.4 MB 30",
+      "layout": "big-number",
+      "blocks": [
+        {
+          "id": "b-stress-30-01",
+          "type": "text",
+          "content": "MEDIAN TOTAL PAGE WEIGHT, DESKTOP",
+          "style": {
+            "variant": "kicker"
+          },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "context",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-30-02",
+          "type": "metric",
+          "content": {
+            "value": "2.4 MB",
+            "label": "median desktop page weight in 2024",
+            "delta": "+50% since 2016"
+          },
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive"
+          ],
+          "slot": "metric",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-30-03",
+          "type": "heading",
+          "content": "Half of it is images, a quarter is JavaScript.",
+          "style": {
+            "level": 3
+          },
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "meaning",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-30-04",
+          "type": "text",
+          "content": "Images and JavaScript together account for roughly three quarters of the median page's transfer size — and most of its energy cost.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-webalmanac"
+          ],
+          "slot": "meaning",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-stress-30-05",
+          "type": "citation",
+          "content": "HTTP Archive · Web Almanac, median desktop page weight, 2016–2024 (approximate).",
+          "style": {},
+          "alt": "",
+          "sourceIds": [
+            "src-httparchive",
+            "src-webalmanac"
+          ],
+          "slot": "footer",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "One number frames the whole talk. Everything that follows is a consequence of this number: network cost, device energy, rendering time, and cognitive load.",
+      "sources": [
+        "src-httparchive",
+        "src-webalmanac"
+      ],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        {
+          "slot": "context",
+          "blockIds": [
+            "b-stress-30-01"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "metric",
+          "blockIds": [
+            "b-stress-30-02"
+          ],
+          "flow": "stack",
+          "gap": 8
+        },
+        {
+          "slot": "meaning",
+          "blockIds": [
+            "b-stress-30-03",
+            "b-stress-30-04"
+          ],
+          "flow": "stack",
+          "gap": 12
+        },
+        {
+          "slot": "footer",
+          "blockIds": [
+            "b-stress-30-05"
+          ],
+          "flow": "stack",
+          "gap": 8
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-httparchive",
+      "title": "HTTP Archive — Page Weight",
+      "url": "https://httparchive.org/reports/page-weight",
+      "publisher": "HTTP Archive",
+      "note": "Approximate median desktop page weight figures, 2016–2024."
+    },
+    {
+      "id": "src-webalmanac",
+      "title": "Web Almanac — Page Weight chapter",
+      "url": "https://almanac.httparchive.org/en/2024/page-weight",
+      "publisher": "Web Almanac",
+      "note": "Composition of median page weight by resource type."
+    },
+    {
+      "id": "src-webperfbudget",
+      "title": "Web Fundamentals — Performance Budgets",
+      "url": "https://web.dev/articles/performance-budgets",
+      "publisher": "Google Web.dev",
+      "note": "Framework for setting and enforcing performance budgets."
+    }
+  ],
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "weight-of-the-web",
+    "embed": {
+      "enabled": true,
+      "allowedOrigins": [],
+      "sandbox": [
+        "allow-scripts",
+        "allow-forms",
+        "allow-popups"
+      ],
+      "responsive": true
+    },
+    "analytics": false,
+    "allowDownload": false
+  },
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": [
+      "editor",
+      "presenter"
+    ],
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "capabilities": [
+      "semantic-layout",
+      "persistent-editing",
+      "shortcut-help",
+      "theme-control",
+      "layout-control",
+      "media-control",
+      "add-text",
+      "undo-redo",
+      "autosave-and-restore",
+      "present-current-slide"
+    ]
+  },
+  "shortcuts": {
+    "helpEnabled": true,
+    "helpKey": "?",
+    "editorPreset": "deckforge-default",
+    "presenterPreset": "deckforge-default"
+  }
+}

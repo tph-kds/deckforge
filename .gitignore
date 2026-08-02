@@ -15,6 +15,7 @@ VALIDATION_REPORT.md
 # platforms
 .opencode/*
 .superpowers/*
+.planning/*
 
 # examples
 examples/01-example/node_modules/
