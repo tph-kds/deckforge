@@ -70,7 +70,24 @@ A visible help action opens an accessible dialog listing editor and presenter sh
 - production build fails;
 - no `motionProfileId` or a fully static presenter (no transition, no builds);
 - presenter chrome floating over the slide safe area;
-- editor with an unassigned grid row or a non-collapsible notes area.
+- editor with an unassigned grid row or a non-collapsible notes area;
+- duplicate slide titles or verbatim repeated claims;
+- metric blocks missing a value or label.
+
+## Validation commands
+
+Run before declaring completion:
+
+```bash
+python <deckforge-skill>/scripts/validate_deck_project.py <deck.json>
+python <deckforge-skill>/scripts/audit_deck_layout.py <deck.json>
+python <deckforge-skill>/scripts/audit_deck_content.py <deck.json>
+python <deckforge-skill>/scripts/audit_deck_assets.py <deck.json>
+python <deckforge-skill>/scripts/audit_deck_motion.py <deck.json>
+python <deckforge-skill>/scripts/validate_output_contract.py <target-project> --profile <profile>
+```
+
+All must exit 0, plus the production build and the target project's own test suite.
 
 ## Profile: presentation-runtime
 
