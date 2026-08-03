@@ -4,15 +4,31 @@
 
 **Build modern, browser-native presentation experiences with AI Coding Agents.**
 
-[English](./README.md) · [Tiếng Việt](./README.vi.md) · [简体中文](./README.zh-CN.md)
+[English](./README.md) · [Tiếng Việt](./README.vi.md) · 简体中文](./README.zh-CN.md)
 
 </div>
 
 ![DeckForge overview](./docs/images/hero-overview.png)
 
+## About
+
 DeckForge is a **multi-agent skills repository** for planning, designing, implementing, auditing, and publishing professional presentation applications that run directly in the browser.
 
 Instead of treating a presentation as a static PowerPoint or PDF export, DeckForge guides an AI coding agent toward a complete product experience: a structured slide model, reusable templates, a modern editing toolbar, presenter controls, responsive rendering, interactions, speaker notes, embeds, and web publishing.
+
+### Key Features
+
+- **PPTX Export** — hybrid editable PowerPoint export with preflight checks and fidelity scoring
+- **Browser-native delivery** — present, share, and embed decks directly on the web
+- **Editor and presenter surfaces** — design slides and deliver them from the same product
+- **Professional UI/UX** — consistent hierarchy, spacing, typography, motion, and interaction patterns
+- **Reusable systems** — themes, templates, layouts, blocks, animations, and presenter controls
+- **Agent-friendly contracts** — explicit instructions, references, schemas, scripts, and quality gates
+- **Production-minded output** — accessibility, responsiveness, performance, security, and validation are built into the workflow
+
+### Live Demo
+
+Try the reference implementation: [View Demo](https://tph-kds.github.io/deckforge/demo/)
 
 ## Why DeckForge?
 
