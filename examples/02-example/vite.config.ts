@@ -10,9 +10,9 @@ export default defineConfig({
   server: {
     port: 5173,
   },
+  base: '/deckforge/',
   build: {
     target: 'es2021',
     outDir: 'dist',
-    base: '/deckforge/demo/',
   },
 });
