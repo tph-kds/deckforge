@@ -143,3 +143,18 @@ export type DeckProject = {
 
 export type EditorSelection = { slideId: SlideId; blockIds: BlockId[]; mode?: 'block' | 'text' | 'canvas' };
 export type SaveState = 'clean' | 'dirty' | 'saving' | 'saved' | 'failed' | 'offline' | 'conflict';
+
+export type {
+  ExportIssueSeverity,
+  PptxExportability,
+  ExportIssue,
+  ExportPreflightResult,
+  PptxExportConfig,
+  FontWarning,
+  PptxSlideElement,
+  PptxExportContext,
+  PptxBlockExporter,
+  ExportDialogProps,
+} from './export/export-types';
+
+export { DEFAULT_PPTX_CONFIG } from './export/export-types';
