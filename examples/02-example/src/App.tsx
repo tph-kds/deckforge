@@ -5,7 +5,7 @@ import { getMotionProfile, reducedMotionMode } from './deck/motion';
 import { EditorApp } from './editor/EditorApp';
 import { PresenterApp } from './presenter/PresenterApp';
 import { ScrollbarProvider } from './deck/scrollbars/scrollbarRuntime';
-import { ExportDialog } from '../../../skills/deckforge/starter-components/export/export-dialog';
+import { ExportDialog } from './export/export-dialog';
 import './styles.css';
 import './deck/scrollbars/scrollbars.css';
 
