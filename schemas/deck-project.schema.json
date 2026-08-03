@@ -64,6 +64,37 @@
     },
     "shortcuts": {
       "$ref": "#/$defs/shortcuts"
+    },
+    "delivery": {
+      "type": "object",
+      "properties": {
+        "exports": {
+          "type": "object",
+          "properties": {
+            "pptx": {
+              "type": "object",
+              "properties": {
+                "enabled": { "type": "boolean", "default": true },
+                "defaultMode": { "type": "string", "enum": ["hybrid"], "default": "hybrid" },
+                "allowedModes": {
+                  "type": "array",
+                  "items": { "type": "string", "enum": ["hybrid"] },
+                  "default": ["hybrid"]
+                },
+                "compatibilityTargets": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "default": ["powerpoint", "keynote", "libreoffice"]
+                },
+                "includeSpeakerNotes": { "type": "boolean", "default": true },
+                "includeHiddenSlides": { "type": "boolean", "default": false },
+                "fontPolicy": { "type": "string", "enum": ["warn-and-substitute", "embed-when-licensed"], "default": "warn-and-substitute" },
+                "filenameTemplate": { "type": "string", "default": "{title}-{date}.pptx" }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "$defs": {
