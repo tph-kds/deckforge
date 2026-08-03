@@ -4,7 +4,7 @@
 
 **Build modern, browser-native presentation experiences with AI Coding Agents.**
 
-[English](./README.md) · [Tiếng Việt](./README.vi.md) · 简体中文](./README.zh-CN.md)
+[English](./README.md) · [Tiếng Việt](./README.vi.md) · [简体中文](./README.zh-CN.md)
 
 </div>
 
@@ -132,6 +132,7 @@ The catalog supports common presentation structures such as hero slides, agendas
 |---|---|
 | `deckforge` | Creating, redesigning, extending, or migrating a browser-native presentation experience. |
 | `deckforge-audit` | Reviewing an existing slide product for design, accessibility, performance, interaction, and architecture issues. |
+| `deckforge-export` | Adding or repairing PPTX export capabilities with preflight checks and fidelity scoring. |
 | `deckforge-runtime-planner` | Planning editor, presenter, state, rendering, and publishing architecture without immediately implementing it. |
 | `deckforge-publish` | Preparing web delivery, embeds, exports, release checks, and publishing behavior. |
 
@@ -214,6 +215,7 @@ deckforge-web-slides-skills/
 │   │   ├── assets/
 │   │   └── starter-components/
 │   ├── deckforge-audit/
+│   ├── deckforge-export/
 │   ├── deckforge-runtime-planner/
 │   └── deckforge-publish/
 ├── docs/

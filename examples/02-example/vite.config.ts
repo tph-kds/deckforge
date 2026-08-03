@@ -13,5 +13,6 @@ export default defineConfig({
   build: {
     target: 'es2021',
     outDir: 'dist',
+    base: '/deckforge/demo/',
   },
 });
