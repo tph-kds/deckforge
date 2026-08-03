@@ -5,11 +5,13 @@ import { getMotionProfile, reducedMotionMode } from './deck/motion';
 import { EditorApp } from './editor/EditorApp';
 import { PresenterApp } from './presenter/PresenterApp';
 import { ScrollbarProvider } from './deck/scrollbars/scrollbarRuntime';
+import { ExportDialog } from '../../../skills/deckforge/starter-components/export/export-dialog';
 import './styles.css';
 import './deck/scrollbars/scrollbars.css';
 
 export function App() {
   const store = useDeck();
+  const [showExportDialog, setShowExportDialog] = useState(false);
   const [route, setRoute] = useState<'editor' | 'present'>(
     () => (window.location.pathname.endsWith('/present') ? 'present' : 'editor'),
   );
@@ -71,6 +73,30 @@ export function App() {
           <PresenterApp store={store} navigate={navigate} />
         </ScrollbarProvider>
       )}
+
+      <div style={{ position: 'fixed', top: '8px', right: '8px', zIndex: 999 }}>
+        <button
+          onClick={() => setShowExportDialog(true)}
+          style={{
+            padding: '8px 16px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            backgroundColor: 'white',
+            cursor: 'pointer',
+            fontSize: '14px',
+          }}
+        >
+          Export PPTX
+        </button>
+      </div>
+
+      <ExportDialog
+        deck={store.deck}
+        isOpen={showExportDialog}
+        onClose={() => setShowExportDialog(false)}
+        onExport={(blob) => console.log('Export complete', blob.size)}
+        onError={(err) => console.error('Export failed', err)}
+      />
     </div>
   );
 }
