@@ -1,4 +1,7 @@
-// starter-components/export/pptx/pptx-theme.ts
+import type { DeckProject } from "../../deck-types";
+import type PptxGenJS from "pptxgenjs";
+
+type DeckTheme = DeckProject["theme"];
 
 interface PptxThemeColors {
   background: string;
@@ -15,11 +18,11 @@ interface PptxThemeColors {
   light2: string;
 }
 
-export function mapThemeColors(theme: Record<string, unknown>): PptxThemeColors {
-  const palette = (theme.colors ?? {}) as Record<string, string>;
+export function mapThemeColors(theme: DeckTheme): PptxThemeColors {
+  const palette = (theme.overrides?.colors ?? {}) as Record<string, string>;
   return {
     background: palette.background ?? "#FFFFFF",
-    text: palette.text ?? "#000000",
+    text: palette.text ?? palette.foreground ?? "#000000",
     accent1: palette.primary ?? "#1A73E8",
     accent2: palette.secondary ?? "#34A853",
     accent3: palette.tertiary ?? "#FBBC04",
@@ -33,19 +36,19 @@ export function mapThemeColors(theme: Record<string, unknown>): PptxThemeColors 
   };
 }
 
-export function mapThemeFonts(theme: Record<string, unknown>): { heading: string; body: string } {
-  const typography = (theme.typography ?? {}) as Record<string, string>;
+export function mapThemeFonts(theme: DeckTheme): { heading: string; body: string } {
+  const typography = (theme.overrides?.typography ?? {}) as Record<string, string>;
   return {
     heading: typography.headingFont ?? "Arial",
     body: typography.bodyFont ?? "Arial",
   };
 }
 
-export function applyThemeToPptx(pptx: Record<string, unknown>, theme: Record<string, unknown>): void {
+export function applyThemeToPptx(pptx: PptxGenJS, theme: DeckTheme): void {
   const colors = mapThemeColors(theme);
   const fonts = mapThemeFonts(theme);
 
-  (pptx as Record<string, unknown>).theme = {
+  pptx.theme = {
     headColor: colors.dark1,
     bodyColor: colors.text,
     headFontFace: fonts.heading,
