@@ -1,5 +1,5 @@
 import type { PptxExportConfig, PptxSlideElement } from "../export-types";
-import type { DeckProject } from "../deck/deck-types";
+import type { DeckProject } from "../../deck/types";
 import { createExportContext, type PptxExportContextData } from "./pptx-context";
 import { getBlockExporter } from "./block-exporters/index";
 

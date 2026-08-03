@@ -1,4 +1,4 @@
-import type { DeckProject } from "../deck/deck-types";
+import type { DeckProject } from "../../deck/types";
 
 type DeckTheme = DeckProject["theme"];
 

@@ -1,5 +1,5 @@
 import type { PptxExportConfig, FontWarning } from "../export-types";
-import type { DeckProject } from "../deck/deck-types";
+import type { DeckProject } from "../../deck/types";
 
 export interface PptxExportContextData {
   deck: DeckProject;
