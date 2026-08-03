@@ -1,3 +1,10 @@
+---
+name: deckforge-export
+description: Add or repair export capabilities for a DeckForge-compatible or custom web slide application without redesigning the entire product. Activate for requests to add PowerPoint download, fix export issues, add multiple export formats, audit export readiness, or add PPTX export with preflight checks.
+version: 1.0.0
+user-invocable: true
+---
+
 # Skill: deckforge-export
 
 Add or repair export capabilities for a DeckForge-compatible or custom web slide application without redesigning the entire product.
