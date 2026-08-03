@@ -1,4 +1,5 @@
 // starter-components/export/index.ts
+// Re-exports from skills/deckforge/starter-components/export/
 
 export type {
   ExportIssue,
@@ -10,31 +11,30 @@ export type {
   PptxSlideElement,
   PptxBlockExporter,
   FontWarning,
-  ExportDialogProps,
-} from "./export-types";
+} from "../../skills/deckforge/starter-components/export/export-types";
 
-export { DEFAULT_PPTX_CONFIG } from "./export-types";
+export { DEFAULT_PPTX_CONFIG } from "../../skills/deckforge/starter-components/export/export-types";
 
-export { PptxExporter } from "./pptx/pptx-exporter";
-export { createExportContext } from "./pptx/pptx-context";
-export { mapThemeColors, mapThemeFonts, applyThemeToPptx } from "./pptx/pptx-theme";
-export { checkFontCompatibility, collectFontWarnings } from "./pptx/pptx-fonts";
-export { embedAsset, embedAssetSync } from "./pptx/pptx-assets";
-export { renderFallback } from "./pptx/pptx-fallback-renderer";
+export { PptxExporter } from "../../skills/deckforge/starter-components/export/pptx/pptx-exporter";
+export { createExportContext } from "../../skills/deckforge/starter-components/export/pptx/pptx-context";
+export { mapThemeColors, mapThemeFonts, applyThemeToPptx } from "../../skills/deckforge/starter-components/export/pptx/pptx-theme";
+export { checkFontCompatibility, collectFontWarnings } from "../../skills/deckforge/starter-components/export/pptx/pptx-fonts";
+export { embedAsset, embedAssetSync } from "../../skills/deckforge/starter-components/export/pptx/pptx-assets";
+export { renderFallback } from "../../skills/deckforge/starter-components/export/pptx/pptx-fallback-renderer";
 
 export {
   blockExporters,
   getBlockExporter,
   getExportability,
-} from "./pptx/block-exporters/index";
+} from "../../skills/deckforge/starter-components/export/pptx/block-exporters/index";
 
-export { textBlockExporter } from "./pptx/block-exporters/text";
-export { imageBlockExporter } from "./pptx/block-exporters/image";
-export { shapeBlockExporter } from "./pptx/block-exporters/shape";
-export { tableBlockExporter } from "./pptx/block-exporters/table";
-export { chartBlockExporter } from "./pptx/block-exporters/chart";
-export { diagramBlockExporter } from "./pptx/block-exporters/diagram";
-export { fallbackBlockExporter } from "./pptx/block-exporters/fallback";
+export { textBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/text";
+export { imageBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/image";
+export { shapeBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/shape";
+export { tableBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/table";
+export { chartBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/chart";
+export { diagramBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/diagram";
+export { fallbackBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/fallback";
 
-export { runExportPreflight } from "./export-preflight";
-export { ExportDialog } from "./export-dialog";
+export { runExportPreflight } from "../../skills/deckforge/starter-components/export/export-preflight";
+export { ExportDialog } from "../../skills/deckforge/starter-components/export/export-dialog";
