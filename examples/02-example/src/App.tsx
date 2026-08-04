@@ -66,29 +66,17 @@ export function App() {
     >
       {route === 'editor' ? (
         <ScrollbarProvider mapping={theme.scrollbar} overrides={scrollbarOverrides}>
-          <EditorApp store={store} navigate={navigate} />
+          <EditorApp
+            store={store}
+            navigate={navigate}
+            onExport={() => setShowExportDialog(true)}
+          />
         </ScrollbarProvider>
       ) : (
         <ScrollbarProvider mapping={theme.scrollbar} overrides={scrollbarOverrides}>
           <PresenterApp store={store} navigate={navigate} />
         </ScrollbarProvider>
       )}
-
-      <div style={{ position: 'fixed', top: '8px', right: '8px', zIndex: 999 }}>
-        <button
-          onClick={() => setShowExportDialog(true)}
-          style={{
-            padding: '8px 16px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-            backgroundColor: 'white',
-            cursor: 'pointer',
-            fontSize: '14px',
-          }}
-        >
-          Export PPTX
-        </button>
-      </div>
 
       <ExportDialog
         deck={store.deck}

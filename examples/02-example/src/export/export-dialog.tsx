@@ -1,6 +1,4 @@
-// export/export-dialog.tsx
-
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import type { ExportPreflightResult, PptxExportConfig } from "./export-types";
 import { DEFAULT_PPTX_CONFIG } from "./export-types";
 import { runExportPreflight } from "./export-preflight";
@@ -94,83 +92,74 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
 
   if (!isOpen) return null;
 
+  const scoreColor =
+    (preflight?.score ?? 0) >= 80
+      ? "var(--theme-secondary, #10b981)"
+      : (preflight?.score ?? 0) >= 50
+        ? "#f59e0b"
+        : "var(--ui-danger, #dc2626)";
+
   return (
     <div
+      className="overlay"
       role="dialog"
       aria-modal="true"
       aria-labelledby="export-dialog-title"
-      style={{
-        position: "fixed",
-        inset: 0,
-        backgroundColor: "rgba(0,0,0,0.5)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 1000,
-      }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div
-        ref={dialogRef}
-        style={{
-          backgroundColor: "white",
-          borderRadius: "8px",
-          padding: "24px",
-          maxWidth: "480px",
-          width: "100%",
-          maxHeight: "80vh",
-          overflow: "auto",
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-          <h2 id="export-dialog-title" style={{ margin: 0, fontSize: "18px", fontWeight: 600 }}>Export Center</h2>
+      <div className="dialog" ref={dialogRef} style={{ maxWidth: 480 }}>
+        <div className="dialog-header">
+          <h2 id="export-dialog-title">Export</h2>
           <button
             ref={closeButtonRef}
+            className="icon-button"
             onClick={onClose}
             aria-label="Close export dialog"
-            style={{ background: "none", border: "none", cursor: "pointer", fontSize: "20px", padding: "4px 8px" }}
           >
             &times;
           </button>
         </div>
 
-        <div style={{ marginBottom: "16px" }}>
-          <label htmlFor="export-format" style={{ display: "block", marginBottom: "4px", fontSize: "14px", fontWeight: 500 }}>Format</label>
-          <select
-            id="export-format"
-            value={config.mode}
-            onChange={(e) => setConfig({ ...config, mode: e.target.value as PptxExportConfig["mode"] })}
-            style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid #ccc" }}
-          >
-            <option value="hybrid">PPTX (Hybrid)</option>
-          </select>
-        </div>
+        <div style={{ padding: "16px 18px" }}>
+          <label style={{ display: "flex", flexDirection: "column", gap: 4, fontSize: 12, fontWeight: 600, color: "var(--ui-fg)", marginBottom: 12 }}>
+            Format
+            <select
+              value={config.mode}
+              onChange={(e) => setConfig({ ...config, mode: e.target.value as PptxExportConfig["mode"] })}
+            >
+              <option value="hybrid">PPTX (Hybrid)</option>
+            </select>
+          </label>
 
-        {preflight && (
-          <div
-            role="status"
-            aria-live="polite"
-            style={{
-              padding: "12px",
-              borderRadius: "6px",
-              backgroundColor: preflight.score >= 80 ? "#f0fdf4" : preflight.score >= 50 ? "#fffbeb" : "#fef2f2",
-              marginBottom: "16px",
-            }}
-          >
-            <div style={{ fontWeight: 600, marginBottom: "4px" }}>
-              {preflight.score >= 80 ? "Export ready" : preflight.score >= 50 ? "Export with warnings" : "Export issues detected"}
+          {preflight && (
+            <div
+              role="status"
+              aria-live="polite"
+              style={{
+                padding: "12px 14px",
+                borderRadius: "var(--ui-radius)",
+                border: `1px solid ${scoreColor}22`,
+                backgroundColor: `${scoreColor}08`,
+                marginBottom: 14,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+                <span style={{ fontWeight: 600, fontSize: 13, color: "var(--ui-fg)" }}>
+                  {(preflight.score ?? 0) >= 80 ? "Ready to export" : (preflight.score ?? 0) >= 50 ? "Export with warnings" : "Issues detected"}
+                </span>
+                <span style={{ fontFamily: "var(--font-code)", fontSize: 12, color: scoreColor, fontWeight: 600 }}>
+                  {preflight.score}/100
+                </span>
+              </div>
+              <div style={{ display: "flex", gap: 12, fontSize: 12, color: "var(--ui-muted)" }}>
+                <span>Coverage {Math.round(preflight.blockCoverage * 100)}%</span>
+                <span>{preflight.issues.filter(i => i.severity === "warning").length} warnings</span>
+                <span>{preflight.issues.filter(i => i.severity === "info").length} info</span>
+              </div>
             </div>
-            <div style={{ fontSize: "14px" }}>
-              Fidelity score: {preflight.score}/100 | Coverage: {Math.round(preflight.blockCoverage * 100)}%
-            </div>
-            <div style={{ fontSize: "14px", marginTop: "4px" }}>
-              {preflight.issues.filter(i => i.severity === "warning").length} warnings, {preflight.issues.filter(i => i.severity === "info").length} info
-            </div>
-          </div>
-        )}
+          )}
 
-        <div style={{ marginBottom: "16px" }}>
-          <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px" }}>
+          <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--ui-fg)", marginBottom: 16, cursor: "pointer" }}>
             <input
               type="checkbox"
               checked={config.includeSpeakerNotes}
@@ -178,70 +167,79 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
             />
             Include speaker notes
           </label>
-        </div>
 
-        <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
-          <button
-            onClick={() => setShowDetails(!showDetails)}
-            aria-expanded={showDetails}
-            style={{
-              padding: "8px 16px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              background: "white",
-              cursor: "pointer",
-            }}
-          >
-            {showDetails ? "Hide Details" : "View Details"}
-          </button>
-          <button
-            onClick={onClose}
-            style={{
-              padding: "8px 16px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              background: "white",
-              cursor: "pointer",
-            }}
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleExport}
-            disabled={isExporting || (preflight?.score ?? 0) < 20}
-            aria-busy={isExporting}
-            style={{
-              padding: "8px 16px",
-              borderRadius: "4px",
-              border: "none",
-              backgroundColor: "#1A73E8",
-              color: "white",
-              cursor: isExporting ? "not-allowed" : "pointer",
-              opacity: isExporting || (preflight?.score ?? 0) < 20 ? 0.5 : 1,
-            }}
-          >
-            {isExporting ? "Exporting..." : "Export"}
-          </button>
+          <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+            <button
+              className="text-button"
+              onClick={() => setShowDetails(!showDetails)}
+              aria-expanded={showDetails}
+              style={{ fontSize: 12 }}
+            >
+              {showDetails ? "Hide details" : "View details"}
+            </button>
+            <button
+              onClick={onClose}
+              style={{
+                padding: "6px 14px",
+                borderRadius: "var(--ui-radius)",
+                border: "1px solid var(--ui-border)",
+                background: "var(--ui-bg)",
+                fontSize: 13,
+                fontWeight: 500,
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleExport}
+              disabled={isExporting || (preflight?.score ?? 0) < 20}
+              aria-busy={isExporting}
+              style={{
+                padding: "6px 14px",
+                borderRadius: "var(--ui-radius)",
+                border: "none",
+                background: "var(--ui-fg)",
+                color: "#fff",
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: isExporting ? "not-allowed" : "pointer",
+                opacity: isExporting || (preflight?.score ?? 0) < 20 ? 0.5 : 1,
+              }}
+            >
+              {isExporting ? "Exporting..." : "Export PPTX"}
+            </button>
+          </div>
         </div>
 
         {showDetails && preflight && (
-          <div style={{ marginTop: "16px", borderTop: "1px solid #eee", paddingTop: "16px" }}>
-            <h3 style={{ fontSize: "14px", fontWeight: 600, marginBottom: "8px" }}>Preflight Issues</h3>
+          <div style={{ borderTop: "1px solid var(--ui-border)", padding: "14px 18px" }}>
+            <h3 style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--ui-muted)", margin: "0 0 10px" }}>
+              Preflight Issues
+            </h3>
             {preflight.issues.length === 0 ? (
-              <p style={{ fontSize: "14px", color: "#666" }}>No issues found</p>
+              <p style={{ fontSize: 13, color: "var(--ui-muted)", margin: 0 }}>No issues found</p>
             ) : (
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                 {preflight.issues.map((issue: { severity: string; message: string; suggestedFix?: string }, idx: number) => (
-                  <li key={idx} style={{
-                    padding: "8px",
-                    marginBottom: "4px",
-                    borderRadius: "4px",
-                    backgroundColor: issue.severity === "error" ? "#fef2f2" : issue.severity === "warning" ? "#fffbeb" : "#f0f9ff",
-                    fontSize: "13px",
-                  }}>
-                    <span style={{ fontWeight: 500 }}>[{issue.severity}]</span> {issue.message}
+                  <li
+                    key={idx}
+                    style={{
+                      padding: "8px 10px",
+                      marginBottom: 4,
+                      borderRadius: "var(--ui-radius)",
+                      backgroundColor: issue.severity === "error" ? "#fef2f2" : issue.severity === "warning" ? "#fffbeb" : "var(--ui-surface)",
+                      fontSize: 12,
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    <span style={{ fontWeight: 600, color: issue.severity === "error" ? "var(--ui-danger)" : issue.severity === "warning" ? "#b45309" : "var(--ui-muted)" }}>
+                      {issue.severity}
+                    </span>{" "}
+                    {issue.message}
                     {issue.suggestedFix && (
-                      <div style={{ marginTop: "4px", color: "#666" }}>Fix: {issue.suggestedFix}</div>
+                      <div style={{ marginTop: 3, color: "var(--ui-muted)", fontSize: 11 }}>
+                        {issue.suggestedFix}
+                      </div>
                     )}
                   </li>
                 ))}

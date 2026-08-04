@@ -18,6 +18,7 @@ import { useResolvedScrollbarStyle } from '../deck/scrollbars/useResolvedScrollb
 interface EditorAppProps {
   store: DeckStore;
   navigate: (route: 'editor' | 'present') => void;
+  onExport?: () => void;
 }
 
 const HELP_ROWS = [
@@ -95,7 +96,7 @@ function makeBlockForType(type: string): Block {
   }
 }
 
-export function EditorApp({ store, navigate }: EditorAppProps) {
+export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
   const { deck, selection, saveState, canUndo, canRedo, select, selectSlide, selectBlock, selectNone, commit, undo, redo, saveNow } = store;
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
@@ -237,6 +238,9 @@ export function EditorApp({ store, navigate }: EditorAppProps) {
           </div>
         </div>
         <div className="editor-app-actions">
+          {onExport && (
+            <button type="button" className="secondary" onClick={onExport}>Export</button>
+          )}
           <button type="button" className="primary" onClick={() => present()}>Present</button>
         </div>
       </header>
