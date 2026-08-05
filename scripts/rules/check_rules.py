@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import sys
-root = Path(__file__).resolve().parents[1]
+root = Path(__file__).resolve().parents[2]
 required = ['README.md','AGENTS.md','CLAUDE.md','rules/README.md','rules/repository-boundaries.md','rules/design-quality.md','rules/security-rules.md','skills/deckforge/SKILL.md','skills/deckforge/system-prompt.md']
 errors = [f'missing: {p}' for p in required if not (root / p).exists()]
 for forbidden in ['.env','apps/production-server','prisma/schema.prisma','secrets']:

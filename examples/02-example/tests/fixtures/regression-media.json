@@ -1,0 +1,230 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {
+    "id": "regression-media",
+    "slug": "regression-media",
+    "title": "Broken image, missing font, and export-unsupported block",
+    "description": "P0-010 regression fixture: a broken image (src pointing to a non-existent file), a theme referencing a font that is not available, and a block kind that export can only rasterize.",
+    "language": "en",
+    "audience": "Regression tests",
+    "objective": "Lock in that broken media, missing fonts, and unsupported export blocks resolve deterministically without throwing.",
+    "templateId": "feature-deep-dive",
+    "authors": ["DeckForge Regression"],
+    "tags": ["regression", "p0-010", "media", "fonts", "export"],
+    "createdAt": "2026-08-05T00:00:00.000Z",
+    "updatedAt": "2026-08-05T00:00:00.000Z"
+  },
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1600,
+    "height": 900,
+    "safeMargin": 64,
+    "grid": 8,
+    "responsiveMode": "hybrid",
+    "layoutMode": "semantic-slots"
+  },
+  "theme": {
+    "id": "editorial-cream",
+    "overrides": {
+      "typography": {
+        "headingFont": "NonExistent Display Sans",
+        "bodyFont": "Inter"
+      }
+    }
+  },
+  "presentation": {
+    "mode": "horizontal",
+    "transition": "push",
+    "motionProfileId": "technical-precise",
+    "defaultBuilds": true,
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "progress": true,
+    "controls": true,
+    "reducedMotion": "respect-system"
+  },
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "snapToGrid": true,
+    "guides": true,
+    "comments": false,
+    "collaboration": false,
+    "autosave": true,
+    "commandPalette": true,
+    "notes": true,
+    "allowedBlockTypes": ["heading", "text", "bullets", "metric", "chart", "image", "callout", "caption", "citation", "process"],
+    "sidePanel": true,
+    "assetLibrary": true,
+    "themePicker": true,
+    "layoutPicker": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "requiredZones": ["app-bar", "slide-rail", "canvas", "inspector", "notes", "save-status"]
+  },
+  "assets": [],
+  "slides": [
+    {
+      "id": "s-image",
+      "title": "Broken image block",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b-kicker",
+          "type": "text",
+          "content": "REGRESSION · BROKEN IMAGE",
+          "style": { "variant": "kicker" },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-title",
+          "type": "heading",
+          "content": "An image that points at a file which does not exist.",
+          "style": { "level": 1 },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-image",
+          "type": "image",
+          "content": {
+            "src": "/assets/missing-hero.png",
+            "assetId": "asset-missing-hero",
+            "fit": "cover"
+          },
+          "style": {},
+          "alt": "A visual that references an asset which is not present in the manifest.",
+          "sourceIds": [],
+          "slot": "visual",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "",
+      "sources": [],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        { "slot": "kicker", "blockIds": ["b-kicker"], "flow": "stack", "gap": 8 },
+        { "slot": "title", "blockIds": ["b-title"], "flow": "stack", "gap": 8 },
+        { "slot": "visual", "blockIds": ["b-image"], "flow": "stack", "gap": 8 }
+      ]
+    },
+    {
+      "id": "s-process",
+      "title": "Export-unsupported block kind",
+      "layout": "process-steps",
+      "blocks": [
+        {
+          "id": "b2-kicker",
+          "type": "text",
+          "content": "REGRESSION · EXPORT SUPPORT",
+          "style": { "variant": "kicker" },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b2-title",
+          "type": "heading",
+          "content": "A process block export can only rasterize.",
+          "style": { "level": 1 },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b2-steps",
+          "type": "timeline",
+          "content": {
+            "milestones": [
+              { "date": "2016", "title": "Measure", "detail": "Track page weight on a real device." },
+              { "date": "2018", "title": "Set the number", "detail": "Pick a budget and enforce it." },
+              { "date": "2020", "title": "Ship lean", "detail": "Treat overruns like test failures." },
+              { "date": "2022", "title": "Verify in CI", "detail": "Fail the build when the budget is exceeded." }
+            ]
+          },
+          "style": {},
+          "alt": "Four-milestone timeline for performance budgeting.",
+          "sourceIds": [],
+          "slot": "steps",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b2-outcome",
+          "type": "callout",
+          "content": "Export preflight must report this block as image-only, not silently skip it.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "outcome",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "",
+      "sources": [],
+      "interactions": [],
+      "density": "medium",
+      "layoutBindings": [
+        { "slot": "kicker", "blockIds": ["b2-kicker"], "flow": "stack", "gap": 8 },
+        { "slot": "title", "blockIds": ["b2-title"], "flow": "stack", "gap": 8 },
+        { "slot": "steps", "blockIds": ["b2-steps"], "flow": "stack", "gap": 8 },
+        { "slot": "outcome", "blockIds": ["b2-outcome"], "flow": "stack", "gap": 8 }
+      ]
+    }
+  ],
+  "sources": [],
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "regression-media",
+    "embed": {
+      "enabled": true,
+      "allowedOrigins": [],
+      "sandbox": ["allow-scripts", "allow-forms", "allow-popups"],
+      "responsive": true
+    },
+    "analytics": false,
+    "allowDownload": false
+  },
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": ["editor", "presenter"],
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "capabilities": [
+      "semantic-layout",
+      "persistent-editing",
+      "shortcut-help",
+      "theme-control",
+      "layout-control",
+      "media-control",
+      "add-text",
+      "undo-redo",
+      "autosave-and-restore",
+      "present-current-slide"
+    ]
+  },
+  "shortcuts": {
+    "helpEnabled": true,
+    "helpKey": "?",
+    "editorPreset": "deckforge-default",
+    "presenterPreset": "deckforge-default"
+  }
+}

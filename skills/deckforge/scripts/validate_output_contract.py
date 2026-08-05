@@ -20,7 +20,7 @@ def corpus(root:Path):
 def match_any(text,patterns):return any(re.search(p,text,re.I|re.S) for p in patterns)
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('project',type=Path);ap.add_argument('--profile',default='editable-deck',choices=['editable-deck','presentation-runtime','published-story','embedded-deck']);ap.add_argument('--json-report',type=Path)
+    ap=argparse.ArgumentParser();ap.add_argument('project',type=Path);ap.add_argument('--profile',default='editable-deck',choices=['editable-deck','presentation-runtime','published-story','embedded-deck']);ap.add_argument('--json-report',type=Path);ap.add_argument('--advisory',action='store_true',help='Non-blocking mode: regex scanning reports warnings only (P0-001 A-06). Capability truth comes from a capability receipt.')
     a=ap.parse_args();root=a.project.resolve()
     if not root.is_dir():raise SystemExit(f'ERROR: project directory not found: {root}')
     text,files=corpus(root);checks=[]
@@ -63,10 +63,14 @@ def main():
         check('embed','Embed surface',[r'iframe',r'embed[-_ ]?viewer'])
         check('sandbox','Sandbox/origin policy',[r'sandbox',r'allowedorigins?',r'postmessage'])
     missing=[c for c in checks if c['required'] and not c['ok']]
-    report={'profile':a.profile,'project':str(root),'scannedFiles':len(files),'checks':checks,'missing':[c['id'] for c in missing]}
+    report={'profile':a.profile,'project':str(root),'scannedFiles':len(files),'checks':checks,'missing':[c['id'] for c in missing],'advisory':a.advisory}
     if a.json_report:a.json_report.write_text(json.dumps(report,indent=2),encoding='utf-8')
-    for c in checks:print(('PASS' if c['ok'] else 'FAIL')+f": {c['label']}")
+    for c in checks:print(('PASS' if c['ok'] else ('ADVISORY' if a.advisory else 'FAIL'))+f": {c['label']}")
     print(f'CONTRACT: {len(checks)-len(missing)}/{len(checks)} required checks passed across {len(files)} files')
+    if a.advisory:
+        print('ADVISORY MODE: regex scan is non-blocking; capability truth must come from a capability receipt.')
+        if missing:print('ADVISORY: missing heuristics: '+', '.join(c['id'] for c in missing))
+        return
     if missing:
         print('ERROR: missing required capabilities: '+', '.join(c['id'] for c in missing),file=sys.stderr);raise SystemExit(1)
 

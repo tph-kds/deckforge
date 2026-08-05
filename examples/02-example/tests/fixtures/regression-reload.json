@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "2.1",
+  "slides": [
+    {
+      "id": "s-roundtrip",
+      "title": "Round-tripped deck",
+      "layout": "statement",
+      "section": "Appendix",
+      "transition": "fade",
+      "tags": ["roundtrip", "reload"],
+      "layoutVariant": "statement-default",
+      "background": { "color": "#FAF3E7" },
+      "blocks": [
+        {
+          "id": "b-statement",
+          "type": "heading",
+          "content": "A schema-valid deck that survived a persistence round-trip.",
+          "style": { "level": 1 },
+          "data": { "migrated": true, "sourceVersion": "2.0" },
+          "alt": "",
+          "sourceIds": ["src-roundtrip"],
+          "slot": "statement",
+          "positionMode": "slot",
+          "role": "title",
+          "groupId": "g-main"
+        },
+        {
+          "id": "b-support",
+          "type": "text",
+          "content": "Odd key ordering, extra fields, and an outdated updatedAt all survive reload.",
+          "style": { "variant": "meta" },
+          "data": { "note": "kept", "flags": [1, 2, 3] },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "support",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "Loaded from local storage after a save and reload cycle.",
+      "sources": ["src-roundtrip"],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        { "slot": "statement", "blockIds": ["b-statement"], "flow": "stack", "gap": 8 },
+        { "slot": "support", "blockIds": ["b-support"], "flow": "stack", "gap": 8 }
+      ]
+    }
+  ],
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": ["editor", "presenter"],
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "capabilities": [
+      "semantic-layout",
+      "persistent-editing",
+      "shortcut-help",
+      "theme-control",
+      "layout-control",
+      "media-control",
+      "add-text",
+      "undo-redo",
+      "autosave-and-restore",
+      "present-current-slide"
+    ]
+  },
+  "meta": {
+    "id": "regression-reload",
+    "slug": "regression-reload",
+    "title": "Persistence-reload deck shape",
+    "description": "P0-010 regression fixture: a schema-valid deck that has been round-tripped through persistence with odd key ordering and extra allowed fields.",
+    "language": "en",
+    "audience": "Regression tests",
+    "objective": "Lock in that a round-tripped deck still loads and validates.",
+    "templateId": "feature-deep-dive",
+    "authors": ["DeckForge Regression"],
+    "tags": ["regression", "p0-010", "reload"],
+    "createdAt": "2026-08-05T00:00:00.000Z",
+    "updatedAt": "1970-01-01T00:00:00.000Z"
+  },
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1600,
+    "height": 900,
+    "safeMargin": 64,
+    "grid": 8,
+    "responsiveMode": "hybrid",
+    "layoutMode": "semantic-slots"
+  },
+  "theme": {
+    "id": "editorial-cream",
+    "overrides": {
+      "scrollbar": {
+        "default": "minimal-thin",
+        "presenter": "none"
+      },
+      "colors": {
+        "primary": "#B45309",
+        "secondary": "#15803D"
+      },
+      "typography": {
+        "headingFont": "Libre Baskerville",
+        "bodyFont": "Inter"
+      }
+    }
+  },
+  "sources": [
+    {
+      "id": "src-roundtrip",
+      "title": "Round-trip fixture",
+      "url": "https://example.com/roundtrip",
+      "publisher": "DeckForge Regression",
+      "note": "A source that must survive reload."
+    }
+  ],
+  "presentation": {
+    "mode": "horizontal",
+    "transition": "push",
+    "motionProfileId": "technical-precise",
+    "defaultBuilds": true,
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "progress": true,
+    "controls": true,
+    "reducedMotion": "respect-system"
+  },
+  "assets": [
+    {
+      "id": "asset-roundtrip",
+      "kind": "image",
+      "src": "/assets/roundtrip.png",
+      "mimeType": "image/png",
+      "width": 640,
+      "height": 480,
+      "alt": "Round-trip asset",
+      "credit": "DeckForge Regression",
+      "license": "MIT",
+      "focalPoint": { "x": 0.5, "y": 0.5 }
+    }
+  ],
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "snapToGrid": true,
+    "guides": true,
+    "comments": false,
+    "collaboration": false,
+    "autosave": true,
+    "commandPalette": true,
+    "notes": true,
+    "allowedBlockTypes": ["heading", "text", "bullets", "metric", "chart", "image", "callout", "caption", "citation", "process"],
+    "sidePanel": true,
+    "assetLibrary": true,
+    "themePicker": true,
+    "layoutPicker": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "requiredZones": ["app-bar", "slide-rail", "canvas", "inspector", "notes", "save-status"]
+  },
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "regression-reload",
+    "indexing": "disallow",
+    "versionPolicy": "pinned",
+    "embed": {
+      "enabled": true,
+      "allowedOrigins": [],
+      "sandbox": ["allow-scripts", "allow-forms", "allow-popups"],
+      "responsive": true
+    },
+    "analytics": false,
+    "allowDownload": false
+  },
+  "shortcuts": {
+    "helpEnabled": true,
+    "helpKey": "?",
+    "editorPreset": "deckforge-default",
+    "presenterPreset": "deckforge-default"
+  }
+}

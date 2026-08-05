@@ -33,9 +33,9 @@ Some ecosystems use repository metadata instead of the same CLI flags. DeckForge
 ## Verify a generated editable deck
 
 ```bash
-python scripts/validate_deck_project.py <deck.json>
-python scripts/audit_deck_layout.py <deck.json> --strict
-python scripts/validate_output_contract.py <project-directory> --profile editable-deck
+python scripts/validate/validate_deck_project.py <deck.json>
+python scripts/audits/audit_deck_layout.py <deck.json> --strict
+python scripts/audits/validate_output_contract.py <project-directory> --profile editable-deck
 ```
 
 ## Validate before publishing the skills repository

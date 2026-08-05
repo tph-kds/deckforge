@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckforge.dev/schemas/capability-receipt.schema.json",
+  "title": "DeckForge Capability Receipt",
+  "description": "A machine-checkable declaration of which capabilities a delivered project implements, with references to executable evidence. A capability must not be marked implemented without referenced tests and evidence paths that exist.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "receiptVersion",
+    "profile",
+    "capabilities"
+  ],
+  "properties": {
+    "receiptVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "profile": {
+      "type": "string"
+    },
+    "project": {
+      "type": "string"
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/capabilityClaim"
+      }
+    }
+  },
+  "$defs": {
+    "capabilityClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["implemented", "partial", "unsupported", "unverified", "blocked"]
+        },
+        "entryPoints": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "commands": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "persistence": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "tests": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "evidence": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

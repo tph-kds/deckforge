@@ -5,9 +5,9 @@ import json, sys
 from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker
 
-ROOT=Path(__file__).resolve().parents[1]
+ROOT=Path(__file__).resolve().parents[2]
 ASSETS=ROOT/'skills'/'deckforge'/'assets'
-SCHEMA_PATH=ASSETS/'deck-project.schema.json'
+SCHEMA_PATH=ROOT/'schemas'/'deck-project.schema.json'
 
 def fail(message):print(f'ERROR: {message}',file=sys.stderr);raise SystemExit(1)
 def load_json(path):

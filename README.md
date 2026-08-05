@@ -223,6 +223,13 @@ deckforge-web-slides-skills/
 ├── rules/
 ├── schemas/
 ├── scripts/
+│   ├── audits/
+│   ├── generate/
+│   ├── package/
+│   ├── rules/
+│   ├── sync/
+│   ├── tools/
+│   └── validate/
 └── tests/
 ```
 

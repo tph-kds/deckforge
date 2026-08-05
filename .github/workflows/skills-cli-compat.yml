@@ -22,4 +22,4 @@ jobs:
       - name: Validate repository artifacts
         run: npm run validate
       - name: Validate discovery by Agent Skills CLI
-        run: bash scripts/check-skills-cli-compat.sh .
+        run: bash scripts/tools/check-skills-cli-compat.sh .

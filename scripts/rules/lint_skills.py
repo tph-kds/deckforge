@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import re, sys
-root=Path(__file__).resolve().parents[1]
+root=Path(__file__).resolve().parents[2]
 errors=[]; count=0
 for skill in sorted((root/'skills').glob('*/SKILL.md')):
     count+=1; text=skill.read_text(encoding='utf-8')

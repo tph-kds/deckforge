@@ -1,7 +1,15 @@
 // export/pptx/block-exporters/index.ts
 
 import type { PptxBlockExporter } from "../../export-types";
-import { textBlockExporter } from "./text";
+import {
+  textBlockExporter,
+  headingBlockExporter,
+  bulletsBlockExporter,
+  calloutBlockExporter,
+  citationBlockExporter,
+  metricBlockExporter,
+  processBlockExporter,
+} from "./text";
 import { imageBlockExporter } from "./image";
 import { shapeBlockExporter } from "./shape";
 import { tableBlockExporter } from "./table";
@@ -11,6 +19,12 @@ import { fallbackBlockExporter } from "./fallback";
 
 export const blockExporters: PptxBlockExporter[] = [
   textBlockExporter,
+  headingBlockExporter,
+  bulletsBlockExporter,
+  calloutBlockExporter,
+  citationBlockExporter,
+  metricBlockExporter,
+  processBlockExporter,
   imageBlockExporter,
   shapeBlockExporter,
   tableBlockExporter,
@@ -20,7 +34,7 @@ export const blockExporters: PptxBlockExporter[] = [
 ];
 
 export function getBlockExporter(type: string): PptxBlockExporter {
-  return blockExporters.find((e) => e.type === type) ?? fallbackBlockExporter;
+  return blockExporters.find((exporter) => exporter.type === type) ?? fallbackBlockExporter;
 }
 
 export function getExportability(type: string): string {

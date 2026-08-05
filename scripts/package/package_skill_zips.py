@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import shutil, zipfile
-root=Path(__file__).resolve().parents[1]; out=root/'skill-zips'
+root=Path(__file__).resolve().parents[2]; out=root/'skill-zips'
 if out.exists(): shutil.rmtree(out)
 out.mkdir()
 for d in sorted((root/'skills').iterdir()):

@@ -43,6 +43,20 @@ function mapBlock(
   }));
 }
 
+function addBlockToBinding(
+  bindings: NonNullable<DeckSlide['layoutBindings']>,
+  slot: string,
+  blockId: string,
+): NonNullable<DeckSlide['layoutBindings']> {
+  const existing = bindings.find((binding) => binding.slot === slot);
+  if (existing) {
+    return bindings.map((binding) =>
+      binding.slot === slot ? { ...binding, blockIds: [...binding.blockIds, blockId] } : binding,
+    );
+  }
+  return [...bindings, { slot, blockIds: [blockId], flow: 'stack', gap: 8 }];
+}
+
 function newSlideTemplate(title: string): DeckSlide {
   const kicker = newId('b');
   const heading = newId('b');
@@ -85,10 +99,17 @@ export function applyCommand(deck: DeckProject, command: Command): DeckProject {
     case 'updateSlideTransition':
       return mapSlide(deck, command.slideId, (slide) => ({ ...slide, transition: command.transition }));
     case 'addBlock':
-      return mapSlide(deck, command.slideId, (slide) => ({
-        ...slide,
-        blocks: [...slide.blocks, command.block],
-      }));
+      return mapSlide(deck, command.slideId, (slide) => {
+        const block = command.slot ? { ...command.block, slot: command.slot } : command.block;
+        const bindings = command.slot
+          ? addBlockToBinding(slide.layoutBindings ?? [], command.slot, block.id)
+          : slide.layoutBindings;
+        return {
+          ...slide,
+          blocks: [...slide.blocks, block],
+          layoutBindings: bindings,
+        };
+      });
     case 'removeBlock':
       return mapSlide(deck, command.slideId, (slide) => {
         const blockIds = slide.blocks.filter((block) => block.id !== command.blockId).map((block) => block.id);

@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {
+    "id": "regression-long-content",
+    "slug": "regression-long-content",
+    "title": "Very long title, body, URL, and mixed-language text",
+    "description": "P0-010 regression fixture: deterministic overflow detection and repair for very long titles, bodies, and URLs, plus Vietnamese and English in one block.",
+    "language": "vi",
+    "audience": "Regression tests",
+    "objective": "Lock in that long content is measured deterministically and repair converges.",
+    "templateId": "feature-deep-dive",
+    "authors": ["DeckForge Regression"],
+    "tags": ["regression", "p0-010", "long-content", "mixed-language"],
+    "createdAt": "2026-08-05T00:00:00.000Z",
+    "updatedAt": "2026-08-05T00:00:00.000Z"
+  },
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1600,
+    "height": 900,
+    "safeMargin": 64,
+    "grid": 8,
+    "responsiveMode": "hybrid",
+    "layoutMode": "semantic-slots"
+  },
+  "theme": {
+    "id": "editorial-cream",
+    "overrides": {}
+  },
+  "presentation": {
+    "mode": "horizontal",
+    "transition": "push",
+    "motionProfileId": "technical-precise",
+    "defaultBuilds": true,
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "progress": true,
+    "controls": true,
+    "reducedMotion": "respect-system"
+  },
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "snapToGrid": true,
+    "guides": true,
+    "comments": false,
+    "collaboration": false,
+    "autosave": true,
+    "commandPalette": true,
+    "notes": true,
+    "allowedBlockTypes": ["heading", "text", "bullets", "metric", "chart", "image", "callout", "caption", "citation", "process"],
+    "sidePanel": true,
+    "assetLibrary": true,
+    "themePicker": true,
+    "layoutPicker": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "requiredZones": ["app-bar", "slide-rail", "canvas", "inspector", "notes", "save-status"]
+  },
+  "assets": [],
+  "slides": [
+    {
+      "id": "s-long-content",
+      "title": "Long content and mixed-language slide",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b-kicker",
+          "type": "text",
+          "content": "Xin chào! Chào mừng bạn. Hello friend, welcome to the mixed-language deck.",
+          "style": { "variant": "kicker" },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-title",
+          "type": "heading",
+          "content": "The cumulative median weight of an average modern web page has grown steadily for nearly a decade, driven by images, JavaScript, and fonts that nobody added on purpose, which is precisely why the fix has to be a number.",
+          "style": { "level": 1 },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-subtitle",
+          "type": "text",
+          "content": "Every byte you ship travels over a network and costs energy to serve and render, so a page that carries two megabytes of payload pays for that weight on every single visit from every single device. Images dominate the transfer because most are delivered larger than the rendered size, while JavaScript adds cost twice: first as download time, then again as parse and execute time on the main thread. Fonts and CSS feel small in the bundle summary, but they block first paint, which makes them expensive out of proportion to their raw byte count. Network conditions are only part of the story, because low-end devices also struggle to decode and paint heavy pages even when the connection itself is fast. A performance budget turns an aspiration into an engineering constraint, because it gives the team a measurable number that can be enforced in code review and in continuous integration. Treating the budget as a release gate means a team can say no to a hero image or a new dependency without an argument, because the number is already agreed. Measured over time, budgeted teams ship lighter pages more consistently, and their sites render faster on the devices where performance matters most. This is why the workflow is measure first, set the number second, ship lean third, verify in CI fourth, and repeat monthly until the habit sticks.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "subtitle",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-meta",
+          "type": "citation",
+          "content": "Source: https://docs.example.com/regression-fixtures/very-long-reference-url?utm_source=deckforge&utm_medium=regression&utm_campaign=long-content-fixture&page=overflow&section=footnotes&hash=3f9a8b2c1d7e0a4f6b8c2d1e",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "meta",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "The long subtitle must be flagged by measurement and trimmed by repair; the long title is flagged deterministically as an orphan heading; the long URL is a budget warning only.",
+      "sources": [],
+      "interactions": [],
+      "density": "high",
+      "layoutBindings": [
+        { "slot": "kicker", "blockIds": ["b-kicker"], "flow": "stack", "gap": 8 },
+        { "slot": "title", "blockIds": ["b-title"], "flow": "stack", "gap": 8 },
+        { "slot": "subtitle", "blockIds": ["b-subtitle"], "flow": "stack", "gap": 8 },
+        { "slot": "meta", "blockIds": ["b-meta"], "flow": "stack", "gap": 8 }
+      ]
+    }
+  ],
+  "sources": [],
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "regression-long-content",
+    "embed": {
+      "enabled": true,
+      "allowedOrigins": [],
+      "sandbox": ["allow-scripts", "allow-forms", "allow-popups"],
+      "responsive": true
+    },
+    "analytics": false,
+    "allowDownload": false
+  },
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": ["editor", "presenter"],
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "capabilities": [
+      "semantic-layout",
+      "persistent-editing",
+      "shortcut-help",
+      "theme-control",
+      "layout-control",
+      "media-control",
+      "add-text",
+      "undo-redo",
+      "autosave-and-restore",
+      "present-current-slide"
+    ]
+  },
+  "shortcuts": {
+    "helpEnabled": true,
+    "helpKey": "?",
+    "editorPreset": "deckforge-default",
+    "presenterPreset": "deckforge-default"
+  }
+}

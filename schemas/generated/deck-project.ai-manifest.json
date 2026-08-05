@@ -1,0 +1,59 @@
+{
+  "$schema": "https://deckforge.dev/schemas/ai-manifest.schema.json",
+  "defs": {
+    "animation": "object",
+    "asset": "object",
+    "autoplay": "object",
+    "block": "object",
+    "canvas": "object",
+    "editor": "object",
+    "embed": "object",
+    "experience": "object",
+    "frame": "object",
+    "id": "string",
+    "interaction": "object",
+    "layoutBinding": "object",
+    "meta": "object",
+    "nonEmptyString": "string",
+    "presentation": "object",
+    "publish": "object",
+    "scrollbarOverride": "object",
+    "shortcuts": "object",
+    "slide": "object",
+    "slug": "string",
+    "source": "object",
+    "theme": "object"
+  },
+  "description": "Structured document model for editable, presentable, publishable browser-native decks with semantic layout slots.",
+  "generator": {
+    "name": "deckforge",
+    "version": "0.0.0"
+  },
+  "name": "deck-project",
+  "properties": {
+    "assets": "array",
+    "canvas": "object",
+    "editor": "object",
+    "experience": "object",
+    "meta": "object",
+    "presentation": "object",
+    "publish": "object",
+    "schemaVersion": "object",
+    "shortcuts": "object",
+    "slides": "array",
+    "sources": "array",
+    "theme": "object"
+  },
+  "requiredProperties": [
+    "schemaVersion",
+    "meta",
+    "canvas",
+    "theme",
+    "presentation",
+    "editor",
+    "slides",
+    "publish",
+    "experience"
+  ],
+  "schemaVersion": "2.1"
+}

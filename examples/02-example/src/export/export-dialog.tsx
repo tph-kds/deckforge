@@ -1,19 +1,40 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import type { ExportPreflightResult, PptxExportConfig } from "./export-types";
+import type {
+  BlockExportStatus,
+  ExportPreflightResult,
+  ExportReport,
+  PptxExportConfig,
+} from "./export-types";
 import { DEFAULT_PPTX_CONFIG } from "./export-types";
 import { runExportPreflight } from "./export-preflight";
+import type { DeckProject } from "../deck/types";
 
 interface ExportDialogProps {
-  deck: unknown;
+  deck: DeckProject;
   isOpen: boolean;
   onClose: () => void;
   onExport?: (result: Blob) => void;
   onError?: (error: Error) => void;
 }
 
+const STATUS_ORDER: BlockExportStatus[] = ["native", "rasterized", "substituted", "skipped", "unsupported"];
+
+function countStatus(report: ExportReport, status: BlockExportStatus): number {
+  return report.slides.reduce(
+    (total, slide) => total + slide.blocks.filter((block) => block.status === status).length,
+    0
+  );
+}
+
+function reportSummary(report: ExportReport): string {
+  const counts = STATUS_ORDER.map((status) => `${countStatus(report, status)} ${status}`).join(" · ");
+  return counts;
+}
+
 export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: ExportDialogProps) {
   const [config, setConfig] = useState<PptxExportConfig>(DEFAULT_PPTX_CONFIG);
   const [preflight, setPreflight] = useState<ExportPreflightResult | null>(null);
+  const [lastReport, setLastReport] = useState<ExportReport | null>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -67,8 +88,9 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
     try {
       const { PptxExporter } = await import("./pptx/pptx-exporter");
       const exporter = new PptxExporter(config);
-      const blob = await exporter.export(deck);
-      onExport?.(blob);
+      const result = await exporter.export(deck);
+      onExport?.(result.blob);
+      setLastReport(result.report);
 
       const deckData = deck as { meta?: { title?: string } };
       const title = deckData.meta?.title ?? "deck";
@@ -77,12 +99,23 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
         .replace("{title}", title)
         .replace("{date}", date);
 
-      const url = URL.createObjectURL(blob);
+      const url = URL.createObjectURL(result.blob);
       const a = document.createElement("a");
       a.href = url;
       a.download = filename;
       a.click();
       URL.revokeObjectURL(url);
+
+      if (result.report.status === "failed") {
+        onError?.(
+          new Error(
+            `Export completed with failures: ${result.report.issues
+              .filter((issue) => issue.severity === "error")
+              .map((issue) => issue.message)
+              .join("; ")}`
+          )
+        );
+      }
     } catch (error) {
       onError?.(error as Error);
     } finally {
@@ -96,6 +129,13 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
     (preflight?.score ?? 0) >= 80
       ? "var(--theme-secondary, #10b981)"
       : (preflight?.score ?? 0) >= 50
+        ? "#f59e0b"
+        : "var(--ui-danger, #dc2626)";
+
+  const reportColor =
+    lastReport?.status === "complete"
+      ? "var(--theme-secondary, #10b981)"
+      : lastReport?.status === "partial"
         ? "#f59e0b"
         : "var(--ui-danger, #dc2626)";
 
@@ -156,6 +196,47 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
                 <span>{preflight.issues.filter(i => i.severity === "warning").length} warnings</span>
                 <span>{preflight.issues.filter(i => i.severity === "info").length} info</span>
               </div>
+            </div>
+          )}
+
+          {lastReport && (
+            <div
+              role="status"
+              aria-live="polite"
+              style={{
+                padding: "12px 14px",
+                borderRadius: "var(--ui-radius)",
+                border: `1px solid ${reportColor}33`,
+                backgroundColor: `${reportColor}0A`,
+                marginBottom: 14,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+                <span style={{ fontWeight: 600, fontSize: 13, color: "var(--ui-fg)" }}>
+                  Export {lastReport.status}
+                </span>
+                <span style={{ fontFamily: "var(--font-code)", fontSize: 12, color: reportColor, fontWeight: 600, textTransform: "uppercase" }}>
+                  {lastReport.status}
+                </span>
+              </div>
+              <div style={{ fontSize: 12, color: "var(--ui-muted)", marginBottom: 4 }}>
+                {reportSummary(lastReport)}
+              </div>
+              {lastReport.issues.length > 0 && (
+                <div style={{ fontSize: 12, color: "var(--ui-muted)", maxHeight: 120, overflowY: "auto" }}>
+                  {lastReport.issues.slice(0, 8).map((issue, idx) => (
+                    <div key={idx} style={{ marginBottom: 3 }}>
+                      <span style={{ color: issue.severity === "error" ? "var(--ui-danger)" : issue.severity === "warning" ? "#b45309" : "var(--ui-muted)", fontWeight: 600 }}>
+                        {issue.severity}
+                      </span>{" "}
+                      {issue.message}
+                    </div>
+                  ))}
+                  {lastReport.issues.length > 8 && (
+                    <div style={{ marginTop: 4 }}>… {lastReport.issues.length - 8} more issue(s)</div>
+                  )}
+                </div>
+              )}
             </div>
           )}
 

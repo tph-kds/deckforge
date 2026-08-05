@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {
+    "id": "regression-reused-slots",
+    "slug": "regression-reused-slots",
+    "title": "Two slides reusing the same slot names",
+    "description": "P0-010 regression fixture: slot scope must be per-slide when two slides bind the same slot names.",
+    "language": "en",
+    "audience": "Regression tests",
+    "objective": "Lock in that slot names do not leak across slides.",
+    "templateId": "feature-deep-dive",
+    "authors": ["DeckForge Regression"],
+    "tags": ["regression", "p0-010"],
+    "createdAt": "2026-08-05T00:00:00.000Z",
+    "updatedAt": "2026-08-05T00:00:00.000Z"
+  },
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1600,
+    "height": 900,
+    "safeMargin": 64,
+    "grid": 8,
+    "responsiveMode": "hybrid",
+    "layoutMode": "semantic-slots"
+  },
+  "theme": {
+    "id": "editorial-cream",
+    "overrides": {}
+  },
+  "presentation": {
+    "mode": "horizontal",
+    "transition": "push",
+    "motionProfileId": "technical-precise",
+    "defaultBuilds": true,
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "progress": true,
+    "controls": true,
+    "reducedMotion": "respect-system"
+  },
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "snapToGrid": true,
+    "guides": true,
+    "comments": false,
+    "collaboration": false,
+    "autosave": true,
+    "commandPalette": true,
+    "notes": true,
+    "allowedBlockTypes": ["heading", "text", "bullets", "metric", "chart", "image", "callout", "caption", "citation", "process"],
+    "sidePanel": true,
+    "assetLibrary": true,
+    "themePicker": true,
+    "layoutPicker": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "requiredZones": ["app-bar", "slide-rail", "canvas", "inspector", "notes", "save-status"]
+  },
+  "assets": [],
+  "slides": [
+    {
+      "id": "s-first",
+      "title": "First slide reusing shared slot names",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b-a-kicker",
+          "type": "text",
+          "content": "SLIDE A · SHARED SLOT 'kicker'",
+          "style": { "variant": "kicker" },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-a-title",
+          "type": "heading",
+          "content": "Slide A owns its title slot.",
+          "style": { "level": 1 },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "",
+      "sources": [],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        { "slot": "kicker", "blockIds": ["b-a-kicker"], "flow": "stack", "gap": 8 },
+        { "slot": "title", "blockIds": ["b-a-title"], "flow": "stack", "gap": 8 }
+      ]
+    },
+    {
+      "id": "s-second",
+      "title": "Second slide reusing the same slot names",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b-b-kicker",
+          "type": "text",
+          "content": "SLIDE B · SHARED SLOT 'kicker'",
+          "style": { "variant": "kicker" },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-b-title",
+          "type": "heading",
+          "content": "Slide B owns its title slot.",
+          "style": { "level": 1 },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "",
+      "sources": [],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        { "slot": "kicker", "blockIds": ["b-b-kicker"], "flow": "stack", "gap": 8 },
+        { "slot": "title", "blockIds": ["b-b-title"], "flow": "stack", "gap": 8 }
+      ]
+    }
+  ],
+  "sources": [],
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "regression-reused-slots",
+    "embed": {
+      "enabled": true,
+      "allowedOrigins": [],
+      "sandbox": ["allow-scripts", "allow-forms", "allow-popups"],
+      "responsive": true
+    },
+    "analytics": false,
+    "allowDownload": false
+  },
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": ["editor", "presenter"],
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "capabilities": [
+      "semantic-layout",
+      "persistent-editing",
+      "shortcut-help",
+      "theme-control",
+      "layout-control",
+      "media-control",
+      "add-text",
+      "undo-redo",
+      "autosave-and-restore",
+      "present-current-slide"
+    ]
+  },
+  "shortcuts": {
+    "helpEnabled": true,
+    "helpKey": "?",
+    "editorPreset": "deckforge-default",
+    "presenterPreset": "deckforge-default"
+  }
+}

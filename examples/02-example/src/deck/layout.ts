@@ -1,5 +1,5 @@
 import layoutManifest from './layout-manifest.json';
-import type { DeckProject, DeckSlide, Frame, LayoutBinding } from './types';
+import type { Block, DeckProject, DeckSlide, Frame, LayoutBinding } from './types';
 
 export interface LayoutSlotContract {
   id: string;
@@ -54,7 +54,7 @@ export function listLayouts(): LayoutContract[] {
 
 /**
  * Resolve a slot's grid geometry into canvas coordinates.
- * Mirrors scripts/audit_deck_layout.py's resolve_slot so editor rendering
+ * Mirrors scripts/audits/audit_deck_layout.py's resolve_slot so editor rendering
  * matches the deterministic audit exactly.
  */
 export function resolveSlotFrame(
@@ -115,14 +115,51 @@ export interface BlockPlacement {
   frame: Frame;
 }
 
+/** Slot/flow layer entry: a block bound to a semantic slot frame. */
+export interface SlotFlowEntry {
+  block: Block;
+  placement: BlockPlacement;
+}
+
+/** Freeform layer entry: an explicitly positioned block on its own frame. */
+export interface FreeformEntry {
+  block: Block;
+  frame: Frame;
+}
+
+/** Background layer entry: a full-canvas (or framed) block rendered behind slots. */
+export interface BackgroundEntry {
+  block: Block;
+  frame?: Frame;
+}
+
+/**
+ * Exclusive rendering layers (P0-005): each block id appears in EXACTLY ONE
+ * bucket. Layer order is background → semantic slot/flow → freeform, with a
+ * system overlay rendered separately by the host.
+ */
+export interface LayerAssignment {
+  background: BackgroundEntry[];
+  slotFlow: SlotFlowEntry[];
+  freeform: FreeformEntry[];
+}
+
+/** Position modes that must never participate in the semantic slot pass. */
+const NON_SLOT_MODES: ReadonlySet<string> = new Set(['freeform', 'background']);
+
 /**
  * Bind blocks to slot frames for a slide using its layoutBindings.
  * Returns placements in responsive (slot) order for stable reading order.
+ *
+ * Blocks whose positionMode is 'freeform' or 'background' are excluded from
+ * the slot pass even when a binding lists them, so they can never be placed on
+ * the slot layer (P0-005).
  */
 export function resolveSlidePlacements(
   slide: DeckSlide,
   canvas: DeckProject['canvas'],
 ): BlockPlacement[] {
+  const byId = new Map(slide.blocks.map((block) => [block.id, block]));
   const resolved = resolveLayout(slide.layout, canvas);
   const bySlot = new Map(resolved.map((entry) => [entry.slot.id, entry]));
   const bindingMap = new Map<string, LayoutBinding>();
@@ -134,6 +171,8 @@ export function resolveSlidePlacements(
     const binding = bindingMap.get(entry.slot.id);
     if (!binding) continue;
     for (const blockId of binding.blockIds) {
+      const block = byId.get(blockId);
+      if (block && NON_SLOT_MODES.has(block.positionMode ?? '')) continue;
       placements.push({
         blockId,
         slotId: entry.slot.id,
@@ -143,6 +182,69 @@ export function resolveSlidePlacements(
     }
   }
   return placements;
+}
+
+/**
+ * Assign every block on a slide to exactly one rendering layer (P0-005):
+ *
+ * - `slotFlow`   — blocks bound to semantic slots (positionMode slot/flow).
+ * - `freeform`   — blocks with positionMode 'freeform', at their own frame.
+ * - `background` — blocks with positionMode 'background', full-canvas or framed.
+ *
+ * The invariant is that each block id lands in exactly one bucket. A block
+ * listed in a binding but flagged freeform/background stays off the slot pass.
+ * Violations (double assignment, missing frame, or orphan blocks) are reported
+ * via console.error so renderers stay resilient while the invariant is visible.
+ */
+export function assignBlocksToLayers(
+  slide: DeckSlide,
+  canvas: DeckProject['canvas'],
+): LayerAssignment {
+  const byId = new Map(slide.blocks.map((block) => [block.id, block]));
+  const background: BackgroundEntry[] = [];
+  const slotFlow: SlotFlowEntry[] = [];
+  const freeform: FreeformEntry[] = [];
+
+  const assigned = new Set<string>();
+  const mark = (block: Block): boolean => {
+    if (assigned.has(block.id)) {
+      console.error(`[deckforge] P0-005 invariant violation: block "${block.id}" assigned to more than one layer`);
+      return false;
+    }
+    assigned.add(block.id);
+    return true;
+  };
+
+  for (const placement of resolveSlidePlacements(slide, canvas)) {
+    const block = byId.get(placement.blockId);
+    if (!block || !mark(block)) continue;
+    slotFlow.push({ block, placement });
+  }
+
+  for (const block of slide.blocks) {
+    if (block.positionMode !== 'freeform') continue;
+    const frame = block.frame;
+    if (!frame) {
+      console.error(`[deckforge] P0-005 invariant violation: freeform block "${block.id}" has no frame`);
+      continue;
+    }
+    if (!mark(block)) continue;
+    freeform.push({ block, frame });
+  }
+
+  for (const block of slide.blocks) {
+    if (block.positionMode !== 'background') continue;
+    if (!mark(block)) continue;
+    background.push({ block, frame: block.frame });
+  }
+
+  for (const block of slide.blocks) {
+    if (!assigned.has(block.id)) {
+      console.error(`[deckforge] P0-005 invariant violation: block "${block.id}" was not assigned to any layer`);
+    }
+  }
+
+  return { background, slotFlow, freeform };
 }
 
 /** Returns the frame a specific block resolves to, if bound. */
@@ -155,6 +257,36 @@ export function resolveBlockFrame(
 }
 
 /** Warnings for the editor: empty required slots, over-budget slots. */
+/**
+ * Pick the best slot to bind a newly inserted block to. Prefers the first
+ * responsive slot whose `allowedBlocks` accepts the type and that still has
+ * room (maxItems not reached). Falls back to the first slot with room so an
+ * insert always renders instead of disappearing into state-only.
+ */
+export function suggestSlotForBlock(slide: DeckSlide, block: Block): string | undefined {
+  const contract = getLayoutContract(slide.layout);
+  if (!contract?.composition?.slots.length) return undefined;
+  const bindings = new Map<string, LayoutBinding>();
+  for (const binding of slide.layoutBindings ?? []) bindings.set(binding.slot, binding);
+  const order = contract.composition.responsiveOrder ?? contract.composition.slots.map((slot) => slot.id);
+  const ordered = [...order, ...contract.composition.slots.map((slot) => slot.id)];
+  const seen = new Set<string>();
+  const slots: LayoutSlotContract[] = [];
+  for (const id of ordered) {
+    if (seen.has(id)) continue;
+    seen.add(id);
+    const slot = contract.composition.slots.find((candidate) => candidate.id === id);
+    if (slot) slots.push(slot);
+  }
+  const hasRoom = (slot: LayoutSlotContract): boolean => {
+    const count = bindings.get(slot.id)?.blockIds.length ?? 0;
+    return slot.maxItems == null || count < slot.maxItems;
+  };
+  const allows = (slot: LayoutSlotContract): boolean =>
+    !slot.allowedBlocks?.length || slot.allowedBlocks.includes(block.type);
+  return slots.find((slot) => allows(slot) && hasRoom(slot))?.id ?? slots.find(hasRoom)?.id;
+}
+
 export interface LayoutIssue {
   severity: 'warning' | 'error';
   slot: string;

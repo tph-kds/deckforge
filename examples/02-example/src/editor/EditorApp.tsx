@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import type { DeckStore } from '../deck/useDeck';
-import { listLayouts, auditSlideLayout } from '../deck/layout';
+import { listLayouts, auditSlideLayout, suggestSlotForBlock } from '../deck/layout';
 import { listThemes, getTheme } from '../deck/themes';
 import { listMotionProfiles } from '../deck/motion';
 import { newId } from '../deck/seed';
@@ -129,7 +129,8 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
 
   const insertBlock = (type: string) => {
     const block = makeBlockForType(type);
-    commit({ type: 'addBlock', slideId: activeSlide.id, block });
+    const slot = suggestSlotForBlock(activeSlide, block);
+    commit({ type: 'addBlock', slideId: activeSlide.id, block, slot });
     selectBlock(activeSlide.id, block.id);
   };
 

@@ -28,7 +28,7 @@ class ExampleTests(unittest.TestCase):
   self.assertEqual(len(data['slides']),30)
   ids=[s['id'] for s in data['slides']]
   self.assertEqual(len(ids),len(set(ids)))
-  subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_layout.py'),str(path),'--strict'],check=True)
+  subprocess.run([sys.executable,str(ROOT/'scripts/audits/audit_deck_layout.py'),str(path),'--strict'],check=True)
   subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),str(path)],check=True)
  def test_theme_variant_example_passes_audits(self):
   path=ROOT/'examples/acme-platform-migration.deck.json'
@@ -36,7 +36,7 @@ class ExampleTests(unittest.TestCase):
   self.assertEqual(data['schemaVersion'],'2.1')
   self.assertEqual(data['presentation']['motionProfileId'],'seminar-editorial')
   self.assertEqual(data['theme']['id'],'editorial-cream')
-  subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_layout.py'),str(path),'--strict'],check=True)
+  subprocess.run([sys.executable,str(ROOT/'scripts/audits/audit_deck_layout.py'),str(path),'--strict'],check=True)
   subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),str(path)],check=True)
  def test_motion_audit_fails_for_static_deck(self):
   import tempfile, json, os
@@ -47,14 +47,14 @@ class ExampleTests(unittest.TestCase):
    self.assertNotEqual(r.returncode,0)
  def test_content_audit_passes_for_real_decks(self):
   for name in ('ai-product-vision.deck.json','02-example/deck.json','acme-platform-migration.deck.json'):
-   subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_content.py'),str(ROOT/'examples'/name)],check=True)
+   subprocess.run([sys.executable,str(ROOT/'scripts/audits/audit_deck_content.py'),str(ROOT/'examples'/name)],check=True)
  def test_ai_product_vision_passes_all_audits(self):
   path=ROOT/'examples/ai-product-vision.deck.json'
-  subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_layout.py'),str(path),'--strict'],check=True)
+  subprocess.run([sys.executable,str(ROOT/'scripts/audits/audit_deck_layout.py'),str(path),'--strict'],check=True)
   subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),str(path)],check=True)
  def test_content_audit_fails_for_violation_fixture(self):
   path=ROOT/'tests/fixtures/content-violations/deck.json'
-  r=subprocess.run([sys.executable,str(ROOT/'scripts/audit_deck_content.py'),str(path)],capture_output=True,text=True)
+  r=subprocess.run([sys.executable,str(ROOT/'scripts/audits/audit_deck_content.py'),str(path)],capture_output=True,text=True)
   self.assertNotEqual(r.returncode,0)
   for needle in ('duplicate slide title','empty content','metric missing','repeated claim'):
    self.assertIn(needle,r.stderr)

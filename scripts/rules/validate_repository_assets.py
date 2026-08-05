@@ -7,7 +7,7 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 IGNORED_DIRS = {".git", "skill-zips", "__pycache__", "node_modules", "dist"}
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 errors: list[str] = []

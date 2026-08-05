@@ -1,0 +1,588 @@
+{
+  "schemaVersion": "1.0.0",
+  "catalogVersion": "1.0.0",
+  "statuses": ["implemented", "partial", "unsupported", "unverified", "blocked"],
+  "profiles": [
+    "editable-deck",
+    "presentation-runtime",
+    "published-story",
+    "embedded-deck",
+    "professional-studio",
+    "collaborative-studio",
+    "agent-generated-static"
+  ],
+  "capabilities": [
+    {
+      "id": "document.create",
+      "name": "Create document",
+      "description": "Create a new DeckProject document from a template or blank state.",
+      "aliases": [],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "document.open",
+      "name": "Open document",
+      "description": "Open and parse an existing DeckProject document from storage, file, or URL.",
+      "aliases": [],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "document.migrate",
+      "name": "Migrate document",
+      "description": "Migrate a DeckProject from an older schema version to the current version deterministically.",
+      "aliases": [],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "edit.text",
+      "name": "Edit text",
+      "description": "Select and edit text content in a block and see the change persist.",
+      "aliases": ["edit-text", "add-text"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": true,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "edit.block.create",
+      "name": "Create block",
+      "description": "Insert a new block of a supported type into a slide.",
+      "aliases": ["insert-block"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": true,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "edit.block.move",
+      "name": "Move block",
+      "description": "Move a block between slots or positions within a slide.",
+      "aliases": [],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": true,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "edit.block.resize",
+      "name": "Resize block",
+      "description": "Resize a freeform block by direct manipulation.",
+      "aliases": [],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": true,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "edit.slide.reorder",
+      "name": "Reorder slides",
+      "description": "Reorder slides in the slide rail.",
+      "aliases": [],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": true,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "edit.media.insert",
+      "name": "Insert or replace media",
+      "description": "Insert or replace an image or media block.",
+      "aliases": ["insert-or-replace-image"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": true,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "edit.layout.change",
+      "name": "Change layout",
+      "description": "Change a slide layout without losing content.",
+      "aliases": ["change-layout"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": true,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "edit.theme.change",
+      "name": "Change theme",
+      "description": "Change the deck theme or accent tokens.",
+      "aliases": ["change-theme"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": true,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "edit.style.change",
+      "name": "Change style",
+      "description": "Change block style such as fonts, colors, or spacing.",
+      "aliases": ["change-style"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": true,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "history.undo",
+      "name": "Undo",
+      "description": "Undo the most recent change. Requires a change that can be made, undone, and redone.",
+      "aliases": ["undo-redo"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "history.redo",
+      "name": "Redo",
+      "description": "Redo a change that was undone. Requires a change that can be made, undone, and redone.",
+      "aliases": ["undo-redo"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "persistence.autosave",
+      "name": "Autosave",
+      "description": "Persist changes automatically so a reload restores them.",
+      "aliases": ["autosave-and-restore"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "persistence.recover",
+      "name": "Recover document",
+      "description": "Recover the last saved state after reload without user action.",
+      "aliases": ["autosave-and-restore"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "present.fullscreen",
+      "name": "Present fullscreen",
+      "description": "Enter and leave fullscreen presentation mode.",
+      "aliases": ["fullscreen", "present-current-slide"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": true
+      }
+    },
+    {
+      "id": "present.overview",
+      "name": "Present overview",
+      "description": "Show an overview of all slides and jump to any slide.",
+      "aliases": ["overview"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": true
+      }
+    },
+    {
+      "id": "present.speaker",
+      "name": "Speaker view",
+      "description": "Show speaker notes and next-slide preview during presentation.",
+      "aliases": ["speaker-notes"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": true
+      }
+    },
+    {
+      "id": "present.remote",
+      "name": "Remote presentation",
+      "description": "Control the presentation from a remote device or window.",
+      "aliases": [],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "present.blackout",
+      "name": "Blackout",
+      "description": "Blank the screen during presentation.",
+      "aliases": ["blackout"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": true
+      }
+    },
+    {
+      "id": "present.builds",
+      "name": "Build navigation",
+      "description": "Navigate block-by-block builds within a slide.",
+      "aliases": ["build-navigation"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": true
+      }
+    },
+    {
+      "id": "present.progress",
+      "name": "Progress indicator",
+      "description": "Show presentation progress such as a progress bar or slide counter.",
+      "aliases": ["progress"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": true
+      }
+    },
+    {
+      "id": "navigation.keyboard",
+      "name": "Keyboard navigation",
+      "description": "Navigate the presentation with the keyboard.",
+      "aliases": ["keyboard-navigation"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "accessibility.reduced-motion",
+      "name": "Reduced motion",
+      "description": "Respect the user's reduced-motion preference.",
+      "aliases": ["reduced-motion"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": true,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "accessibility.reading-order",
+      "name": "Accessible reading order",
+      "description": "Reading order follows semantic slot order, not absolute coordinates.",
+      "aliases": ["accessible-reading-order"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "accessibility.audit",
+      "name": "Accessibility audit",
+      "description": "An automated audit reports accessibility violations against the delivered project.",
+      "aliases": ["accessibility"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "help.shortcuts",
+      "name": "Shortcut help",
+      "description": "Visible, accessible shortcut help in editor and presenter contexts.",
+      "aliases": ["shortcut-help"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": true
+      }
+    },
+    {
+      "id": "export.pptx",
+      "name": "Export to PPTX",
+      "description": "Export the deck to a valid PPTX archive and verify the result.",
+      "aliases": ["export-pptx"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "export.pdf",
+      "name": "Export to PDF",
+      "description": "Export the deck to PDF.",
+      "aliases": ["export-pdf"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "publish.public",
+      "name": "Publish public",
+      "description": "Publish an immutable version reachable by a public audience route.",
+      "aliases": ["deep-links"],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "publish.private",
+      "name": "Publish private",
+      "description": "Publish an immutable version behind permissions.",
+      "aliases": [],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "publish.deep-links",
+      "name": "Deep links",
+      "description": "Each slide is reachable by a stable URL.",
+      "aliases": ["deep-links"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "responsive.reflow",
+      "name": "Responsive reflow",
+      "description": "Content reflows without clipping across common viewports.",
+      "aliases": ["responsive-reflow"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": true
+      }
+    },
+    {
+      "id": "responsive.sizing",
+      "name": "Responsive sizing",
+      "description": "The deck sizes to its container.",
+      "aliases": ["responsive-sizing"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": true
+      }
+    },
+    {
+      "id": "trust.citations",
+      "name": "Citations",
+      "description": "Claims are backed by cited sources rendered in the deck.",
+      "aliases": ["citations"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "media.fallbacks",
+      "name": "Media fallbacks",
+      "description": "Media that cannot load falls back to a labeled placeholder.",
+      "aliases": ["media-fallbacks"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "share.metadata",
+      "name": "Share metadata",
+      "description": "Publishing includes title, description, and social metadata.",
+      "aliases": ["share-metadata"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "security.origin-policy",
+      "name": "Origin policy",
+      "description": "Embedding is restricted to an allowlist of origins.",
+      "aliases": ["origin-policy"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "security.sandbox-policy",
+      "name": "Sandbox policy",
+      "description": "Embedded decks run in a sandbox with a defined policy.",
+      "aliases": ["sandbox-policy"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "embed.message-contract",
+      "name": "Embed message contract",
+      "description": "The embed surface speaks a documented postMessage contract.",
+      "aliases": ["message-contract"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "embed.fallback-link",
+      "name": "Embed fallback link",
+      "description": "A fallback link opens the deck outside the embed when messaging is unavailable.",
+      "aliases": ["fallback-link"],
+      "evidence": {
+        "requiresEntryPoints": false,
+        "requiresCommands": false,
+        "requiresPersistence": false,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    },
+    {
+      "id": "collab.presence",
+      "name": "Collaboration presence",
+      "description": "Co-editors are visible with presence indicators.",
+      "aliases": [],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": true
+      }
+    },
+    {
+      "id": "collab.comment",
+      "name": "Collaboration comments",
+      "description": "Co-editors can leave threaded comments.",
+      "aliases": [],
+      "evidence": {
+        "requiresEntryPoints": true,
+        "requiresCommands": false,
+        "requiresPersistence": true,
+        "requiresTests": true,
+        "requiresVisual": false
+      }
+    }
+  ]
+}

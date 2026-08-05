@@ -1,0 +1,119 @@
+name: gates
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  static-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Python static check
+        run: python -m compileall -q scripts tests
+
+  schema-and-generated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Schema artifacts check
+        run: npm run schema:check
+      - name: Embedded skills check
+        run: npm run skills:check
+      - name: Capability receipt check
+        run: npm run receipt:check
+      - name: Schema/catalog/receipt unit tests
+        run: python -m unittest tests.test_schema_generated_artifacts tests.test_catalogs tests.test_capability_receipt
+
+  typescript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: examples/02-example/package-lock.json
+      - name: Install dependencies
+        working-directory: examples/02-example
+        run: npm ci
+      - name: Typecheck
+        working-directory: examples/02-example
+        run: npm run typecheck
+      - name: Build
+        working-directory: examples/02-example
+        run: npm run build
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: examples/02-example/package-lock.json
+      - name: Python unit tests
+        run: npm run test:unit
+      - name: Install example dependencies
+        working-directory: examples/02-example
+        run: npm ci
+      - name: Example unit tests
+        working-directory: examples/02-example
+        run: npm run test
+
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Repository validation and packaging
+        run: npm run test:integration
+      - name: Output contract check
+        run: python scripts/audits/validate_output_contract.py examples/02-example --profile editable-deck --advisory
+      - name: Capability receipt check
+        run: python scripts/validate/validate_capability_receipt.py examples/02-example/capability-receipt.json
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: examples/02-example/package-lock.json
+      - name: Install dependencies
+        working-directory: examples/02-example
+        run: npm ci
+      - name: Install Playwright browsers
+        working-directory: examples/02-example
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright e2e tests
+        working-directory: examples/02-example
+        run: npm run test:e2e

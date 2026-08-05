@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {
+    "id": "regression-large-table",
+    "slug": "regression-large-table",
+    "title": "Large table block",
+    "description": "P0-010 regression fixture: a wide and tall table that must measure and repair without throwing.",
+    "language": "en",
+    "audience": "Regression tests",
+    "objective": "Lock in that large tables flow through measurement and repair cleanly.",
+    "templateId": "feature-deep-dive",
+    "authors": ["DeckForge Regression"],
+    "tags": ["regression", "p0-010", "table"],
+    "createdAt": "2026-08-05T00:00:00.000Z",
+    "updatedAt": "2026-08-05T00:00:00.000Z"
+  },
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1600,
+    "height": 900,
+    "safeMargin": 64,
+    "grid": 8,
+    "responsiveMode": "hybrid",
+    "layoutMode": "semantic-slots"
+  },
+  "theme": {
+    "id": "editorial-cream",
+    "overrides": {}
+  },
+  "presentation": {
+    "mode": "horizontal",
+    "transition": "push",
+    "motionProfileId": "technical-precise",
+    "defaultBuilds": true,
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "progress": true,
+    "controls": true,
+    "reducedMotion": "respect-system"
+  },
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "snapToGrid": true,
+    "guides": true,
+    "comments": false,
+    "collaboration": false,
+    "autosave": true,
+    "commandPalette": true,
+    "notes": true,
+    "allowedBlockTypes": ["heading", "text", "bullets", "metric", "chart", "image", "callout", "caption", "citation", "process", "table"],
+    "sidePanel": true,
+    "assetLibrary": true,
+    "themePicker": true,
+    "layoutPicker": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "requiredZones": ["app-bar", "slide-rail", "canvas", "inspector", "notes", "save-status"]
+  },
+  "assets": [],
+  "slides": [
+    {
+      "id": "s-table",
+      "title": "Large table slide",
+      "layout": "table-focus",
+      "blocks": [
+        {
+          "id": "b-kicker",
+          "type": "text",
+          "content": "REGRESSION · LARGE TABLE",
+          "style": { "variant": "kicker" },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-title",
+          "type": "heading",
+          "content": "A wide table with many rows must not break the pipeline.",
+          "style": { "level": 1 },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-table",
+          "type": "table",
+          "content": {
+            "caption": "Quarterly delivery metrics by region, twelve reporting periods.",
+            "headers": ["Region", "Q1", "Q2", "Q3", "Q4", "Volume", "Avg", "Median"],
+            "rows": [
+              ["North", "12.4", "13.1", "13.8", "14.2", "1124", "13.4", "13.1"],
+              ["South", "9.8", "10.2", "10.9", "11.1", "843", "10.5", "10.2"],
+              ["East", "15.2", "15.7", "16.4", "17.0", "1302", "16.1", "15.9"],
+              ["West", "11.5", "11.9", "12.4", "12.8", "986", "12.2", "12.0"],
+              ["Northeast", "10.3", "10.8", "11.2", "11.7", "889", "11.0", "10.9"],
+              ["Southeast", "13.7", "14.3", "14.9", "15.5", "1194", "14.6", "14.4"],
+              ["Midwest", "8.9", "9.3", "9.8", "10.1", "762", "9.5", "9.4"],
+              ["Southwest", "16.8", "17.4", "18.1", "18.9", "1437", "17.8", "17.6"],
+              ["International", "7.4", "7.9", "8.3", "8.7", "648", "8.1", "7.9"],
+              ["Canada", "9.1", "9.6", "10.2", "10.6", "795", "9.9", "9.8"],
+              ["LatAm", "6.5", "6.9", "7.4", "7.8", "562", "7.2", "7.0"],
+              ["APAC", "14.9", "15.6", "16.3", "17.1", "1288", "16.0", "15.8"]
+            ],
+            "highlightRow": 7
+          },
+          "style": {},
+          "alt": "A twelve-row by eight-column table of quarterly delivery metrics.",
+          "sourceIds": [],
+          "slot": "table",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-insight",
+          "type": "callout",
+          "content": "Every region trends upward, and the Southwest leads on volume.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "insight",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-source",
+          "type": "citation",
+          "content": "Source: internal telemetry, aggregated quarterly.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "source",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "",
+      "sources": [],
+      "interactions": [],
+      "density": "high",
+      "layoutBindings": [
+        { "slot": "kicker", "blockIds": ["b-kicker"], "flow": "stack", "gap": 8 },
+        { "slot": "title", "blockIds": ["b-title"], "flow": "stack", "gap": 8 },
+        { "slot": "table", "blockIds": ["b-table"], "flow": "stack", "gap": 8 },
+        { "slot": "insight", "blockIds": ["b-insight"], "flow": "stack", "gap": 8 },
+        { "slot": "source", "blockIds": ["b-source"], "flow": "stack", "gap": 8 }
+      ]
+    }
+  ],
+  "sources": [],
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "regression-large-table",
+    "embed": {
+      "enabled": true,
+      "allowedOrigins": [],
+      "sandbox": ["allow-scripts", "allow-forms", "allow-popups"],
+      "responsive": true
+    },
+    "analytics": false,
+    "allowDownload": false
+  },
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": ["editor", "presenter"],
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "capabilities": [
+      "semantic-layout",
+      "persistent-editing",
+      "shortcut-help",
+      "theme-control",
+      "layout-control",
+      "media-control",
+      "add-text",
+      "undo-redo",
+      "autosave-and-restore",
+      "present-current-slide"
+    ]
+  },
+  "shortcuts": {
+    "helpEnabled": true,
+    "helpKey": "?",
+    "editorPreset": "deckforge-default",
+    "presenterPreset": "deckforge-default"
+  }
+}

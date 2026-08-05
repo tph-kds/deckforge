@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import type { Block, DeckProject, DeckSlide, Frame, LayoutBinding } from '../deck/types';
-import { resolveSlidePlacements, getLayoutContract } from '../deck/layout';
+import { assignBlocksToLayers, getLayoutContract } from '../deck/layout';
 import { getMotionProfile } from '../deck/motion';
 import { BlockRenderer } from './BlockRenderer';
 
@@ -75,6 +75,12 @@ interface SlotGroup {
   placements: { block: Block; placementIndex: number }[];
 }
 
+interface BlockWrapperOptions {
+  key: string;
+  className: string;
+  style: CSSProperties;
+}
+
 export const SlideRenderer = memo(function SlideRenderer({
   deck,
   slide,
@@ -85,15 +91,72 @@ export const SlideRenderer = memo(function SlideRenderer({
   onBlockSelect,
   buildIndex,
 }: SlideRendererProps) {
-  const placements = resolveSlidePlacements(slide, deck.canvas);
-  const byId = new Map(slide.blocks.map((block) => [block.id, block]));
   const bindingBySlot = new Map<string, LayoutBinding>();
   for (const binding of slide.layoutBindings ?? []) bindingBySlot.set(binding.slot, binding);
 
+  const { background, slotFlow, freeform } = assignBlocksToLayers(slide, deck.canvas);
+
+  const isEditor = surface === 'editor';
+  const isThumbnail = surface === 'thumbnail';
+  const defaultBuilds = deck.presentation.defaultBuilds ?? false;
+  const isBuildAware = buildIndex !== undefined;
+  const profile = getMotionProfile(deck.presentation.motionProfileId);
+  const motionOn = isBuildAware && profile.entranceDurationMs > 0;
+
+  const renderBlockWrapper = (block: Block, options: BlockWrapperOptions): ReactNode => {
+    const selected = selectedBlockIds.includes(block.id);
+    const revealed = isBuildAware ? buildIndex >= revealStepFor(block, slide, defaultBuilds) : true;
+    const stateClass = isBuildAware ? (revealed ? 'anim-in' : 'build-hidden') : '';
+
+    const blockStyles: CSSProperties = {
+      ...options.style,
+      ...(motionOn
+        ? {
+            animationDelay: `${(block.animation?.order ?? 0) * profile.staggerDelayMs}ms`,
+            animationDuration: `${profile.entranceDurationMs}ms`,
+            animationTimingFunction: profile.easing,
+          }
+        : {}),
+    };
+
+    const wrapperProps: Record<string, unknown> = {
+      className: `deck-block-wrap ${options.className}${stateClass ? ` ${stateClass}` : ''}${selected && isEditor ? ' is-selected' : ''}`,
+      style: blockStyles,
+    };
+
+    if (isEditor) {
+      wrapperProps['data-block-id'] = block.id;
+      wrapperProps.pointerEvents = interactive ? 'auto' : 'none';
+      wrapperProps.cursor = interactive ? 'pointer' : 'default';
+      wrapperProps.title = interactive ? `Select block ${block.id}` : undefined;
+      wrapperProps.onClick = (event: React.MouseEvent) => {
+        if (!interactive || !onBlockSelect) return;
+        event.stopPropagation();
+        onBlockSelect(block.id, event.shiftKey || event.metaKey || event.ctrlKey);
+      };
+    }
+
+    return (
+      <div key={options.key} {...wrapperProps}>
+        <BlockRenderer block={block} slide={slide} deck={deck} themeId={deck.theme.id} surface={surface} />
+      </div>
+    );
+  };
+
+  // Background layer renders first (full-canvas behind every other layer).
+  const backgroundChildren = background.map(({ block, frame }) =>
+    renderBlockWrapper(block, {
+      key: `background-${block.id}`,
+      className: 'layer-background',
+      style: frame
+        ? { position: 'absolute', left: frame.x, top: frame.y, width: frame.w, height: frame.h }
+        : { position: 'absolute', left: 0, top: 0, width: deck.canvas.width, height: deck.canvas.height },
+    }),
+  );
+
+  // Semantic slot/flow layer: bindings grouped per slot in responsive order.
   const groups = new Map<string, SlotGroup>();
-  placements.forEach((placement, placementIndex) => {
-    const block = byId.get(placement.blockId);
-    if (!block) return;
+  slotFlow.forEach(({ block, placement }, placementIndex) => {
     const group = groups.get(placement.slotId);
     if (group) {
       group.placements.push({ block, placementIndex });
@@ -107,15 +170,8 @@ export const SlideRenderer = memo(function SlideRenderer({
     }
   });
 
-  const isEditor = surface === 'editor';
-  const isThumbnail = surface === 'thumbnail';
-  const defaultBuilds = deck.presentation.defaultBuilds ?? false;
-  const isBuildAware = buildIndex !== undefined;
-  const profile = getMotionProfile(deck.presentation.motionProfileId);
-  const motionOn = isBuildAware && profile.entranceDurationMs > 0;
-
-  const children = [...groups.values()].map((group) => {
-    const slotFlow = group.binding?.flow ?? 'stack';
+  const slotChildren = [...groups.values()].map((group) => {
+    const slotFlowMode = group.binding?.flow ?? 'stack';
     const slotGap = group.binding?.gap;
     const containerStyle: CSSProperties = {
       position: 'absolute',
@@ -123,53 +179,40 @@ export const SlideRenderer = memo(function SlideRenderer({
       top: group.frame.y,
       width: group.frame.w,
       height: group.frame.h,
-      ...flowStyles(slotFlow, slotGap, group.placements.length),
+      ...flowStyles(slotFlowMode, slotGap, group.placements.length),
     };
 
     return (
       <div key={group.slotId} className={`deck-slot slot-${group.slotId}`} style={containerStyle}>
         {group.placements.map(({ block }) => {
-          const selected = selectedBlockIds.includes(block.id);
-          const revealed = isBuildAware ? buildIndex >= revealStepFor(block, slide, defaultBuilds) : true;
-          const stateClass = isBuildAware ? (revealed ? 'anim-in' : 'build-hidden') : '';
-          const isOverlay = slotFlow === 'overlay';
-
+          const isOverlay = slotFlowMode === 'overlay';
           const blockStyles: CSSProperties = {
             ...(isOverlay
               ? { position: 'absolute', inset: 0 }
               : { position: 'relative', width: '100%', minWidth: 0, minHeight: 0 }),
-            ...(slotFlow === 'stack' || slotFlow === 'row' ? { flex: '1 1 0%' } : {}),
-            ...(motionOn
-              ? { animationDelay: `${(block.animation?.order ?? 0) * profile.staggerDelayMs}ms`, animationDuration: `${profile.entranceDurationMs}ms`, animationTimingFunction: profile.easing }
-              : {}),
+            ...(slotFlowMode === 'stack' || slotFlowMode === 'row' ? { flex: '1 1 0%' } : {}),
           };
 
-          const wrapperProps: Record<string, unknown> = {
-            className: `deck-block-wrap slot-${group.slotId}${stateClass ? ` ${stateClass}` : ''}${selected && isEditor ? ' is-selected' : ''}`,
+          return renderBlockWrapper(block, {
+            key: block.id,
+            className: `slot-${group.slotId}`,
             style: blockStyles,
-          };
-
-          if (isEditor) {
-            wrapperProps['data-block-id'] = block.id;
-            wrapperProps.pointerEvents = interactive ? 'auto' : 'none';
-            wrapperProps.cursor = interactive ? 'pointer' : 'default';
-            wrapperProps.title = interactive ? `Select block ${block.id}` : undefined;
-            wrapperProps.onClick = (event: React.MouseEvent) => {
-              if (!interactive || !onBlockSelect) return;
-              event.stopPropagation();
-              onBlockSelect(block.id, event.shiftKey || event.metaKey || event.ctrlKey);
-            };
-          }
-
-          return (
-            <div key={block.id} {...wrapperProps}>
-              <BlockRenderer block={block} slide={slide} deck={deck} themeId={deck.theme.id} surface={surface} />
-            </div>
-          );
+          });
         })}
       </div>
     );
   });
+
+  // Freeform layer renders last, absolutely positioned at each block's frame.
+  const freeformChildren = freeform.map(({ block, frame }) =>
+    renderBlockWrapper(block, {
+      key: `freeform-${block.id}`,
+      className: 'layer-freeform',
+      style: { position: 'absolute', left: frame.x, top: frame.y, width: frame.w, height: frame.h },
+    }),
+  );
+
+  const children: ReactNode[] = [...backgroundChildren, ...slotChildren, ...freeformChildren];
 
   const logicalStyle: CSSProperties = {
     width: deck.canvas.width,

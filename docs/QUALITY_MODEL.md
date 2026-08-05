@@ -21,9 +21,9 @@ A deck is not complete when it merely renders. DeckForge 3 requires story, conte
 ## Required gates
 
 ```bash
-python scripts/validate_deck_project.py <deck.json>
-python scripts/audit_deck_layout.py <deck.json> --strict
-python scripts/validate_output_contract.py <project-directory> --profile editable-deck
+python scripts/validate/validate_deck_project.py <deck.json>
+python scripts/audits/audit_deck_layout.py <deck.json> --strict
+python scripts/audits/validate_output_contract.py <project-directory> --profile editable-deck
 ```
 
 The quality gate must also exercise edit, save, reload, undo, presenter navigation, fullscreen, and shortcut-help behavior when the chosen profile requires them.

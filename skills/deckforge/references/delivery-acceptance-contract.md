@@ -96,11 +96,23 @@ python <deckforge-skill>/scripts/audit_deck_layout.py <deck.json>
 python <deckforge-skill>/scripts/audit_deck_content.py <deck.json>
 python <deckforge-skill>/scripts/audit_deck_assets.py <deck.json>
 python <deckforge-skill>/scripts/audit_deck_motion.py <deck.json>
-python <deckforge-skill>/scripts/validate_output_contract.py <target-project> --profile <profile>
+python <deckforge-skill>/scripts/validate_capability_receipt.py <target-project>/capability-receipt.json
+python <deckforge-skill>/scripts/validate_output_contract.py <target-project> --profile <profile> --advisory
 python <deckforge-skill>/scripts/audit_scrollbars.py <target-project>
 ```
 
 All must exit 0, plus the production build and the target project's own test suite.
+
+## Capability receipt
+
+The `capability-receipt.json` in the target project is the blocking source of truth. It must:
+
+- reference capability IDs from `assets/capability-catalog.json` (or `schemas/capability-catalog.json`);
+- cover every `requiredCapabilityIds` entry of the selected delivery profile;
+- mark a capability `implemented` or `partial` only with referenced, existing test files and evidence paths;
+- mark everything without behavioral proof as `unverified`, `unsupported`, or `blocked`.
+
+`validate_capability_receipt.py` enforces these rules. Regex scanning is retained only as a non-blocking advisory tool.
 
 ## Profile: presentation-runtime
 

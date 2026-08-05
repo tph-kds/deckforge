@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {
+    "id": "regression-freeform-slot",
+    "slug": "regression-freeform-slot",
+    "title": "Freeform block that also carries a slot value",
+    "description": "P0-010 regression fixture: a freeform block that also carries a slot value (double-render trap) plus an empty presenter action.",
+    "language": "en",
+    "audience": "Regression tests",
+    "objective": "Lock in that a freeform block carrying a slot value is never placed on the slot layer.",
+    "templateId": "feature-deep-dive",
+    "authors": ["DeckForge Regression"],
+    "tags": ["regression", "p0-010"],
+    "createdAt": "2026-08-05T00:00:00.000Z",
+    "updatedAt": "2026-08-05T00:00:00.000Z"
+  },
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1600,
+    "height": 900,
+    "safeMargin": 64,
+    "grid": 8,
+    "responsiveMode": "hybrid",
+    "layoutMode": "semantic-slots"
+  },
+  "theme": {
+    "id": "editorial-cream",
+    "overrides": {}
+  },
+  "presentation": {
+    "mode": "horizontal",
+    "transition": "push",
+    "motionProfileId": "technical-precise",
+    "defaultBuilds": false,
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "progress": true,
+    "controls": true,
+    "reducedMotion": "respect-system"
+  },
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "snapToGrid": true,
+    "guides": true,
+    "comments": false,
+    "collaboration": false,
+    "autosave": true,
+    "commandPalette": true,
+    "notes": true,
+    "allowedBlockTypes": ["heading", "text", "bullets", "metric", "chart", "image", "callout", "caption", "citation", "process"],
+    "sidePanel": true,
+    "assetLibrary": true,
+    "themePicker": true,
+    "layoutPicker": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "requiredZones": ["app-bar", "slide-rail", "canvas", "inspector", "notes", "save-status"]
+  },
+  "assets": [],
+  "slides": [
+    {
+      "id": "s-double-render",
+      "title": "Freeform block with a slot value",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b-kicker",
+          "type": "text",
+          "content": "REGRESSION · P0-010 · DOUBLE-RENDER TRAP",
+          "style": { "variant": "kicker" },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-title",
+          "type": "heading",
+          "content": "A freeform block that also carries a slot value.",
+          "style": { "level": 1 },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot",
+          "animation": { "id": "fade-in", "trigger": "on-click", "order": 1, "durationMs": 260 }
+        },
+        {
+          "id": "b-freeform",
+          "type": "text",
+          "content": "Anchored annotation placed on the freeform layer.",
+          "style": { "variant": "caption" },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "freeform",
+          "frame": { "x": 1060, "y": 64, "w": 400, "h": 80 },
+          "animation": { "id": "fade-in", "trigger": "on-click", "order": 2, "durationMs": 260 }
+        }
+      ],
+      "speakerNotes": "This block is positioned freeform but still declares a slot value. It must render only on the freeform layer, never twice.",
+      "sources": [],
+      "interactions": [
+        { "id": "i-empty-reveal", "type": "reveal", "trigger": "click", "action": "reveal-next", "targetId": "b-freeform", "payload": {} }
+      ],
+      "density": "low",
+      "layoutBindings": [
+        { "slot": "kicker", "blockIds": ["b-kicker"], "flow": "stack", "gap": 8 },
+        { "slot": "title", "blockIds": ["b-title"], "flow": "stack", "gap": 8 }
+      ]
+    }
+  ],
+  "sources": [],
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "regression-freeform-slot",
+    "embed": {
+      "enabled": true,
+      "allowedOrigins": [],
+      "sandbox": ["allow-scripts", "allow-forms", "allow-popups"],
+      "responsive": true
+    },
+    "analytics": false,
+    "allowDownload": false
+  },
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": ["editor", "presenter"],
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "capabilities": [
+      "semantic-layout",
+      "persistent-editing",
+      "shortcut-help",
+      "theme-control",
+      "layout-control",
+      "media-control",
+      "add-text",
+      "undo-redo",
+      "autosave-and-restore",
+      "present-current-slide"
+    ]
+  },
+  "shortcuts": {
+    "helpEnabled": true,
+    "helpKey": "?",
+    "editorPreset": "deckforge-default",
+    "presenterPreset": "deckforge-default"
+  }
+}

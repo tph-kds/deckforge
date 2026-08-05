@@ -1,6 +1,11 @@
 // export/pptx/block-exporters/chart.ts
 
-import type { PptxBlockExporter, PptxExportContext, PptxSlideElement } from "../../export-types";
+import type {
+  PptxBlockExport,
+  PptxBlockExporter,
+  PptxExportContext,
+} from "../../export-types";
+import type { ChartContent, ChartValue } from "../../../deck/types";
 
 interface ChartDataPoint {
   label: string;
@@ -10,17 +15,20 @@ interface ChartDataPoint {
 interface ChartBlock {
   id: string;
   type: "chart";
-  chartType: "bar" | "line" | "pie" | "doughnut" | "scatter";
-  data: ChartDataPoint[];
+  chartType?: string;
+  data?: ChartDataPoint[];
+  content?: ChartContent;
   title?: string;
   x?: number;
   y?: number;
   w?: number;
   h?: number;
+  frame?: { x?: number; y?: number; w?: number; h?: number };
 }
 
 const CHART_TYPE_MAP: Record<string, string> = {
   bar: "bar",
+  "bar-horizontal": "bar",
   line: "line",
   pie: "pie",
   doughnut: "pie",
@@ -31,32 +39,40 @@ export const chartBlockExporter: PptxBlockExporter = {
   type: "chart",
   exportability: "native-editable",
 
-  async export(block: unknown, ctx: PptxExportContext): Promise<PptxSlideElement> {
+  async export(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
     const chartBlock = block as ChartBlock;
-    const pptxChartType = CHART_TYPE_MAP[chartBlock.chartType] ?? "bar";
+    const content = chartBlock.content;
+    const values: ChartValue[] = content?.values ?? chartBlock.data ?? [];
+    const chartType = content?.type ?? chartBlock.chartType ?? "bar";
+    const title = content?.title ?? chartBlock.title ?? "";
+    const pptxChartType = CHART_TYPE_MAP[chartType] ?? "bar";
 
     const chartData = [
       {
-        name: chartBlock.title ?? "Data",
-        labels: chartBlock.data.map((d) => d.label),
-        values: chartBlock.data.map((d) => d.value),
+        name: title || "Data",
+        labels: values.map((point) => point.label),
+        values: values.map((point) => point.value),
       },
     ];
 
     return {
-      type: "chart",
-      x: chartBlock.x ?? 0,
-      y: chartBlock.y ?? 0,
-      w: chartBlock.w ?? ctx.slideWidth * 0.7,
-      h: chartBlock.h ?? ctx.slideHeight * 0.5,
-      data: {
-        chartType: pptxChartType,
-        data: chartData,
-        options: {
-          showTitle: !!chartBlock.title,
-          title: chartBlock.title ?? "",
-          showValue: true,
-          dataLabelPosition: "outEnd",
+      status: "native",
+      issues: [],
+      element: {
+        type: "chart",
+        x: chartBlock.x ?? chartBlock.frame?.x ?? 0,
+        y: chartBlock.y ?? chartBlock.frame?.y ?? 0,
+        w: chartBlock.w ?? chartBlock.frame?.w ?? ctx.slideWidth * 0.7,
+        h: chartBlock.h ?? chartBlock.frame?.h ?? ctx.slideHeight * 0.5,
+        data: {
+          chartType: pptxChartType,
+          data: chartData,
+          options: {
+            showTitle: !!title,
+            title,
+            showValue: true,
+            dataLabelPosition: "outEnd",
+          },
         },
       },
     };

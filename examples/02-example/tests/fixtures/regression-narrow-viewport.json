@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {
+    "id": "regression-narrow-viewport",
+    "slug": "regression-narrow-viewport",
+    "title": "Narrow viewport with reduced motion",
+    "description": "P0-010 regression fixture: a very small canvas aspect ratio (portrait) with reduced motion forced on.",
+    "language": "en",
+    "audience": "Regression tests",
+    "objective": "Lock in that narrow canvases resolve within bounds and reduced motion is honored.",
+    "templateId": "feature-deep-dive",
+    "authors": ["DeckForge Regression"],
+    "tags": ["regression", "p0-010", "narrow-viewport", "reduced-motion"],
+    "createdAt": "2026-08-05T00:00:00.000Z",
+    "updatedAt": "2026-08-05T00:00:00.000Z"
+  },
+  "canvas": {
+    "aspectRatio": "custom",
+    "width": 640,
+    "height": 800,
+    "safeMargin": 24,
+    "grid": 8,
+    "responsiveMode": "reflow",
+    "layoutMode": "semantic-slots"
+  },
+  "theme": {
+    "id": "editorial-cream",
+    "overrides": {}
+  },
+  "presentation": {
+    "mode": "vertical",
+    "transition": "fade",
+    "motionProfileId": "technical-precise",
+    "defaultBuilds": true,
+    "keyboard": true,
+    "touch": true,
+    "deepLinks": true,
+    "overview": true,
+    "speakerView": true,
+    "progress": true,
+    "controls": true,
+    "reducedMotion": "always"
+  },
+  "editor": {
+    "enabled": true,
+    "toolbar": true,
+    "history": true,
+    "snapToGrid": true,
+    "guides": true,
+    "comments": false,
+    "collaboration": false,
+    "autosave": true,
+    "commandPalette": true,
+    "notes": true,
+    "allowedBlockTypes": ["heading", "text", "bullets", "metric", "chart", "image", "callout", "caption", "citation", "process"],
+    "sidePanel": true,
+    "assetLibrary": true,
+    "themePicker": true,
+    "layoutPicker": true,
+    "shortcutHelp": true,
+    "saveStatus": true,
+    "persistence": "local-storage",
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "requiredZones": ["app-bar", "slide-rail", "canvas", "inspector", "notes", "save-status"]
+  },
+  "assets": [],
+  "slides": [
+    {
+      "id": "s-narrow",
+      "title": "Narrow canvas slide",
+      "layout": "title-hero",
+      "blocks": [
+        {
+          "id": "b-kicker",
+          "type": "text",
+          "content": "NARROW CANVAS · REDUCED MOTION",
+          "style": { "variant": "kicker" },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "kicker",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-title",
+          "type": "heading",
+          "content": "Narrow canvas regression fixture title.",
+          "style": { "level": 1 },
+          "alt": "",
+          "sourceIds": [],
+          "slot": "title",
+          "positionMode": "slot"
+        },
+        {
+          "id": "b-subtitle",
+          "type": "text",
+          "content": "Content still measures cleanly on a narrow portrait canvas.",
+          "style": {},
+          "alt": "",
+          "sourceIds": [],
+          "slot": "subtitle",
+          "positionMode": "slot"
+        }
+      ],
+      "speakerNotes": "",
+      "sources": [],
+      "interactions": [],
+      "density": "low",
+      "layoutBindings": [
+        { "slot": "kicker", "blockIds": ["b-kicker"], "flow": "stack", "gap": 8 },
+        { "slot": "title", "blockIds": ["b-title"], "flow": "stack", "gap": 8 },
+        { "slot": "subtitle", "blockIds": ["b-subtitle"], "flow": "stack", "gap": 8 }
+      ]
+    }
+  ],
+  "sources": [],
+  "publish": {
+    "visibility": "unlisted",
+    "slug": "regression-narrow-viewport",
+    "embed": {
+      "enabled": true,
+      "allowedOrigins": [],
+      "sandbox": ["allow-scripts", "allow-forms", "allow-popups"],
+      "responsive": true
+    },
+    "analytics": false,
+    "allowDownload": false
+  },
+  "experience": {
+    "profile": "editable-deck",
+    "surfaces": ["editor", "presenter"],
+    "routes": {
+      "editor": "/editor",
+      "presenter": "/present"
+    },
+    "capabilities": [
+      "semantic-layout",
+      "persistent-editing",
+      "shortcut-help",
+      "theme-control",
+      "layout-control",
+      "media-control",
+      "add-text",
+      "undo-redo",
+      "autosave-and-restore",
+      "present-current-slide"
+    ]
+  },
+  "shortcuts": {
+    "helpEnabled": true,
+    "helpKey": "?",
+    "editorPreset": "deckforge-default",
+    "presenterPreset": "deckforge-default"
+  }
+}

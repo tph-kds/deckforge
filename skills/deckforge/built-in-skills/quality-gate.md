@@ -7,12 +7,24 @@ Quality validation is blocking. Use `assets/quality-rubric.json`, `references/de
 Run:
 
 ```bash
-python scripts/audit_deck_layout.py <deck.json>
-python scripts/audit_deck_content.py <deck.json>
-python scripts/validate_output_contract.py <target-project> --profile <profile>
+python scripts/audits/audit_deck_layout.py <deck.json>
+python scripts/audits/audit_deck_content.py <deck.json>
+python scripts/validate/validate_capability_receipt.py <target-project>/capability-receipt.json
+python scripts/audits/validate_output_contract.py <target-project> --profile <profile> --advisory
 ```
 
 Also run schema/catalog validation, type checking, tests, production build, accessibility automation, and representative visual regression when supported.
+
+## Capability truth comes from the receipt
+
+Regex scanning of the project is advisory only. The blocking source of truth is the capability receipt:
+
+1. Read `schemas/capability-catalog.json` for the stable capability IDs and their evidence requirements.
+2. Read `schemas/capability-receipt.schema.json` for the receipt structure.
+3. The selected delivery profile (`assets/delivery-profile-manifest.json`) lists `requiredCapabilityIds`.
+4. Author `capability-receipt.json` in the target project and run `validate_capability_receipt.py`.
+5. A capability may be marked `implemented` or `partial` only when every referenced test and evidence file exists and the catalog-mandated entry points, commands, and persistence behavior are listed. Otherwise use `unverified`, `unsupported`, or `blocked`.
+6. Do not claim a capability the project does not have; a fake toolbar label cannot satisfy `edit.text`, and `history.undo` passes only when a change can be made, undone, and redone.
 
 ## Document-to-product consistency
 

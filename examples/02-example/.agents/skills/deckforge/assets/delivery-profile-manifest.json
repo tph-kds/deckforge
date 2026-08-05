@@ -28,6 +28,20 @@
       "shortcut-help",
       "present-current-slide"
     ],
+    "requiredCapabilityIds": [
+      "edit.text",
+      "edit.block.create",
+      "edit.media.insert",
+      "edit.layout.change",
+      "edit.theme.change",
+      "edit.style.change",
+      "history.undo",
+      "history.redo",
+      "persistence.autosave",
+      "persistence.recover",
+      "help.shortcuts",
+      "present.fullscreen"
+    ],
     "blockingValidators": [
       "layout-audit",
       "output-contract",
@@ -52,6 +66,15 @@
       "reduced-motion",
       "shortcut-help"
     ],
+    "requiredCapabilityIds": [
+      "navigation.keyboard",
+      "present.fullscreen",
+      "present.overview",
+      "present.progress",
+      "accessibility.reduced-motion",
+      "help.shortcuts",
+      "present.builds"
+    ],
     "blockingValidators": [
       "layout-audit",
       "output-contract",
@@ -75,6 +98,14 @@
       "accessible-reading-order",
       "share-metadata"
     ],
+    "requiredCapabilityIds": [
+      "publish.deep-links",
+      "responsive.reflow",
+      "trust.citations",
+      "media.fallbacks",
+      "accessibility.reading-order",
+      "share.metadata"
+    ],
     "blockingValidators": [
       "layout-audit",
       "output-contract",
@@ -97,6 +128,13 @@
       "sandbox-policy",
       "message-contract",
       "fallback-link"
+    ],
+    "requiredCapabilityIds": [
+      "responsive.sizing",
+      "security.origin-policy",
+      "security.sandbox-policy",
+      "embed.message-contract",
+      "embed.fallback-link"
     ],
     "blockingValidators": [
       "layout-audit",

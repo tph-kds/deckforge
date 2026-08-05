@@ -2,6 +2,7 @@ import json, unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 ASSETS=ROOT/'skills/deckforge/assets'
+SCHEMAS=ROOT/'schemas'
 class CatalogTests(unittest.TestCase):
  def load(self,name):return json.loads((ASSETS/name).read_text(encoding='utf-8'))
  def test_counts(self):
@@ -18,4 +19,17 @@ class CatalogTests(unittest.TestCase):
   layouts={x['id'] for x in self.load('layout-manifest.json')}
   for template in self.load('template-manifest.json'):
    for step in template['slidePlan']:self.assertIn(step['layout'],layouts,template['id'])
+ def test_capability_catalog_mirrors(self):
+  catalog=json.loads((SCHEMAS/'capability-catalog.json').read_text(encoding='utf-8'))
+  mirrored=json.loads((ASSETS/'capability-catalog.json').read_text(encoding='utf-8'))
+  self.assertEqual(catalog,mirrored,'capability catalog must be mirrored into the skill asset')
+ def test_capability_receipt_schema_mirrors(self):
+  schema=json.loads((SCHEMAS/'capability-receipt.schema.json').read_text(encoding='utf-8'))
+  mirrored=json.loads((ASSETS/'capability-receipt.schema.json').read_text(encoding='utf-8'))
+  self.assertEqual(schema,mirrored,'capability receipt schema must be mirrored into the skill asset')
+ def test_profile_capability_ids_reference_catalog(self):
+  catalog_ids={c['id'] for c in json.loads((SCHEMAS/'capability-catalog.json').read_text(encoding='utf-8'))['capabilities']}
+  for profile in self.load('delivery-profile-manifest.json'):
+   for cap_id in profile.get('requiredCapabilityIds',[]):
+    self.assertIn(cap_id,catalog_ids,f"profile {profile['id']} references unknown capability {cap_id}")
 if __name__=='__main__':unittest.main()

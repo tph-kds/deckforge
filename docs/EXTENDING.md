@@ -23,16 +23,16 @@ All governed manifests live in `skills/deckforge/assets/`. The same files must a
 3. Keep every referenced ID resolvable — the catalog validator rejects dangling references.
 4. For a theme, document its `antiPatterns` as blockers and keep `tokens` token-based (no per-block duplicates).
 5. For a layout, define real `composition.slots[]` with grid positions, allowed block types, content budgets, and a `whitespaceTarget` so the layout audit can score occupancy.
-6. Run `python scripts/validate_catalogs.py` and the full suite.
+6. Run `python scripts/validate/validate_catalogs.py` and the full suite.
 
 ## Verification commands
 
 ```bash
 npm run validate        # full repo gate (rules, catalogs, decks, output contract, embedded sync, unit tests)
-python scripts/validate_catalogs.py                  # catalog + semantic layout contract integrity
-python scripts/validate_deck_project.py <deck.json>  # schema 2.1 + profile contract
-python scripts/audit_deck_layout.py <deck.json> --strict
-python scripts/audit_deck_content.py <deck.json>     # titles, claims, density, metrics, charts
+python scripts/validate/validate_catalogs.py                  # catalog + semantic layout contract integrity
+python scripts/validate/validate_deck_project.py <deck.json>  # schema 2.1 + profile contract
+python scripts/audits/audit_deck_layout.py <deck.json> --strict
+python scripts/audits/audit_deck_content.py <deck.json>     # titles, claims, density, metrics, charts
 python skills/deckforge/scripts/audit_deck_motion.py <deck.json>
 npm run test            # Python suite + the 02-example vitest suite
 npm run test:visual     # deterministic strict-layout, asset, and contrast audits
@@ -50,7 +50,7 @@ A deck binds a catalog by ID in its `presentation` and `theme`/`meta` fields. Ex
 `examples/02-example/.agents/skills/deckforge/` must mirror `skills/deckforge/` exactly. Agents working inside the example read that copy, so stale catalogs there cause drift between what the canonical skill guarantees and what the example demonstrates.
 
 ```bash
-python scripts/sync_embedded_skills.py   # copies canonical -> embedded, exits non-zero on residual drift
+python scripts/sync/sync_embedded_skills.py   # copies canonical -> embedded, exits non-zero on residual drift
 ```
 
 The sync is enforced in `npm run validate` and covered by `test_embedded_skill_copy_in_sync` in `tests/test_examples.py`. `examples/01-example` is intentionally pinned to an older release via its `skills-lock.json` and is not part of this sync.
@@ -66,8 +66,8 @@ Built-in skills live in `skills/deckforge/built-in-skills/*.md` and give agents 
 
 ## Validation contract
 
-- Catalogs are validated by `scripts/validate_catalogs.py` (integrity of every manifest plus the semantic layout contract).
-- Decks are validated by `scripts/validate_deck_project.py` against `deck-project.schema.json` (schema 2.1).
-- Layouts are scored by `scripts/audit_deck_layout.py --strict` (no collisions, occupancy within `whitespaceTarget`, content budgets respected).
+- Catalogs are validated by `scripts/validate/validate_catalogs.py` (integrity of every manifest plus the semantic layout contract).
+- Decks are validated by `scripts/validate/validate_deck_project.py` against `deck-project.schema.json` (schema 2.1).
+- Layouts are scored by `scripts/audits/audit_deck_layout.py --strict` (no collisions, occupancy within `whitespaceTarget`, content budgets respected).
 - Motion is audited by `skills/deckforge/scripts/audit_deck_motion.py` (transition + default builds required unless `none-accessible`, reduced motion respected).
 - The output contract is checked by `skills/deckforge/scripts/validate_output_contract.py --profile editable-deck` (editor shell, persistence, shortcut help, capability truth).

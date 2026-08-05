@@ -1,19 +1,10 @@
-import type { PptxExportConfig, FontWarning } from "../export-types";
+import type { PptxExportConfig, PptxExportContext } from "../export-types";
 import type { DeckProject } from "../../deck/types";
-
-export interface PptxExportContextData {
-  deck: DeckProject;
-  config: PptxExportConfig;
-  fontWarnings: FontWarning[];
-  assetCache: Map<string, string>;
-  slideWidth: number;
-  slideHeight: number;
-}
 
 export function createExportContext(
   deck: DeckProject,
   config: PptxExportConfig
-): PptxExportContextData {
+): PptxExportContext {
   const canvas = deck.canvas ?? { width: 13.333, height: 7.5 };
   return {
     deck,

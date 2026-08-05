@@ -21,6 +21,9 @@ function keyName(event: KeyboardEvent): string {
   return event.key.toLowerCase();
 }
 
+/** Characters that require Shift on a standard US layout. */
+const SHIFTED_CHARACTERS = new Set('!@#$%^&*()_+{}|:"<>?~'.split(''));
+
 function matchesCombo(event: KeyboardEvent, combo: string): boolean {
   const parts = combo.toLowerCase().split('+');
   const key = parts[parts.length - 1];
@@ -30,8 +33,12 @@ function matchesCombo(event: KeyboardEvent, combo: string): boolean {
   const ctrl = event.ctrlKey || event.metaKey;
   if (ctrl !== ctrlExpected) return false;
   if (event.altKey !== altExpected) return false;
-  if (event.shiftKey !== shiftExpected) return false;
-  return keyName(event) === key;
+  const keyMatches = keyName(event) === key;
+  if (!keyMatches) return false;
+  if (event.shiftKey !== shiftExpected) {
+    return SHIFTED_CHARACTERS.has(key) ? event.shiftKey : false;
+  }
+  return true;
 }
 
 function isTypingTarget(target: EventTarget | null): boolean {

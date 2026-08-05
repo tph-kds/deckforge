@@ -5,7 +5,25 @@ import type {
   ExportIssue,
   PptxExportConfig,
 } from "./export-types";
+import type { DeckProject } from "../deck/types";
 import { collectFontWarnings } from "./pptx/pptx-fonts";
+
+const NATIVE_BLOCK_TYPES = new Set([
+  "text",
+  "heading",
+  "bullets",
+  "callout",
+  "citation",
+  "metric",
+  "image",
+  "shape",
+  "table",
+  "chart",
+]);
+
+function asRecord(value: unknown): Record<string, unknown> {
+  return value as Record<string, unknown>;
+}
 
 function calculateScore(issues: ExportIssue[]): number {
   let score = 100;
@@ -17,17 +35,16 @@ function calculateScore(issues: ExportIssue[]): number {
   return Math.max(0, Math.min(100, score));
 }
 
-function calculateBlockCoverage(deck: { slides?: Array<{ blocks?: Array<{ type?: string }> }> }): number {
-  const blocks = (deck.slides ?? []).flatMap((s) => s.blocks ?? []);
+function calculateBlockCoverage(deck: DeckProject): number {
+  const blocks = deck.slides.flatMap((slide) => slide.blocks);
   if (blocks.length === 0) return 1;
 
-  const nativeTypes = new Set(["text", "image", "shape", "table", "chart"]);
-  const nativeCount = blocks.filter((b) => nativeTypes.has(b.type ?? "")).length;
+  const nativeCount = blocks.filter((block) => NATIVE_BLOCK_TYPES.has(block.type)).length;
   return nativeCount / blocks.length;
 }
 
 export async function runExportPreflight(
-  deck: { slides?: Array<{ id?: string; blocks?: Array<Record<string, unknown>>; speakerNotes?: string; hidden?: boolean }> },
+  deck: DeckProject,
   config: PptxExportConfig
 ): Promise<ExportPreflightResult> {
   const issues: ExportIssue[] = [];
@@ -45,40 +62,41 @@ export async function runExportPreflight(
     });
   }
 
-  for (const slide of deck.slides ?? []) {
-    for (const block of slide.blocks ?? []) {
-      const blockType = block.type as string;
+  for (const slide of deck.slides) {
+    for (const block of slide.blocks) {
+      const record = asRecord(block);
+      const blockType = block.type;
 
-      if (!["text", "image", "shape", "table", "chart"].includes(blockType)) {
+      if (!NATIVE_BLOCK_TYPES.has(blockType)) {
         issues.push({
           severity: "warning",
           code: "unsupported-block-type",
           slideId: slide.id,
-          blockId: block.id as string,
-          message: `Block type "${blockType}" will be exported as image fallback`,
+          blockId: block.id,
+          message: `Block type "${blockType}" cannot be exported natively; it will be rasterized, substituted, or omitted`,
           suggestedFix: "Convert to a supported block type for native export",
           automaticFixAvailable: false,
         });
       }
 
-      if (typeof block.cssFilter === "string" && block.cssFilter.includes("blur")) {
+      if (typeof record.cssFilter === "string" && record.cssFilter.includes("blur")) {
         issues.push({
           severity: "warning",
           code: "unsupported-css-effect",
           slideId: slide.id,
-          blockId: block.id as string,
+          blockId: block.id,
           message: "CSS filter effects may not transfer to PowerPoint",
           suggestedFix: "Remove blur filter or accept image fallback",
           automaticFixAvailable: false,
         });
       }
 
-      if (typeof block.src === "string" && block.src.startsWith("http") && !block.src.startsWith("data:")) {
+      if (typeof record.src === "string" && record.src.startsWith("http") && !record.src.startsWith("data:")) {
         issues.push({
           severity: "info",
           code: "external-asset",
           slideId: slide.id,
-          blockId: block.id as string,
+          blockId: block.id,
           message: "External asset will be embedded in the export",
           suggestedFix: undefined,
           automaticFixAvailable: false,

@@ -4,8 +4,9 @@ from __future__ import annotations
 import json, sys
 from pathlib import Path
 
-ROOT=Path(__file__).resolve().parents[1]
+ROOT=Path(__file__).resolve().parents[2]
 BASE=ROOT/'skills'/'deckforge'/'assets'
+CAPABILITY_CATALOG=ROOT/'schemas'/'capability-catalog.json'
 LIST_CHECKS={
  'theme-manifest.json':(30,'id'),
  'template-manifest.json':(30,'id'),
@@ -22,6 +23,7 @@ LIST_CHECKS={
 }
 
 def load(name):return json.loads((BASE/name).read_text(encoding='utf-8'))
+def load_json_file(path):return json.loads(Path(path).read_text(encoding='utf-8'))
 
 SCROLLBAR_TOKEN_VOCAB={'accent','accentSecondary','canvas','surface','surfaceElevated','surfaceMuted','textSecondary','divider','focus','transparent'}
 SCROLLBAR_SURFACES={'app-page','slide-list','inspector','grid','speaker-notes','modal','asset-library','theme-library'}
@@ -113,8 +115,22 @@ def main():
   for block in catalogs['block-manifest.json']:
    a=block.get('defaultAnimation')
    if a and a not in animation_ids:errors.append(f"block {block['type']}: unknown default animation {a}")
-  defaults=[p for p in catalogs['delivery-profile-manifest.json'] if p.get('default')]
-  if len(defaults)!=1 or defaults[0].get('id')!='editable-deck':errors.append('delivery profiles: editable-deck must be the single default')
+   defaults=[p for p in catalogs['delivery-profile-manifest.json'] if p.get('default')]
+   if len(defaults)!=1 or defaults[0].get('id')!='editable-deck':errors.append('delivery profiles: editable-deck must be the single default')
+   capability_ids=set()
+   try:
+    cap_doc=load_json_file(CAPABILITY_CATALOG)
+    for cap in cap_doc['capabilities']:
+     cid=cap.get('id')
+     if not cid or not isinstance(cid,str) or '.' not in cid:errors.append(f'capability catalog: ID must be a dot-namespaced string, got {cid!r}')
+     if cid in capability_ids:errors.append(f'capability catalog: duplicate ID {cid}')
+     capability_ids.add(cid)
+    for alias in [a for cap in cap_doc['capabilities'] for a in cap.get('aliases',[])]:
+     if alias in capability_ids:errors.append(f'capability catalog: alias collides with an ID: {alias}')
+   except Exception as exc:errors.append(f'capability-catalog.json: {exc}')
+   for profile in catalogs['delivery-profile-manifest.json']:
+    for cap_id in profile.get('requiredCapabilityIds',[]):
+     if cap_id not in capability_ids:errors.append(f"profile {profile['id']}: unknown required capability ID {cap_id}")
   for archetype in catalogs['presentation-archetype-manifest.json']:
    for tid in archetype.get('recommendedTemplateIds',[]):
     if tid not in templates:errors.append(f"archetype {archetype['id']}: unknown template {tid}")

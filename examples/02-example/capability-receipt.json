@@ -1,0 +1,162 @@
+{
+  "receiptVersion": "1.0.0",
+  "profile": "editable-deck",
+  "project": "examples/02-example",
+  "generatedAt": "2026-08-05T21:58:00Z",
+  "capabilities": {
+    "document.create": {
+      "status": "implemented",
+      "entryPoints": ["EditorApp", "CommandPalette"],
+      "commands": ["replaceDeck"],
+      "persistence": ["autosave"],
+      "tests": ["tests/deck.test.ts"],
+      "evidence": ["tests/deck.test.ts"]
+    },
+    "edit.text": {
+      "status": "implemented",
+      "entryPoints": ["EditorApp.updateBlock", "SlideRenderer"],
+      "commands": ["updateBlockContent"],
+      "persistence": ["autosave"],
+      "tests": ["tests/deck.test.ts"],
+      "evidence": ["tests/deck.test.ts"]
+    },
+    "edit.block.create": {
+      "status": "implemented",
+      "entryPoints": ["EditorApp.insertBlock"],
+      "commands": ["addBlock", "duplicateBlock"],
+      "persistence": ["autosave"],
+      "tests": ["tests/deck.test.ts"],
+      "evidence": ["tests/deck.test.ts"]
+    },
+    "edit.media.insert": {
+      "status": "partial",
+      "entryPoints": ["EditorApp.insertBlock.image"],
+      "commands": ["addBlock"],
+      "persistence": ["autosave"],
+      "tests": ["tests/assets.test.ts"],
+      "evidence": ["tests/assets.test.ts"],
+      "note": "Image blocks and asset validation are covered; the full insert-and-render flow lacks an automated behavioral test."
+    },
+    "edit.layout.change": {
+      "status": "implemented",
+      "entryPoints": ["EditorApp.updateActiveSlide.layout", "LayoutPicker"],
+      "commands": ["updateSlideLayout"],
+      "persistence": ["autosave"],
+      "tests": ["tests/deck.test.ts"],
+      "evidence": ["tests/deck.test.ts"]
+    },
+    "edit.theme.change": {
+      "status": "implemented",
+      "entryPoints": ["EditorApp theme select", "ThemePicker"],
+      "commands": ["setTheme"],
+      "persistence": ["autosave"],
+      "tests": ["tests/deck.test.ts", "tests/contrast.test.ts"],
+      "evidence": ["tests/deck.test.ts"]
+    },
+    "edit.style.change": {
+      "status": "unverified",
+      "entryPoints": ["EditorApp.updateBlock"],
+      "commands": ["updateBlockStyle"],
+      "note": "updateBlockStyle command exists but has no behavioral test yet."
+    },
+    "history.undo": {
+      "status": "implemented",
+      "entryPoints": ["EditorApp undo button", "Ctrl+Z"],
+      "tests": ["e2e/tests/editor.spec.ts"],
+      "evidence": ["e2e/tests/editor.spec.ts"],
+      "note": "Undo reverts the last title edit in the automated e2e run."
+    },
+    "history.redo": {
+      "status": "implemented",
+      "entryPoints": ["EditorApp redo button", "Ctrl+Shift+Z"],
+      "tests": ["e2e/tests/editor.spec.ts"],
+      "evidence": ["e2e/tests/editor.spec.ts"],
+      "note": "Redo reapplies the undone title edit in the automated e2e run."
+    },
+    "persistence.autosave": {
+      "status": "implemented",
+      "entryPoints": ["SaveStatus", "useDeck autosave effect"],
+      "persistence": ["localStorage"],
+      "tests": ["e2e/tests/editor.spec.ts"],
+      "evidence": ["e2e/tests/editor.spec.ts"],
+      "note": "Autosave reaches Saved just now and a reload restores the edited title in the automated e2e run."
+    },
+    "persistence.recover": {
+      "status": "implemented",
+      "entryPoints": ["useDeck initialDeck"],
+      "persistence": ["localStorage"],
+      "tests": ["e2e/tests/editor.spec.ts"],
+      "evidence": ["e2e/tests/editor.spec.ts"],
+      "note": "A reload restores the persisted deck state in the automated e2e run."
+    },
+    "help.shortcuts": {
+      "status": "implemented",
+      "entryPoints": ["ShortcutHelpDialog"],
+      "tests": ["e2e/tests/editor.spec.ts", "e2e/tests/presenter.spec.ts"],
+      "evidence": ["e2e/tests/editor.spec.ts"],
+      "note": "Shift+/ opens the shortcut dialog and it lists core bindings in the automated e2e run."
+    },
+    "present.fullscreen": {
+      "status": "implemented",
+      "entryPoints": ["PresenterApp F", "ShortcutHelpDialog"],
+      "tests": ["tests/presenterMachine.test.ts"],
+      "evidence": ["tests/presenterMachine.test.ts"],
+      "note": "Reducer ENTER/EXIT_FULLSCREEN events and the fullscreenchange sync are wired and tested; actual browser fullscreen API behavior is manual."
+    },
+    "present.overview": {
+      "status": "implemented",
+      "entryPoints": ["PresenterApp O"],
+      "tests": ["tests/presenterMachine.test.ts"],
+      "evidence": ["tests/presenterMachine.test.ts"],
+      "note": "TOGGLE_OVERVIEW and GO_TO_SLIDE (overview jump, resets build) are reducer-tested."
+    },
+    "present.builds": {
+      "status": "implemented",
+      "entryPoints": ["PresenterApp build navigation"],
+      "tests": ["tests/presenterMachine.test.ts"],
+      "evidence": ["tests/presenterMachine.test.ts"],
+      "note": "NEXT_BUILD/PREVIOUS_BUILD boundary crossing and build reset on GO_TO_SLIDE are reducer-tested."
+    },
+    "present.progress": {
+      "status": "implemented",
+      "entryPoints": ["PresenterApp progress"],
+      "tests": ["e2e/tests/presenter.spec.ts"],
+      "evidence": ["e2e/tests/presenter.spec.ts"],
+      "note": "The progress bar tracks slide position in the automated e2e run."
+    },
+    "present.blackout": {
+      "status": "implemented",
+      "entryPoints": ["PresenterApp B"],
+      "tests": ["tests/presenterMachine.test.ts"],
+      "evidence": ["tests/presenterMachine.test.ts"],
+      "note": "SET_BLACKOUT/TOGGLE_BLACKOUT are reducer-tested; blackout never resets the timer."
+    },
+    "navigation.keyboard": {
+      "status": "implemented",
+      "entryPoints": ["useHotkeys", "PresenterApp"],
+      "tests": ["tests/presenterMachine.test.ts"],
+      "evidence": ["tests/presenterMachine.test.ts"],
+      "note": "Key bindings dispatch to the fully tested presenter reducer (next/prev/first/last/go-to-slide)."
+    },
+    "accessibility.reduced-motion": {
+      "status": "implemented",
+      "entryPoints": ["App reducedClass", "motion reducer"],
+      "commands": ["setReducedMotion"],
+      "tests": ["tests/motion.test.ts"],
+      "evidence": ["tests/motion.test.ts"]
+    },
+    "accessibility.audit": {
+      "status": "implemented",
+      "entryPoints": ["audit_deck_layout.py", "contrast.ts"],
+      "tests": ["tests/contrast.test.ts", "tests/measure.test.ts"],
+      "evidence": ["tests/contrast.test.ts"]
+    },
+    "export.pptx": {
+      "status": "implemented",
+      "entryPoints": ["export-dialog.tsx", "pptx-exporter.ts"],
+      "tests": ["tests/export.test.ts"],
+      "evidence": ["tests/export.test.ts"],
+      "note": "Typed issue pipeline, structured report (native/rasterized/substituted/skipped/unsupported per block), archive verification, and status derivation are tested. Automated tests mock the PPTX generator; real-file round-trip is manual."
+    }
+  }
+}

@@ -44,6 +44,6 @@ npm run package-skills
 Target-project checks:
 
 ```bash
-python scripts/audit_deck_layout.py <deck.json> --strict
-python scripts/validate_output_contract.py <project-directory> --profile editable-deck
+python scripts/audits/audit_deck_layout.py <deck.json> --strict
+python scripts/audits/validate_output_contract.py <project-directory> --profile editable-deck
 ```

@@ -9,7 +9,7 @@ from __future__ import annotations
 import json, sys
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parents[1]
+HERE = Path(__file__).resolve().parents[2]
 SOURCE = HERE / 'examples' / '02-example' / 'deck.json'
 TARGET = HERE / 'examples' / 'stress-test-30.deck.json'
 TARGET_SLIDES = 30

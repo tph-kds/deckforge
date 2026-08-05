@@ -8,4 +8,4 @@ To add a template:
 2. Use canonical layouts from `layout-manifest.json`.
 3. Keep the slide plan adaptable; avoid mandatory filler slides.
 4. State the audience and decision the deck supports.
-5. Run `python scripts/validate_catalogs.py` and tests.
+5. Run `python scripts/validate/validate_catalogs.py` and tests.

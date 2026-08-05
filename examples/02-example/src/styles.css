@@ -325,7 +325,7 @@ kbd {
   gap: 10px;
   overflow-x: auto;
   flex: 1;
-  justify-content: center;
+  justify-content: safe center;
 }
 
 .toolbar-group {

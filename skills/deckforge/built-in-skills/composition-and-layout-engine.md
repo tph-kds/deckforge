@@ -79,7 +79,7 @@ The editor must surface budget warnings per slot so authors and agents catch ove
 
 ## Step 6 — Run collision and balance checks
 
-Run `scripts/audit_deck_layout.py`.
+Run `scripts/audits/audit_deck_layout.py`.
 
 Treat these as blocking:
 

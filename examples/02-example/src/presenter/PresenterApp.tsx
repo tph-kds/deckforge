@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import type { DeckStore } from '../deck/useDeck';
 import type { DeckSlide } from '../deck/types';
 import { getTheme } from '../deck/themes';
@@ -10,6 +10,14 @@ import { useDocumentScrollLock } from '../deck/scrollbars/scrollbarRuntime';
 import { ScrollSurface } from '../deck/scrollbars/ScrollSurface';
 import { useTimer } from './useTimer';
 import { formatElapsed } from './timerMachine';
+import {
+  clampSlide,
+  initialPresenterState,
+  presenterReducer,
+  type PresenterContext,
+  type PresenterEvent,
+  type PresenterState,
+} from './presenterMachine';
 
 interface PresenterAppProps {
   store: DeckStore;
@@ -25,14 +33,12 @@ const HELP_ROWS = [
   { keys: 'F', label: 'Toggle fullscreen' },
   { keys: 'S', label: 'Open speaker view' },
   { keys: 'B', label: 'Toggle blackout' },
-  { keys: 'T', label: 'Show / hide timer' },
   { keys: 'P', label: 'Pause / resume timer' },
   { keys: 'R', label: 'Reset timer' },
-  { keys: 'G', label: 'Go to slide' },
   { keys: 'Escape', label: 'Exit dialog, overview, or fullscreen' },
 ];
 
-function buildCountFor(slide: DeckSlide, defaultBuilds: boolean): number {
+function countBuildsForSlide(slide: DeckSlide, defaultBuilds: boolean): number {
   const animated = slide.blocks.filter((b) => b.animation);
   const click = animated.filter((b) => b.animation?.trigger === 'on-click');
   const withPrev = animated.filter((b) => b.animation?.trigger === 'with-previous' || b.animation?.trigger === 'after-previous');
@@ -42,40 +48,62 @@ function buildCountFor(slide: DeckSlide, defaultBuilds: boolean): number {
 
 export function PresenterApp({ store, navigate }: PresenterAppProps) {
   const { deck } = store;
-  const [index, setIndex] = useState(0);
-  const [overview, setOverview] = useState(false);
-  const [blackout, setBlackout] = useState(false);
-  const [helpOpen, setHelpOpen] = useState(false);
-  const timer = useTimer();
-  const [timerVisible, setTimerVisible] = useState(true);
-  const [speakerOpen, setSpeakerOpen] = useState(false);
-  const [buildIndex, setBuildIndex] = useState(0);
+  const slides = deck.slides;
+  const totalSlides = slides.length;
+  const defaultBuilds = deck.presentation.defaultBuilds ?? false;
+  const theme = getTheme(deck.theme.id);
+
   const [chromeActive, setChromeActive] = useState(true);
   const chromeTimer = useRef<number | undefined>(undefined);
 
-  const slides = deck.slides;
-  const total = slides.length;
-  const safeIndex = Math.min(index, total - 1);
-  const slide = slides[safeIndex];
-  const theme = getTheme(deck.theme.id);
-
   useDocumentScrollLock(true);
 
-  const buildCount = useMemo(
-    () => buildCountFor(slide, deck.presentation.defaultBuilds ?? false),
-    [slide, deck.presentation.defaultBuilds],
+  const timer = useTimer();
+
+  const buildCounts = useMemo(
+    () => slides.map((slide) => countBuildsForSlide(slide, defaultBuilds)),
+    [slides, defaultBuilds],
   );
+
+  const getBuildCountFor = useCallback(
+    (slideIndex: number): number =>
+      buildCounts[Math.max(0, Math.min(buildCounts.length - 1, slideIndex))] ?? 1,
+    [buildCounts],
+  );
+
+  const context: PresenterContext = useMemo(
+    () => ({ totalSlides, buildCountFor: getBuildCountFor }),
+    [totalSlides, getBuildCountFor],
+  );
+
+  const reducer = useCallback(
+    (prev: PresenterState, event: PresenterEvent) => presenterReducer(prev, event, context),
+    [context],
+  );
+
+  const [state, dispatch] = useReducer(reducer, initialPresenterState(totalSlides, getBuildCountFor(0)));
+
+  const safeIndex = clampSlide(state.slideIndex, totalSlides);
+  const slide = slides[safeIndex];
+  const buildCount = getBuildCountFor(safeIndex);
+  const buildIndex = Math.max(0, Math.min(buildCount - 1, state.buildIndex));
+  const overview = state.mode === 'overview';
+  const speakerOpen = state.mode === 'speaker';
+  const blackoutActive = state.blackout !== 'none';
+  const helpOpen = state.helpVisible;
+  const timerStatus = state.timer.status;
+  const progress = totalSlides > 1 ? (safeIndex / (totalSlides - 1)) * 100 : 0;
+
+  useEffect(() => {
+    dispatch({ type: 'SET_TIMER', status: timer.status, elapsedMs: timer.elapsedMs });
+  }, [dispatch, timer.status, timer.elapsedMs]);
 
   const syncFromHash = useCallback(() => {
     const match = window.location.hash.match(/^#\/(\d+)$/);
     if (match) {
-      const parsed = Number(match[1]);
-      if (parsed >= 0 && parsed < total) {
-        setIndex(parsed);
-        setBuildIndex(0);
-      }
+      dispatch({ type: 'GO_TO_SLIDE', index: Number(match[1]) });
     }
-  }, [total]);
+  }, [dispatch]);
 
   useEffect(() => {
     syncFromHash();
@@ -86,6 +114,14 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
   useEffect(() => {
     window.history.replaceState({}, '', `#/${safeIndex}`);
   }, [safeIndex]);
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      dispatch(document.fullscreenElement ? { type: 'ENTER_FULLSCREEN' } : { type: 'EXIT_FULLSCREEN' });
+    };
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
+  }, [dispatch]);
 
   useEffect(() => {
     const onMove = () => {
@@ -102,94 +138,71 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
     };
   }, []);
 
-  const advance = (step: number) => {
-    let nextIndex = safeIndex;
-    let nextBuild = buildIndex + step;
-    if (nextBuild < 0) {
-      nextIndex = Math.max(safeIndex - 1, 0);
-      const prevSlide = nextIndex < safeIndex ? slides[nextIndex] : undefined;
-      nextBuild = prevSlide ? Math.max(0, buildCountFor(prevSlide, deck.presentation.defaultBuilds ?? false) - 1) : 0;
-    } else if (nextBuild >= buildCount) {
-      if (safeIndex === total - 1) return;
-      nextIndex = Math.min(safeIndex + 1, total - 1);
-      nextBuild = 0;
+  const enterFullscreen = useCallback(() => {
+    dispatch({ type: 'ENTER_FULLSCREEN' });
+    void document.documentElement.requestFullscreen().catch(() => {
+      dispatch({ type: 'EXIT_FULLSCREEN' });
+    });
+  }, [dispatch]);
+
+  const exitFullscreen = useCallback(() => {
+    dispatch({ type: 'EXIT_FULLSCREEN' });
+    if (document.fullscreenElement) {
+      void document.exitFullscreen().catch(() => undefined);
     }
-    setIndex(nextIndex);
-    setBuildIndex(nextBuild);
-  };
-
-  const next = useCallback(
-    () => {
-      setBlackout(false);
-      advance(+1);
-    },
-    [buildIndex, safeIndex, buildCount, slides, total, deck.presentation.defaultBuilds],
-  );
-
-  const previous = useCallback(
-    () => {
-      setBlackout(false);
-      advance(-1);
-    },
-    [buildIndex, safeIndex, buildCount, slides, total, deck.presentation.defaultBuilds],
-  );
-
-  const first = useCallback(() => {
-    setBlackout(false);
-    setIndex(0);
-    setBuildIndex(0);
-  }, []);
-
-  const last = useCallback(() => {
-    setBlackout(false);
-    setIndex(total - 1);
-    setBuildIndex(buildCountFor(slides[total - 1], deck.presentation.defaultBuilds ?? false) - 1);
-  }, [total, slides, deck.presentation.defaultBuilds]);
+  }, [dispatch]);
 
   const toggleFullscreen = useCallback(() => {
-    if (document.fullscreenElement) {
-      void document.exitFullscreen();
-    } else {
-      void document.documentElement.requestFullscreen();
-    }
-  }, []);
+    if (document.fullscreenElement) exitFullscreen();
+    else enterFullscreen();
+  }, [enterFullscreen, exitFullscreen]);
+
+  const handleTimerToggle = useCallback(() => {
+    timer.toggleRunning();
+  }, [timer]);
+
+  const handleTimerReset = useCallback(() => {
+    timer.reset();
+    dispatch({ type: 'RESET_TIMER' });
+  }, [timer, dispatch]);
+
+  const exitPresentation = useCallback(() => {
+    dispatch({ type: 'EXIT_PRESENTATION' });
+    navigate('editor');
+  }, [dispatch, navigate]);
+
+  const goTo = useCallback((target: number) => dispatch({ type: 'GO_TO_SLIDE', index: target }), [dispatch]);
 
   useHotkeys([
-    { keys: ['arrowright', ' ', 'pagedown'], handler: () => next() },
-    { keys: ['arrowleft', 'shift+space', 'pageup'], handler: () => previous() },
-    { keys: ['home'], handler: () => first() },
-    { keys: ['end'], handler: () => last() },
-    { keys: ['o'], handler: () => setOverview((value) => !value) },
+    { keys: ['arrowright', ' ', 'pagedown'], handler: () => dispatch({ type: 'NEXT_BUILD' }) },
+    { keys: ['arrowleft', 'shift+space', 'pageup'], handler: () => dispatch({ type: 'PREVIOUS_BUILD' }) },
+    { keys: ['home'], handler: () => dispatch({ type: 'FIRST_SLIDE' }) },
+    { keys: ['end'], handler: () => dispatch({ type: 'LAST_SLIDE' }) },
+    { keys: ['o'], handler: () => dispatch({ type: 'TOGGLE_OVERVIEW' }) },
     { keys: ['f'], handler: () => toggleFullscreen() },
-    { keys: ['s'], handler: () => setSpeakerOpen((value) => !value) },
-    { keys: ['b'], handler: () => setBlackout((value) => !value) },
-    { keys: ['t'], handler: () => setTimerVisible((value) => !value) },
-    { keys: ['p'], handler: () => timer.toggleRunning() },
-    { keys: ['r'], handler: () => timer.reset() },
-    { keys: ['?'], handler: () => setHelpOpen(true) },
+    { keys: ['s'], handler: () => dispatch({ type: 'TOGGLE_SPEAKER' }) },
+    { keys: ['b'], handler: () => dispatch({ type: 'TOGGLE_BLACKOUT' }) },
+    { keys: ['p'], handler: () => handleTimerToggle() },
+    { keys: ['r'], handler: () => handleTimerReset() },
+    { keys: ['?'], handler: () => dispatch({ type: 'TOGGLE_HELP' }) },
     {
       keys: ['escape'],
       handler: () => {
-        if (helpOpen) setHelpOpen(false);
-        else if (overview) setOverview(false);
-        else if (speakerOpen) setSpeakerOpen(false);
-        else if (document.fullscreenElement) void document.exitFullscreen();
+        if (state.helpVisible) dispatch({ type: 'TOGGLE_HELP' });
+        else if (state.mode === 'overview') dispatch({ type: 'TOGGLE_OVERVIEW' });
+        else if (state.mode === 'speaker') dispatch({ type: 'TOGGLE_SPEAKER' });
+        else if (document.fullscreenElement) exitFullscreen();
       },
     },
   ]);
 
-  const goTo = (target: number) => {
-    setIndex(Math.max(0, Math.min(total - 1, target)));
-    setBuildIndex(0);
-    setOverview(false);
-  };
-
-  const progress = total > 1 ? (safeIndex / (total - 1)) * 100 : 0;
-  const timerStatus = timer.status === 'idle' ? 'idle' : timer.isRunning ? 'running' : 'paused';
+  const timerButtonLabel =
+    timerStatus === 'idle' ? 'Start timer' : timerStatus === 'running' ? 'Pause timer' : 'Resume timer';
+  const timerButtonText = timerStatus === 'idle' ? 'Start' : timerStatus === 'running' ? 'Pause' : 'Resume';
 
   return (
-    <div className={`presenter-shell ${overview ? 'is-overview' : ''} ${blackout ? 'is-blackout' : ''} ${chromeActive ? 'is-chrome-active' : ''}`}>
-      {blackout ? (
+    <div className={`presenter-shell ${overview ? 'is-overview' : ''} ${blackoutActive ? 'is-blackout' : ''} ${chromeActive ? 'is-chrome-active' : ''}`}>
+      {blackoutActive ? (
         <div className="presenter-blackout" role="presentation">
           <div className="blackout-message">Paused — press <kbd>B</kbd> to resume</div>
         </div>
@@ -206,50 +219,46 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
           </div>
           <div className="presenter-chrome">
             <div className="presenter-controls" role="toolbar" aria-label="Presenter controls">
-              <button type="button" onClick={() => first()} disabled={safeIndex === 0} aria-label="First slide" title="Home">⏮</button>
-              <button type="button" onClick={() => previous()} disabled={safeIndex === 0} aria-label="Previous slide" title="←">◀</button>
+              <button type="button" onClick={() => dispatch({ type: 'FIRST_SLIDE' })} disabled={safeIndex === 0} aria-label="First slide" title="Home">⏮</button>
+              <button type="button" onClick={() => dispatch({ type: 'PREVIOUS_BUILD' })} disabled={safeIndex === 0} aria-label="Previous slide" title="←">◀</button>
               <span className="presenter-position">
-                {safeIndex + 1} / {total}
+                {safeIndex + 1} / {totalSlides}
               </span>
-              <button type="button" onClick={() => next()} disabled={safeIndex === total - 1} aria-label="Next slide" title="→">▶</button>
-              <button type="button" onClick={() => last()} disabled={safeIndex === total - 1} aria-label="Last slide" title="End">⏭</button>
+              <button type="button" onClick={() => dispatch({ type: 'NEXT_BUILD' })} disabled={safeIndex === totalSlides - 1} aria-label="Next slide" title="→">▶</button>
+              <button type="button" onClick={() => dispatch({ type: 'LAST_SLIDE' })} disabled={safeIndex === totalSlides - 1} aria-label="Last slide" title="End">⏭</button>
               <span className="controls-divider" aria-hidden="true" />
-              <button type="button" onClick={() => setOverview((value) => !value)} aria-pressed={overview} aria-label="Toggle overview" title="O">Grid</button>
-              <button type="button" onClick={() => setSpeakerOpen((value) => !value)} aria-pressed={speakerOpen} aria-label="Speaker view" title="S">Notes</button>
-              <button type="button" onClick={() => setBlackout(true)} aria-label="Blackout" title="B">Pause</button>
-              <button type="button" onClick={() => toggleFullscreen()} aria-label="Toggle fullscreen" title="F">⛶</button>
-              <button type="button" onClick={() => setHelpOpen(true)} aria-label="Keyboard shortcuts" title="?">?</button>
-              <button type="button" onClick={() => navigate('editor')} aria-label="Back to editor" title="Back to editor">
+              <button type="button" onClick={() => dispatch({ type: 'TOGGLE_OVERVIEW' })} aria-pressed={overview} aria-label="Toggle overview" title="O">Grid</button>
+              <button type="button" onClick={() => dispatch({ type: 'TOGGLE_SPEAKER' })} aria-pressed={speakerOpen} aria-label="Speaker view" title="S">Notes</button>
+              <button type="button" onClick={() => dispatch({ type: 'TOGGLE_BLACKOUT' })} aria-label="Blackout" title="B">Pause</button>
+              <button type="button" onClick={toggleFullscreen} aria-label="Toggle fullscreen" title="F">⛶</button>
+              <button type="button" onClick={() => dispatch({ type: 'TOGGLE_HELP' })} aria-label="Keyboard shortcuts" title="?">?</button>
+              <button type="button" onClick={exitPresentation} aria-label="Back to editor" title="Back to editor">
                 Edit
               </button>
             </div>
             <div className="presenter-timer">
-              {timerVisible ? (
-                <div className="timer-display" title={`Timer (${timerStatus})`}>
-                  <span className="timer-status-dot" data-status={timerStatus} aria-hidden="true" />
-                  <span className="timer-label">{formatElapsed(timer.elapsedMs)}</span>
-                  <button
-                    type="button"
-                    className="timer-control"
-                    onClick={timer.toggleRunning}
-                    aria-label={timer.status === 'idle' ? 'Start timer' : timer.isRunning ? 'Pause timer' : 'Resume timer'}
-                    title="P"
-                  >
-                    {timer.status === 'idle' ? 'Start' : timer.isRunning ? 'Pause' : 'Resume'}
-                  </button>
-                  <button
-                    type="button"
-                    className="timer-control"
-                    onClick={timer.reset}
-                    aria-label="Reset timer"
-                    title="R"
-                  >
-                    Reset
-                  </button>
-                </div>
-              ) : (
-                <span className="timer-label timer-hidden">T to show timer</span>
-              )}
+              <div className="timer-display" title={`Timer (${timerStatus})`}>
+                <span className="timer-status-dot" data-status={timerStatus} aria-hidden="true" />
+                <span className="timer-label">{formatElapsed(state.timer.elapsedMs)}</span>
+                <button
+                  type="button"
+                  className="timer-control"
+                  onClick={handleTimerToggle}
+                  aria-label={timerButtonLabel}
+                  title="P"
+                >
+                  {timerButtonText}
+                </button>
+                <button
+                  type="button"
+                  className="timer-control"
+                  onClick={handleTimerReset}
+                  aria-label="Reset timer"
+                  title="R"
+                >
+                  Reset
+                </button>
+              </div>
             </div>
           </div>
           <div className="presenter-progress" aria-hidden="true">
@@ -258,7 +267,7 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
         </>
       )}
 
-      {overview && !blackout ? (
+      {overview && !blackoutActive ? (
         <ScrollSurface surface="grid" className="presenter-overview" aria-label="Slide overview">
           {slides.map((slideItem, slideIndex) => (
             <button
@@ -279,11 +288,11 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
         </ScrollSurface>
       ) : null}
 
-      {speakerOpen && !blackout ? (
-        <SpeakerPanel store={store} currentIndex={safeIndex} elapsedMs={timer.elapsedMs} onClose={() => setSpeakerOpen(false)} />
+      {speakerOpen && !blackoutActive ? (
+        <SpeakerPanel store={store} currentIndex={safeIndex} elapsedMs={state.timer.elapsedMs} onClose={() => dispatch({ type: 'TOGGLE_SPEAKER' })} />
       ) : null}
 
-      <ShortcutHelpDialog open={helpOpen} onClose={() => setHelpOpen(false)} groups={[]} rows={HELP_ROWS} />
+      <ShortcutHelpDialog open={helpOpen} onClose={() => dispatch({ type: 'TOGGLE_HELP' })} groups={[]} rows={HELP_ROWS} />
       <style>{`#presenter-fonts{font-family:'${theme.typography.headingFont}'}`}</style>
     </div>
   );

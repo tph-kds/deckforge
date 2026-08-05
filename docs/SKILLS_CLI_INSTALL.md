@@ -29,6 +29,6 @@ npx skills@latest add /absolute/path/to/deckforge-web-slides-skills --skill deck
 After generation, validate the selected delivery profile rather than trusting UI labels:
 
 ```bash
-python scripts/audit_deck_layout.py <deck.json> --strict
-python scripts/validate_output_contract.py <project-directory> --profile editable-deck
+python scripts/audits/audit_deck_layout.py <deck.json> --strict
+python scripts/audits/validate_output_contract.py <project-directory> --profile editable-deck
 ```

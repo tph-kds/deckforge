@@ -84,8 +84,8 @@ Eight motion profiles distinguish restrained executive delivery from educational
 Two new validators are mandatory for generated examples and recommended for target projects:
 
 ```bash
-python scripts/audit_deck_layout.py <deck.json> --strict
-python scripts/validate_output_contract.py <project-directory> --profile editable-deck
+python scripts/audits/audit_deck_layout.py <deck.json> --strict
+python scripts/audits/validate_output_contract.py <project-directory> --profile editable-deck
 ```
 
 The layout audit detects unsafe margins, missing required slots, unresolved slot references, content-budget violations, and collisions. The output-contract validator checks that claimed editor and presenter capabilities are actually represented by implementation behavior.
