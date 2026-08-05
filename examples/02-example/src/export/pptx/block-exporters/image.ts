@@ -99,17 +99,18 @@ export const imageBlockExporter: PptxBlockExporter = {
       };
     }
 
+    const geometry = imageGeometry(imageBlock, ctx);
     return {
       status: "native",
       issues: [],
       element: {
         type: "image",
-        ...imageGeometry(imageBlock, ctx),
+        ...geometry,
         data: {
           dataUri: assetResult.dataUri,
           alt,
           options: {
-            sizing: { type: "contain", w: imageBlock.w ?? 5, h: imageBlock.h ?? 3 },
+            sizing: { type: "contain", w: geometry.w, h: geometry.h },
           },
         },
       },

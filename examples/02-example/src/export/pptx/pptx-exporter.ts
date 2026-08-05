@@ -12,6 +12,7 @@ import type {
 import type { DeckProject, DeckSlide } from "../../deck/types";
 import { createExportContext } from "./pptx-context";
 import { getBlockExporter } from "./block-exporters/index";
+import { resolveSlidePlacements } from "../../deck/layout";
 import type PptxGenJS from "pptxgenjs";
 
 const PIXELS_PER_INCH = 96;
@@ -28,11 +29,12 @@ async function toUint8Array(value: string | Blob | ArrayBuffer | Uint8Array): Pr
 }
 
 function writeElementToSlide(pptxSlide: PptxGenJS.Slide, element: PptxSlideElement): void {
+  // PptxGenJS uses inches; our deck model uses pixels (96 DPI).
   const opts = {
-    x: element.x,
-    y: element.y,
-    w: element.w,
-    h: element.h,
+    x: pixelsToInches(element.x),
+    y: pixelsToInches(element.y),
+    w: pixelsToInches(element.w),
+    h: pixelsToInches(element.h),
   };
 
   switch (element.type) {
@@ -162,6 +164,13 @@ export async function buildExportReport(
     const blockReports: ExportBlockReport[] = [];
     const elements: PptxSlideElement[] = [];
 
+    // Resolve semantic slot frames so slot-positioned blocks get real coordinates.
+    const placements = resolveSlidePlacements(slide, deck.canvas);
+    const frameByBlockId = new Map<string, { x: number; y: number; w: number; h: number }>();
+    for (const placement of placements) {
+      frameByBlockId.set(placement.blockId, placement.frame);
+    }
+
     for (const block of slide.blocks) {
       let result: PptxBlockExport;
 
@@ -181,7 +190,12 @@ export async function buildExportReport(
       } else {
         const exporter = getBlockExporter(block.type);
         try {
-          result = await exporter.export(block, ctx);
+          // Attach the resolved slot frame to the block so exporters use real coordinates.
+          const resolvedFrame = frameByBlockId.get(block.id);
+          const blockWithFrame = resolvedFrame
+            ? { ...block, frame: { ...block.frame, ...resolvedFrame } }
+            : block;
+          result = await exporter.export(blockWithFrame, ctx);
         } catch (err) {
           result = {
             status: "unsupported",

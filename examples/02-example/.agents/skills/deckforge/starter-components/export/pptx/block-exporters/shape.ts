@@ -1,6 +1,8 @@
-// starter-components/export/pptx/block-exporters/shape.ts
-
-import type { PptxBlockExporter, PptxExportContext, PptxSlideElement } from "../../export-types";
+import type {
+  PptxBlockExport,
+  PptxBlockExporter,
+  PptxExportContext,
+} from "../../export-types";
 
 interface ShapeBlock {
   id: string;
@@ -13,6 +15,7 @@ interface ShapeBlock {
   y?: number;
   w?: number;
   h?: number;
+  frame?: { x?: number; y?: number; w?: number; h?: number };
 }
 
 const SHAPE_MAP: Record<string, string> = {
@@ -30,23 +33,27 @@ export const shapeBlockExporter: PptxBlockExporter = {
   type: "shape",
   exportability: "native-editable",
 
-  async export(block: unknown, ctx: PptxExportContext): Promise<PptxSlideElement> {
+  async export(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
     const shapeBlock = block as ShapeBlock;
     const pptxShape = SHAPE_MAP[shapeBlock.shapeType ?? "rectangle"] ?? "rect";
 
     return {
-      type: "shape",
-      x: shapeBlock.x ?? 0,
-      y: shapeBlock.y ?? 0,
-      w: shapeBlock.w ?? 2,
-      h: shapeBlock.h ?? 2,
-      data: {
-        shape: pptxShape,
-        options: {
-          fill: { color: shapeBlock.fill?.replace("#", "") ?? "FFFFFF" },
-          line: {
-            color: shapeBlock.stroke?.replace("#", "") ?? "000000",
-            width: shapeBlock.strokeWidth ?? 1,
+      status: "native",
+      issues: [],
+      element: {
+        type: "shape",
+        x: shapeBlock.x ?? shapeBlock.frame?.x ?? 0,
+        y: shapeBlock.y ?? shapeBlock.frame?.y ?? 0,
+        w: shapeBlock.w ?? shapeBlock.frame?.w ?? 2,
+        h: shapeBlock.h ?? shapeBlock.frame?.h ?? 2,
+        data: {
+          shape: pptxShape,
+          options: {
+            fill: { color: shapeBlock.fill?.replace("#", "") ?? "FFFFFF" },
+            line: {
+              color: shapeBlock.stroke?.replace("#", "") ?? "000000",
+              width: shapeBlock.strokeWidth ?? 1,
+            },
           },
         },
       },

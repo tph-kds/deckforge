@@ -8,13 +8,14 @@ export async function renderFallback(
   reason: string
 ): Promise<PptxSlideElement> {
   const blockType = (block.type as string) ?? "unknown";
+  const frame = (block.frame as { x?: number; y?: number; w?: number; h?: number } | undefined) ?? {};
 
   return {
     type: "fallback",
-    x: (block.x as number) ?? 0,
-    y: (block.y as number) ?? 0,
-    w: (block.w as number) ?? ctx.slideWidth * 0.5,
-    h: (block.h as number) ?? ctx.slideHeight * 0.3,
+    x: (block.x as number) ?? frame.x ?? 0,
+    y: (block.y as number) ?? frame.y ?? 0,
+    w: (block.w as number) ?? frame.w ?? ctx.slideWidth * 0.5,
+    h: (block.h as number) ?? frame.h ?? ctx.slideHeight * 0.3,
     data: {
       text: `[${blockType}: ${reason}]`,
       options: {

@@ -1,4 +1,8 @@
-import type { PptxBlockExporter, PptxExportContext, PptxSlideElement } from "../../export-types";
+import type {
+  PptxBlockExport,
+  PptxBlockExporter,
+  PptxExportContext,
+} from "../../export-types";
 
 interface TableCell {
   text: string;
@@ -16,13 +20,14 @@ interface TableBlock {
   y?: number;
   w?: number;
   h?: number;
+  frame?: { x?: number; y?: number; w?: number; h?: number };
 }
 
 export const tableBlockExporter: PptxBlockExporter = {
   type: "table",
   exportability: "native-editable",
 
-  async export(block: unknown, ctx: PptxExportContext): Promise<PptxSlideElement> {
+  async export(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
     const tableBlock = block as TableBlock;
 
     const pptxRows = tableBlock.rows.map((row, rowIdx) =>
@@ -39,16 +44,20 @@ export const tableBlockExporter: PptxBlockExporter = {
     );
 
     return {
-      type: "table",
-      x: tableBlock.x ?? 0,
-      y: tableBlock.y ?? 0,
-      w: tableBlock.w ?? ctx.slideWidth * 0.8,
-      h: tableBlock.h ?? ctx.slideHeight * 0.5,
-      data: {
-        rows: pptxRows,
-        options: {
-          border: { type: "solid", pt: 0.5, color: "CCCCCC" },
-          colW: undefined,
+      status: "native",
+      issues: [],
+      element: {
+        type: "table",
+        x: tableBlock.x ?? tableBlock.frame?.x ?? 0,
+        y: tableBlock.y ?? tableBlock.frame?.y ?? 0,
+        w: tableBlock.w ?? tableBlock.frame?.w ?? ctx.slideWidth * 0.8,
+        h: tableBlock.h ?? tableBlock.frame?.h ?? ctx.slideHeight * 0.5,
+        data: {
+          rows: pptxRows,
+          options: {
+            border: { type: "solid", pt: 0.5, color: "CCCCCC" },
+            colW: undefined,
+          },
         },
       },
     };

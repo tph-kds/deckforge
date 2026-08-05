@@ -20,6 +20,7 @@ interface TableBlock {
   y?: number;
   w?: number;
   h?: number;
+  frame?: { x?: number; y?: number; w?: number; h?: number };
 }
 
 export const tableBlockExporter: PptxBlockExporter = {
@@ -47,10 +48,10 @@ export const tableBlockExporter: PptxBlockExporter = {
       issues: [],
       element: {
         type: "table",
-        x: tableBlock.x ?? 0,
-        y: tableBlock.y ?? 0,
-        w: tableBlock.w ?? ctx.slideWidth * 0.8,
-        h: tableBlock.h ?? ctx.slideHeight * 0.5,
+        x: tableBlock.x ?? tableBlock.frame?.x ?? 0,
+        y: tableBlock.y ?? tableBlock.frame?.y ?? 0,
+        w: tableBlock.w ?? tableBlock.frame?.w ?? ctx.slideWidth * 0.8,
+        h: tableBlock.h ?? tableBlock.frame?.h ?? ctx.slideHeight * 0.5,
         data: {
           rows: pptxRows,
           options: {
