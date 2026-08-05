@@ -47,6 +47,26 @@ const BLOCK_TYPE_LABELS: Record<string, string> = {
   process: 'Process',
 };
 
+const CANVAS_PRESETS = [
+  { id: '16:9', label: '16:9 · 1600×900', width: 1600, height: 900 },
+  { id: '16:9-wide', label: '16:9 · 1920×1080', width: 1920, height: 1080 },
+  { id: '4:3', label: '4:3 · 1440×1080', width: 1440, height: 1080 },
+  { id: 'square', label: '1:1 · 1080×1080', width: 1080, height: 1080 },
+  { id: 'wide', label: 'Wide · 1920×800', width: 1920, height: 800 },
+  { id: 'a4', label: 'A4 · 1240×1754', width: 1240, height: 1754 },
+] as const;
+
+function presetForCanvas(canvas: { aspectRatio: string; width: number; height: number }): string {
+  const match = CANVAS_PRESETS.find((p) => p.width === canvas.width && p.height === canvas.height);
+  return match ? match.id : 'custom';
+}
+
+function aspectRatioForPreset(id: string): '16:9' | '4:3' | 'custom' {
+  if (id === '16:9' || id === '16:9-wide') return '16:9';
+  if (id === '4:3') return '4:3';
+  return 'custom';
+}
+
 function makeBlockForType(type: string): Block {
   const id = newId('b');
   switch (type) {
@@ -102,6 +122,9 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
   const [helpOpen, setHelpOpen] = useState(false);
   const [zoom, setZoom] = useState(0.62);
   const [notesOpen, setNotesOpen] = useState(true);
+  const [railOpen, setRailOpen] = useState(true);
+  const [inspectorOpen, setInspectorOpen] = useState(true);
+  const [focusMode, setFocusMode] = useState(false);
 
   const notesScrollbar = useResolvedScrollbarStyle('speaker-notes');
 
@@ -125,6 +148,41 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
           .join('\n')}`,
       );
     }
+  };
+
+  const enterFocusMode = () => {
+    setFocusMode(true);
+    setRailOpen(false);
+    setInspectorOpen(false);
+    setNotesOpen(false);
+  };
+
+  const exitFocusMode = () => {
+    setFocusMode(false);
+    setRailOpen(true);
+    setInspectorOpen(true);
+    setNotesOpen(true);
+  };
+
+  const editFromFocusMode = () => {
+    setFocusMode(false);
+    setInspectorOpen(true);
+    setRailOpen(false);
+    setNotesOpen(false);
+  };
+
+  const setCanvasPreset = (id: string) => {
+    const preset = CANVAS_PRESETS.find((p) => p.id === id);
+    if (!preset) return;
+    commit({
+      type: 'setCanvas',
+      canvas: {
+        ...deck.canvas,
+        width: preset.width,
+        height: preset.height,
+        aspectRatio: aspectRatioForPreset(preset.id),
+      },
+    });
   };
 
   const insertBlock = (type: string) => {
@@ -191,7 +249,7 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
       })),
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [deck, activeSlide.id, canUndo, canRedo, selection],
+    [deck, activeSlide.id, canUndo, canRedo, selection, focusMode],
   );
 
   useHotkeys([
@@ -203,13 +261,17 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
     { keys: ['ctrl+enter'], handler: () => present() },
     { keys: ['ctrl+d'], handler: () => duplicateSelection() },
     { keys: ['delete', 'backspace'], handler: () => deleteSelection() },
+    { keys: ['escape'], handler: () => { if (focusMode) exitFocusMode(); } },
     { keys: ['ctrl+a'], handler: (event) => { event.preventDefault(); select(activeSlide.id, activeSlide.blocks.map((block) => block.id)); } },
   ]);
 
   const theme = getTheme(deck.theme.id);
 
   return (
-    <div className={`editor-shell ${notesOpen ? '' : 'notes-collapsed'}`} data-testid="deck-editor-shell">
+    <div
+      className={`editor-shell ${notesOpen ? '' : 'notes-collapsed'} ${railOpen ? '' : 'rail-collapsed'} ${inspectorOpen ? '' : 'inspector-collapsed'} ${focusMode ? 'focus-mode' : ''}`}
+      data-testid="deck-editor-shell"
+    >
       <header className="editor-appbar">
         <div className="editor-document-title">
           <strong>{deck.meta.title}</strong>
@@ -260,7 +322,14 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
               onClick={() => selectSlide(slide.id)}
             >
               <span className="thumb-index">{index + 1}</span>
-              <span className="thumb-title">{slide.title}</span>
+              <span className="thumb-main">
+                <span className="thumb-title">{slide.title}</span>
+                <span className="thumb-meta">
+                  {slide.blocks.length} block{slide.blocks.length === 1 ? '' : 's'}
+                  {slide.speakerNotes ? ' · notes' : ''}
+                  {slide.hidden ? ' · hidden' : ''}
+                </span>
+              </span>
             </button>
             <div className="editor-slide-row-actions">
               <button type="button" onClick={() => commit({ type: 'duplicateSlide', slideId: slide.id })} aria-label={`Duplicate ${slide.title}`}>⧉</button>
@@ -270,12 +339,44 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
         ))}
       </ScrollSurface>
 
+      {!focusMode && (
+        <div className="editor-lhandle" role="separator" aria-orientation="vertical">
+          <button
+            type="button"
+            className="editor-handle-button"
+            onClick={() => setRailOpen((value) => !value)}
+            aria-label={railOpen ? 'Collapse slides panel' : 'Expand slides panel'}
+            title={railOpen ? 'Collapse slides panel' : 'Expand slides panel'}
+          >
+            {railOpen ? '‹' : '›'}
+          </button>
+        </div>
+      )}
+
       <ScrollSurface as="main" surface="app-page" axis="both" className="editor-canvas">
         <div className="editor-canvas-controls">
+          <span className="slide-indicator" title={activeSlide.title}>
+            <strong>{deck.slides.findIndex((s) => s.id === activeSlide.id) + 1}</strong>
+            <span>/ {deck.slides.length}</span>
+            <span className="slide-indicator-title">{activeSlide.title}</span>
+          </span>
           <span className="zoom-label">Zoom {Math.round(zoom * 100)}%</span>
           <button type="button" onClick={() => setZoom((z) => Math.max(0.25, z - 0.08))} aria-label="Zoom out">−</button>
           <button type="button" onClick={() => setZoom(0.62)} aria-label="Reset zoom">Fit</button>
           <button type="button" onClick={() => setZoom((z) => Math.min(1.5, z + 0.08))} aria-label="Zoom in">+</button>
+          <label className="canvas-size-field">
+            <span>Canvas</span>
+            <select
+              value={presetForCanvas(deck.canvas)}
+              onChange={(event) => setCanvasPreset(event.target.value)}
+              aria-label="Canvas size"
+            >
+              {CANVAS_PRESETS.map((preset) => (
+                <option key={preset.id} value={preset.id}>{preset.label}</option>
+              ))}
+              <option value="custom">Custom · {deck.canvas.width}×{deck.canvas.height}</option>
+            </select>
+          </label>
           <span className="layout-name">
             Layout: <strong>{activeSlide.layout}</strong>
           </span>
@@ -307,6 +408,15 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
             onClick={repairActiveSlide}
           >
             ✨ Repair slide
+          </button>
+          <button
+            type="button"
+            className={focusMode ? 'focus-toggle is-active' : 'focus-toggle'}
+            aria-pressed={focusMode}
+            onClick={focusMode ? editFromFocusMode : enterFocusMode}
+            title={focusMode ? 'Exit focus mode (Esc)' : 'Focus on the slide — hides side panels'}
+          >
+            {focusMode ? '✕ Edit' : '⛶ Focus'}
           </button>
         </div>
         <div className="canvas-stage" onClick={() => selectNone()}>
@@ -344,6 +454,20 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
           onChange={(event) => updateActiveSlide({ notes: event.target.value })}
         />
       </div>
+
+      {!focusMode && (
+        <div className="editor-rhandle" role="separator" aria-orientation="vertical">
+          <button
+            type="button"
+            className="editor-handle-button"
+            onClick={() => setInspectorOpen((value) => !value)}
+            aria-label={inspectorOpen ? 'Collapse inspector' : 'Expand inspector'}
+            title={inspectorOpen ? 'Collapse inspector' : 'Expand inspector'}
+          >
+            {inspectorOpen ? '›' : '‹'}
+          </button>
+        </div>
+      )}
 
       <ScrollSurface as="aside" surface="inspector" className="editor-inspector" aria-label="Inspector">
         <div className="inspector-section">

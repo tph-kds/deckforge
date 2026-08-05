@@ -13,6 +13,7 @@ export type Command =
   | { type: 'removeBlock'; slideId: string; blockId: string }
   | { type: 'duplicateBlock'; slideId: string; blockId: string }
   | { type: 'setTheme'; themeId: string }
+  | { type: 'setCanvas'; canvas: DeckProject['canvas'] }
   | { type: 'setTransition'; transition: string }
   | { type: 'setMotionProfile'; motionProfileId: string }
   | { type: 'setReducedMotion'; reducedMotion: 'respect-system' | 'always' | 'never' }
@@ -141,6 +142,8 @@ export function applyCommand(deck: DeckProject, command: Command): DeckProject {
       });
     case 'setTheme':
       return { ...deck, theme: { ...deck.theme, id: command.themeId } };
+    case 'setCanvas':
+      return { ...deck, canvas: command.canvas };
     case 'setTransition':
       return { ...deck, presentation: { ...deck.presentation, transition: command.transition } };
     case 'setMotionProfile':

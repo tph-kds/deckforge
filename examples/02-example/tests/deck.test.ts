@@ -79,6 +79,19 @@ describe('command reducer', () => {
     expect(next.theme.id).toBe('mono-ink');
   });
 
+  it('applies a canvas dimension change immutably', () => {
+    const deck = loadSeedDeck();
+    const next = applyCommand(deck, {
+      type: 'setCanvas',
+      canvas: { ...deck.canvas, aspectRatio: '4:3', width: 1440, height: 1080 },
+    });
+    expect(next.canvas.width).toBe(1440);
+    expect(next.canvas.height).toBe(1080);
+    expect(next.canvas.aspectRatio).toBe('4:3');
+    expect(deck.canvas.width).toBe(1600);
+    expect(deck.canvas).not.toBe(next.canvas);
+  });
+
   it('removes a block and its binding', () => {
     const deck = loadSeedDeck();
     const next = applyCommand(deck, { type: 'removeBlock', slideId: 's1', blockId: 'b5' });
