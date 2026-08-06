@@ -1,4 +1,62 @@
+import type { DeckProject } from "../deck-types";
+
 export type ExportIssueSeverity = "info" | "warning" | "error";
+
+export type ExportIssueCode =
+  | "missing-font"
+  | "font-substitution"
+  | "image-load-failed"
+  | "unsupported-block"
+  | "unsupported-block-type"
+  | "unsupported-css-effect"
+  | "oversized-content"
+  | "fallback-rasterized"
+  | "archive-verification-failed"
+  | "block-export-failed"
+  | "block-hidden-skipped"
+  | "hidden-slide-skipped"
+  | "missing-speaker-notes"
+  | "external-asset"
+  | "no-fallback-produced";
+
+export interface ExportIssue {
+  code: ExportIssueCode;
+  severity: ExportIssueSeverity;
+  slideId?: string;
+  blockId?: string;
+  message: string;
+  note?: string;
+  suggestedFix?: string;
+  automaticFixAvailable: boolean;
+}
+
+export type BlockExportStatus = "native" | "rasterized" | "substituted" | "skipped" | "unsupported";
+
+export interface ExportBlockReport {
+  blockId: string;
+  status: BlockExportStatus;
+  issues: ExportIssue[];
+}
+
+export interface ExportSlideReport {
+  slideId: string;
+  blocks: ExportBlockReport[];
+}
+
+export type ExportStatus = "complete" | "partial" | "failed";
+
+export interface ExportReport {
+  status: ExportStatus;
+  slides: ExportSlideReport[];
+  issues: ExportIssue[];
+  outputPath?: string;
+}
+
+export interface PptxExportResult {
+  report: ExportReport;
+  blob: Blob;
+  archiveVerified: boolean;
+}
 
 export type PptxExportability =
   | "native-editable"
@@ -7,16 +65,6 @@ export type PptxExportability =
   | "image-only"
   | "poster-with-link"
   | "unsupported";
-
-export interface ExportIssue {
-  severity: ExportIssueSeverity;
-  code: string;
-  slideId?: string;
-  blockId?: string;
-  message: string;
-  suggestedFix?: string;
-  automaticFixAvailable: boolean;
-}
 
 export interface ExportPreflightResult {
   issues: ExportIssue[];
@@ -40,33 +88,91 @@ export interface FontWarning {
   substituteFont?: string;
 }
 
-export interface PptxSlideElement {
-  type: "text" | "image" | "shape" | "table" | "chart" | "fallback";
+interface PptxTextElement {
+  type: "text";
   x: number;
   y: number;
   w: number;
   h: number;
-  data: unknown;
+  data: { text: string; options?: Record<string, unknown> };
 }
 
+interface PptxImageElement {
+  type: "image";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  data: { dataUri: string; alt?: string; options?: Record<string, unknown> };
+}
+
+interface PptxShapeElement {
+  type: "shape";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  data: { shape: string; options?: Record<string, unknown> };
+}
+
+interface PptxTableElement {
+  type: "table";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  data: { rows: unknown[][]; options?: Record<string, unknown> };
+}
+
+interface PptxChartElement {
+  type: "chart";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  data: { chartType: string; data: unknown[]; options?: Record<string, unknown> };
+}
+
+interface PptxFallbackElement {
+  type: "fallback";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  data: { text: string; options?: Record<string, unknown> };
+}
+
+export type PptxSlideElement =
+  | PptxTextElement
+  | PptxImageElement
+  | PptxShapeElement
+  | PptxTableElement
+  | PptxChartElement
+  | PptxFallbackElement;
+
 export interface PptxExportContext {
-  pptx: unknown;
-  deck: unknown;
+  deck: DeckProject;
   config: PptxExportConfig;
   fontWarnings: FontWarning[];
-  assetCache: Map<string, string>;
+  assetCache: Map<string, { dataUri: string; width?: number; height?: number; mimeType: string }>;
   slideWidth: number;
   slideHeight: number;
 }
 
+export interface PptxBlockExport {
+  element?: PptxSlideElement;
+  status: BlockExportStatus;
+  issues: ExportIssue[];
+}
+
 export interface PptxBlockExporter {
   type: string;
-  export(block: unknown, ctx: PptxExportContext): Promise<PptxSlideElement>;
+  export(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport>;
   exportability: PptxExportability;
 }
 
 export interface ExportDialogProps {
-  deck: unknown;
+  deck: DeckProject;
   isOpen: boolean;
   onClose: () => void;
   onExport?: (result: Blob) => void;

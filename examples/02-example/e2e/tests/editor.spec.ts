@@ -116,3 +116,44 @@ test('present button routes to the presenter', async ({ page }) => {
   await expect(page.locator('.presenter-shell')).toBeVisible();
   await expect(page.locator('.presenter-position')).toHaveText('1 / 7');
 });
+
+test('collapses and expands the left slide rail', async ({ page }) => {
+  await openEditor(page);
+  await expect(page.locator('.editor-slide-rail')).toBeVisible();
+  await page.getByRole('button', { name: 'Collapse slides panel' }).click();
+  await expect(page.locator('.editor-shell')).toHaveClass(/rail-collapsed/);
+  await expect(page.locator('.editor-slide-rail')).toBeHidden();
+  await page.getByRole('button', { name: 'Expand slides panel' }).click();
+  await expect(page.locator('.editor-slide-rail')).toBeVisible();
+});
+
+test('collapses and expands the right inspector', async ({ page }) => {
+  await openEditor(page);
+  await expect(page.locator('.editor-inspector')).toBeVisible();
+  await page.getByRole('button', { name: 'Collapse inspector' }).click();
+  await expect(page.locator('.editor-shell')).toHaveClass(/inspector-collapsed/);
+  await expect(page.locator('.editor-inspector')).toBeHidden();
+  await page.getByRole('button', { name: 'Expand inspector' }).click();
+  await expect(page.locator('.editor-inspector')).toBeVisible();
+});
+
+test('focus mode hides side panels and exits via Esc', async ({ page }) => {
+  await openEditor(page);
+  await page.getByRole('button', { name: '⛶ Focus' }).click();
+  await expect(page.locator('.editor-shell')).toHaveClass(/focus-mode/);
+  await expect(page.locator('.editor-slide-rail')).toBeHidden();
+  await expect(page.locator('.editor-inspector')).toBeHidden();
+  await expect(page.locator('.editor-notes-area')).toBeHidden();
+  await expect(page.locator('.editor-canvas [data-block-id]')).toHaveCount(5);
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.editor-inspector')).toBeVisible();
+});
+
+test('changes the slide canvas to a 4:3 preset', async ({ page }) => {
+  await openEditor(page);
+  const canvasSize = page.getByRole('combobox', { name: 'Canvas size' });
+  await expect(canvasSize).toHaveValue('16:9');
+  await canvasSize.selectOption('4:3');
+  await expect(canvasSize).toHaveValue('4:3');
+  await expect(page.locator('.editor-canvas-controls')).toContainText('4:3 · 1440×1080');
+});

@@ -17,6 +17,7 @@ interface ShapeBlock {
   y?: number;
   w?: number;
   h?: number;
+  frame?: { x?: number; y?: number; w?: number; h?: number };
 }
 
 const SHAPE_MAP: Record<string, string> = {
@@ -43,10 +44,10 @@ export const shapeBlockExporter: PptxBlockExporter = {
       issues: [],
       element: {
         type: "shape",
-        x: shapeBlock.x ?? 0,
-        y: shapeBlock.y ?? 0,
-        w: shapeBlock.w ?? 2,
-        h: shapeBlock.h ?? 2,
+        x: shapeBlock.x ?? shapeBlock.frame?.x ?? 0,
+        y: shapeBlock.y ?? shapeBlock.frame?.y ?? 0,
+        w: shapeBlock.w ?? shapeBlock.frame?.w ?? 2,
+        h: shapeBlock.h ?? shapeBlock.frame?.h ?? 2,
         data: {
           shape: pptxShape,
           options: {

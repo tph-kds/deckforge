@@ -13,6 +13,7 @@ interface DiagramBlock {
   y?: number;
   w?: number;
   h?: number;
+  frame?: { x?: number; y?: number; w?: number; h?: number };
 }
 
 export const diagramBlockExporter: PptxBlockExporter = {
@@ -39,10 +40,10 @@ export const diagramBlockExporter: PptxBlockExporter = {
       ],
       element: {
         type: "fallback",
-        x: diagramBlock.x ?? 0,
-        y: diagramBlock.y ?? 0,
-        w: diagramBlock.w ?? ctx.slideWidth * 0.6,
-        h: diagramBlock.h ?? ctx.slideHeight * 0.4,
+        x: diagramBlock.x ?? diagramBlock.frame?.x ?? 0,
+        y: diagramBlock.y ?? diagramBlock.frame?.y ?? 0,
+        w: diagramBlock.w ?? diagramBlock.frame?.w ?? ctx.slideWidth * 0.6,
+        h: diagramBlock.h ?? diagramBlock.frame?.h ?? ctx.slideHeight * 0.4,
         data: {
           text: summary,
           options: {

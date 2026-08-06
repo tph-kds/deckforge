@@ -1,26 +1,28 @@
-import type { PptxBlockExporter, PptxExportContext, PptxSlideElement } from "../../export-types";
+import type {
+  PptxBlockExport,
+  PptxBlockExporter,
+  PptxExportContext,
+} from "../../export-types";
 
 export const fallbackBlockExporter: PptxBlockExporter = {
   type: "fallback",
   exportability: "image-only",
 
-  async export(block: unknown, ctx: PptxExportContext): Promise<PptxSlideElement> {
+  async export(block: unknown, _ctx: PptxExportContext): Promise<PptxBlockExport> {
     const anyBlock = block as Record<string, unknown>;
     const blockType = (anyBlock.type as string) ?? "unknown";
 
     return {
-      type: "fallback",
-      x: (anyBlock.x as number) ?? 0,
-      y: (anyBlock.y as number) ?? 0,
-      w: (anyBlock.w as number) ?? ctx.slideWidth * 0.5,
-      h: (anyBlock.h as number) ?? ctx.slideHeight * 0.3,
-      data: {
-        text: `[${blockType} block - requires web rendering]`,
-        options: {
-          fill: { color: "FFF3CD" },
-          line: { color: "FFC107", width: 1 },
+      status: "unsupported",
+      issues: [
+        {
+          code: "unsupported-block",
+          severity: "warning",
+          message: `Block type "${blockType}" cannot be exported to PPTX and was omitted`,
+          suggestedFix: "Replace it with a supported block type (text, image, chart, shape, table, diagram)",
+          automaticFixAvailable: false,
         },
-      },
+      ],
     };
   },
 };

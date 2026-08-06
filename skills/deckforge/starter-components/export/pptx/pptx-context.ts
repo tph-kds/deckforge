@@ -5,7 +5,7 @@ export interface PptxExportContextData {
   deck: DeckProject;
   config: PptxExportConfig;
   fontWarnings: FontWarning[];
-  assetCache: Map<string, string>;
+  assetCache: Map<string, { dataUri: string; width?: number; height?: number; mimeType: string }>;
   slideWidth: number;
   slideHeight: number;
 }

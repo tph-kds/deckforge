@@ -4,18 +4,27 @@
 export type {
   ExportIssue,
   ExportIssueSeverity,
+  ExportIssueCode,
   ExportPreflightResult,
+  ExportReport,
+  ExportBlockReport,
+  ExportSlideReport,
+  ExportStatus,
+  BlockExportStatus,
   PptxExportConfig,
   PptxExportContext,
   PptxExportability,
   PptxSlideElement,
+  PptxBlockExport,
   PptxBlockExporter,
+  PptxExportResult,
   FontWarning,
+  ExportDialogProps,
 } from "../../skills/deckforge/starter-components/export/export-types";
 
 export { DEFAULT_PPTX_CONFIG } from "../../skills/deckforge/starter-components/export/export-types";
 
-export { PptxExporter } from "../../skills/deckforge/starter-components/export/pptx/pptx-exporter";
+export { PptxExporter, buildExportReport, deriveExportStatus, verifyPptxArchive } from "../../skills/deckforge/starter-components/export/pptx/pptx-exporter";
 export { createExportContext } from "../../skills/deckforge/starter-components/export/pptx/pptx-context";
 export { mapThemeColors, mapThemeFonts, applyThemeToPptx } from "../../skills/deckforge/starter-components/export/pptx/pptx-theme";
 export { checkFontCompatibility, collectFontWarnings } from "../../skills/deckforge/starter-components/export/pptx/pptx-fonts";
@@ -28,7 +37,7 @@ export {
   getExportability,
 } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/index";
 
-export { textBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/text";
+export { textBlockExporter, headingBlockExporter, bulletsBlockExporter, calloutBlockExporter, citationBlockExporter, metricBlockExporter, processBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/text";
 export { imageBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/image";
 export { shapeBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/shape";
 export { tableBlockExporter } from "../../skills/deckforge/starter-components/export/pptx/block-exporters/table";

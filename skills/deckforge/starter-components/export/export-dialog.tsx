@@ -1,7 +1,7 @@
 // starter-components/export/export-dialog.tsx
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import type { ExportPreflightResult, PptxExportConfig } from "./export-types";
+import type { ExportPreflightResult, ExportStatus, PptxExportConfig } from "./export-types";
 import { DEFAULT_PPTX_CONFIG } from "./export-types";
 import { runExportPreflight } from "./export-preflight";
 
@@ -18,6 +18,7 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
   const [preflight, setPreflight] = useState<ExportPreflightResult | null>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [lastStatus, setLastStatus] = useState<ExportStatus | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -69,8 +70,10 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
     try {
       const { PptxExporter } = await import("./pptx/pptx-exporter");
       const exporter = new PptxExporter(config);
-      const blob = await exporter.export(deck);
+      const result = await exporter.export(deck);
+      const blob = result.blob;
       onExport?.(blob);
+      setLastStatus(result.report.status);
 
       const deckData = deck as { meta?: { title?: string } };
       const title = deckData.meta?.title ?? "deck";
@@ -166,6 +169,24 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
             <div style={{ fontSize: "14px", marginTop: "4px" }}>
               {preflight.issues.filter(i => i.severity === "warning").length} warnings, {preflight.issues.filter(i => i.severity === "info").length} info
             </div>
+          </div>
+        )}
+
+        {lastStatus && (
+          <div
+            role="status"
+            aria-live="polite"
+            style={{
+              padding: "12px",
+              borderRadius: "6px",
+              marginBottom: "16px",
+              backgroundColor: lastStatus === "complete" ? "#f0fdf4" : lastStatus === "partial" ? "#fffbeb" : "#fef2f2",
+              color: lastStatus === "complete" ? "#166534" : lastStatus === "partial" ? "#92400e" : "#991b1b",
+            }}
+          >
+            <span style={{ fontWeight: 600, textTransform: "capitalize" }}>Export {lastStatus}</span>
+            {lastStatus === "partial" && <span> — some blocks were substituted or skipped; review the report below.</span>}
+            {lastStatus === "failed" && <span> — the presentation could not be produced. Check the report below.</span>}
           </div>
         )}
 
