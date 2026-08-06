@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { applyCommand, type Command } from './commands';
+import { applyCommandWithResult, type Command, type DispatchResult } from './commands';
 import { loadSeedDeck } from './seed';
 import { deckStorageAvailable, loadDeck, saveDeck } from './persistence';
 import type { DeckProject, EditorSelection, SaveState } from './types';
@@ -16,7 +16,7 @@ export interface DeckStore {
   selectSlide: (slideId: string) => void;
   selectBlock: (slideId: string, blockId: string, additive?: boolean) => void;
   selectNone: () => void;
-  commit: (command: Command) => void;
+  commit: (command: Command) => DispatchResult | undefined;
   undo: () => void;
   redo: () => void;
   saveNow: () => SaveState;
@@ -65,14 +65,14 @@ export function useDeck(): DeckStore {
     setSelection((prev) => ({ slideId: prev.slideId, blockIds: [], mode: 'none' }));
   }, []);
 
-  const commit = useCallback((command: Command) => {
-    setDeck((current) => {
-      const next = applyCommand(current, command);
-      setPast((history) => [...history.slice(-HISTORY_LIMIT + 1), current]);
-      setFuture([]);
-      setSaveState('dirty');
-      return next;
-    });
+  const commit = useCallback((command: Command): DispatchResult | undefined => {
+    const current = deckRef.current;
+    const outcome = applyCommandWithResult(current, command);
+    setPast((history) => [...history.slice(-HISTORY_LIMIT + 1), current]);
+    setFuture([]);
+    setSaveState('dirty');
+    setDeck(outcome.deck);
+    return outcome;
   }, []);
 
   const undo = useCallback(() => {

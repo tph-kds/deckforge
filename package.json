@@ -14,7 +14,7 @@
     "test:unit": "python -m unittest discover -s tests -p \"test_*.py\"",
     "test:integration": "npm run validate && npm run package-skills",
     "test:visual": "python scripts/audits/audit_deck_layout.py examples/02-example/deck.json --strict && python scripts/audits/audit_deck_assets.py examples/02-example/deck.json && python scripts/audits/audit_deck_content.py examples/02-example/deck.json && python scripts/audits/audit_deck_layout.py examples/ai-product-vision.deck.json --strict && python scripts/audits/audit_deck_layout.py examples/acme-platform-migration.deck.json --strict && python scripts/audits/audit_deck_layout.py examples/stress-test-30.deck.json --strict && cd examples/02-example && npm run test -- --run tests/contrast.test.ts",
-    "package-skills": "python scripts/package/package_skill_zips.py"
+    "package-skills": "python scripts/package/package_skill_zips.py && python scripts/validate/validate_skill_bundles.py skill-zips"
   },
   "license": "MIT"
 }

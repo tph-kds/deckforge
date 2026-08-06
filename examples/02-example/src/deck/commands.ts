@@ -1,5 +1,5 @@
 ﻿import type { Block, DeckProject, DeckSlide } from './types';
-import { newId } from './seed';
+import { migrateLayoutBindings, newId } from './seed';
 
 export type Command =
   | { type: 'updateBlockContent'; slideId: string; blockId: string; content: unknown }
@@ -24,6 +24,22 @@ export type Command =
   | { type: 'updateMeta'; title?: string; description?: string }
   | { type: 'updateBlockAnimation'; slideId: string; blockId: string; animation: Block['animation'] | null }
   | { type: 'replaceDeck'; deck: DeckProject };
+
+/**
+ * Command outcome metadata (P0-007). Every mutation reports the IDs it created
+ * and removed plus the slides it affected, so callers can drive selection,
+ * repair, and AI provenance without re-deriving state.
+ */
+export interface DispatchResult {
+  deck: DeckProject;
+  createdIds: string[];
+  removedIds: string[];
+  affectedSlideIds: string[];
+}
+
+function result(deck: DeckProject): DispatchResult {
+  return { deck, createdIds: [], removedIds: [], affectedSlideIds: [] };
+}
 
 function mapSlide(deck: DeckProject, slideId: string, fn: (slide: DeckSlide) => DeckSlide): DeckProject {
   return {
@@ -83,53 +99,113 @@ function newSlideTemplate(title: string): DeckSlide {
   };
 }
 
-export function applyCommand(deck: DeckProject, command: Command): DeckProject {
+/**
+ * The canonical title block is the heading bound to the `title` slot (or the
+ * first heading block when no title binding exists). This unifies slide
+ * metadata with the visible heading so the inspector, canvas, and export stay
+ * in sync (DF-014).
+ */
+function titleBlockId(slide: DeckSlide): string | undefined {
+  const titleBinding = (slide.layoutBindings ?? []).find((binding) => binding.slot === 'title');
+  const boundId = titleBinding?.blockIds[0];
+  const boundBlock = boundId ? slide.blocks.find((block) => block.id === boundId) : undefined;
+  if (boundBlock?.type === 'heading') return boundBlock.id;
+  return slide.blocks.find((block) => block.type === 'heading')?.id;
+}
+
+/**
+ * Apply a command and return both the new deck and its metadata.
+ * `applyCommand` is a thin wrapper kept for callers that only need the deck.
+ */
+export function applyCommandWithResult(deck: DeckProject, command: Command): DispatchResult {
   switch (command.type) {
-    case 'updateBlockContent':
-      return mapBlock(deck, command.slideId, command.blockId, (block) => ({ ...block, content: command.content }));
+    case 'updateBlockContent': {
+      const next = mapSlide(deck, command.slideId, (slide) => {
+        const blocks = slide.blocks.map((block) =>
+          block.id === command.blockId ? { ...block, content: command.content } : block,
+        );
+        // Keep slide title metadata in sync with the visible heading (DF-014).
+        if (command.blockId === titleBlockId(slide)) {
+          return { ...slide, title: typeof command.content === 'string' ? command.content : slide.title, blocks };
+        }
+        return { ...slide, blocks };
+      });
+      return { ...result(next), affectedSlideIds: [command.slideId] };
+    }
     case 'updateBlockStyle':
-      return mapBlock(deck, command.slideId, command.blockId, (block) => ({ ...block, style: { ...block.style, ...command.style } }));
+      return {
+        ...result(mapBlock(deck, command.slideId, command.blockId, (block) => ({ ...block, style: { ...block.style, ...command.style } }))),
+        affectedSlideIds: [command.slideId],
+      };
     case 'updateBlockAlt':
-      return mapBlock(deck, command.slideId, command.blockId, (block) => ({ ...block, alt: command.alt }));
+      return {
+        ...result(mapBlock(deck, command.slideId, command.blockId, (block) => ({ ...block, alt: command.alt }))),
+        affectedSlideIds: [command.slideId],
+      };
     case 'updateSlideTitle':
-      return mapSlide(deck, command.slideId, (slide) => ({ ...slide, title: command.title }));
+      return {
+        ...result(mapSlide(deck, command.slideId, (slide) => {
+          const titleId = titleBlockId(slide);
+          const blocks = titleId
+            ? slide.blocks.map((block) => (block.id === titleId ? { ...block, content: command.title } : block))
+            : slide.blocks;
+          return { ...slide, title: command.title, blocks };
+        })),
+        affectedSlideIds: [command.slideId],
+      };
     case 'updateSlideNotes':
-      return mapSlide(deck, command.slideId, (slide) => ({ ...slide, speakerNotes: command.notes }));
+      return {
+        ...result(mapSlide(deck, command.slideId, (slide) => ({ ...slide, speakerNotes: command.notes }))),
+        affectedSlideIds: [command.slideId],
+      };
     case 'updateSlideLayout':
-      return mapSlide(deck, command.slideId, (slide) => ({ ...slide, layout: command.layout }));
+      return {
+        ...result(mapSlide(deck, command.slideId, (slide) => migrateLayoutBindings(slide, command.layout))),
+        affectedSlideIds: [command.slideId],
+      };
     case 'updateSlideTransition':
-      return mapSlide(deck, command.slideId, (slide) => ({ ...slide, transition: command.transition }));
-    case 'addBlock':
-      return mapSlide(deck, command.slideId, (slide) => {
-        const block = command.slot ? { ...command.block, slot: command.slot } : command.block;
-        const bindings = command.slot
+      return {
+        ...result(mapSlide(deck, command.slideId, (slide) => ({ ...slide, transition: command.transition }))),
+        affectedSlideIds: [command.slideId],
+      };
+    case 'addBlock': {
+      const block = command.slot ? { ...command.block, slot: command.slot } : command.block;
+      const next = mapSlide(deck, command.slideId, (slide) => ({
+        ...slide,
+        blocks: [...slide.blocks, block],
+        layoutBindings: command.slot
           ? addBlockToBinding(slide.layoutBindings ?? [], command.slot, block.id)
-          : slide.layoutBindings;
-        return {
-          ...slide,
-          blocks: [...slide.blocks, block],
-          layoutBindings: bindings,
-        };
-      });
-    case 'removeBlock':
-      return mapSlide(deck, command.slideId, (slide) => {
-        const blockIds = slide.blocks.filter((block) => block.id !== command.blockId).map((block) => block.id);
-        return {
-          ...slide,
-          blocks: slide.blocks.filter((block) => block.id !== command.blockId),
-          layoutBindings: (slide.layoutBindings ?? []).map((binding) => ({
-            ...binding,
-            blockIds: binding.blockIds.filter((id) => id !== command.blockId),
-          })),
-          focalBlockId: slide.focalBlockId === command.blockId ? undefined : slide.focalBlockId,
-          ...(blockIds.length ? {} : {}),
-        };
-      });
-    case 'duplicateBlock':
-      return mapSlide(deck, command.slideId, (slide) => {
+          : slide.layoutBindings,
+      }));
+      return {
+        ...result(next),
+        createdIds: [block.id],
+        affectedSlideIds: [command.slideId],
+      };
+    }
+    case 'removeBlock': {
+      const next = mapSlide(deck, command.slideId, (slide) => ({
+        ...slide,
+        blocks: slide.blocks.filter((block) => block.id !== command.blockId),
+        layoutBindings: (slide.layoutBindings ?? []).map((binding) => ({
+          ...binding,
+          blockIds: binding.blockIds.filter((id) => id !== command.blockId),
+        })),
+        focalBlockId: slide.focalBlockId === command.blockId ? undefined : slide.focalBlockId,
+      }));
+      return {
+        ...result(next),
+        removedIds: [command.blockId],
+        affectedSlideIds: [command.slideId],
+      };
+    }
+    case 'duplicateBlock': {
+      let createdId = '';
+      const next = mapSlide(deck, command.slideId, (slide) => {
         const source = slide.blocks.find((block) => block.id === command.blockId);
         if (!source) return slide;
         const copy: Block = { ...structuredClone(source), id: newId('b'), slot: source.slot, positionMode: source.slot ? 'slot' : source.positionMode };
+        createdId = copy.id;
         return {
           ...slide,
           blocks: [...slide.blocks, copy],
@@ -140,61 +216,104 @@ export function applyCommand(deck: DeckProject, command: Command): DeckProject {
           ),
         };
       });
-    case 'setTheme':
-      return { ...deck, theme: { ...deck.theme, id: command.themeId } };
-    case 'setCanvas':
-      return { ...deck, canvas: command.canvas };
-    case 'setTransition':
-      return { ...deck, presentation: { ...deck.presentation, transition: command.transition } };
-    case 'setMotionProfile':
-      return { ...deck, presentation: { ...deck.presentation, motionProfileId: command.motionProfileId } };
-    case 'setReducedMotion':
-      return { ...deck, presentation: { ...deck.presentation, reducedMotion: command.reducedMotion } };
-    case 'addSlide':
       return {
-        ...deck,
-        slides: [...deck.slides.slice(0, (command.afterIndex ?? deck.slides.length - 1) + 1), newSlideTemplate('Untitled slide'), ...deck.slides.slice((command.afterIndex ?? deck.slides.length - 1) + 1)],
+        ...result(next),
+        createdIds: createdId ? [createdId] : [],
+        affectedSlideIds: [command.slideId],
       };
-    case 'duplicateSlide':
-      return mapSlide(deck, command.slideId, (slide) => {
-        const copy: DeckSlide = structuredClone({ ...slide, id: newId('s'), title: `${slide.title} (copy)` });
-        const remap = new Map<string, string>();
-        for (const block of copy.blocks) {
-          const old = block.id;
-          block.id = newId('b');
-          remap.set(old, block.id);
-        }
-        copy.layoutBindings = (copy.layoutBindings ?? []).map((binding) => ({
-          ...binding,
-          blockIds: binding.blockIds.map((id) => remap.get(id) ?? id),
-        }));
-        copy.focalBlockId = copy.focalBlockId ? remap.get(copy.focalBlockId) : copy.focalBlockId;
-        return { ...slide };
-      });
+    }
+    case 'setTheme':
+      return result({ ...deck, theme: { ...deck.theme, id: command.themeId } });
+    case 'setCanvas':
+      return result({ ...deck, canvas: command.canvas });
+    case 'setTransition':
+      return result({ ...deck, presentation: { ...deck.presentation, transition: command.transition } });
+    case 'setMotionProfile':
+      return result({ ...deck, presentation: { ...deck.presentation, motionProfileId: command.motionProfileId } });
+    case 'setReducedMotion':
+      return result({ ...deck, presentation: { ...deck.presentation, reducedMotion: command.reducedMotion } });
+    case 'addSlide': {
+      const afterIndex = command.afterIndex ?? deck.slides.length - 1;
+      const nextSlide = newSlideTemplate('Untitled slide');
+      const slides = [
+        ...deck.slides.slice(0, afterIndex + 1),
+        nextSlide,
+        ...deck.slides.slice(afterIndex + 1),
+      ];
+      return {
+        deck: { ...deck, slides },
+        createdIds: [nextSlide.id],
+        removedIds: [],
+        affectedSlideIds: [nextSlide.id],
+      };
+    }
+    case 'duplicateSlide': {
+      const sourceIndex = deck.slides.findIndex((slide) => slide.id === command.slideId);
+      if (sourceIndex < 0) return result(deck);
+      const copy: DeckSlide = structuredClone(deck.slides[sourceIndex]);
+      copy.id = newId('s');
+      copy.title = `${copy.title} (copy)`;
+      const remap = new Map<string, string>();
+      for (const block of copy.blocks) {
+        const old = block.id;
+        block.id = newId('b');
+        remap.set(old, block.id);
+      }
+      copy.layoutBindings = (copy.layoutBindings ?? []).map((binding) => ({
+        ...binding,
+        blockIds: binding.blockIds.map((id) => remap.get(id) ?? id),
+      }));
+      copy.focalBlockId = copy.focalBlockId ? remap.get(copy.focalBlockId) : undefined;
+      const slides = [...deck.slides];
+      slides.splice(sourceIndex + 1, 0, copy);
+      return {
+        deck: { ...deck, slides },
+        createdIds: [copy.id, ...copy.blocks.map((block) => block.id)],
+        removedIds: [],
+        affectedSlideIds: [copy.id],
+      };
+    }
     case 'removeSlide': {
-      if (deck.slides.length <= 1) return deck;
-      return { ...deck, slides: deck.slides.filter((slide) => slide.id !== command.slideId) };
+      if (deck.slides.length <= 1) return result(deck);
+      return {
+        deck: { ...deck, slides: deck.slides.filter((slide) => slide.id !== command.slideId) },
+        createdIds: [],
+        removedIds: [command.slideId],
+        affectedSlideIds: deck.slides
+          .filter((slide) => slide.id !== command.slideId)
+          .map((slide) => slide.id),
+      };
     }
     case 'moveSlide': {
       const slides = [...deck.slides];
       const [moved] = slides.splice(command.fromIndex, 1);
-      if (!moved) return deck;
+      if (!moved) return result(deck);
       slides.splice(command.toIndex, 0, moved);
-      return { ...deck, slides };
+      return { deck: { ...deck, slides }, createdIds: [], removedIds: [], affectedSlideIds: [moved.id] };
     }
     case 'updateMeta':
-      return { ...deck, meta: { ...deck.meta, ...(command.title != null ? { title: command.title } : {}), ...(command.description != null ? { description: command.description } : {}) } };
-    case 'updateBlockAnimation':
-      return mapBlock(deck, command.slideId, command.blockId, (block) => {
-        if (command.animation === null) {
-          const { animation: _removed, ...rest } = block;
-          return rest as Block;
-        }
-        return { ...block, animation: command.animation };
+      return result({
+        ...deck,
+        meta: { ...deck.meta, ...(command.title != null ? { title: command.title } : {}), ...(command.description != null ? { description: command.description } : {}) },
       });
+    case 'updateBlockAnimation':
+      return {
+        ...result(mapBlock(deck, command.slideId, command.blockId, (block) => {
+          if (command.animation === null) {
+            const { animation: _removed, ...rest } = block;
+            return rest as Block;
+          }
+          return { ...block, animation: command.animation };
+        })),
+        affectedSlideIds: [command.slideId],
+      };
     case 'replaceDeck':
-      return command.deck;
+      return { deck: command.deck, createdIds: [], removedIds: [], affectedSlideIds: [] };
     default:
-      return deck;
+      return result(deck);
   }
+}
+
+export function applyCommand(deck: DeckProject, command: Command): DeckProject {
+  return applyCommandWithResult(deck, command).deck;
 }

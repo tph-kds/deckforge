@@ -112,11 +112,12 @@ DeckForge 3 directly addresses common failures in AI-generated presentation appl
 Run the complete reference implementation:
 
 ```bash
-cd examples/editable-deck-studio
-python -m http.server 4173
+cd examples/02-example
+npm install
+npm run dev
 ```
 
-Then open `http://localhost:4173`. The example includes a slide rail, toolbar, inspector, notes, themes, layouts, text and image insertion, persistence, undo/redo, save status, presenter mode, fullscreen, blackout, overview, and shortcut guidance.
+Then open `http://localhost:5173`. The example includes a slide rail, toolbar, inspector, notes, themes, layouts, text and image insertion, persistence, undo/redo, save status, presenter mode, fullscreen, blackout, overview, and shortcut guidance.
 
 See [`docs/DECKFORGE_3_UPGRADE.md`](./docs/DECKFORGE_3_UPGRADE.md) and [`docs/END_USER_FEATURE_MATRIX.md`](./docs/END_USER_FEATURE_MATRIX.md).
 

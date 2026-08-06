@@ -29,13 +29,13 @@
       "evidence": ["tests/deck.test.ts"]
     },
     "edit.media.insert": {
-      "status": "partial",
+      "status": "implemented",
       "entryPoints": ["EditorApp.insertBlock.image"],
       "commands": ["addBlock"],
       "persistence": ["autosave"],
-      "tests": ["tests/assets.test.ts"],
-      "evidence": ["tests/assets.test.ts"],
-      "note": "Image blocks and asset validation are covered; the full insert-and-render flow lacks an automated behavioral test."
+      "tests": ["tests/assets.test.ts", "tests/renderer.test.ts"],
+      "evidence": ["tests/assets.test.ts", "tests/renderer.test.ts"],
+      "note": "Image blocks insert and bind to a visual slot, asset validation covers resolution/fallback/failure, and an automated behavioral test covers the full insert-and-render flow."
     },
     "edit.layout.change": {
       "status": "implemented",
@@ -54,10 +54,13 @@
       "evidence": ["tests/deck.test.ts"]
     },
     "edit.style.change": {
-      "status": "unverified",
+      "status": "implemented",
       "entryPoints": ["EditorApp.updateBlock"],
       "commands": ["updateBlockStyle"],
-      "note": "updateBlockStyle command exists but has no behavioral test yet."
+      "persistence": ["autosave"],
+      "tests": ["tests/deck.test.ts"],
+      "evidence": ["tests/deck.test.ts"],
+      "note": "updateBlockStyle merges style patches onto a block; a behavioral test covers the merge and non-interference with sibling styles."
     },
     "history.undo": {
       "status": "implemented",

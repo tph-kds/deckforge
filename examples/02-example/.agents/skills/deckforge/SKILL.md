@@ -135,7 +135,7 @@ Keep these concerns separate:
 - asset/media adapters;
 - publishing/export adapters.
 
-Use `starter-components/` and `examples/editable-deck-studio/` as references. Adapt them instead of copying blindly.
+Use `starter-components/` and `examples/02-example/` as references. Adapt them instead of copying blindly.
 
 ## 10. Run deterministic checks
 

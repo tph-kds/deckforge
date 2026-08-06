@@ -220,12 +220,24 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
     }
   };
 
+  const duplicateSlide = (slideId: string) => {
+    const outcome = commit({ type: 'duplicateSlide', slideId });
+    const createdSlideId = outcome?.createdIds[0];
+    if (createdSlideId) selectSlide(createdSlideId);
+  };
+
+  const addSlide = (afterIndex?: number) => {
+    const outcome = commit({ type: 'addSlide', afterIndex });
+    const createdSlideId = outcome?.createdIds[0];
+    if (createdSlideId) selectSlide(createdSlideId);
+  };
+
   const duplicateSelection = () => {
     if (selection.mode === 'block' && selection.blockIds[0]) {
       const first = selection.blockIds[0];
-      commit({ type: 'duplicateBlock', slideId: activeSlide.id, blockId: first });
-      const nextBlock = activeSlide.blocks.find((block) => block.id === first);
-      if (nextBlock) selectBlock(activeSlide.id, nextBlock.id);
+      const outcome = commit({ type: 'duplicateBlock', slideId: activeSlide.id, blockId: first });
+      const createdId = outcome?.createdIds[0];
+      if (createdId) selectBlock(activeSlide.id, createdId);
     }
   };
 
@@ -237,8 +249,8 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
     () => [
       { id: 'save', label: 'Save deck', group: 'Deck', hint: 'Ctrl+S', run: () => saveNow() },
       { id: 'present', label: 'Present from current slide', group: 'Deck', hint: 'Ctrl+Enter', run: () => present() },
-      { id: 'add-slide', label: 'Add slide', group: 'Slides', run: () => commit({ type: 'addSlide', afterIndex: deck.slides.findIndex((s) => s.id === activeSlide.id) }) },
-      { id: 'duplicate-slide', label: 'Duplicate current slide', group: 'Slides', run: () => commit({ type: 'duplicateSlide', slideId: activeSlide.id }) },
+      { id: 'add-slide', label: 'Add slide', group: 'Slides', run: () => addSlide(deck.slides.findIndex((s) => s.id === activeSlide.id)) },
+      { id: 'duplicate-slide', label: 'Duplicate current slide', group: 'Slides', run: () => duplicateSlide(activeSlide.id) },
       { id: 'undo', label: 'Undo', group: 'History', hint: 'Ctrl+Z', disabled: !canUndo, run: () => undo() },
       { id: 'redo', label: 'Redo', group: 'History', hint: 'Ctrl+Shift+Z', disabled: !canRedo, run: () => redo() },
       ...Object.keys(BLOCK_TYPE_LABELS).map((type) => ({
@@ -311,7 +323,7 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
       <ScrollSurface as="nav" surface="slide-list" className="editor-slide-rail" aria-label="Slides">
         <div className="editor-rail-head">
           <strong>Slides</strong>
-          <button type="button" onClick={() => commit({ type: 'addSlide', afterIndex: deck.slides.length - 1 })} aria-label="Add slide">＋</button>
+          <button type="button" onClick={() => addSlide(deck.slides.length - 1)} aria-label="Add slide">＋</button>
         </div>
         {deck.slides.map((slide, index) => (
           <div key={slide.id} className="editor-slide-row" data-active={slide.id === activeSlide.id}>
@@ -332,7 +344,7 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
               </span>
             </button>
             <div className="editor-slide-row-actions">
-              <button type="button" onClick={() => commit({ type: 'duplicateSlide', slideId: slide.id })} aria-label={`Duplicate ${slide.title}`}>⧉</button>
+              <button type="button" onClick={() => duplicateSlide(slide.id)} aria-label={`Duplicate ${slide.title}`}>⧉</button>
               <button type="button" onClick={() => commit({ type: 'removeSlide', slideId: slide.id })} aria-label={`Delete ${slide.title}`}>×</button>
             </div>
           </div>

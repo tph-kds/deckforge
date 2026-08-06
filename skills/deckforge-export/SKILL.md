@@ -29,10 +29,10 @@ Add or repair export capabilities for a DeckForge-compatible or custom web slide
 
 ## Required files
 
-- `starter-components/export/export-types.ts` — core contracts
-- `starter-components/export/pptx/` — PptxGenJS adapter and block exporters
-- `starter-components/export/export-preflight.ts` — preflight engine
-- `starter-components/export/export-dialog.tsx` — Export Center UI
+- `../deckforge/starter-components/export/export-types.ts` — core contracts
+- `../deckforge/starter-components/export/pptx/` — PptxGenJS adapter and block exporters
+- `../deckforge/starter-components/export/export-preflight.ts` — preflight engine
+- `../deckforge/starter-components/export/export-dialog.tsx` — Export Center UI
 
 ## Workflow
 

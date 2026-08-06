@@ -32,12 +32,63 @@ if (!isValidDeckProject(deck)) {
   console.error("isValidDeckProject returned false for a valid deck");
   process.exit(1);
 }
-const broken = { ...deck, slides: "not-an-array" };
-if (validateDeckProject(broken).valid) {
-  console.error("validator accepted an invalid deck");
-  process.exit(1);
+
+const clone = (x) => JSON.parse(JSON.stringify(x));
+
+const cases = [
+  {
+    name: "top-level slide array replaced",
+    mutate: (d) => { d.slides = "not-an-array"; },
+  },
+  {
+    name: "nested block type empty string",
+    mutate: (d) => { d.slides[0].blocks[0].type = ""; },
+  },
+  {
+    name: "nested block sourceIds duplicate",
+    mutate: (d) => { d.slides[0].blocks[0].sourceIds = ["a", "a"]; },
+  },
+  {
+    name: "nested animation durationMs out of range",
+    mutate: (d) => { d.slides[0].blocks[0].animation = { id: "a1", durationMs: 999999 }; },
+  },
+  {
+    name: "nested animation missing required id",
+    mutate: (d) => { d.slides[0].blocks[0].animation = { trigger: "on-enter" }; },
+  },
+  {
+    name: "nested animation disallowed extra property",
+    mutate: (d) => { d.slides[0].blocks[0].animation = { id: "a1", bogus: true }; },
+  },
+  {
+    name: "asset width below minimum",
+    mutate: (d) => { d.assets[0].width = 0; },
+  },
+  {
+    name: "canvas aspectRatio not in enum",
+    mutate: (d) => { d.canvas.aspectRatio = "13:7"; },
+  },
+  {
+    name: "slide layout empty string",
+    mutate: (d) => { d.slides[0].layout = ""; },
+  },
+  {
+    name: "missing required top-level property",
+    mutate: (d) => { delete d.editor; },
+  },
+];
+
+for (const tc of cases) {
+  const broken = clone(deck);
+  tc.mutate(broken);
+  const r = validateDeckProject(broken);
+  if (r.valid) {
+    console.error("validator accepted invalid deck: " + tc.name);
+    process.exit(1);
+  }
 }
-console.log("OK: validator accepted deck.json and rejected an invalid deck");
+
+console.log("OK: validator accepted deck.json and rejected 10 invalid decks");
 """
 
 

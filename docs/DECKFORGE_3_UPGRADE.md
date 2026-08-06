@@ -92,7 +92,7 @@ The layout audit detects unsafe margins, missing required slots, unresolved slot
 
 ## Complete reference example
 
-`examples/editable-deck-studio/` demonstrates the minimum truthful editable-deck profile without external dependencies. It includes:
+`examples/02-example/` demonstrates the minimum truthful editable-deck profile without external dependencies. It includes:
 
 - editable slide thumbnails
 - toolbar and inspector
@@ -105,9 +105,10 @@ The layout audit detects unsafe margins, missing required slots, unresolved slot
 - presenter mode
 - fullscreen, blackout, overview, and shortcut guidance
 
-Run it with any static HTTP server, for example:
+Run it with Vite:
 
 ```bash
-cd examples/editable-deck-studio
-python -m http.server 4173
+cd examples/02-example
+npm install
+npm run dev
 ```

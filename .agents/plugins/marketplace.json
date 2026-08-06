@@ -58,6 +58,19 @@
         "embed",
         "deploy"
       ]
+    },
+    {
+      "id": "deckforge-export",
+      "path": "./skills/deckforge-export",
+      "title": "DeckForge Export",
+      "description": "Add or repair export capabilities (PowerPoint/PPTX, PDF, PNG, portable packages) for DeckForge-compatible or custom web slide applications.",
+      "tags": [
+        "export",
+        "pptx",
+        "powerpoint",
+        "pdf",
+        "preflight"
+      ]
     }
   ],
   "agents": {

@@ -1008,6 +1008,76 @@ const DEFS: Record<string, unknown> = {
   }
 };
 
+const ROOT: unknown = {
+  "$id": "https://deckforge.dev/schemas/deck-project.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Structured document model for editable, presentable, publishable browser-native decks with semantic layout slots.",
+  "properties": {
+    "assets": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/asset"
+      },
+      "type": "array"
+    },
+    "canvas": {
+      "$ref": "#/$defs/canvas"
+    },
+    "editor": {
+      "$ref": "#/$defs/editor"
+    },
+    "experience": {
+      "$ref": "#/$defs/experience"
+    },
+    "meta": {
+      "$ref": "#/$defs/meta"
+    },
+    "presentation": {
+      "$ref": "#/$defs/presentation"
+    },
+    "publish": {
+      "$ref": "#/$defs/publish"
+    },
+    "schemaVersion": {
+      "const": "2.1"
+    },
+    "shortcuts": {
+      "$ref": "#/$defs/shortcuts"
+    },
+    "slides": {
+      "items": {
+        "$ref": "#/$defs/slide"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "sources": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/source"
+      },
+      "type": "array"
+    },
+    "theme": {
+      "$ref": "#/$defs/theme"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "meta",
+    "canvas",
+    "theme",
+    "presentation",
+    "editor",
+    "slides",
+    "publish",
+    "experience"
+  ],
+  "title": "DeckProject 2.1",
+  "type": "object"
+};
+
 function typeOf(value: unknown): string {
   if (value === null) return "null";
   if (Array.isArray(value)) return "array";
@@ -1056,10 +1126,64 @@ function matches(node: unknown, value: unknown, path: string, issues: Validation
     }
     return;
   }
+  if (typeof value === "string") {
+    if (schema.minLength !== undefined && value.length < schema.minLength) {
+      issues.push({ path: path || "$", message: `expected minLength ${schema.minLength}, got ${value.length}` });
+    }
+    if (schema.maxLength !== undefined && value.length > schema.maxLength) {
+      issues.push({ path: path || "$", message: `expected maxLength ${schema.maxLength}, got ${value.length}` });
+    }
+    if (schema.pattern !== undefined) {
+      try {
+        if (!new RegExp(schema.pattern).test(value)) {
+          issues.push({ path: path || "$", message: `value does not match pattern ${schema.pattern}` });
+        }
+      } catch {
+        issues.push({ path: path || "$", message: `invalid pattern ${schema.pattern}` });
+      }
+    }
+  }
+  if (typeof value === "number") {
+    if (schema.minimum !== undefined && value < schema.minimum) {
+      issues.push({ path: path || "$", message: `expected minimum ${schema.minimum}, got ${value}` });
+    }
+    if (schema.maximum !== undefined && value > schema.maximum) {
+      issues.push({ path: path || "$", message: `expected maximum ${schema.maximum}, got ${value}` });
+    }
+    if (schema.exclusiveMinimum !== undefined && value <= schema.exclusiveMinimum) {
+      issues.push({ path: path || "$", message: `expected value > ${schema.exclusiveMinimum}, got ${value}` });
+    }
+    if (schema.exclusiveMaximum !== undefined && value >= schema.exclusiveMaximum) {
+      issues.push({ path: path || "$", message: `expected value < ${schema.exclusiveMaximum}, got ${value}` });
+    }
+  }
+  if (Array.isArray(value)) {
+    if (schema.minItems !== undefined && value.length < schema.minItems) {
+      issues.push({ path: path || "$", message: `expected minItems ${schema.minItems}, got ${value.length}` });
+    }
+    if (schema.maxItems !== undefined && value.length > schema.maxItems) {
+      issues.push({ path: path || "$", message: `expected maxItems ${schema.maxItems}, got ${value.length}` });
+    }
+    if (schema.uniqueItems === true) {
+      const seen = new Set<string>();
+      for (const item of value) {
+        const key = JSON.stringify(item);
+        if (seen.has(key)) {
+          issues.push({ path: path || "$", message: "expected unique items" });
+          break;
+        }
+        seen.add(key);
+      }
+    }
+  }
   const expected = schema.type;
-  if (expected && typeof expected === "string" && expected !== typeOf(value)) {
-    if (!(expected === "number" && typeOf(value) === "number")) {
-      issues.push({ path: path || "$", message: `expected type "${expected}", got "${typeOf(value)}"` });
+  if (expected && typeof expected === "string") {
+    const actual = typeOf(value);
+    let typeOk = expected === actual;
+    if (expected === "number" && actual === "number") typeOk = true;
+    if (expected === "integer" && actual === "number") typeOk = Number.isInteger(value);
+    if (!typeOk) {
+      issues.push({ path: path || "$", message: `expected type "${expected}", got "${actual}"` });
       return;
     }
   }
@@ -1100,16 +1224,7 @@ function matches(node: unknown, value: unknown, path: string, issues: Validation
 
 export function validateDeckProject(value: unknown): ValidationResult {
   const issues: ValidationIssue[] = [];
-  matches({ type: "object", properties: {
-    schemaVersion: { type: "string" },
-    meta: { type: "object" },
-    canvas: { type: "object" },
-    theme: { type: "object" },
-    presentation: { type: "object" },
-    editor: { type: "object" },
-    slides: { type: "array" },
-    publish: { type: "object" },
-  }, required: ["schemaVersion", "meta", "canvas", "theme", "presentation", "editor", "slides", "publish"] }, value, "", issues);
+  matches(ROOT, value, "", issues);
   return { valid: issues.length === 0, issues };
 }
 

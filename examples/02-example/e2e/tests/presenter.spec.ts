@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const PRESENTER_PATH = '/deckforge/present';
+const PRESENTER_PATH = '/deckforge/#/present';
 const TOTAL_SLIDES = 7;
 
 async function openPresenter(page: import('@playwright/test').Page): Promise<void> {
