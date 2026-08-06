@@ -142,6 +142,8 @@ def emit_types(schema: dict) -> str:
 def emit_validator(schema: dict) -> str:
     defs = schema.get("$defs", {})
     defs_json = json.dumps(defs, indent=2, sort_keys=True)
+    root = {k: v for k, v in schema.items() if k != "$defs"}
+    root_json = json.dumps(root, indent=2, sort_keys=True)
     return f'''// GENERATED FILE — do not edit by hand.
 // Source of truth: schemas/deck-project.schema.json
 // Regenerate with: npm run schema:generate
@@ -158,6 +160,8 @@ export interface ValidationResult {{
 }}
 
 const DEFS: Record<string, unknown> = {defs_json};
+
+const ROOT: unknown = {root_json};
 
 function typeOf(value: unknown): string {{
   if (value === null) return "null";
@@ -207,10 +211,64 @@ function matches(node: unknown, value: unknown, path: string, issues: Validation
     }}
     return;
   }}
+  if (typeof value === "string") {{
+    if (schema.minLength !== undefined && value.length < schema.minLength) {{
+      issues.push({{ path: path || "$", message: `expected minLength ${{schema.minLength}}, got ${{value.length}}` }});
+    }}
+    if (schema.maxLength !== undefined && value.length > schema.maxLength) {{
+      issues.push({{ path: path || "$", message: `expected maxLength ${{schema.maxLength}}, got ${{value.length}}` }});
+    }}
+    if (schema.pattern !== undefined) {{
+      try {{
+        if (!new RegExp(schema.pattern).test(value)) {{
+          issues.push({{ path: path || "$", message: `value does not match pattern ${{schema.pattern}}` }});
+        }}
+      }} catch {{
+        issues.push({{ path: path || "$", message: `invalid pattern ${{schema.pattern}}` }});
+      }}
+    }}
+  }}
+  if (typeof value === "number") {{
+    if (schema.minimum !== undefined && value < schema.minimum) {{
+      issues.push({{ path: path || "$", message: `expected minimum ${{schema.minimum}}, got ${{value}}` }});
+    }}
+    if (schema.maximum !== undefined && value > schema.maximum) {{
+      issues.push({{ path: path || "$", message: `expected maximum ${{schema.maximum}}, got ${{value}}` }});
+    }}
+    if (schema.exclusiveMinimum !== undefined && value <= schema.exclusiveMinimum) {{
+      issues.push({{ path: path || "$", message: `expected value > ${{schema.exclusiveMinimum}}, got ${{value}}` }});
+    }}
+    if (schema.exclusiveMaximum !== undefined && value >= schema.exclusiveMaximum) {{
+      issues.push({{ path: path || "$", message: `expected value < ${{schema.exclusiveMaximum}}, got ${{value}}` }});
+    }}
+  }}
+  if (Array.isArray(value)) {{
+    if (schema.minItems !== undefined && value.length < schema.minItems) {{
+      issues.push({{ path: path || "$", message: `expected minItems ${{schema.minItems}}, got ${{value.length}}` }});
+    }}
+    if (schema.maxItems !== undefined && value.length > schema.maxItems) {{
+      issues.push({{ path: path || "$", message: `expected maxItems ${{schema.maxItems}}, got ${{value.length}}` }});
+    }}
+    if (schema.uniqueItems === true) {{
+      const seen = new Set<string>();
+      for (const item of value) {{
+        const key = JSON.stringify(item);
+        if (seen.has(key)) {{
+          issues.push({{ path: path || "$", message: "expected unique items" }});
+          break;
+        }}
+        seen.add(key);
+      }}
+    }}
+  }}
   const expected = schema.type;
-  if (expected && typeof expected === "string" && expected !== typeOf(value)) {{
-    if (!(expected === "number" && typeOf(value) === "number")) {{
-      issues.push({{ path: path || "$", message: `expected type "${{expected}}", got "${{typeOf(value)}}"` }});
+  if (expected && typeof expected === "string") {{
+    const actual = typeOf(value);
+    let typeOk = expected === actual;
+    if (expected === "number" && actual === "number") typeOk = true;
+    if (expected === "integer" && actual === "number") typeOk = Number.isInteger(value);
+    if (!typeOk) {{
+      issues.push({{ path: path || "$", message: `expected type "${{expected}}", got "${{actual}}"` }});
       return;
     }}
   }}
@@ -251,16 +309,7 @@ function matches(node: unknown, value: unknown, path: string, issues: Validation
 
 export function validateDeckProject(value: unknown): ValidationResult {{
   const issues: ValidationIssue[] = [];
-  matches({{ type: "object", properties: {{
-    schemaVersion: {{ type: "string" }},
-    meta: {{ type: "object" }},
-    canvas: {{ type: "object" }},
-    theme: {{ type: "object" }},
-    presentation: {{ type: "object" }},
-    editor: {{ type: "object" }},
-    slides: {{ type: "array" }},
-    publish: {{ type: "object" }},
-  }}, required: ["schemaVersion", "meta", "canvas", "theme", "presentation", "editor", "slides", "publish"] }}, value, "", issues);
+  matches(ROOT, value, "", issues);
   return {{ valid: issues.length === 0, issues }};
 }}
 

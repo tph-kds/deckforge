@@ -96,11 +96,12 @@ DeckForge 3 直接解决 AI 生成演示应用中的常见问题：
 运行完整参考示例：
 
 ```bash
-cd examples/editable-deck-studio
-python -m http.server 4173
+cd examples/02-example
+npm install
+npm run dev
 ```
 
-打开 `http://localhost:4173`。该示例包含 slide rail、toolbar、inspector、notes、themes、layouts、文本和图片插入、persistence、undo/redo、保存状态、presenter mode、fullscreen、blackout、overview 与快捷键帮助。
+打开 `http://localhost:5173`。该示例包含 slide rail、toolbar、inspector、notes、themes、layouts、文本和图片插入、persistence、undo/redo、保存状态、presenter mode、fullscreen、blackout、overview 与快捷键帮助。
 
 参阅 [`docs/DECKFORGE_3_UPGRADE.md`](./docs/DECKFORGE_3_UPGRADE.md) 与 [`docs/END_USER_FEATURE_MATRIX.md`](./docs/END_USER_FEATURE_MATRIX.md)。
 

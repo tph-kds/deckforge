@@ -25,7 +25,10 @@ CATALOG_PATH = ROOT / 'schemas' / 'capability-catalog.json'
 RECEIPT_SCHEMA_PATH = ROOT / 'schemas' / 'capability-receipt.schema.json'
 PROFILES_PATH = ROOT / 'skills' / 'deckforge' / 'assets' / 'delivery-profile-manifest.json'
 
-IMPLEMENTED = {'implemented', 'partial'}
+# `partial` is a distinct status and must not be treated as implemented:
+# a partial claim cannot satisfy entryPoint/command/persistence requirements
+# or profile-required capabilities. (DF-004)
+IMPLEMENTED = {'implemented'}
 
 
 def load_json(path: Path) -> object:
@@ -119,7 +122,7 @@ def main() -> int:
     if args.strict:
         for cap_id in sorted(profile_required & claimed):
             if claims[cap_id].get('status') not in IMPLEMENTED:
-                errors.append(f'capability {cap_id}: profile-required status must be implemented or partial in --strict mode (got {claims[cap_id].get("status")!r})')
+                errors.append(f'capability {cap_id}: profile-required status must be implemented in --strict mode (got {claims[cap_id].get("status")!r})')
 
     summary = {s: sum(1 for c in claims.values() if c.get('status') == s) for s in catalog_doc['statuses']}
     for cap_id, claim in sorted(claims.items()):

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDeck } from './deck/useDeck';
 import { getTheme } from './deck/themes';
 import { getMotionProfile, reducedMotionMode } from './deck/motion';
@@ -6,20 +6,25 @@ import { EditorApp } from './editor/EditorApp';
 import { PresenterApp } from './presenter/PresenterApp';
 import { ScrollbarProvider } from './deck/scrollbars/scrollbarRuntime';
 import { ExportDialog } from './export/export-dialog';
+import { readRoute, writeRoute, type AppRoute } from './routing';
 import './styles.css';
 import './deck/scrollbars/scrollbars.css';
 
 export function App() {
   const store = useDeck();
   const [showExportDialog, setShowExportDialog] = useState(false);
-  const [route, setRoute] = useState<'editor' | 'present'>(
-    () => (window.location.pathname.endsWith('/present') ? 'present' : 'editor'),
-  );
+  const [route, setRoute] = useState<AppRoute>(() => readRoute());
 
-  const navigate = (next: 'editor' | 'present') => {
-    window.history.pushState({}, '', next === 'present' ? '/present' : '/editor');
+  const navigate = (next: AppRoute) => {
+    writeRoute(next);
     setRoute(next);
   };
+
+  useEffect(() => {
+    const syncRoute = () => setRoute(readRoute());
+    window.addEventListener('hashchange', syncRoute);
+    return () => window.removeEventListener('hashchange', syncRoute);
+  }, []);
 
   const theme = getTheme(store.deck.theme.id);
   const motion = getMotionProfile(store.deck.presentation.motionProfileId);

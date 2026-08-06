@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import type { DeckProject } from '../src/deck/types';
+import type { Block, DeckProject } from '../src/deck/types';
 import { assignBlocksToLayers } from '../src/deck/layout';
 import { gridColumnsForItemCount, SlideRenderer } from '../src/render/SlideRenderer';
+import { applyCommandWithResult } from '../src/deck/commands';
 
 describe('deterministic grid columns (plan §6.3)', () => {
   it('uses one column for a single item', () => {
@@ -130,5 +131,59 @@ describe('SlideRenderer exclusive-layer smoke render (P0-005)', () => {
     expect(bgIndex).toBeGreaterThan(-1);
     expect(slotIndex).toBeGreaterThan(bgIndex);
     expect(freeformIndex).toBeGreaterThan(slotIndex);
+  });
+});
+
+describe('media insert-and-render behavioral test (edit.media.insert)', () => {
+  it('adds an image block, binds it to a visual slot, and renders its URL on the presenter surface', () => {
+    const deck = makeLayerDeck();
+    const imageBlock: Block = {
+      id: 'b-media',
+      type: 'image',
+      content: { src: 'https://example.com/cover.png', fit: 'cover' },
+      style: {},
+      alt: 'Cover image',
+      sourceIds: [],
+      positionMode: 'slot',
+    };
+    const outcome = applyCommandWithResult(deck, {
+      type: 'addBlock',
+      slideId: 's-layers',
+      block: imageBlock,
+      slot: 'visual',
+    });
+    expect(outcome.createdIds).toContain('b-media');
+    const slide = outcome.deck.slides[0];
+    const bound = slide.layoutBindings?.find((binding) => binding.slot === 'visual');
+    expect(bound?.blockIds).toContain('b-media');
+
+    const markup = renderToStaticMarkup(
+      createElement(SlideRenderer, { deck: outcome.deck, slide, surface: 'presenter' }),
+    );
+    expect(markup).toContain('https://example.com/cover.png');
+  });
+
+  it('renders a placeholder image block when inserted without an asset', () => {
+    const deck = makeLayerDeck();
+    const imageBlock: Block = {
+      id: 'b-media-empty',
+      type: 'image',
+      content: { assetId: '', fit: 'cover' },
+      style: {},
+      alt: 'Image',
+      sourceIds: [],
+      positionMode: 'slot',
+    };
+    const outcome = applyCommandWithResult(deck, {
+      type: 'addBlock',
+      slideId: 's-layers',
+      block: imageBlock,
+      slot: 'visual',
+    });
+    const slide = outcome.deck.slides[0];
+    const markup = renderToStaticMarkup(
+      createElement(SlideRenderer, { deck: outcome.deck, slide, surface: 'presenter' }),
+    );
+    expect(markup).toContain('block-image is-placeholder');
   });
 });

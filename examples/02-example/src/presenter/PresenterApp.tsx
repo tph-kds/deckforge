@@ -10,6 +10,7 @@ import { useDocumentScrollLock } from '../deck/scrollbars/scrollbarRuntime';
 import { ScrollSurface } from '../deck/scrollbars/ScrollSurface';
 import { useTimer } from './useTimer';
 import { formatElapsed } from './timerMachine';
+import { audienceIndexOf, projectAudienceSlides } from './audienceProjection';
 import {
   clampSlide,
   initialPresenterState,
@@ -48,7 +49,8 @@ function countBuildsForSlide(slide: DeckSlide, defaultBuilds: boolean): number {
 
 export function PresenterApp({ store, navigate }: PresenterAppProps) {
   const { deck } = store;
-  const slides = deck.slides;
+  const audienceSlides = useMemo(() => projectAudienceSlides(deck), [deck]);
+  const slides = useMemo(() => audienceSlides.map((entry) => entry.slide), [audienceSlides]);
   const totalSlides = slides.length;
   const defaultBuilds = deck.presentation.defaultBuilds ?? false;
   const theme = getTheme(deck.theme.id);
@@ -94,16 +96,25 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
   const timerStatus = state.timer.status;
   const progress = totalSlides > 1 ? (safeIndex / (totalSlides - 1)) * 100 : 0;
 
+  // Build-aware navigation selectors (P0-007 / DF-017): previous is possible
+  // when an earlier build exists or an earlier audience slide exists; next is
+  // possible when an unrevealed build exists or a later audience slide exists.
+  const canGoPrevious = buildIndex > 0 || safeIndex > 0;
+  const canGoNext = buildIndex < buildCount - 1 || safeIndex < totalSlides - 1;
+
   useEffect(() => {
     dispatch({ type: 'SET_TIMER', status: timer.status, elapsedMs: timer.elapsedMs });
   }, [dispatch, timer.status, timer.elapsedMs]);
 
   const syncFromHash = useCallback(() => {
-    const match = window.location.hash.match(/^#\/(\d+)$/);
+    const match = window.location.hash.match(/^#\/present\/slide\/(.+)$/);
     if (match) {
-      dispatch({ type: 'GO_TO_SLIDE', index: Number(match[1]) });
+      const index = audienceIndexOf(deck, decodeURIComponent(match[1]));
+      if (index >= 0) {
+        dispatch({ type: 'GO_TO_SLIDE', index });
+      }
     }
-  }, [dispatch]);
+  }, [deck, dispatch]);
 
   useEffect(() => {
     syncFromHash();
@@ -112,8 +123,11 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
   }, [syncFromHash]);
 
   useEffect(() => {
-    window.history.replaceState({}, '', `#/${safeIndex}`);
-  }, [safeIndex]);
+    const sourceSlideId = audienceSlides[safeIndex]?.sourceSlideId;
+    if (sourceSlideId) {
+      window.history.replaceState({}, '', `#/present/slide/${encodeURIComponent(sourceSlideId)}`);
+    }
+  }, [safeIndex, audienceSlides]);
 
   useEffect(() => {
     const onFullscreenChange = () => {
@@ -219,13 +233,13 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
           </div>
           <div className="presenter-chrome">
             <div className="presenter-controls" role="toolbar" aria-label="Presenter controls">
-              <button type="button" onClick={() => dispatch({ type: 'FIRST_SLIDE' })} disabled={safeIndex === 0} aria-label="First slide" title="Home">⏮</button>
-              <button type="button" onClick={() => dispatch({ type: 'PREVIOUS_BUILD' })} disabled={safeIndex === 0} aria-label="Previous slide" title="←">◀</button>
+              <button type="button" onClick={() => dispatch({ type: 'FIRST_SLIDE' })} disabled={!canGoPrevious} aria-label="First slide" title="Home">⏮</button>
+              <button type="button" onClick={() => dispatch({ type: 'PREVIOUS_BUILD' })} disabled={!canGoPrevious} aria-label="Previous slide" title="←">◀</button>
               <span className="presenter-position">
                 {safeIndex + 1} / {totalSlides}
               </span>
-              <button type="button" onClick={() => dispatch({ type: 'NEXT_BUILD' })} disabled={safeIndex === totalSlides - 1} aria-label="Next slide" title="→">▶</button>
-              <button type="button" onClick={() => dispatch({ type: 'LAST_SLIDE' })} disabled={safeIndex === totalSlides - 1} aria-label="Last slide" title="End">⏭</button>
+              <button type="button" onClick={() => dispatch({ type: 'NEXT_BUILD' })} disabled={!canGoNext} aria-label="Next slide" title="→">▶</button>
+              <button type="button" onClick={() => dispatch({ type: 'LAST_SLIDE' })} disabled={!canGoNext} aria-label="Last slide" title="End">⏭</button>
               <span className="controls-divider" aria-hidden="true" />
               <button type="button" onClick={() => dispatch({ type: 'TOGGLE_OVERVIEW' })} aria-pressed={overview} aria-label="Toggle overview" title="O">Grid</button>
               <button type="button" onClick={() => dispatch({ type: 'TOGGLE_SPEAKER' })} aria-pressed={speakerOpen} aria-label="Speaker view" title="S">Notes</button>
@@ -289,7 +303,7 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
       ) : null}
 
       {speakerOpen && !blackoutActive ? (
-        <SpeakerPanel store={store} currentIndex={safeIndex} elapsedMs={state.timer.elapsedMs} onClose={() => dispatch({ type: 'TOGGLE_SPEAKER' })} />
+        <SpeakerPanel store={store} slides={slides} currentIndex={safeIndex} elapsedMs={state.timer.elapsedMs} onClose={() => dispatch({ type: 'TOGGLE_SPEAKER' })} />
       ) : null}
 
       <ShortcutHelpDialog open={helpOpen} onClose={() => dispatch({ type: 'TOGGLE_HELP' })} groups={[]} rows={HELP_ROWS} />
@@ -300,15 +314,16 @@ export function PresenterApp({ store, navigate }: PresenterAppProps) {
 
 interface SpeakerPanelProps {
   store: DeckStore;
+  slides: DeckSlide[];
   currentIndex: number;
   elapsedMs: number;
   onClose: () => void;
 }
 
-function SpeakerPanel({ store, currentIndex, elapsedMs, onClose }: SpeakerPanelProps) {
+function SpeakerPanel({ store, slides, currentIndex, elapsedMs, onClose }: SpeakerPanelProps) {
   const { deck } = store;
-  const slide = deck.slides[currentIndex];
-  const nextSlide = deck.slides[currentIndex + 1];
+  const slide = slides[currentIndex];
+  const nextSlide = slides[currentIndex + 1];
   return (
     <div className="speaker-panel" role="dialog" aria-modal="true" aria-label="Speaker view">
       <div className="speaker-panel-header">

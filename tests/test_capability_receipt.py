@@ -114,9 +114,37 @@ class CapabilityReceiptValidationTests(unittest.TestCase):
 
     def test_strict_requires_implemented_profile_capabilities(self):
         doc = json.loads(json.dumps(self.receipt))
+        profile = doc['profile']
+        profiles = {p['id']: p for p in json.loads(PROFILES.read_text(encoding='utf-8'))}
+        required = profiles[profile]['requiredCapabilityIds']
+        doc['capabilities'][required[0]]['status'] = 'unverified'
         code, output = run_validator(self.write_tmp(doc), strict=True)
         self.assertNotEqual(code, 0)
-        self.assertIn('profile-required status must be implemented or partial', output)
+        self.assertIn('profile-required status must be implemented', output)
+
+    def test_partial_is_not_treated_as_implemented_for_profile_required(self):
+        doc = json.loads(json.dumps(self.receipt))
+        profile = doc['profile']
+        profiles = {p['id']: p for p in json.loads(PROFILES.read_text(encoding='utf-8'))}
+        required = profiles[profile]['requiredCapabilityIds']
+        cap_id = required[0]
+        claim = doc['capabilities'][cap_id]
+        claim['status'] = 'partial'
+        claim['note'] = 'downgraded to partial for this test'
+        code, output = run_validator(self.write_tmp(doc), strict=True)
+        self.assertNotEqual(code, 0)
+        self.assertIn(f'capability {cap_id}: profile-required status must be implemented', output)
+
+    def test_partial_is_not_treated_as_implemented_for_evidence_requirements(self):
+        doc = json.loads(json.dumps(self.receipt))
+        claim = doc['capabilities']['edit.text']
+        claim['status'] = 'partial'
+        claim.pop('tests', None)
+        claim.pop('evidence', None)
+        code, output = run_validator(self.write_tmp(doc))
+        self.assertNotIn('edit.text: implemented requires at least one referenced test', output)
+        self.assertNotIn('edit.text: implemented requires at least one evidence path', output)
+        self.assertEqual(code, 1, output)
 
     def test_invalid_status_fails(self):
         doc = json.loads(json.dumps(self.receipt))

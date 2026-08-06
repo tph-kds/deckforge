@@ -96,11 +96,12 @@ DeckForge 3 xử lý trực tiếp những lỗi thường gặp trong sản ph�
 Chạy example hoàn chỉnh:
 
 ```bash
-cd examples/editable-deck-studio
-python -m http.server 4173
+cd examples/02-example
+npm install
+npm run dev
 ```
 
-Sau đó mở `http://localhost:4173`. Example có slide rail, toolbar, inspector, notes, themes, layouts, thêm text/ảnh, persistence, undo/redo, save status, presenter mode, fullscreen, blackout, overview và shortcut guidance.
+Sau đó mở `http://localhost:5173`. Example có slide rail, toolbar, inspector, notes, themes, layouts, thêm text/ảnh, persistence, undo/redo, save status, presenter mode, fullscreen, blackout, overview và shortcut guidance.
 
 Xem [`docs/DECKFORGE_3_UPGRADE.md`](./docs/DECKFORGE_3_UPGRADE.md) và [`docs/END_USER_FEATURE_MATRIX.md`](./docs/END_USER_FEATURE_MATRIX.md).
 
