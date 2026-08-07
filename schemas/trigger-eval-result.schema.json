@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckforge.dev/schemas/trigger-eval-result.schema.json",
+  "title": "DeckForge Trigger Eval Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "prompt", "expected", "actual", "matched", "runAt"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "prompt": { "type": "string" },
+    "expected": { "type": "string" },
+    "actual": { "type": "string" },
+    "matched": { "type": "boolean" },
+    "runAt": { "type": "string", "format": "date-time" }
+  }
+}
