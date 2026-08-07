@@ -25,3 +25,19 @@ Do not add a full whiteboard/editor framework to implement a static viewer. Meas
 ## Verification
 
 Profile real representative decks rather than empty samples. Measure editor input latency, slide change time, animation smoothness, memory growth, initial audience load, and long-deck behavior. Test slow networks, failed assets, reduced-power devices, and repeated presenter navigation. Record performance budgets and regressions in CI where feasible.
+
+## React audit priorities
+
+- Virtualize or window the slide rail and overview; cache thumbnails by slide version.
+- Lazy-load charts and motion libraries; preload only current and adjacent slides.
+- Split editor, presenter, export, and public-view routes so presenter routes do not ship editor dependencies.
+- Avoid full-document cloning during drag; use transform previews and one committed command per gesture.
+- Subscribe to narrow state slices; no deck-wide re-render on pointer movement or hover.
+
+## Benchmark
+
+Measure against the 100-slide fixture, not an empty sample. Track editor input
+latency, slide-change time, animation smoothness, memory growth, initial audience
+load, and long-deck behavior. Test slow networks, failed assets, reduced-power
+devices, and repeated presenter navigation. Apply
+`references/performance-budget-contract.md` and record budgets in CI where feasible.
