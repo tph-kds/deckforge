@@ -1,0 +1,25 @@
+{
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "editable-deck",
+      "prompt": "Create a seven-slide editable technical project review deck.",
+      "assertions": [
+        {"name": "typecheck", "cmd": ["npm", "run", "typecheck"]},
+        {"name": "build", "cmd": ["npm", "run", "build"]},
+        {"name": "text-edit", "cmd": ["npm", "test"]}
+      ],
+      "contextTokens": 45000
+    },
+    {
+      "id": "accessible-public-viewer",
+      "prompt": "Build a keyboard-complete no-motion public presentation viewer.",
+      "assertions": [
+        {"name": "typecheck", "cmd": ["npm", "run", "typecheck"]},
+        {"name": "build", "cmd": ["npm", "run", "build"]},
+        {"name": "reduced-motion", "cmd": ["npm", "test"]}
+      ],
+      "contextTokens": 38000
+    }
+  ]
+}
