@@ -3,9 +3,10 @@
 
 A bundle is self-contained when every relative path referenced from its
 SKILL.md resolves to a file inside the bundle. Because dependent skills
-reference `../deckforge/...` and `../../docs/...`, each bundle mirrors the
-repository layout: `skills/<name>/`, its `skills/deckforge/` dependency, and
-any referenced `docs/` files, stored under repo-root-relative paths.
+reference `../deckforge/...`, `../../docs/...`, and `../../schemas/...`, each
+bundle mirrors the repository layout: `skills/<name>/`, its
+`skills/deckforge/` dependency, and any referenced `docs/` or `schemas/`
+files, stored under repo-root-relative paths.
 
 Usage:
     python scripts/package/package_skill_zips.py
@@ -20,6 +21,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SKILLS = ROOT / 'skills'
 DOCS = ROOT / 'docs'
+SCHEMAS = ROOT / 'schemas'
 OUT = ROOT / 'skill-zips'
 
 # Same relative-path pattern used by validate_skill_bundles.py.
@@ -45,13 +47,21 @@ def pack_skill(skill_name: str, tmp: Path) -> Path:
     for dep in (skill_dir, SKILLS / 'deckforge'):
         if dep.exists():
             shutil.copytree(dep, target / 'skills' / dep.name, dirs_exist_ok=True)
-    # Stage any referenced docs files so ../../docs/... resolves.
+    # Stage any referenced docs/schemas files so ../../docs/... and
+    # ../../schemas/... resolve.
     for ref in referenced_paths(skill_dir):
         if ref.startswith('../../docs/') or ref.startswith('../docs/'):
             rel = Path(ref).name if not ref.startswith('../../docs/') else ref[len('../../docs/'):]
             source = DOCS / rel
             if source.exists():
                 dest = target / 'docs' / rel
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, dest)
+        elif ref.startswith('../../schemas/') or ref.startswith('../schemas/'):
+            rel = ref[len('../../schemas/'):]
+            source = SCHEMAS / rel
+            if source.exists():
+                dest = target / 'schemas' / rel
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source, dest)
     zip_path = OUT / f'{skill_name}.zip'
