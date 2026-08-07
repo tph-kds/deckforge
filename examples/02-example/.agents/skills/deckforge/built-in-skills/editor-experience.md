@@ -90,3 +90,26 @@ Test the full edit path:
 8. return without losing work.
 
 Failure in any selected-profile requirement blocks completion.
+
+## Command architecture
+
+Use typed commands for document changes. Each command has explicit inputs and a
+result that reports created and removed IDs. Pointer gestures preview in
+transient state and end in exactly one committed command. Store transient
+gesture state separately from durable document state.
+
+## State boundaries
+
+Separate document, transient interaction, persistence, and server state.
+Subscribe components to the smallest state slice; do not clone the DeckProject
+on each pointer move.
+
+## Selection behavior
+
+After duplicate, delete, undo, and redo, selection moves to a deterministic,
+valid block using the command result's created/removed IDs.
+
+## Surface states
+
+Handle loading, conflict, offline, recovery, locked, and disabled states for
+editor controls. Apply `references/frontend-engineering-contract.md`.

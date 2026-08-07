@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "name": "deckforge-web-slides-skills",
+  "name": "deckforge-agent-skills",
   "displayName": "DeckForge Web Slides Agent Skills",
   "version": "3.0.0",
   "description": "Agent Skills for reliable editable browser-native presentations with semantic layouts, real editor and presenter modes, validation, and publishing workflows.",
@@ -70,6 +70,30 @@
         "powerpoint",
         "pdf",
         "preflight"
+      ]
+    },
+    {
+      "id": "deckforge-visual-evidence",
+      "path": "./skills/deckforge-visual-evidence",
+      "title": "DeckForge Visual Evidence",
+      "description": "Verification worker that starts a DeckForge application in an isolated browser session and produces executed capability evidence.",
+      "tags": [
+        "verification",
+        "playwright",
+        "evidence",
+        "qa"
+      ]
+    },
+    {
+      "id": "deckforge-skill-evaluator",
+      "path": "./skills/deckforge-skill-evaluator",
+      "title": "DeckForge Skill Evaluator",
+      "description": "Development evaluator comparing baseline, current, and candidate DeckForge skills on deterministic outcome tests.",
+      "tags": [
+        "evaluation",
+        "evals",
+        "skills",
+        "release-gate"
       ]
     }
   ],

@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "coreSkills": [
+    "deckforge",
+    "deckforge-audit",
+    "deckforge-runtime-planner",
+    "deckforge-publish",
+    "deckforge-export"
+  ],
+  "conditionalSkills": {
+    "verification": [
+      "deckforge-visual-evidence"
+    ],
+    "skill-change": [
+      "deckforge-skill-evaluator"
+    ]
+  },
+  "externalProviders": [
+    {
+      "id": "ui-ux-pro-max",
+      "required": false
+    },
+    {
+      "id": "dembrandt",
+      "required": false
+    },
+    {
+      "id": "figma",
+      "required": false
+    },
+    {
+      "id": "mermaid",
+      "required": false
+    }
+  ]
+}

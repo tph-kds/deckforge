@@ -10,6 +10,7 @@ delivered project implements. This validator enforces the P0-001 rules:
   entry points, commands, and persistence behavior;
 - every referenced test and evidence file exists on disk;
 - the selected delivery profile's requiredCapabilityIds are all claimed;
+- in `--strict` mode, only `implemented` satisfies a profile-required capability; `partial`, `unverified`, `blocked`, and `unsupported` all fail;
 - regex scanning is never treated as evidence here.
 
 Usage:

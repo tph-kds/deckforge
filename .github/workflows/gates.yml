@@ -36,7 +36,7 @@ jobs:
       - name: Capability receipt check
         run: npm run receipt:check
       - name: Schema/catalog/receipt unit tests
-        run: python -m unittest tests.test_schema_generated_artifacts tests.test_catalogs tests.test_capability_receipt
+        run: python -m unittest tests.test_schema_generated_artifacts tests.test_catalogs tests.test_capability_receipt tests.test_capability_evidence_schema tests.test_browser_evidence_report_schema
 
   typescript:
     runs-on: ubuntu-latest

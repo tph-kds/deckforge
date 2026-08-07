@@ -136,6 +136,11 @@ The catalog supports common presentation structures such as hero slides, agendas
 | `deckforge-export` | Adding or repairing PPTX export capabilities with preflight checks and fidelity scoring. |
 | `deckforge-runtime-planner` | Planning editor, presenter, state, rendering, and publishing architecture without immediately implementing it. |
 | `deckforge-publish` | Preparing web delivery, embeds, exports, release checks, and publishing behavior. |
+| `deckforge-visual-evidence` | Starting a generated application in an isolated browser session and producing executed capability evidence. |
+| `deckforge-skill-evaluator` | Comparing baseline/current/candidate skill outcomes and gatekeeping skill releases. |
+
+Worker and evaluator skills (`deckforge-visual-evidence`, `deckforge-skill-evaluator`) are
+`user-invocable: false`; they are invoked by the orchestrator or by CI, not by end-user prompts.
 
 ## Installation
 
@@ -218,7 +223,9 @@ deckforge-web-slides-skills/
 │   ├── deckforge-audit/
 │   ├── deckforge-export/
 │   ├── deckforge-runtime-planner/
-│   └── deckforge-publish/
+│   ├── deckforge-publish/
+│   ├── deckforge-visual-evidence/
+│   └── deckforge-skill-evaluator/
 ├── docs/
 ├── examples/
 ├── rules/

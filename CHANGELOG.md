@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.1.0 — 2026-08-07
+
+- Added executed capability evidence: a `deckforge-visual-evidence` worker skill, a capability-evidence and browser-evidence-report schema, a Playwright-driven evidence generator, and a runner-config wiring the reference app's e2e tests to capability claims.
+- Added deterministic skill evaluation: a `deckforge-skill-evaluator` worker skill, skill-eval and trigger-eval result schemas, a shell-based evaluation runner, evaluation profiles, and keyword-based trigger routing tests.
+- Added six shared contracts (`frontend-engineering`, `chart-accessibility`, `performance-budget`, `browser-evidence`, `skill-evaluation`, `provider-routing`) and upgraded the accessibility, data-and-diagrams, performance, and editor-experience built-in skills to reference them.
+- Added a canonical `config/skill-registry.json` plus a manifest generator for `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json`, and `config/skill-routing-manifest.json`, with CI drift validation.
+- Added bundle validation (frontmatter, self-contained references, `user-invocable` restrictions) and a `skill-zips/index.json` package index.
+- Added a 100-slide stress fixture (`examples/stress-test-100.deck.json`) and a `--count`/`--out` CLI for its generator, wired into `npm run validate`.
+
 ## 3.0.0 — 2026-08-02
 
 - Made `editable-deck` the default delivery profile for ordinary end-user slide-creation requests.

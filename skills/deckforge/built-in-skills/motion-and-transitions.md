@@ -2,9 +2,15 @@
 
 Motion must improve comprehension or presentation pacing. It is not a decoration quota.
 
-## Default motion is mandatory
+## No-motion is valid
 
-A deck whose slides never move is a defect, not a style choice. Every generated
+Zero spatial motion is a valid, professional choice. Select `none-accessible`
+when the audience, delivery mode, accessibility requirements, or explicit user
+intent call for it. Essential content must never depend on motion.
+
+## Default motion for motion profiles
+
+For a motion profile, a deck whose slides never move is a defect, not a style choice. Every generated
 DeckProject MUST declare `presentation.motionProfileId` and bind it to the deck's
 presentation archetype using `assets/motion-profile-manifest.json` (each profile lists
 the archetypes it is `useFor`). Even when the user does not mention motion, apply
@@ -17,9 +23,8 @@ the profile's defaults:
 - a `reducedMotion` fallback for every animation.
 
 Set `presentation.defaultBuilds: true` so the runtime applies default builds to
-blocks that carry no explicit `animation`. Do not ship a deck with a motion
-profile of `none-accessible` unless the audience/context requires zero spatial
-motion.
+blocks that carry no explicit `animation`. Select `none-accessible` when the
+audience/context requires zero spatial motion.
 
 ## Select a motion profile
 

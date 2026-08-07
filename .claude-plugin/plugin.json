@@ -10,6 +10,8 @@
     "./skills/deckforge-audit",
     "./skills/deckforge-runtime-planner",
     "./skills/deckforge-publish",
-    "./skills/deckforge-export"
+    "./skills/deckforge-export",
+    "./skills/deckforge-visual-evidence",
+    "./skills/deckforge-skill-evaluator"
   ]
 }

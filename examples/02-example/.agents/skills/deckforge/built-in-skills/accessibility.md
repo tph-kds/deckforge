@@ -24,3 +24,26 @@ Accessibility is a release requirement for both the editor and the presentation 
 Test the entire critical path with keyboard only: open deck, select a slide, edit content, undo, present, navigate builds, open overview, exit, and publish. Check at 200% zoom and a narrow viewport. Use automated accessibility tooling as a baseline, then manually inspect reading order, focus movement, screen-reader names, chart summaries, and reduced-motion behavior.
 
 Blocking failures include inaccessible core navigation, keyboard traps, lost focus, unlabeled controls, missing alternatives for essential visuals, unreadable contrast, and content that becomes unusable under reduced motion or zoom.
+
+## Two-layer model
+
+DeckForge core rules always apply: semantic HTML, native controls, keyboard
+operation, visible focus, reduced motion, contrast, reading order, alternatives,
+non-color encoding, private-note isolation, and export accessibility reporting.
+Topic-specific providers load only when relevant: forms, dialogs, keyboard,
+color modes, SVG, charts, maps, video, tables, and drag-and-drop.
+
+## Chart accessibility
+
+Apply `references/chart-accessibility-contract.md`: every chart provides a text
+takeaway, a tabular or textual data alternative, a secondary encoding beyond
+color, keyboard behavior when interactive, and export-specific loss reporting.
+
+## Release classifications
+
+- Blocking for publish/export.
+- Profile-blocking for the professional profile; allowed in draft.
+- Advisory repair.
+- Accepted format-specific loss with explicit disclosure.
+
+Never mark a system accessible based only on automated scanning.

@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "dimensions": {
+    "functional": 25,
+    "visual": 20,
+    "accessibility": 15,
+    "layout": 10,
+    "performance": 10,
+    "export": 10,
+    "skillReliability": 10
+  },
+  "releaseThreshold": 85,
+  "criticalFailures": [
+    "build-failure",
+    "data-loss",
+    "false-capability-claim",
+    "critical-accessibility",
+    "missing-required-content",
+    "unsafe-export"
+  ]
+}

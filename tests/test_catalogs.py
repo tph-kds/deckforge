@@ -27,9 +27,12 @@ class CatalogTests(unittest.TestCase):
   schema=json.loads((SCHEMAS/'capability-receipt.schema.json').read_text(encoding='utf-8'))
   mirrored=json.loads((ASSETS/'capability-receipt.schema.json').read_text(encoding='utf-8'))
   self.assertEqual(schema,mirrored,'capability receipt schema must be mirrored into the skill asset')
- def test_profile_capability_ids_reference_catalog(self):
-  catalog_ids={c['id'] for c in json.loads((SCHEMAS/'capability-catalog.json').read_text(encoding='utf-8'))['capabilities']}
-  for profile in self.load('delivery-profile-manifest.json'):
-   for cap_id in profile.get('requiredCapabilityIds',[]):
-    self.assertIn(cap_id,catalog_ids,f"profile {profile['id']} references unknown capability {cap_id}")
+  def test_profile_capability_ids_reference_catalog(self):
+   catalog_ids={c['id'] for c in json.loads((SCHEMAS/'capability-catalog.json').read_text(encoding='utf-8'))['capabilities']}
+   for profile in self.load('delivery-profile-manifest.json'):
+    for cap_id in profile.get('requiredCapabilityIds',[]):
+     self.assertIn(cap_id,catalog_ids,f"profile {profile['id']} references unknown capability {cap_id}")
+  def test_motion_profile_includes_none(self):
+   profiles = self.load('motion-profile-manifest.json')
+   self.assertIn('none-accessible', {p['id'] for p in profiles})
 if __name__=='__main__':unittest.main()

@@ -1,0 +1,64 @@
+{
+  "version": "1.0.0",
+  "name": "deckforge-agent-skills",
+  "repository": "tph-kds/deckforge",
+  "defaultSkill": "deckforge",
+  "skills": [
+    {
+      "id": "deckforge",
+      "path": "./skills/deckforge",
+      "title": "DeckForge",
+      "description": "Primary orchestration skill for editable web-native presentation products with semantic layouts and enforceable delivery contracts.",
+      "tags": ["slides", "presentation", "web-ui", "design-system", "editor", "presenter"],
+      "userInvocable": true
+    },
+    {
+      "id": "deckforge-audit",
+      "path": "./skills/deckforge-audit",
+      "title": "DeckForge Audit",
+      "description": "Review and quality-assurance skill for existing slide applications.",
+      "tags": ["audit", "quality", "review", "accessibility", "performance"],
+      "userInvocable": true
+    },
+    {
+      "id": "deckforge-runtime-planner",
+      "path": "./skills/deckforge-runtime-planner",
+      "title": "DeckForge Runtime Planner",
+      "description": "Architecture planning skill for editor, presenter, and publishing runtime.",
+      "tags": ["planning", "architecture", "runtime", "frontend"],
+      "userInvocable": true
+    },
+    {
+      "id": "deckforge-publish",
+      "path": "./skills/deckforge-publish",
+      "title": "DeckForge Publish",
+      "description": "Publishing, export, and release skill for browser-native slide apps.",
+      "tags": ["publish", "export", "embed", "deploy"],
+      "userInvocable": true
+    },
+    {
+      "id": "deckforge-export",
+      "path": "./skills/deckforge-export",
+      "title": "DeckForge Export",
+      "description": "Add or repair export capabilities (PowerPoint/PPTX, PDF, PNG, portable packages) for DeckForge-compatible or custom web slide applications.",
+      "tags": ["export", "pptx", "powerpoint", "pdf", "preflight"],
+      "userInvocable": true
+    },
+    {
+      "id": "deckforge-visual-evidence",
+      "path": "./skills/deckforge-visual-evidence",
+      "title": "DeckForge Visual Evidence",
+      "description": "Verification worker that starts a DeckForge application in an isolated browser session and produces executed capability evidence.",
+      "tags": ["verification", "playwright", "evidence", "qa"],
+      "userInvocable": false
+    },
+    {
+      "id": "deckforge-skill-evaluator",
+      "path": "./skills/deckforge-skill-evaluator",
+      "title": "DeckForge Skill Evaluator",
+      "description": "Development evaluator comparing baseline, current, and candidate DeckForge skills on deterministic outcome tests.",
+      "tags": ["evaluation", "evals", "skills", "release-gate"],
+      "userInvocable": false
+    }
+  ]
+}

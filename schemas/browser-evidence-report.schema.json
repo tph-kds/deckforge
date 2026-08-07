@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckforge.dev/schemas/browser-evidence-report.schema.json",
+  "title": "DeckForge Browser Evidence Report",
+  "description": "Machine-readable output of a deckforge-visual-evidence run. Groups executed evidence by capability ID and lists capabilities that could not be verified.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["reportVersion", "project", "profile", "commit", "runId", "generatedAt", "capabilities"],
+  "properties": {
+    "reportVersion": { "const": "1.0.0" },
+    "project": { "type": "string" },
+    "profile": { "type": "string" },
+    "commit": { "type": "string" },
+    "runId": { "type": "string" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": { "$ref": "capability-evidence.schema.json" }
+      }
+    },
+    "unverifiedCapabilities": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "consoleErrors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["message", "url"],
+        "properties": {
+          "message": { "type": "string" },
+          "url": { "type": "string" }
+        }
+      }
+    },
+    "failedRequests": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

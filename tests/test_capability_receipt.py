@@ -153,6 +153,35 @@ class CapabilityReceiptValidationTests(unittest.TestCase):
         self.assertNotEqual(code, 0)
         self.assertIn('invalid status', output)
 
+    def test_strict_rejects_partial_profile_required(self):
+        import json, subprocess, sys, tempfile
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]
+        receipt = {
+            "receiptVersion": "1.0.0",
+            "profile": "editable-deck",
+            "capabilities": {
+                "edit.text": {
+                    "status": "partial",
+                    "entryPoints": ["/editor"],
+                    "commands": ["editTitle"],
+                    "persistence": ["localStorage"],
+                    "tests": ["tests/deck.test.ts"],
+                    "evidence": ["tests/deck.test.ts"]
+                }
+            }
+        }
+        # add a referenced test file that exists so only the status is the failure
+        tests_dir = Path(tempfile.mkdtemp())
+        (tests_dir / "deck.test.ts").write_text("test('x',()=>{});")
+        (tests_dir / "capability-receipt.json").write_text(json.dumps(receipt))
+        proc = subprocess.run(
+            [sys.executable, str(root / "scripts/validate/validate_capability_receipt.py"),
+             str(tests_dir / "capability-receipt.json"), "--strict"],
+            capture_output=True, text=True)
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertIn("profile-required status must be implemented", proc.stderr)
+
 
 if __name__ == '__main__':
     unittest.main()

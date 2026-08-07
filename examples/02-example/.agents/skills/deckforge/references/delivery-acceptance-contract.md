@@ -77,12 +77,12 @@ A visible help action opens an accessible dialog listing editor and presenter sh
 - placeholders remain without being clearly marked;
 - shortcut help is absent;
 - production build fails;
-- no `motionProfileId` or a fully static presenter (no transition, no builds);
+- no `motionProfileId` or a fully static presenter (no transition, no builds), unless the selected profile is `none-accessible`;
 - presenter chrome floating over the slide safe area;
 - editor with an unassigned grid row or a non-collapsible notes area;
 - duplicate slide titles or verbatim repeated claims;
 - metric blocks missing a value or label;
-- default browser scrollbars on a scrollable surface (no theme-aware scrollbar styling);
+- scrollable surfaces that are not discoverable, keyboard accessible, theme-compatible, or usable in forced-colors mode (custom scrollbar styling is optional);
 - a scrollable slide canvas or a fullscreen presenter that scrolls or shows a scrollbar;
 - `presentation.routes` present but a presenter surface that leaks document scroll.
 
@@ -109,7 +109,8 @@ The `capability-receipt.json` in the target project is the blocking source of tr
 
 - reference capability IDs from `assets/capability-catalog.json` (or `schemas/capability-catalog.json`);
 - cover every `requiredCapabilityIds` entry of the selected delivery profile;
-- mark a capability `implemented` or `partial` only with referenced, existing test files and evidence paths;
+- mark a capability `implemented` only with referenced, existing test files and evidence paths and only when the capability is actually exercised by a trusted runner;
+- a profile-required capability must be `implemented`; `partial`, `unverified`, `blocked`, and `unsupported` fail strict profile validation;
 - mark everything without behavioral proof as `unverified`, `unsupported`, or `blocked`.
 
 `validate_capability_receipt.py` enforces these rules. Regex scanning is retained only as a non-blocking advisory tool.

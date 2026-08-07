@@ -59,8 +59,10 @@ Create a slide blueprint before code. Every slide must have a role, claim-led ti
 
 Read `assets/motion-profile-manifest.json`, select the profile whose `useFor`
 matches the presentation archetype, and record it as `presentation.motionProfileId`.
-Apply the profile's default slide transition and block builds even when the user
-did not request motion.
+Select a motion profile according to audience, presentation archetype, delivery
+mode, accessibility constraints, performance budget, and explicit user intent.
+A no-motion profile (`none-accessible`) is valid and is the default when the
+user requests reduced motion, compliance-sensitive output, or no animation.
 
 ## 6. Use semantic composition, not arbitrary coordinates
 
@@ -166,5 +168,5 @@ Do not report completion while collision, clipped text, broken controls, placeho
 - Do not fabricate facts, citations, logos, screenshots, metrics, or testimonials.
 - Do not default AI topics to dark neon gradients or repetitive card grids.
 - Do not mix editor chrome into presenter mode.
-- Do not leave default browser scrollbars in scrollable surfaces; theme-aware custom scrollbars are required.
+- Scrollable surfaces must be discoverable, keyboard accessible, theme-compatible, and usable in forced-colors mode; custom scrollbar styling is optional.
 - Do not make the slide canvas or the fullscreen presenter scrollable, and never intercept wheel input to fake smooth scrolling.

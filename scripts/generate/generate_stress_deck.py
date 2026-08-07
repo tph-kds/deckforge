@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
-"""Generate a 30-slide stress-test deck from the validated 02-example deck.
+"""Generate a stress-test deck from the validated 02-example deck.
 
 Clones the source deck's slides with remapped slide/block ids so the result
 passes schema, layout, motion, and output-contract audits while exercising
-grid, overview, and rendering performance at 30 slides (plan §20.5).
+grid, overview, and rendering performance at N slides (plan §20.5).
+
+Usage:
+    python scripts/generate/generate_stress_deck.py [--count N] [--out PATH]
 """
 from __future__ import annotations
-import json, sys
+import argparse
+import json
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parents[2]
@@ -44,10 +49,14 @@ def remap(deck: dict, count: int) -> dict:
     return {**deck, 'slides': out}
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--count', type=int, default=TARGET_SLIDES)
+    parser.add_argument('--out', type=Path, default=TARGET)
+    args = parser.parse_args()
     source = json.loads(SOURCE.read_text(encoding='utf-8'))
-    target = remap(source, TARGET_SLIDES)
-    TARGET.write_text(json.dumps(target, indent=2, ensure_ascii=False), encoding='utf-8')
-    print(f'wrote {TARGET} with {len(target["slides"])} slides')
+    target = remap(source, args.count)
+    args.out.write_text(json.dumps(target, indent=2, ensure_ascii=False), encoding='utf-8')
+    print(f'wrote {args.out} with {len(target["slides"])} slides')
     return 0
 
 if __name__ == '__main__':
