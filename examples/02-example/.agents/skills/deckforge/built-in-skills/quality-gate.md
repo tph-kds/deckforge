@@ -23,7 +23,7 @@ Regex scanning of the project is advisory only. The blocking source of truth is 
 2. Read `schemas/capability-receipt.schema.json` for the receipt structure.
 3. The selected delivery profile (`assets/delivery-profile-manifest.json`) lists `requiredCapabilityIds`.
 4. Author `capability-receipt.json` in the target project and run `validate_capability_receipt.py`.
-5. A capability may be marked `implemented` or `partial` only when every referenced test and evidence file exists and the catalog-mandated entry points, commands, and persistence behavior are listed. Otherwise use `unverified`, `unsupported`, or `blocked`.
+5. A capability may be marked `implemented` only when every referenced test and evidence file exists, the catalog-mandated entry points, commands, and persistence behavior are listed, and the capability is exercised by a trusted runner. Otherwise use `unverified`, `unsupported`, or `blocked`.
 6. Do not claim a capability the project does not have; a fake toolbar label cannot satisfy `edit.text`, and `history.undo` passes only when a change can be made, undone, and redone.
 
 ## Document-to-product consistency

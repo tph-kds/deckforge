@@ -109,7 +109,8 @@ The `capability-receipt.json` in the target project is the blocking source of tr
 
 - reference capability IDs from `assets/capability-catalog.json` (or `schemas/capability-catalog.json`);
 - cover every `requiredCapabilityIds` entry of the selected delivery profile;
-- mark a capability `implemented` or `partial` only with referenced, existing test files and evidence paths;
+- mark a capability `implemented` only with referenced, existing test files and evidence paths and only when the capability is actually exercised by a trusted runner;
+- a profile-required capability must be `implemented`; `partial`, `unverified`, `blocked`, and `unsupported` fail strict profile validation;
 - mark everything without behavioral proof as `unverified`, `unsupported`, or `blocked`.
 
 `validate_capability_receipt.py` enforces these rules. Regex scanning is retained only as a non-blocking advisory tool.
