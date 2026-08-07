@@ -12,10 +12,13 @@ Usage:
     python scripts/package/package_skill_zips.py
 """
 from __future__ import annotations
+import hashlib
+import json
 import re
 import shutil
 import tempfile
 import zipfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -72,6 +75,24 @@ def pack_skill(skill_name: str, tmp: Path) -> Path:
     return zip_path
 
 
+def write_index() -> None:
+    registry = json.loads((ROOT / 'config' / 'skill-registry.json').read_text(encoding='utf-8'))
+    entries = []
+    for skill in registry['skills']:
+        zip_path = OUT / f"{skill['id']}.zip"
+        if not zip_path.exists():
+            continue
+        entries.append({
+            'id': skill['id'],
+            'path': zip_path.name,
+            'sha256': hashlib.sha256(zip_path.read_bytes()).hexdigest(),
+            'userInvocable': skill.get('userInvocable', True),
+        })
+    index = {'version': '1.0.0', 'generatedAt': datetime.now(timezone.utc).isoformat(), 'skills': entries}
+    (OUT / 'index.json').write_text(json.dumps(index, indent=2) + '\n', encoding='utf-8')
+    print(f'wrote {OUT / "index.json"}')
+
+
 def main() -> int:
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -81,6 +102,7 @@ def main() -> int:
             with tempfile.TemporaryDirectory() as tmp:
                 pack_skill(d.name, Path(tmp))
             print('packed', f'{d.name}.zip')
+    write_index()
     return 0
 
 
