@@ -17,6 +17,8 @@ This repository contains Agent Skills and reference scaffolds for reliable **edi
 - Use `skills/deckforge-audit/SKILL.md` for review-only work.
 - Use `skills/deckforge-runtime-planner/SKILL.md` for architecture planning without implementation.
 - Use `skills/deckforge-publish/SKILL.md` for publishing, embedding, and delivery.
+- Use `skills/deckforge-visual-evidence/SKILL.md` for browser-based verification of a generated application and for producing executed capability evidence.
+- Use `skills/deckforge-skill-evaluator/SKILL.md` for comparing skill conditions and gatekeeping skill releases.
 
 For ordinary end-user requests to create slides, select the `editable-deck` profile unless the user explicitly asks for a presenter-only artifact.
 
