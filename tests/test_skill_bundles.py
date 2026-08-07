@@ -70,6 +70,13 @@ class SkillBundlePackagingTests(unittest.TestCase):
         self.assertNotEqual(code, 0)
         self.assertIn('user-invocable', output)
 
+    def test_visual_evidence_skill_is_worker(self):
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]
+        text = (root / 'skills/deckforge-visual-evidence/SKILL.md').read_text(encoding='utf-8')
+        self.assertIn('user-invocable: false', text)
+        self.assertIn('name: deckforge-visual-evidence', text)
+
 
 if __name__ == '__main__':
     unittest.main()
