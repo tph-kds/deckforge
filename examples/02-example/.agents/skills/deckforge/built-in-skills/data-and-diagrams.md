@@ -28,3 +28,27 @@ Store chart data and diagram structure as serializable content rather than scree
 ## Verification
 
 Check that the visual can be understood in grayscale, at presentation distance, and through its text summary. Confirm that data values match source material and that no animation changes the apparent magnitude or order of evidence.
+
+## Data storytelling pipeline
+
+Question and claim → data quality → comparison type → chart candidates → honest
+encoding → annotation and narrative → accessibility → slide fit → export plan.
+
+## Honesty and provenance
+
+Validate data source, units, missing values, and the claim. Store provenance
+(source, date, denominator, transformation) with the data. Use honest axes,
+scales, ordering, and encoding. Never invent data or select a chart only because
+it looks impressive.
+
+## Chart accessibility
+
+Apply `references/chart-accessibility-contract.md`: takeaway, data alternative,
+secondary encoding, keyboard behavior when interactive, and export-loss reporting.
+
+## Candidate blocks
+
+Slopegraph, small multiples, waterfall, Sankey, annotated line, variance bridge,
+matrix, and evidence table. Each candidate requires schema, renderer, editor,
+measurement, accessibility, and exporter support before it is claimed as a
+capability.
