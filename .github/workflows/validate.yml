@@ -16,6 +16,7 @@ jobs:
       - run: npm run validate
       - run: npm run schema:check
       - run: npm run skills:check
+      - run: python scripts/validate/validate_skill_bundles.py skill-zips
 
   skill-bundles:
     runs-on: ubuntu-latest
