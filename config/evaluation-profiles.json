@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "profiles": [
+    {
+      "id": "p0-pull-request",
+      "conditions": ["current", "candidate"],
+      "assertions": ["typecheck", "build", "text-edit", "duplicate-slide", "layout-switch-no-loss", "save-reload", "presenter", "export"]
+    },
+    {
+      "id": "cross-agent-nightly",
+      "conditions": ["baseline", "current", "candidate"],
+      "assertions": ["typecheck", "build", "text-edit", "duplicate-slide", "layout-switch-no-loss", "save-reload", "presenter", "export", "accessibility", "visual"]
+    }
+  ]
+}
