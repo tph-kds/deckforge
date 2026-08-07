@@ -36,9 +36,9 @@ Check that every declared capability exists:
 - `shortcutHelp` requires an in-product accessible help UI;
 - `speakerView`, `overview`, `fullscreen`, and interactions must be runnable;
 - allowed block types require renderers and insert actions or must be removed from the declaration;
-- `motionProfileId` requires a runtime slide transition and default builds (or block-level animations); a deck that is fully static is blocking;
+- `motionProfileId` requires a runtime slide transition and default builds (or block-level animations) for motion profiles; `none-accessible` (fully static) is valid;
 - presenter chrome (timer, position, controls, progress) must be docked outside the slide area — floating chrome over slide content is blocking;
-- theme-aware custom scrollbars are required on scrollable editor/publishing surfaces — a default browser scrollbar on a scrollable surface is blocking;
+- scrollable editor/publishing surfaces must be discoverable, keyboard accessible, theme-compatible, and usable in forced-colors mode — custom scrollbar styling is optional;
 - the slide canvas and the fullscreen presenter must never be scrollable and must expose no scrollbar.
 
 Metadata alone never satisfies a feature.

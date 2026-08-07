@@ -77,12 +77,12 @@ A visible help action opens an accessible dialog listing editor and presenter sh
 - placeholders remain without being clearly marked;
 - shortcut help is absent;
 - production build fails;
-- no `motionProfileId` or a fully static presenter (no transition, no builds);
+- no `motionProfileId` or a fully static presenter (no transition, no builds), unless the selected profile is `none-accessible`;
 - presenter chrome floating over the slide safe area;
 - editor with an unassigned grid row or a non-collapsible notes area;
 - duplicate slide titles or verbatim repeated claims;
 - metric blocks missing a value or label;
-- default browser scrollbars on a scrollable surface (no theme-aware scrollbar styling);
+- scrollable surfaces that are not discoverable, keyboard accessible, theme-compatible, or usable in forced-colors mode (custom scrollbar styling is optional);
 - a scrollable slide canvas or a fullscreen presenter that scrolls or shows a scrollbar;
 - `presentation.routes` present but a presenter surface that leaks document scroll.
 
