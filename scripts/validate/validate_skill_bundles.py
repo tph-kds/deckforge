@@ -5,6 +5,11 @@ Scans extracted SKILL.md files for relative paths referenced in backticks and
 verifies that each reference resolves to an existing file inside the bundle.
 Any reference that escapes the bundle root or points at a missing file fails.
 
+Also enforces YAML front matter on every SKILL.md: `name`, `description`, and
+`version` are required, and `user-invocable: true` is restricted to the known
+user-facing skills (the primary `deckforge` skill and the `deckforge-export`
+skill); worker/verification skills must be `user-invocable: false`.
+
 Usage:
     python scripts/validate/validate_skill_bundles.py <directory-with-zips>
 """
@@ -17,6 +22,29 @@ from pathlib import Path
 
 PATH_RE = re.compile(r"`((?:\.\.?/)?[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)+)`")
 
+# Skills that are directly user-invocable. New user-facing skills must be added
+# here deliberately; worker/verification skills stay `user-invocable: false`.
+USER_INVOCABLE_ALLOWED = {"deckforge", "deckforge-export"}
+
+
+def check_frontmatter(skill_file: Path, root: Path) -> list[str]:
+    errors: list[str] = []
+    text = skill_file.read_text(encoding="utf-8")
+    if not text.startswith("---\n"):
+        errors.append(f"{skill_file.relative_to(root)}: missing YAML frontmatter")
+        return errors
+    fm = text.split("---\n", 2)
+    if len(fm) < 3:
+        errors.append(f"{skill_file.relative_to(root)}: malformed YAML frontmatter")
+        return errors
+    header = fm[1]
+    for key in ("name:", "description:", "version:"):
+        if key not in header:
+            errors.append(f"{skill_file.relative_to(root)}: frontmatter missing {key}")
+    if "user-invocable: true" in header and skill_file.parent.name not in USER_INVOCABLE_ALLOWED:
+        errors.append(f"{skill_file.relative_to(root)}: user-invocable restricted to {', '.join(sorted(USER_INVOCABLE_ALLOWED))}")
+    return errors
+
 
 def validate_bundle(zip_path: Path) -> list[str]:
     errors: list[str] = []
@@ -28,6 +56,7 @@ def validate_bundle(zip_path: Path) -> list[str]:
         if not skill_files:
             return ["missing SKILL.md"]
         for skill_file in skill_files:
+            errors.extend(check_frontmatter(skill_file, root))
             text = skill_file.read_text(encoding="utf-8")
             base = skill_file.parent.resolve()
             for match in PATH_RE.findall(text):

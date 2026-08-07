@@ -47,6 +47,29 @@ class SkillBundlePackagingTests(unittest.TestCase):
             self.assertNotEqual(code, 0)
             self.assertIn('missing SKILL.md', output)
 
+    def test_frontmatter_required(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / 'bad.zip'
+            with zipfile.ZipFile(p, 'w') as z:
+                z.writestr('skills/bad/SKILL.md', '# No frontmatter\n')
+            code, output = run_script(VALIDATOR, tmp)
+        self.assertNotEqual(code, 0)
+        self.assertIn('frontmatter', output)
+
+    def test_user_invocable_limited_to_deckforge(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / 'worker.zip'
+            content = (
+                '---\nname: bad-worker\ndescription: a worker skill for testing\nversion: 1.0.0\n'
+                'user-invocable: true\n---\n\n# Bad worker\n\n'
+                'Worker content with enough words to pass the bundle validation threshold.\n'
+            )
+            with zipfile.ZipFile(p, 'w') as z:
+                z.writestr('skills/bad-worker/SKILL.md', content)
+            code, output = run_script(VALIDATOR, tmp)
+        self.assertNotEqual(code, 0)
+        self.assertIn('user-invocable', output)
+
 
 if __name__ == '__main__':
     unittest.main()
