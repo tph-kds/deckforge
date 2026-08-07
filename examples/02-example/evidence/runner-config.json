@@ -1,0 +1,327 @@
+{
+  "document.create": {
+    "entryPoints": [
+      "EditorApp",
+      "CommandPalette"
+    ],
+    "commands": [
+      "replaceDeck"
+    ],
+    "persistence": [
+      "autosave"
+    ],
+    "tests": [
+      "tests/deck.test.ts"
+    ],
+    "evidence": [
+      "tests/deck.test.ts"
+    ]
+  },
+  "edit.text": {
+    "entryPoints": [
+      "EditorApp.updateBlock",
+      "SlideRenderer"
+    ],
+    "commands": [
+      "updateBlockContent"
+    ],
+    "persistence": [
+      "autosave"
+    ],
+    "tests": [
+      "tests/deck.test.ts"
+    ],
+    "evidence": [
+      "tests/deck.test.ts"
+    ]
+  },
+  "edit.block.create": {
+    "entryPoints": [
+      "EditorApp.insertBlock"
+    ],
+    "commands": [
+      "addBlock",
+      "duplicateBlock"
+    ],
+    "persistence": [
+      "autosave"
+    ],
+    "tests": [
+      "tests/deck.test.ts"
+    ],
+    "evidence": [
+      "tests/deck.test.ts"
+    ]
+  },
+  "edit.media.insert": {
+    "entryPoints": [
+      "EditorApp.insertBlock.image"
+    ],
+    "commands": [
+      "addBlock"
+    ],
+    "persistence": [
+      "autosave"
+    ],
+    "tests": [
+      "tests/assets.test.ts",
+      "tests/renderer.test.ts"
+    ],
+    "evidence": [
+      "tests/assets.test.ts",
+      "tests/renderer.test.ts"
+    ]
+  },
+  "edit.layout.change": {
+    "entryPoints": [
+      "EditorApp.updateActiveSlide.layout",
+      "LayoutPicker"
+    ],
+    "commands": [
+      "updateSlideLayout"
+    ],
+    "persistence": [
+      "autosave"
+    ],
+    "tests": [
+      "tests/deck.test.ts"
+    ],
+    "evidence": [
+      "tests/deck.test.ts"
+    ]
+  },
+  "edit.theme.change": {
+    "entryPoints": [
+      "EditorApp theme select",
+      "ThemePicker"
+    ],
+    "commands": [
+      "setTheme"
+    ],
+    "persistence": [
+      "autosave"
+    ],
+    "tests": [
+      "tests/deck.test.ts",
+      "tests/contrast.test.ts"
+    ],
+    "evidence": [
+      "tests/deck.test.ts"
+    ]
+  },
+  "edit.style.change": {
+    "entryPoints": [
+      "EditorApp.updateBlock"
+    ],
+    "commands": [
+      "updateBlockStyle"
+    ],
+    "persistence": [
+      "autosave"
+    ],
+    "tests": [
+      "tests/deck.test.ts"
+    ],
+    "evidence": [
+      "tests/deck.test.ts"
+    ]
+  },
+  "history.undo": {
+    "entryPoints": [
+      "EditorApp undo button",
+      "Ctrl+Z"
+    ],
+    "commands": [],
+    "persistence": [],
+    "tests": [
+      "e2e/tests/editor.spec.ts"
+    ],
+    "evidence": [
+      "e2e/tests/editor.spec.ts"
+    ]
+  },
+  "history.redo": {
+    "entryPoints": [
+      "EditorApp redo button",
+      "Ctrl+Shift+Z"
+    ],
+    "commands": [],
+    "persistence": [],
+    "tests": [
+      "e2e/tests/editor.spec.ts"
+    ],
+    "evidence": [
+      "e2e/tests/editor.spec.ts"
+    ]
+  },
+  "persistence.autosave": {
+    "entryPoints": [
+      "SaveStatus",
+      "useDeck autosave effect"
+    ],
+    "commands": [],
+    "persistence": [
+      "localStorage"
+    ],
+    "tests": [
+      "e2e/tests/editor.spec.ts"
+    ],
+    "evidence": [
+      "e2e/tests/editor.spec.ts"
+    ]
+  },
+  "persistence.recover": {
+    "entryPoints": [
+      "useDeck initialDeck"
+    ],
+    "commands": [],
+    "persistence": [
+      "localStorage"
+    ],
+    "tests": [
+      "e2e/tests/editor.spec.ts"
+    ],
+    "evidence": [
+      "e2e/tests/editor.spec.ts"
+    ]
+  },
+  "help.shortcuts": {
+    "entryPoints": [
+      "ShortcutHelpDialog"
+    ],
+    "commands": [],
+    "persistence": [],
+    "tests": [
+      "e2e/tests/editor.spec.ts",
+      "e2e/tests/presenter.spec.ts"
+    ],
+    "evidence": [
+      "e2e/tests/editor.spec.ts"
+    ]
+  },
+  "present.fullscreen": {
+    "entryPoints": [
+      "PresenterApp F",
+      "ShortcutHelpDialog"
+    ],
+    "commands": [],
+    "persistence": [],
+    "tests": [
+      "tests/presenterMachine.test.ts"
+    ],
+    "evidence": [
+      "tests/presenterMachine.test.ts"
+    ]
+  },
+  "present.overview": {
+    "entryPoints": [
+      "PresenterApp O"
+    ],
+    "commands": [],
+    "persistence": [],
+    "tests": [
+      "tests/presenterMachine.test.ts"
+    ],
+    "evidence": [
+      "tests/presenterMachine.test.ts"
+    ]
+  },
+  "present.builds": {
+    "entryPoints": [
+      "PresenterApp build navigation"
+    ],
+    "commands": [],
+    "persistence": [],
+    "tests": [
+      "tests/presenterMachine.test.ts"
+    ],
+    "evidence": [
+      "tests/presenterMachine.test.ts"
+    ]
+  },
+  "present.progress": {
+    "entryPoints": [
+      "PresenterApp progress"
+    ],
+    "commands": [],
+    "persistence": [],
+    "tests": [
+      "e2e/tests/presenter.spec.ts"
+    ],
+    "evidence": [
+      "e2e/tests/presenter.spec.ts"
+    ]
+  },
+  "present.blackout": {
+    "entryPoints": [
+      "PresenterApp B"
+    ],
+    "commands": [],
+    "persistence": [],
+    "tests": [
+      "tests/presenterMachine.test.ts"
+    ],
+    "evidence": [
+      "tests/presenterMachine.test.ts"
+    ]
+  },
+  "navigation.keyboard": {
+    "entryPoints": [
+      "useHotkeys",
+      "PresenterApp"
+    ],
+    "commands": [],
+    "persistence": [],
+    "tests": [
+      "tests/presenterMachine.test.ts"
+    ],
+    "evidence": [
+      "tests/presenterMachine.test.ts"
+    ]
+  },
+  "accessibility.reduced-motion": {
+    "entryPoints": [
+      "App reducedClass",
+      "motion reducer"
+    ],
+    "commands": [
+      "setReducedMotion"
+    ],
+    "persistence": [],
+    "tests": [
+      "tests/motion.test.ts"
+    ],
+    "evidence": [
+      "tests/motion.test.ts"
+    ]
+  },
+  "accessibility.audit": {
+    "entryPoints": [
+      "audit_deck_layout.py",
+      "contrast.ts"
+    ],
+    "commands": [],
+    "persistence": [],
+    "tests": [
+      "tests/contrast.test.ts",
+      "tests/measure.test.ts"
+    ],
+    "evidence": [
+      "tests/contrast.test.ts"
+    ]
+  },
+  "export.pptx": {
+    "entryPoints": [
+      "export-dialog.tsx",
+      "pptx-exporter.ts"
+    ],
+    "commands": [],
+    "persistence": [],
+    "tests": [
+      "tests/export.test.ts"
+    ],
+    "evidence": [
+      "tests/export.test.ts"
+    ]
+  }
+}

@@ -2,3 +2,4 @@ test-results/
 playwright-report/
 blob-report/
 .playwright/
+evidence/browser-evidence-report.json

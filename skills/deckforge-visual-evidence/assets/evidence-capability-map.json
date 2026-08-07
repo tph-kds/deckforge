@@ -7,6 +7,7 @@
     { "testId": "undo and redo revert and reapply an edit", "file": "e2e/tests/editor.spec.ts", "capabilityIds": ["history.undo", "history.redo"] },
     { "testId": "export dialog opens with a preflight report", "file": "e2e/tests/editor.spec.ts", "capabilityIds": ["export.pptx"] },
     { "testId": "present button routes to the presenter", "file": "e2e/tests/editor.spec.ts", "capabilityIds": ["present.fullscreen"] },
-    { "testId": "shortcut help opens with ? and lists core bindings", "file": "e2e/tests/editor.spec.ts", "capabilityIds": ["help.shortcuts"] }
+    { "testId": "shortcut help opens with ? and lists core bindings", "file": "e2e/tests/editor.spec.ts", "capabilityIds": ["help.shortcuts"] },
+    { "testId": "applies bulk edits across title, layout, theme, and notes", "file": "e2e/tests/editor.spec.ts", "capabilityIds": ["edit.layout.change", "edit.theme.change", "edit.style.change"] }
   ]
 }

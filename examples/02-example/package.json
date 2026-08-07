@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:e2e": "playwright test -c e2e/playwright.config.ts",
+    "evidence": "npm run test:e2e && python ../../scripts/evidence/generate_capability_receipt.py . --run-id ci && python ../../scripts/validate/validate_capability_receipt.py capability-receipt.json --strict",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
