@@ -2,12 +2,17 @@
   "name": "deckforge",
   "version": "3.0.0",
   "description": "Reliable editable web-native presentation skills with semantic layouts, editor and presenter contracts, archetypes, motion, and deterministic validation.",
-  "skillsDirectory": "skills",
+  "author": {
+    "name": "DeckForge contributors"
+  },
   "skills": [
     "./skills/deckforge",
     "./skills/deckforge-audit",
     "./skills/deckforge-runtime-planner",
     "./skills/deckforge-publish",
-    "./skills/deckforge-export"
-  ]
+    "./skills/deckforge-export",
+    "./skills/deckforge-visual-evidence",
+    "./skills/deckforge-skill-evaluator"
+  ],
+  "skillsDirectory": "skills"
 }
