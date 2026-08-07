@@ -30,6 +30,14 @@ class ExampleTests(unittest.TestCase):
   self.assertEqual(len(ids),len(set(ids)))
   subprocess.run([sys.executable,str(ROOT/'scripts/audits/audit_deck_layout.py'),str(path),'--strict'],check=True)
   subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),str(path)],check=True)
+ def test_stress_100_deck_passes_all_audits(self):
+  path=ROOT/'examples/stress-test-100.deck.json'
+  data=json.loads(path.read_text())
+  self.assertGreaterEqual(len(data['slides']),100)
+  ids=[s['id'] for s in data['slides']]
+  self.assertEqual(len(ids),len(set(ids)))
+  subprocess.run([sys.executable,str(ROOT/'scripts/audits/audit_deck_layout.py'),str(path),'--strict'],check=True)
+  subprocess.run([sys.executable,str(ROOT/'skills/deckforge/scripts/audit_deck_motion.py'),str(path)],check=True)
  def test_theme_variant_example_passes_audits(self):
   path=ROOT/'examples/acme-platform-migration.deck.json'
   data=json.loads(path.read_text())
