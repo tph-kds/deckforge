@@ -1,0 +1,492 @@
+/* DeckForge Vanilla Scaffold — theme tokens, semantic surfaces, and the
+ * scrollbar system: themed custom scrollbars, cross-browser fallbacks,
+ * reduced-motion and forced-colors overrides, and a slide stage / presenter
+ * shell that never scrolls. */
+
+:root {
+  --scrollbar-width: 10px;
+  --scrollbar-thumb: #8a93a6;
+  --scrollbar-track: #e9edf4;
+  --scrollbar-hover: #6f7a8e;
+  color-scheme: light dark;
+}
+
+[data-scroll-surface],
+.scroll-surface {
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+/* WebKit custom scrollbars — themed track + thumb. */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 999px;
+}
+
+/* Firefox fallback: thin scrollbar with theme-mapped colors. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-scroll-surface],
+  .scroll-surface {
+    scroll-behavior: auto;
+  }
+  .anim-in,
+  .block,
+  .slide-thumbnail,
+  .overview-tile {
+    animation: none;
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  ::-webkit-scrollbar {
+    width: 14px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: CanvasText;
+    border: 2px solid Canvas;
+  }
+  ::-webkit-scrollbar-track {
+    background: Canvas;
+  }
+  * {
+    scrollbar-color: CanvasText Canvas;
+  }
+}
+
+@media (pointer: coarse) {
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  [data-scroll-surface],
+  .scroll-surface {
+    scrollbar-width: none;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: #f4f5f7;
+  color: #1b2230;
+}
+
+body.presentation-mode {
+  overflow: hidden;
+  background: #0e1117;
+}
+
+#app {
+  height: 100vh;
+  display: grid;
+}
+
+/* ---- Editor ---- */
+.editor-shell {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+  background: #f4f5f7;
+}
+
+.editor-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #d9dee8;
+}
+
+.toolbar-action,
+.editor-toolbar select {
+  font: inherit;
+  padding: 6px 12px;
+  border: 1px solid #c9cfdb;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1b2230;
+  cursor: pointer;
+}
+
+.toolbar-action:hover {
+  background: #eef1f6;
+}
+
+.editor-workspace {
+  display: grid;
+  grid-template-columns: 220px 1fr 280px;
+  gap: 12px;
+  padding: 12px 16px;
+  min-height: 0;
+}
+
+.slide-rail {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 4px;
+}
+
+.slide-rail-heading {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #5b6472;
+  padding: 4px 8px;
+}
+
+.slide-thumbnail {
+  font: inherit;
+  text-align: left;
+  padding: 10px 12px;
+  border: 1px solid #d9dee8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1b2230;
+  cursor: pointer;
+}
+
+.slide-thumbnail.is-current {
+  border-color: #3b63f5;
+  background: #eef2fe;
+}
+
+.slide-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #d9dee8;
+  padding: 48px;
+  box-shadow: 0 8px 24px rgba(27, 34, 48, 0.08);
+}
+
+.block {
+  margin-bottom: 16px;
+}
+
+.block-heading {
+  font-size: 40px;
+  line-height: 1.15;
+  margin: 0 0 8px;
+}
+
+.block-text {
+  font-size: 18px;
+  line-height: 1.5;
+  color: #3a4353;
+}
+
+.metric-value {
+  font-size: 72px;
+  font-weight: 800;
+  display: block;
+}
+
+.metric-label {
+  font-size: 16px;
+  color: #5b6472;
+}
+
+.block-bullets {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.block-heading[contenteditable],
+.block-text[contenteditable],
+.block-bullets li[contenteditable] {
+  outline: none;
+  border-radius: 4px;
+}
+
+.block-heading[contenteditable]:focus,
+.block-text[contenteditable]:focus,
+.block-bullets li[contenteditable]:focus {
+  box-shadow: 0 0 0 2px rgba(59, 99, 245, 0.4);
+}
+
+.inspector-panel {
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #d9dee8;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.properties-panel {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #5b6472;
+  margin: 0 0 8px;
+}
+
+.inspector-row {
+  font-size: 13px;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.inspector-block-name {
+  color: #2b3445;
+}
+
+.editor-dock {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid #d9dee8;
+  background: #ffffff;
+}
+
+.notes-panel {
+  overflow-y: auto;
+  max-height: 180px;
+}
+
+.notes-panel-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #5b6472;
+  margin: 0 0 6px;
+}
+
+.speaker-notes {
+  width: 100%;
+  min-height: 72px;
+  resize: vertical;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 10px;
+  border: 1px solid #d9dee8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1b2230;
+  overflow-y: auto;
+}
+
+.save-status {
+  align-self: end;
+  font-size: 12px;
+  color: #5b6472;
+  padding-bottom: 10px;
+}
+
+/* ---- Presenter ---- */
+.presenter-shell {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: #0e1117;
+  color: #e8ecf4;
+}
+
+.presenter-chrome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #161b26;
+  border-bottom: 1px solid #232b3a;
+}
+
+.presenter-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.deck-controls {
+  font: inherit;
+  padding: 8px 14px;
+  border: 1px solid #39425a;
+  border-radius: 8px;
+  background: #1d2433;
+  color: #e8ecf4;
+  cursor: pointer;
+}
+
+.deck-controls:hover {
+  background: #2a3348;
+}
+
+.presenter-stage {
+  overflow: hidden;
+  scrollbar-width: none;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.presenter-stage::-webkit-scrollbar {
+  display: none;
+}
+
+.presenter-stage .slide-stage {
+  width: min(1280px, 100%);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #ffffff;
+  color: #1b2230;
+  border: none;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+.build-hidden {
+  display: none;
+}
+
+.presenter-notes {
+  max-height: 120px;
+  overflow-y: auto;
+  padding: 10px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #aeb7c8;
+  background: #161b26;
+  border-top: 1px solid #232b3a;
+}
+
+.presenter-overview {
+  position: fixed;
+  inset: 64px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  background: rgba(14, 17, 23, 0.92);
+  border: 1px solid #232b3a;
+  border-radius: 12px;
+}
+
+.overview-tile {
+  font: inherit;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #39425a;
+  border-radius: 8px;
+  background: #1d2433;
+  color: #e8ecf4;
+  cursor: pointer;
+}
+
+.overview-tile.is-current {
+  border-color: #3b63f5;
+  background: #26304a;
+}
+
+/* ---- Motion ---- */
+.anim-in {
+  animation: fadeUp 0.4s ease-out both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- Shortcut help dialog ---- */
+.shortcut-help {
+  display: none;
+  border: 1px solid #c9cfdb;
+  border-radius: 12px;
+  padding: 20px;
+  background: #ffffff;
+  color: #1b2230;
+  max-width: 420px;
+}
+
+.shortcut-help[open] {
+  display: block;
+  position: fixed;
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  box-shadow: 0 24px 64px rgba(14, 17, 23, 0.4);
+}
+
+.shortcut-help-title {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.shortcut-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eef0f4;
+}
+
+.shortcut-keys {
+  font-family: ui-monospace, "Cascadia Mono", monospace;
+  font-size: 12px;
+  background: #eef1f6;
+  border: 1px solid #d9dee8;
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+.shortcut-description {
+  font-size: 14px;
+  color: #3a4353;
+}
+
+.shortcut-close {
+  margin-top: 14px;
+  font: inherit;
+  padding: 8px 14px;
+  border: 1px solid #c9cfdb;
+  border-radius: 8px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.shortcut-close:hover {
+  background: #eef1f6;
+}
