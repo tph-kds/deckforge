@@ -86,6 +86,14 @@ A visible help action opens an accessible dialog listing editor and presenter sh
 - a scrollable slide canvas or a fullscreen presenter that scrolls or shows a scrollbar;
 - `presentation.routes` present but a presenter surface that leaks document scroll.
 
+### Required accessibility review (human checklist)
+
+- Focus order matches reading order; focus is never trapped.
+- Focus-visible indicators meet a 3:1 contrast against adjacent colors.
+- Interactive targets meet a 24x24 px minimum (44x44 recommended).
+- Reading order from slot order is confirmed by a keyboard walk.
+- Non-text content has appropriate alt text or is marked decorative.
+
 ## Validation commands
 
 Run before declaring completion:
@@ -96,6 +104,7 @@ python <deckforge-skill>/scripts/audit_deck_layout.py <deck.json>
 python <deckforge-skill>/scripts/audit_deck_content.py <deck.json>
 python <deckforge-skill>/scripts/audit_deck_assets.py <deck.json>
 python <deckforge-skill>/scripts/audit_deck_motion.py <deck.json>
+python <deckforge-skill>/scripts/audit_accessibility.py <deck.json>
 python <deckforge-skill>/scripts/validate_capability_receipt.py <target-project>/capability-receipt.json
 python <deckforge-skill>/scripts/validate_output_contract.py <target-project> --profile <profile> --advisory
 python <deckforge-skill>/scripts/audit_scrollbars.py <target-project>
