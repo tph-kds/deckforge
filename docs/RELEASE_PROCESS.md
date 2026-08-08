@@ -33,6 +33,7 @@ Individually:
 - **Production build** — `npm run build` in `examples/02-example` must succeed.
 - **Behavioral/e2e checks** — `npm run test:e2e` (Playwright) must pass, including keyboard-complete, reduced-motion, and scrollbar behavior; the capability receipt must be regenerated and re-validated.
 - **Bundle validation** — `npm run package-skills` rebuilds `skill-zips/` and validates every bundle's frontmatter, self-contained references, and `user-invocable` restrictions.
+- **Performance budget (informational)** — CI's `performance-budget` job serves `examples/02-example` with `vite preview`, runs a Lighthouse audit, and checks the report against `config/performance-budget.json`. The job is informational and **not release-blocking**: machines vary, so LCP, interactive, and bundle-weight budgets are enforced where measured, while editor input-latency and slide-change budgets remain reference-machine measurements per the performance-budget contract.
 - **Evaluator results (mandatory)** — every core eval case must score 100 under the `current` condition:
 
 ```bash

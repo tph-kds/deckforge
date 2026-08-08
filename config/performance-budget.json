@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "source": "skills/deckforge/references/performance-budget-contract.md",
+  "budgets": {
+    "lcpMs": 2500,
+    "interactiveMs": 3500,
+    "totalByteWeight": 1500000,
+    "inputLatencyMs": 100,
+    "slideChangeMs": 100
+  },
+  "notes": "Editor input latency and slide-change time stay under 100ms; LCP and bundle weight align with the performance-budget contract."
+}

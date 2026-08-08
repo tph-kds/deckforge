@@ -70,6 +70,30 @@ jobs:
             examples/02-example/playwright-report
             examples/02-example/test-results
 
+  performance-budget:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: examples/02-example/package-lock.json
+      - run: npm ci
+        working-directory: examples/02-example
+      - run: npm run build
+        working-directory: examples/02-example
+      - name: Serve app and run Lighthouse audit
+        working-directory: examples/02-example
+        env:
+          CI: "true"
+        run: |
+          npx vite preview --port 4173 > preview.log 2>&1 &
+          sleep 5
+          npx --yes lighthouse http://localhost:4173/deckforge/ --chrome-flags="--headless --no-sandbox" --output=json --output-path=lhr.json --quiet
+      - run: python scripts/validate/check_performance_budget.py --report examples/02-example/lhr.json
+
   capability-receipt:
     needs: [repository-static, skill-bundles, reference-app]
     runs-on: ubuntu-latest
