@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {"id": "pattern5", "slug": "pattern5", "title": "Pattern 5", "language": "en"},
+  "canvas": {"width": 1600, "height": 900, "safeMargin": 64},
+  "theme": {"id": "editorial-cream"},
+  "presentation": {"mode": "horizontal", "motionProfileId": "seminar-editorial", "reducedMotion": "respect-system"},
+  "editor": {"enable": true},
+  "publish": {"enabled": false},
+  "experience": {"density": "medium"},
+  "slides": [
+    {
+      "id": "s1", "title": "Hidden interaction model",
+      "layout": "title-hero",
+      "density": "medium",
+      "layoutBindings": [],
+      "blocks": [
+        {"id": "b1", "type": "heading", "slot": "title", "content": "No shortcut guidance anywhere"},
+        {"id": "b2", "type": "text", "slot": "subtitle", "content": "This deck never surfaces keyboard guidance, so the output contract cannot verify an interaction model."}
+      ]
+    }
+  ]
+}

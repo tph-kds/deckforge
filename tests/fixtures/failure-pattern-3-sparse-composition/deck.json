@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "2.1",
+  "meta": {"id": "pattern3", "slug": "pattern3", "title": "Pattern 3", "language": "en"},
+  "canvas": {"width": 1600, "height": 900, "safeMargin": 64},
+  "theme": {"id": "editorial-cream"},
+  "presentation": {"mode": "horizontal", "motionProfileId": "seminar-editorial", "reducedMotion": "respect-system"},
+  "editor": {"enable": true},
+  "publish": {"enabled": false},
+  "experience": {"density": "low"},
+  "slides": [
+    {
+      "id": "s1", "title": "Sparse",
+      "layout": "title-hero",
+      "density": "low",
+      "layoutBindings": [],
+      "blocks": [
+        {"id": "b1", "type": "heading", "slot": "title", "content": "Sparse slide"},
+        {"id": "b2", "type": "text", "slot": "subtitle", "content": "Only a single short line of body text fills less than the minimum occupied ratio for the layout contract."}
+      ]
+    }
+  ]
+}
