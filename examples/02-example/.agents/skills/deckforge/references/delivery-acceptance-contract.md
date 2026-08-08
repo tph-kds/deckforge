@@ -81,6 +81,7 @@ A visible help action opens an accessible dialog listing editor and presenter sh
 - presenter chrome floating over the slide safe area;
 - editor with an unassigned grid row or a non-collapsible notes area;
 - duplicate slide titles or verbatim repeated claims;
+- claims (metric/citation) without a backing source reference;
 - metric blocks missing a value or label;
 - scrollable surfaces that are not discoverable, keyboard accessible, theme-compatible, or usable in forced-colors mode (custom scrollbar styling is optional);
 - a scrollable slide canvas or a fullscreen presenter that scrolls or shows a scrollbar;
