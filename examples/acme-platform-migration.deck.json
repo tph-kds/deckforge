@@ -226,7 +226,9 @@
             "h": 180
           },
           "style": {},
-          "sourceIds": [],
+          "sourceIds": [
+            "src-acme-uptime"
+          ],
           "slot": "metrics",
           "positionMode": "slot"
         },
@@ -244,7 +246,9 @@
             "h": 180
           },
           "style": {},
-          "sourceIds": [],
+          "sourceIds": [
+            "src-acme-checkout"
+          ],
           "slot": "metrics",
           "positionMode": "slot"
         },
@@ -262,7 +266,9 @@
             "h": 180
           },
           "style": {},
-          "sourceIds": [],
+          "sourceIds": [
+            "src-acme-support"
+          ],
           "slot": "metrics",
           "positionMode": "slot"
         }
@@ -420,7 +426,29 @@
       ]
     }
   ],
-  "sources": [],
+  "sources": [
+    {
+      "id": "src-acme-uptime",
+      "title": "Acme platform uptime through cutover",
+      "url": "https://example.com/case-studies/acme-uptime",
+      "publisher": "Acme Operations",
+      "note": "Production uptime measured across the 90-day cutover window."
+    },
+    {
+      "id": "src-acme-checkout",
+      "title": "Acme checkout flow performance",
+      "url": "https://example.com/case-studies/acme-checkout",
+      "publisher": "Acme Engineering",
+      "note": "Post-migration checkout latency and throughput comparison."
+    },
+    {
+      "id": "src-acme-support",
+      "title": "Acme support ticket volume",
+      "url": "https://example.com/case-studies/acme-support",
+      "publisher": "Acme Support",
+      "note": "Ticket volume before and after the platform migration."
+    }
+  ],
   "publish": {
     "visibility": "unlisted",
     "slug": "acme-platform-migration",

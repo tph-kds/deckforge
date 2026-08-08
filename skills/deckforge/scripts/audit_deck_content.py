@@ -10,6 +10,7 @@ Deterministic checks that a generated deck is content-sound without an LLM:
 - Excessive density: block count vs the layout manifest's density budget.
 - Incomplete metrics: metric blocks missing value or label.
 - Charts without a caption or nearby explanation text.
+- Metric claims without a backing source reference (or referencing an unknown source).
 """
 from __future__ import annotations
 import argparse, json, re, sys
@@ -113,6 +114,21 @@ def main():
             has_caption = any(b.get('type') == 'caption' for b in slide.get('blocks', []))
             if not has_caption and len(slide_text) < 80:
                 warnings.append(f'{sid}: chart/diagram has no caption and little supporting text')
+
+    # Evidence trust: metric blocks must carry a backing source reference.
+    deck_sources = {s.get('id') for s in deck.get('sources', [])}
+    for slide in slides:
+        sid = slide.get('id', '?')
+        for block in slide.get('blocks', []):
+            if block.get('type') != 'metric':
+                continue
+            refs = block.get('sourceIds') or []
+            if not refs:
+                errors.append(f'{sid}/{block.get("id")}: metric claim has no source reference')
+            else:
+                for ref in refs:
+                    if ref not in deck_sources:
+                        errors.append(f'{sid}/{block.get("id")}: metric references unknown source {ref!r}')
 
     # Repeated claims across slides: identical normalized claim text on >1 slide.
     claim_by_slide = {}

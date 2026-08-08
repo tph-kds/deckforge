@@ -69,5 +69,6 @@ Built-in skills live in `skills/deckforge/built-in-skills/*.md` and give agents 
 - Catalogs are validated by `scripts/validate/validate_catalogs.py` (integrity of every manifest plus the semantic layout contract).
 - Decks are validated by `scripts/validate/validate_deck_project.py` against `deck-project.schema.json` (schema 2.1).
 - Layouts are scored by `scripts/audits/audit_deck_layout.py --strict` (no collisions, occupancy within `whitespaceTarget`, content budgets respected).
+- Content is audited by `scripts/audits/audit_deck_content.py` (duplicate/generic titles, repeated claims, empty content, density budgets, incomplete metrics, captionless charts, and metric claims without a backing source reference). Every `metric` block must list at least one `sourceIds` entry that resolves to a deck-level `sources[]` id; a missing list or an unknown id is an error.
 - Motion is audited by `skills/deckforge/scripts/audit_deck_motion.py` (transition + default builds required unless `none-accessible`, reduced motion respected).
 - The output contract is checked by `skills/deckforge/scripts/validate_output_contract.py --profile editable-deck` (editor shell, persistence, shortcut help, capability truth).
