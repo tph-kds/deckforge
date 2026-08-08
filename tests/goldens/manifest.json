@@ -1,0 +1,59 @@
+{
+  "format": "deckforge-export-golden",
+  "schemaVersion": 1,
+  "deck": {
+    "slug": "weight-of-the-web",
+    "canvas": {
+      "width": 1600,
+      "height": 900
+    }
+  },
+  "export": {
+    "type": "png-screenshots",
+    "renderer": "playwright",
+    "slides": [
+      {
+        "id": "s1",
+        "file": "slide-01.png",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "id": "s2",
+        "file": "slide-02.png",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "id": "s3",
+        "file": "slide-03.png",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "id": "s4",
+        "file": "slide-04.png",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "id": "s5",
+        "file": "slide-05.png",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "id": "s6",
+        "file": "slide-06.png",
+        "width": 1600,
+        "height": 900
+      },
+      {
+        "id": "s7",
+        "file": "slide-07.png",
+        "width": 1600,
+        "height": 900
+      }
+    ]
+  }
+}

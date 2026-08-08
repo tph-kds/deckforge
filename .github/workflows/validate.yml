@@ -94,6 +94,24 @@ jobs:
           npx --yes lighthouse http://localhost:4173/deckforge/ --chrome-flags="--headless --no-sandbox" --output=json --output-path=lhr.json --quiet
       - run: python scripts/validate/check_performance_budget.py --report examples/02-example/lhr.json
 
+  export-goldens:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    defaults:
+      run:
+        working-directory: examples/02-example
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: examples/02-example/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run goldens
+      - run: python ../../scripts/validate/compare_export_goldens.py --export-dir test-results/goldens --golden-dir ../../tests/goldens
+
   capability-receipt:
     needs: [repository-static, skill-bundles, reference-app]
     runs-on: ubuntu-latest
