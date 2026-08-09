@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.2.0 — 2026-08-07
+
+- Added generated-output failure-pattern regression fixtures and tests for layout masquerade, sparse composition, decorative motion, and hidden interaction model.
+- Added evidence-trust audits: metric and citation claims must reference a deck `sources` entry, with URL-format validation for source references.
+- Added a WCAG 2.2 AA accessibility audit (contrast + reduced-motion gating) with a human-review checklist in the delivery-acceptance contract.
+- Added a performance-budget configuration, a Lighthouse-report gate, and an informational CI job.
+- Formalized the release process: a release checklist, version-bump policy, changelog requirement, and a mandatory evaluator release gate.
+- Added an Agent Skills CLI discovery integration check and a cross-agent runtime compatibility matrix with structural validation for all three plugin manifests.
+- Added two new reference implementations: the finished-product example and a framework-agnostic vanilla TypeScript/Web Components scaffold, both passing all audits and the editable-deck output contract.
+- Added export-fidelity golden comparison for PNG/JSON exports (Playwright slide screenshots) with PPTX round-trip documented as out of scope for CI.
+
 ## 3.1.0 — 2026-08-07
 
 - Added executed capability evidence: a `deckforge-visual-evidence` worker skill, a capability-evidence and browser-evidence-report schema, a Playwright-driven evidence generator, and a runner-config wiring the reference app's e2e tests to capability claims.

@@ -32,7 +32,7 @@ npm run validate        # full repo gate (rules, catalogs, decks, output contrac
 python scripts/validate/validate_catalogs.py                  # catalog + semantic layout contract integrity
 python scripts/validate/validate_deck_project.py <deck.json>  # schema 2.1 + profile contract
 python scripts/audits/audit_deck_layout.py <deck.json> --strict
-python scripts/audits/audit_deck_content.py <deck.json>     # titles, claims, density, metrics, charts
+python scripts/audits/audit_deck_content.py <deck.json>     # titles, claims, density, metrics, citations
 python skills/deckforge/scripts/audit_deck_motion.py <deck.json>
 npm run test            # Python suite + the 02-example vitest suite
 npm run test:visual     # deterministic strict-layout, asset, and contrast audits
@@ -69,5 +69,6 @@ Built-in skills live in `skills/deckforge/built-in-skills/*.md` and give agents 
 - Catalogs are validated by `scripts/validate/validate_catalogs.py` (integrity of every manifest plus the semantic layout contract).
 - Decks are validated by `scripts/validate/validate_deck_project.py` against `deck-project.schema.json` (schema 2.1).
 - Layouts are scored by `scripts/audits/audit_deck_layout.py --strict` (no collisions, occupancy within `whitespaceTarget`, content budgets respected).
+- Content is audited by `scripts/audits/audit_deck_content.py` (duplicate/generic titles, repeated claims, empty content, density budgets, incomplete metrics, captionless charts, and claims without a backing source reference). Every `metric` and `citation`/`citations` block must list at least one `sourceIds` entry that resolves to a deck-level `sources[]` id; a missing list or an unknown id is an error. A source whose `url` lacks an `http(s)://` scheme produces a warning (offline format check only; live reachability is a CI-only concern).
 - Motion is audited by `skills/deckforge/scripts/audit_deck_motion.py` (transition + default builds required unless `none-accessible`, reduced motion respected).
 - The output contract is checked by `skills/deckforge/scripts/validate_output_contract.py --profile editable-deck` (editor shell, persistence, shortcut help, capability truth).

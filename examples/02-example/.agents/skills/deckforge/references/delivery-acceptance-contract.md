@@ -81,10 +81,19 @@ A visible help action opens an accessible dialog listing editor and presenter sh
 - presenter chrome floating over the slide safe area;
 - editor with an unassigned grid row or a non-collapsible notes area;
 - duplicate slide titles or verbatim repeated claims;
+- claims (metric/citation) without a backing source reference;
 - metric blocks missing a value or label;
 - scrollable surfaces that are not discoverable, keyboard accessible, theme-compatible, or usable in forced-colors mode (custom scrollbar styling is optional);
 - a scrollable slide canvas or a fullscreen presenter that scrolls or shows a scrollbar;
 - `presentation.routes` present but a presenter surface that leaks document scroll.
+
+### Required accessibility review (human checklist)
+
+- Focus order matches reading order; focus is never trapped.
+- Focus-visible indicators meet a 3:1 contrast against adjacent colors.
+- Interactive targets meet a 24x24 px minimum (44x44 recommended).
+- Reading order from slot order is confirmed by a keyboard walk.
+- Non-text content has appropriate alt text or is marked decorative.
 
 ## Validation commands
 
@@ -96,6 +105,7 @@ python <deckforge-skill>/scripts/audit_deck_layout.py <deck.json>
 python <deckforge-skill>/scripts/audit_deck_content.py <deck.json>
 python <deckforge-skill>/scripts/audit_deck_assets.py <deck.json>
 python <deckforge-skill>/scripts/audit_deck_motion.py <deck.json>
+python <deckforge-skill>/scripts/audit_accessibility.py <deck.json>
 python <deckforge-skill>/scripts/validate_capability_receipt.py <target-project>/capability-receipt.json
 python <deckforge-skill>/scripts/validate_output_contract.py <target-project> --profile <profile> --advisory
 python <deckforge-skill>/scripts/audit_scrollbars.py <target-project>

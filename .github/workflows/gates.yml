@@ -71,11 +71,11 @@ jobs:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: examples/02-example/package-lock.json
-      - name: Python unit tests
-        run: npm run test:unit
       - name: Install example dependencies
         working-directory: examples/02-example
         run: npm ci
+      - name: Python unit tests
+        run: npm run test:unit
       - name: Example unit tests
         working-directory: examples/02-example
         run: npm run test
@@ -92,6 +92,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Install example dependencies
+        working-directory: examples/02-example
+        run: npm ci
       - name: Repository validation and packaging
         run: npm run test:integration
       - name: Output contract check

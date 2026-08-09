@@ -166,6 +166,7 @@ Do not report completion while collision, clipped text, broken controls, placeho
 - Do not solve overflow by clipping or shrinking text below readable presentation size.
 - Do not render untrusted raw HTML or unsanitized SVG.
 - Do not fabricate facts, citations, logos, screenshots, metrics, or testimonials.
+- Never fabricate metrics, references, or customer logos. Every metric and citation must reference a real source in the deck's `sources` array; otherwise mark the claim as illustrative.
 - Do not default AI topics to dark neon gradients or repetitive card grids.
 - Do not mix editor chrome into presenter mode.
 - Scrollable surfaces must be discoverable, keyboard accessible, theme-compatible, and usable in forced-colors mode; custom scrollbar styling is optional.

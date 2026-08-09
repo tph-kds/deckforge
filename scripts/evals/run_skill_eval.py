@@ -9,7 +9,7 @@ Usage:
     python scripts/evals/run_skill_eval.py --case-id editable-deck --condition current [--workdir DIR]
 """
 from __future__ import annotations
-import argparse, json, subprocess, sys, time
+import argparse, json, os, shutil, subprocess, sys, time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -29,9 +29,13 @@ def run_eval_case(case: dict, condition: str, toolchain: list[str], workdir: Pat
     for assertion in case.get('assertions', []):
         name = assertion['name']
         try:
-            cmd = assertion['cmd']
+            cmd = list(assertion['cmd'])
             if toolchain and cmd and cmd[0] in toolchain and cmd[0] != toolchain[0]:
                 cmd = [toolchain[0]] + cmd
+            if os.name == 'nt' and cmd:
+                resolved = shutil.which(cmd[0])
+                if resolved:
+                    cmd = [resolved] + cmd[1:]
             proc = subprocess.run(cmd, cwd=workdir, capture_output=True, text=True, timeout=600)
             ok = proc.returncode == 0
         except (FileNotFoundError, subprocess.TimeoutExpired) as exc:
