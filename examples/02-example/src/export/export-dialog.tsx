@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import type {
-  BlockExportStatus,
   ExportPreflightResult,
   ExportReport,
   PptxExportConfig,
@@ -17,18 +16,23 @@ interface ExportDialogProps {
   onError?: (error: Error) => void;
 }
 
-const STATUS_ORDER: BlockExportStatus[] = ["native", "rasterized", "substituted", "skipped", "unsupported"];
-
-function countStatus(report: ExportReport, status: BlockExportStatus): number {
-  return report.slides.reduce(
-    (total, slide) => total + slide.blocks.filter((block) => block.status === status).length,
-    0
+function fidelitySummary(report: ExportReport): string {
+  const fallbacks = report.slides.reduce(
+    (total, slide) =>
+      total +
+      slide.blocks.filter((b) => b.representation === "svg" || b.representation === "raster").length,
+    0,
   );
-}
-
-function reportSummary(report: ExportReport): string {
-  const counts = STATUS_ORDER.map((status) => `${countStatus(report, status)} ${status}`).join(" · ");
-  return counts;
+  const native = report.slides.reduce(
+    (total, slide) => total + slide.blocks.filter((b) => b.representation === "native").length,
+    0,
+  );
+  const missing = report.slides.reduce(
+    (total, slide) =>
+      total + slide.blocks.filter((b) => !b.contentPreserved && b.status !== "skipped").length,
+    0,
+  );
+  return `Native ${native} · Fallbacks ${fallbacks} · Missing ${missing}`;
 }
 
 export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: ExportDialogProps) {
@@ -89,8 +93,18 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
       const { PptxExporter } = await import("./pptx/pptx-exporter");
       const exporter = new PptxExporter(config);
       const result = await exporter.export(deck);
-      onExport?.(result.blob);
       setLastReport(result.report);
+
+      if (result.report.status === "failed") {
+        onError?.(
+          new Error(
+            "Export failed: content could not be fully preserved. Fix the missing content before downloading.",
+          ),
+        );
+        return;
+      }
+
+      onExport?.(result.blob);
 
       const deckData = deck as { meta?: { title?: string } };
       const title = deckData.meta?.title ?? "deck";
@@ -105,17 +119,6 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
       a.download = filename;
       a.click();
       URL.revokeObjectURL(url);
-
-      if (result.report.status === "failed") {
-        onError?.(
-          new Error(
-            `Export completed with failures: ${result.report.issues
-              .filter((issue) => issue.severity === "error")
-              .map((issue) => issue.message)
-              .join("; ")}`
-          )
-        );
-      }
     } catch (error) {
       onError?.(error as Error);
     } finally {
@@ -167,7 +170,8 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
               value={config.mode}
               onChange={(e) => setConfig({ ...config, mode: e.target.value as PptxExportConfig["mode"] })}
             >
-              <option value="hybrid">PPTX (Hybrid)</option>
+              <option value="fidelity-first">PPTX (Fidelity First)</option>
+              <option value="editability-first">PPTX (Editability First)</option>
             </select>
           </label>
 
@@ -193,6 +197,9 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
               </div>
               <div style={{ display: "flex", gap: 12, fontSize: 12, color: "var(--ui-muted)" }}>
                 <span>Coverage {Math.round(preflight.blockCoverage * 100)}%</span>
+                <span>Recall {Math.round((preflight.estimatedRecall ?? 1) * 100)}%</span>
+                <span>{preflight.estimatedFallbacks ?? 0} fallbacks</span>
+                <span>{(preflight.estimatedMissing ?? 0) > 0 ? `${preflight.estimatedMissing} missing` : "0 missing"}</span>
                 <span>{preflight.issues.filter(i => i.severity === "warning").length} warnings</span>
                 <span>{preflight.issues.filter(i => i.severity === "info").length} info</span>
               </div>
@@ -220,8 +227,13 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
                 </span>
               </div>
               <div style={{ fontSize: 12, color: "var(--ui-muted)", marginBottom: 4 }}>
-                {reportSummary(lastReport)}
+                {fidelitySummary(lastReport)}
               </div>
+              {lastReport.status === "failed" && (
+                <div style={{ marginTop: 8, fontSize: 12, color: "var(--ui-danger, #dc2626)", fontWeight: 600 }}>
+                  Export blocked: content was not fully preserved. Review the missing blocks below.
+                </div>
+              )}
               {lastReport.issues.length > 0 && (
                 <div style={{ fontSize: 12, color: "var(--ui-muted)", maxHeight: 120, overflowY: "auto" }}>
                   {lastReport.issues.slice(0, 8).map((issue, idx) => (
@@ -273,7 +285,7 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
             </button>
             <button
               onClick={handleExport}
-              disabled={isExporting || (preflight?.score ?? 0) < 20}
+              disabled={isExporting || (preflight?.score ?? 0) < 20 || lastReport?.status === "failed"}
               aria-busy={isExporting}
               style={{
                 padding: "6px 14px",
