@@ -1,3 +1,5 @@
+// export/pptx/block-exporters/index.ts
+
 import type { PptxBlockExporter } from "../../export-types";
 import {
   textBlockExporter,
@@ -13,6 +15,7 @@ import { shapeBlockExporter } from "./shape";
 import { tableBlockExporter } from "./table";
 import { chartBlockExporter } from "./chart";
 import { diagramBlockExporter } from "./diagram";
+import { videoBlockExporter } from "./video";
 import { fallbackBlockExporter } from "./fallback";
 
 export const blockExporters: PptxBlockExporter[] = [
@@ -28,6 +31,7 @@ export const blockExporters: PptxBlockExporter[] = [
   tableBlockExporter,
   chartBlockExporter,
   diagramBlockExporter,
+  videoBlockExporter,
   fallbackBlockExporter,
 ];
 

@@ -4,6 +4,7 @@ import type {
   ExportReport,
   ExportSlideReport,
   ExportStatus,
+  FidelityReport,
   PptxBlockExport,
   PptxExportConfig,
   PptxExportResult,
@@ -12,6 +13,12 @@ import type {
 import type { DeckProject, DeckSlide } from "../../deck-types";
 import { createExportContext } from "./pptx-context";
 import { getBlockExporter } from "./block-exporters/index";
+import { verifyPptxArchive } from "./pptx-verifier";
+import { rawText } from "../fidelity/content-parity";
+import { FIDELITY_POLICY } from "../fidelity/fidelity-policy";
+import { planBlockRepresentation } from "../fidelity/representation-planner";
+import { buildFidelityReport, fidelityStatus } from "../fidelity/fidelity-report";
+import type { FidelityBlockReport } from "../fidelity/fidelity-types";
 
 const PIXELS_PER_INCH = 96;
 
@@ -75,54 +82,48 @@ function writeElementToSlide(pptxSlide: PptxAddCallable, element: PptxSlideEleme
       pptxSlide.addText?.(data.text, { ...opts, fill: { color: "FFF3CD" }, color: "856404", fontSize: 12 });
       break;
     }
+    case "svg": {
+      const data = element.data as { svg: string; options?: Record<string, unknown> };
+      pptxSlide.addImage?.(
+        { data: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(data.svg)}` },
+        { ...opts, ...data.options },
+      );
+      break;
+    }
   }
 }
 
 /**
- * Derive the overall export status from the accumulated issues and per-block
- * statuses. A report can only be `complete` when every block exported
- * natively and no warning/error-severity issues were recorded.
+ * Derive the overall export status from the accumulated issues, per-block
+ * statuses, and the fidelity-level status. A report can only be `complete`
+ * when every block exported natively, no warning/error-severity issue was
+ * recorded, and the content-parity gate passed.
  */
 export function deriveExportStatus(
   issues: ExportIssue[],
   slideReports: ExportSlideReport[],
+  fidelity: ExportStatus,
   archiveVerified = true
 ): ExportStatus {
   if (!archiveVerified) return "failed";
   if (issues.some((issue) => issue.severity === "error")) return "failed";
+  if (fidelity === "failed") return "failed";
   const hasWarning = issues.some((issue) => issue.severity === "warning");
   const allNative = slideReports.every((slide) =>
     slide.blocks.every((block) => block.status === "native")
   );
-  if (!allNative || hasWarning) return "partial";
-  return "complete";
-}
-
-/**
- * Lightweight structural verification of the generated PPTX archive: it must
- * be a ZIP file (PK magic bytes) that contains the mandatory presentation
- * part.
- */
-export function verifyPptxArchive(bytes: Uint8Array): boolean {
-  if (!bytes || bytes.length < 4) return false;
-  if (bytes[0] !== 0x50 || bytes[1] !== 0x4b) return false;
-  const marker = new TextEncoder().encode("ppt/presentation.xml");
-  for (let i = 0; i <= bytes.length - marker.length; i++) {
-    let matches = true;
-    for (let j = 0; j < marker.length; j++) {
-      if (bytes[i + j] !== marker[j]) {
-        matches = false;
-        break;
-      }
-    }
-    if (matches) return true;
-  }
-  return false;
+  if (allNative && !hasWarning) return "complete";
+  if (allNative) return "partial";
+  if (!hasWarning) return "complete-with-fallbacks";
+  return "partial";
 }
 
 export interface ExportBuildResult {
   report: ExportReport;
   slides: Array<{ slide: DeckSlide; elements: PptxSlideElement[] }>;
+  parity: number;
+  fidelityBlocks: FidelityBlockReport[];
+  fidelity: FidelityReport;
 }
 
 /**
@@ -245,7 +246,17 @@ export async function buildExportReport(
         blockId: issue.blockId ?? block.id,
       }));
 
-      blockReports.push({ blockId: block.id, status: result.status, issues: stampedIssues });
+      const planned = planBlockRepresentation(
+        {
+          blockId: block.id,
+          hidden: !!block.hidden,
+          status: result.status,
+          element: result.element,
+          issues: stampedIssues,
+        },
+        FIDELITY_POLICY,
+      );
+      blockReports.push(planned);
       issues.push(...stampedIssues);
       if (result.element) elements.push(result.element);
     }
@@ -254,13 +265,26 @@ export async function buildExportReport(
     slides.push({ slide, elements });
   }
 
+  const exportedSlides = (deck.slides ?? []).filter(
+    (slide) => config.includeHiddenSlides || !slide.hidden,
+  );
+  const fidelityBlocks = slideReports.flatMap((slide) => slide.blocks);
+  const fidelity = buildFidelityReport({
+    deck: { ...deck, slides: exportedSlides },
+    blocks: fidelityBlocks,
+    policy: FIDELITY_POLICY,
+  });
+
   return {
     report: {
-      status: deriveExportStatus(issues, slideReports),
+      status: deriveExportStatus(issues, slideReports, fidelity.status),
       slides: slideReports,
       issues,
     },
     slides,
+    parity: fidelity.contentRecall,
+    fidelityBlocks,
+    fidelity,
   };
 }
 
@@ -272,7 +296,7 @@ export class PptxExporter {
   }
 
   async export(deck: DeckProject): Promise<PptxExportResult> {
-    const { report, slides } = await buildExportReport(deck, this.config);
+    const { report, slides, fidelity } = await buildExportReport(deck, this.config);
 
     const PptxGenJS = (await import("pptxgenjs")).default;
     const pptx = new PptxGenJS();
@@ -297,26 +321,37 @@ export class PptxExporter {
 
     const written = await pptx.write({ outputType: "arraybuffer" });
     const bytes = await toUint8Array(written);
-    const archiveVerified = verifyPptxArchive(bytes);
+
+    const blob = new Blob([bytes], {
+      type: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    });
+
+    const expectedTexts = (slides ?? [])
+      .flatMap(({ slide }) => (slide.blocks ?? []).filter((block) => !block.hidden).map((block) => rawText(block)))
+      .filter((text) => text.length > 0);
+    const expectedNotes = slides.filter(
+      ({ slide }) => this.config.includeSpeakerNotes && !!slide.speakerNotes,
+    ).length;
+
+    const verification = await verifyPptxArchive({ report, blob, expectedTexts, expectedNotes });
+    const archiveVerified = verification.passed;
 
     const allIssues: ExportIssue[] = [...report.issues];
     if (!archiveVerified) {
+      const failed = verification.report.checks.filter((check) => !check.passed);
       allIssues.push({
         code: "archive-verification-failed",
         severity: "error",
-        message: "Generated PPTX archive failed structural verification (missing presentation part)",
+        message: `Generated PPTX archive failed structural verification: ${failed.map((c) => c.name).join(", ")}`,
         suggestedFix: "Retry the export; if it persists, report a bug",
         automaticFixAvailable: false,
       });
     }
 
     report.issues = allIssues;
-    report.status = deriveExportStatus(allIssues, report.slides, archiveVerified);
+    report.status = deriveExportStatus(allIssues, report.slides, fidelity.status, archiveVerified);
+    fidelity.status = report.status;
 
-    const blob = new Blob([bytes], {
-      type: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-    });
-
-    return { report, blob, archiveVerified };
+    return { report, blob, archiveVerified, fidelity };
   }
 }

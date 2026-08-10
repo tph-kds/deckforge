@@ -182,20 +182,16 @@ async function exportProcessBlock(block: unknown, ctx: PptxExportContext): Promi
   };
   const steps = processBlock.content?.steps ?? [];
   const text = steps
-    .map((step, index) => `${index + 1}. ${typeof step.title === "string" ? step.title : ""}`)
+    .map((step, index) => {
+      const title = typeof step.title === "string" ? step.title : "";
+      const detail = typeof step.detail === "string" && step.detail ? ` \u2014 ${step.detail}` : "";
+      return `${index + 1}. ${title}${detail}`;
+    })
     .join("\n");
 
   return {
-    status: "substituted",
-    issues: [
-      {
-        code: "unsupported-block",
-        severity: "warning",
-        message: "Process diagram exported as a simplified numbered text list; step details are not preserved",
-        suggestedFix: "Split the process into individual text/heading blocks for full fidelity",
-        automaticFixAvailable: false,
-      },
-    ],
+    status: "native",
+    issues: [],
     element: textElement(text, processBlock, ctx, {
       fontFace: "Arial",
       fontSize: 14,

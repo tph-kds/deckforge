@@ -3,12 +3,15 @@ import type {
   PptxBlockExporter,
   PptxExportContext,
 } from "../../export-types";
+import { renderDiagramSvg } from "../../fidelity/svg/svg-diagram";
+import { mapThemeColors } from "../pptx-theme";
 
 interface DiagramBlock {
   id: string;
   type: "diagram";
-  nodes?: Array<{ id: string; label: string }>;
-  edges?: Array<{ from: string; to: string }>;
+  nodes?: Array<{ id?: string; label: string } | string>;
+  edges?: Array<{ from: string; to: string } | string>;
+  content?: { nodes?: Array<{ id?: string; label: string } | string>; edges?: Array<{ from: string; to: string } | string> };
   x?: number;
   y?: number;
   w?: number;
@@ -22,35 +25,40 @@ export const diagramBlockExporter: PptxBlockExporter = {
 
   async export(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
     const diagramBlock = block as DiagramBlock;
+    const content = diagramBlock.content;
+    const nodes = content?.nodes ?? diagramBlock.nodes ?? [];
+    const edges = content?.edges ?? diagramBlock.edges ?? [];
+    const x = diagramBlock.x ?? diagramBlock.frame?.x ?? 0;
+    const y = diagramBlock.y ?? diagramBlock.frame?.y ?? 0;
+    const w = diagramBlock.w ?? diagramBlock.frame?.w ?? ctx.slideWidth * 0.6;
+    const h = diagramBlock.h ?? diagramBlock.frame?.h ?? ctx.slideHeight * 0.4;
 
-    const nodeCount = diagramBlock.nodes?.length ?? 0;
-    const edgeCount = diagramBlock.edges?.length ?? 0;
-    const summary = `Diagram: ${nodeCount} nodes, ${edgeCount} edges`;
+    const theme = mapThemeColors(ctx.deck.theme);
+    const svg = renderDiagramSvg(
+      { nodes, edges },
+      {
+        width: Math.max(1, Math.round(w)),
+        height: Math.max(1, Math.round(h)),
+        colors: {
+          background: theme.background,
+          nodeFill: theme.light1,
+          nodeStroke: theme.accent1,
+          labelColor: theme.text,
+          edgeColor: theme.dark2,
+        },
+      }
+    );
 
     return {
-      status: "substituted",
-      issues: [
-        {
-          code: "unsupported-block",
-          severity: "warning",
-          message: "Diagram exported as a simplified text summary; nodes and edges are not preserved",
-          suggestedFix: "Rebuild the diagram as shapes and text blocks for native fidelity",
-          automaticFixAvailable: false,
-        },
-      ],
+      status: "rasterized",
+      issues: [],
       element: {
-        type: "fallback",
-        x: diagramBlock.x ?? diagramBlock.frame?.x ?? 0,
-        y: diagramBlock.y ?? diagramBlock.frame?.y ?? 0,
-        w: diagramBlock.w ?? diagramBlock.frame?.w ?? ctx.slideWidth * 0.6,
-        h: diagramBlock.h ?? diagramBlock.frame?.h ?? ctx.slideHeight * 0.4,
-        data: {
-          text: summary,
-          options: {
-            fill: { color: "F0F0F0" },
-            line: { color: "CCCCCC", width: 1 },
-          },
-        },
+        type: "svg",
+        x,
+        y,
+        w,
+        h,
+        data: { svg, alt: (diagramBlock as { alt?: string }).alt },
       },
     };
   },

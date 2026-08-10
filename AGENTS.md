@@ -2,6 +2,14 @@
 
 This repository contains Agent Skills and reference scaffolds for reliable **editable, browser-native slide applications**.
 
+## Code intelligence
+
+Prefer Serena semantic tools for source-code navigation, symbol lookup,
+references, implementations, dependency tracing, and symbol-level refactoring.
+
+Use built-in read/grep tools for configuration files, documentation, logs,
+plain-text searches, or when Serena cannot resolve the required code context.
+
 ## Read order
 
 1. `rules/README.md`

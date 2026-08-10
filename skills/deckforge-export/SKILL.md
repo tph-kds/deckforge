@@ -19,7 +19,10 @@ Add or repair export capabilities for a DeckForge-compatible or custom web slide
 
 ## Supported tasks
 
-- Add PPTX export (hybrid mode)
+- Add PPTX export (hybrid mode; fidelity-first by default)
+- Add the fidelity layer: per-block representation, content-parity gate, fidelity report
+- Add deterministic SVG diagram export and structured SVG snapshot fallback
+- Add real OOXML structural verification (slides, text survival, media rels, notes, links)
 - Add export preflight system
 - Add PDF/PNG/portable package export
 - Add block export registry
@@ -30,7 +33,8 @@ Add or repair export capabilities for a DeckForge-compatible or custom web slide
 ## Required files
 
 - `../deckforge/starter-components/export/export-types.ts` — core contracts
-- `../deckforge/starter-components/export/pptx/` — PptxGenJS adapter and block exporters
+- `../deckforge/starter-components/export/pptx/` — PptxGenJS adapter, block exporters, and structural verifier
+- `../deckforge/starter-components/export/fidelity/` — content-parity, representation planner, fidelity report, SVG generators
 - `../deckforge/starter-components/export/export-preflight.ts` — preflight engine
 - `../deckforge/starter-components/export/export-dialog.tsx` — Export Center UI
 
@@ -51,5 +55,8 @@ Add or repair export capabilities for a DeckForge-compatible or custom web slide
 - Export creates valid .pptx archive
 - Text remains editable in hybrid mode
 - Preflight runs before export
-- Export failures do not corrupt DeckProject
+- Every visible block has a representation (native, SVG diagram, or snapshot); none are silently omitted
+- Diagrams are exported as complete visuals, never as node/edge count summaries
+- Content-parity gate passes (100% meaningful content recall) before the file can be downloaded
+- OOXML structural verification passes before the export is reported successful
 - Fidelity score is accurate

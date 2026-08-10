@@ -1,4 +1,5 @@
-import type { DeckProject } from "../deck-types";
+import type { Block, DeckProject } from "../deck-types";
+import type { AssetEmbedResult } from "./pptx/pptx-assets";
 
 export type ExportIssueSeverity = "info" | "warning" | "error";
 
@@ -36,6 +37,10 @@ export interface ExportBlockReport {
   blockId: string;
   status: BlockExportStatus;
   issues: ExportIssue[];
+  representation?: BlockRepresentation;
+  contentPreserved?: boolean;
+  editable?: boolean;
+  visualParity?: number;
 }
 
 export interface ExportSlideReport {
@@ -43,7 +48,32 @@ export interface ExportSlideReport {
   blocks: ExportBlockReport[];
 }
 
-export type ExportStatus = "complete" | "partial" | "failed";
+export type ExportStatus = "complete" | "complete-with-fallbacks" | "partial" | "failed";
+
+export type PptxExportMode = "fidelity-first" | "editability-first";
+
+export type BlockRepresentation = "native" | "svg" | "raster" | "expanded-build" | "unsupported";
+
+export type FidelityStatus = ExportStatus;
+
+export interface PptxVerificationCheck {
+  name: string;
+  passed: boolean;
+  detail?: string;
+}
+
+export interface PptxVerificationReport {
+  checks: PptxVerificationCheck[];
+  passed: boolean;
+}
+
+export interface FidelityReport {
+  status: FidelityStatus;
+  contentRecall: number;
+  missingVisibleBlocks: number;
+  blocks: ExportBlockReport[];
+  verification?: PptxVerificationReport;
+}
 
 export interface ExportReport {
   status: ExportStatus;
@@ -56,6 +86,7 @@ export interface PptxExportResult {
   report: ExportReport;
   blob: Blob;
   archiveVerified: boolean;
+  fidelity?: FidelityReport;
 }
 
 export type PptxExportability =
@@ -70,10 +101,16 @@ export interface ExportPreflightResult {
   issues: ExportIssue[];
   score: number;
   blockCoverage: number;
+  estimatedFallbacks: number;
+  estimatedRecall: number;
+  estimatedMissing: number;
+  missingBlockCount: number;
+  unsupportedBlockCount: number;
+  chartBlockCount: number;
 }
 
 export interface PptxExportConfig {
-  mode: "hybrid";
+  mode: PptxExportMode;
   includeSpeakerNotes: boolean;
   includeHiddenSlides: boolean;
   compatibilityTargets: string[];
@@ -142,19 +179,38 @@ interface PptxFallbackElement {
   data: { text: string; options?: Record<string, unknown> };
 }
 
+interface PptxSvgElement {
+  type: "svg";
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  data: { svg: string; alt?: string; options?: Record<string, unknown> };
+}
+
+export type PptxSlideElementType =
+  | "text"
+  | "image"
+  | "shape"
+  | "table"
+  | "chart"
+  | "fallback"
+  | "svg";
+
 export type PptxSlideElement =
   | PptxTextElement
   | PptxImageElement
   | PptxShapeElement
   | PptxTableElement
   | PptxChartElement
-  | PptxFallbackElement;
+  | PptxFallbackElement
+  | PptxSvgElement;
 
 export interface PptxExportContext {
   deck: DeckProject;
   config: PptxExportConfig;
   fontWarnings: FontWarning[];
-  assetCache: Map<string, { dataUri: string; width?: number; height?: number; mimeType: string }>;
+  assetCache: Map<string, AssetEmbedResult>;
   slideWidth: number;
   slideHeight: number;
 }
@@ -180,10 +236,12 @@ export interface ExportDialogProps {
 }
 
 export const DEFAULT_PPTX_CONFIG: PptxExportConfig = {
-  mode: "hybrid",
+  mode: "fidelity-first",
   includeSpeakerNotes: true,
   includeHiddenSlides: false,
   compatibilityTargets: ["powerpoint", "keynote", "libreoffice"],
   fontPolicy: "warn-and-substitute",
   filenameTemplate: "{title}-{date}.pptx",
 };
+
+export type { Block };

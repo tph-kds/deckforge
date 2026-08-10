@@ -45,12 +45,11 @@ export function mapThemeFonts(theme: DeckTheme): { heading: string; body: string
 }
 
 export function applyThemeToPptx(pptx: PptxGenJS, theme: DeckTheme): void {
-  const colors = mapThemeColors(theme);
   const fonts = mapThemeFonts(theme);
 
+  // PptxGenJS ThemeProps only supports font faces; theme colors are applied
+  // per-element via mapThemeColors() in the block exporters.
   pptx.theme = {
-    headColor: colors.dark1,
-    bodyColor: colors.text,
     headFontFace: fonts.heading,
     bodyFontFace: fonts.body,
   };

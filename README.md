@@ -241,6 +241,10 @@ deckforge-web-slides-skills/
 └── tests/
 ```
 
+## Quick start
+
+New to DeckForge? See [`QUICKSTART.md`](./QUICKSTART.md) — get from zero to a working presentation in 5 minutes.
+
 ## Quick orientation for contributors
 
 ```bash
@@ -310,6 +314,7 @@ DeckForge contributions should preserve these principles:
 
 | Document | Purpose |
 |---|---|
+| [`QUICKSTART.md`](./QUICKSTART.md) | 5-minute guide for new users. |
 | [`AGENTS.md`](./AGENTS.md) | Entry point and routing guidance for coding agents. |
 | [`INSTALL_WITH_SKILLS_CLI.md`](./INSTALL_WITH_SKILLS_CLI.md) | Installation and discovery instructions. |
 | [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) | Recommended product and runtime architecture. |

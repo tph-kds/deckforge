@@ -12,6 +12,7 @@ Inspect deck before export and report issues.
 - External assets
 - Missing speaker notes
 - Content outside safe area
+- Content-parity estimate (recall, fallback count, missing-block count)
 
 ## Scoring
 
@@ -23,4 +24,4 @@ Inspect deck before export and report issues.
 
 ## Output
 
-- ExportPreflightResult with issues, score, blockCoverage
+- ExportPreflightResult with issues, score, blockCoverage, estimatedRecall, estimatedFallbacks, estimatedMissing

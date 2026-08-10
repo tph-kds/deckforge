@@ -41,6 +41,8 @@ export type DeckBlock = {
 
 export type LayoutBinding = { slot: string; blockIds: BlockId[]; flow?: 'stack' | 'row' | 'grid' | 'overlay'; gap?: number };
 
+export type Block = DeckBlock;
+
 export type DeckInteraction = {
   id: InteractionId;
   type: string;
@@ -149,12 +151,19 @@ export type {
   PptxExportability,
   ExportIssue,
   ExportPreflightResult,
+  ExportReport,
+  ExportStatus,
+  PptxExportMode,
   PptxExportConfig,
   FontWarning,
   PptxSlideElement,
   PptxExportContext,
   PptxBlockExporter,
   ExportDialogProps,
+  BlockRepresentation,
+  PptxVerificationCheck,
+  PptxVerificationReport,
+  FidelityReport,
 } from './export/export-types';
 
 export { DEFAULT_PPTX_CONFIG } from './export/export-types';

@@ -1,3 +1,5 @@
+// export/export-preflight.ts
+
 import type {
   ExportPreflightResult,
   ExportIssue,
@@ -5,6 +7,7 @@ import type {
 } from "./export-types";
 import type { DeckProject } from "../deck-types";
 import { collectFontWarnings } from "./pptx/pptx-fonts";
+import { getBlockExporter } from "./pptx/block-exporters/index";
 
 const NATIVE_BLOCK_TYPES = new Set([
   "text",
@@ -19,6 +22,10 @@ const NATIVE_BLOCK_TYPES = new Set([
   "chart",
 ]);
 
+function asRecord(value: unknown): Record<string, unknown> {
+  return value as Record<string, unknown>;
+}
+
 function calculateScore(issues: ExportIssue[]): number {
   let score = 100;
   for (const issue of issues) {
@@ -30,11 +37,42 @@ function calculateScore(issues: ExportIssue[]): number {
 }
 
 function calculateBlockCoverage(deck: DeckProject): number {
-  const blocks = (deck.slides ?? []).flatMap((s) => s.blocks ?? []);
+  const blocks = deck.slides.flatMap((slide) => slide.blocks);
   if (blocks.length === 0) return 1;
 
   const nativeCount = blocks.filter((block) => NATIVE_BLOCK_TYPES.has(block.type)).length;
   return nativeCount / blocks.length;
+}
+
+function calculateParityEstimates(deck: DeckProject): {
+  estimatedRecall: number;
+  estimatedFallbacks: number;
+  estimatedMissing: number;
+} {
+  const visible = deck.slides
+    .filter((slide) => !slide.hidden)
+    .flatMap((slide) => slide.blocks)
+    .filter((block) => !block.hidden);
+  if (visible.length === 0) {
+    return { estimatedRecall: 1, estimatedFallbacks: 0, estimatedMissing: 0 };
+  }
+
+  let fallbacks = 0;
+  let missing = 0;
+  for (const block of visible) {
+    const exporter = getBlockExporter(block.type);
+    if (exporter.type === "fallback" && block.type !== "fallback") {
+      missing += 1;
+    } else if (exporter.exportability === "image-only") {
+      fallbacks += 1;
+    }
+  }
+  const preserved = visible.length - missing;
+  return {
+    estimatedRecall: preserved / visible.length,
+    estimatedFallbacks: fallbacks,
+    estimatedMissing: missing,
+  };
 }
 
 export async function runExportPreflight(
@@ -56,10 +94,10 @@ export async function runExportPreflight(
     });
   }
 
-  for (const slide of deck.slides ?? []) {
-    for (const block of slide.blocks ?? []) {
+  for (const slide of deck.slides) {
+    for (const block of slide.blocks) {
+      const record = asRecord(block);
       const blockType = block.type;
-      const record = block as unknown as Record<string, unknown>;
 
       if (!NATIVE_BLOCK_TYPES.has(blockType)) {
         issues.push({
@@ -112,6 +150,20 @@ export async function runExportPreflight(
 
   const score = calculateScore(issues);
   const blockCoverage = calculateBlockCoverage(deck);
+  const estimates = calculateParityEstimates(deck);
 
-  return { issues, score, blockCoverage };
+  const visible = deck.slides
+    .filter((slide) => !slide.hidden)
+    .flatMap((slide) => slide.blocks)
+    .filter((block) => !block.hidden);
+
+  return {
+    issues,
+    score,
+    blockCoverage,
+    ...estimates,
+    missingBlockCount: estimates.estimatedMissing,
+    unsupportedBlockCount: estimates.estimatedMissing,
+    chartBlockCount: visible.filter((block) => block.type === "chart").length,
+  };
 }

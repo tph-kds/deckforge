@@ -7,6 +7,7 @@ import type {
 } from "./export-types";
 import type { DeckProject } from "../deck/types";
 import { collectFontWarnings } from "./pptx/pptx-fonts";
+import { getBlockExporter } from "./pptx/block-exporters/index";
 
 const NATIVE_BLOCK_TYPES = new Set([
   "text",
@@ -41,6 +42,37 @@ function calculateBlockCoverage(deck: DeckProject): number {
 
   const nativeCount = blocks.filter((block) => NATIVE_BLOCK_TYPES.has(block.type)).length;
   return nativeCount / blocks.length;
+}
+
+function calculateParityEstimates(deck: DeckProject): {
+  estimatedRecall: number;
+  estimatedFallbacks: number;
+  estimatedMissing: number;
+} {
+  const visible = deck.slides
+    .filter((slide) => !slide.hidden)
+    .flatMap((slide) => slide.blocks)
+    .filter((block) => !block.hidden);
+  if (visible.length === 0) {
+    return { estimatedRecall: 1, estimatedFallbacks: 0, estimatedMissing: 0 };
+  }
+
+  let fallbacks = 0;
+  let missing = 0;
+  for (const block of visible) {
+    const exporter = getBlockExporter(block.type);
+    if (exporter.type === "fallback" && block.type !== "fallback") {
+      missing += 1;
+    } else if (exporter.exportability === "image-only") {
+      fallbacks += 1;
+    }
+  }
+  const preserved = visible.length - missing;
+  return {
+    estimatedRecall: preserved / visible.length,
+    estimatedFallbacks: fallbacks,
+    estimatedMissing: missing,
+  };
 }
 
 export async function runExportPreflight(
@@ -118,6 +150,20 @@ export async function runExportPreflight(
 
   const score = calculateScore(issues);
   const blockCoverage = calculateBlockCoverage(deck);
+  const estimates = calculateParityEstimates(deck);
 
-  return { issues, score, blockCoverage };
+  const visible = deck.slides
+    .filter((slide) => !slide.hidden)
+    .flatMap((slide) => slide.blocks)
+    .filter((block) => !block.hidden);
+
+  return {
+    issues,
+    score,
+    blockCoverage,
+    ...estimates,
+    missingBlockCount: estimates.estimatedMissing,
+    unsupportedBlockCount: estimates.estimatedMissing,
+    chartBlockCount: visible.filter((block) => block.type === "chart").length,
+  };
 }

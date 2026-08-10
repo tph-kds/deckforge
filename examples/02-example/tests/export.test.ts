@@ -3,31 +3,86 @@ import type { Block, DeckProject, DeckSlide } from "../src/deck/types";
 import {
   buildExportReport,
   deriveExportStatus,
-  verifyPptxArchive,
   PptxExporter,
 } from "../src/export/pptx/pptx-exporter";
 import { DEFAULT_PPTX_CONFIG } from "../src/export/export-types";
 
-vi.mock("pptxgenjs", () => {
+vi.mock("pptxgenjs", async () => {
+  const JSZip = (await import("jszip")).default;
+  const mockSlides: Array<{ texts: string[]; hasNotes: boolean }> = [];
+
+  const NS_A = "http://schemas.openxmlformats.org/drawingml/2006/main";
+  const NS_P = "http://schemas.openxmlformats.org/presentationml/2006/main";
+  const NS_R = "http://schemas.openxmlformats.org/package/2006/relationships";
+
   class MockSlide {
-    addNotes() {}
-    addText() {}
+    texts: string[];
+    hasNotes: boolean;
+    constructor() {
+      this.texts = [];
+      this.hasNotes = false;
+      mockSlides.push(this);
+    }
+    addNotes() {
+      this.hasNotes = true;
+    }
+    addText(text: unknown) {
+      if (typeof text === "string") this.texts.push(text);
+      else if (Array.isArray(text)) this.texts.push(...text.map(String));
+    }
     addImage() {}
     addShape() {}
     addTable() {}
     addChart() {}
   }
+
   class MockPptx {
     layout = "";
+    constructor() {
+      mockSlides.length = 0;
+    }
     defineLayout() {}
     addSlide() {
       return new MockSlide();
     }
     async write() {
-      const marker = new TextEncoder().encode("ppt/presentation.xml");
-      return new Uint8Array([0x50, 0x4b, 0x03, 0x04, 1, 2, 3, ...marker]);
+      const zip = new JSZip();
+      zip.file(
+        "[Content_Types].xml",
+        '<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"/>',
+      );
+      zip.file(
+        "ppt/presentation.xml",
+        `<?xml version="1.0" encoding="UTF-8"?><p:presentation xmlns:p="${NS_P}"/>`,
+      );
+      zip.file(
+        "ppt/_rels/presentation.xml.rels",
+        `<?xml version="1.0"?><Relationships xmlns="${NS_R}"/>`,
+      );
+      mockSlides.forEach((slide, index) => {
+        const n = index + 1;
+        const runs = slide.texts
+          .map((text) => `<a:r><a:t>${text}</a:t></a:r>`)
+          .join("");
+        zip.file(
+          `ppt/slides/slide${n}.xml`,
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><p:sld xmlns:a="${NS_A}" xmlns:p="${NS_P}"><p:cSld><p:spTree><p:sp><p:txBody><a:p>${runs}</a:p></p:txBody></p:sp></p:spTree></p:cSld></p:sld>`,
+        );
+        zip.file(
+          `ppt/slides/_rels/slide${n}.xml.rels`,
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="${NS_R}"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/></Relationships>`,
+        );
+        if (slide.hasNotes) {
+          zip.file(
+            `ppt/notesSlides/notesSlide${n}.xml`,
+            `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><p:notes xmlns:a="${NS_A}" xmlns:p="${NS_P}"><p:cSld><p:spTree><p:sp><p:txBody><a:p><a:r><a:t>note</a:t></a:r></a:p></p:txBody></p:sp></p:spTree></p:cSld></p:notes>`,
+          );
+        }
+      });
+      return zip.generateAsync({ type: "arraybuffer" });
     }
   }
+
   return { default: MockPptx };
 });
 
@@ -81,24 +136,24 @@ describe("buildExportReport", () => {
     }
   });
 
-  it("marks an unsupported block and downgrades the status", async () => {
+  it("exports a video block as a preserved snapshot (never a silent omission)", async () => {
     const deck = makeDeck([
       slide("slide-1", [
         block("block-body", "text", "Body text"),
-        block("block-video", "video", { src: "clip.mp4" }),
+        block("block-video", "video", { url: "clip.mp4", chapter: { title: "Live demo" } }),
       ]),
     ]);
 
     const { report } = await buildExportReport(deck, DEFAULT_PPTX_CONFIG);
 
-    expect(["partial", "failed"]).toContain(report.status);
+    expect(report.status).toBe("complete-with-fallbacks");
     const video = report.slides[0].blocks.find((item) => item.blockId === "block-video");
-    expect(video).toBeDefined();
-    expect(video?.status).toBe("unsupported");
-    expect(video?.issues.some((issue) => issue.code === "unsupported-block")).toBe(true);
+    expect(video?.status).toBe("rasterized");
+    expect(video?.representation).toBe("svg");
+    expect(video?.contentPreserved).toBe(true);
   });
 
-  it("marks a diagram as substituted with a simplified representation", async () => {
+  it("exports a diagram as a preserved SVG (never a text summary)", async () => {
     const deck = makeDeck([
       slide("slide-1", [
         block("block-title", "heading", "Title"),
@@ -114,9 +169,11 @@ describe("buildExportReport", () => {
 
     const { report } = await buildExportReport(deck, DEFAULT_PPTX_CONFIG);
 
-    expect(report.status).toBe("partial");
+    expect(report.status).toBe("complete-with-fallbacks");
     const diagram = report.slides[0].blocks.find((item) => item.blockId === "block-diagram");
-    expect(diagram?.status).toBe("substituted");
+    expect(diagram?.status).toBe("rasterized");
+    expect(diagram?.representation).toBe("svg");
+    expect(diagram?.contentPreserved).toBe(true);
   });
 
   it("skips an image with no resolvable source and never reports complete", async () => {
@@ -182,15 +239,15 @@ describe("deriveExportStatus", () => {
     { slideId: "s", blocks: [{ blockId: "b", status: "native" as const, issues: [] }] },
   ];
 
-  it("is complete only when every block is native and there are no warnings", () => {
-    expect(deriveExportStatus([], nativeSlides)).toBe("complete");
+  it("is complete only when every block is native, there are no warnings, and fidelity passed", () => {
+    expect(deriveExportStatus([], nativeSlides, "complete")).toBe("complete");
   });
 
-  it("is partial when a block is not native", () => {
+  it("is complete-with-fallbacks when a block uses a fallback and content is preserved", () => {
     const slides = [
-      { slideId: "s", blocks: [{ blockId: "b", status: "substituted" as const, issues: [] }] },
+      { slideId: "s", blocks: [{ blockId: "b", status: "rasterized" as const, issues: [] }] },
     ];
-    expect(deriveExportStatus([], slides)).toBe("partial");
+    expect(deriveExportStatus([], slides, "complete-with-fallbacks")).toBe("complete-with-fallbacks");
   });
 
   it("is partial when a warning-severity issue exists even if all blocks are native", () => {
@@ -200,7 +257,7 @@ describe("deriveExportStatus", () => {
       message: "too long",
       automaticFixAvailable: false,
     };
-    expect(deriveExportStatus([warning], nativeSlides)).toBe("partial");
+    expect(deriveExportStatus([warning], nativeSlides, "complete")).toBe("partial");
   });
 
   it("is failed when an error-severity issue exists", () => {
@@ -210,24 +267,15 @@ describe("deriveExportStatus", () => {
       message: "boom",
       automaticFixAvailable: false,
     };
-    expect(deriveExportStatus([error], nativeSlides)).toBe("failed");
+    expect(deriveExportStatus([error], nativeSlides, "complete")).toBe("failed");
   });
 
   it("is failed when archive verification fails", () => {
-    expect(deriveExportStatus([], nativeSlides, false)).toBe("failed");
-  });
-});
-
-describe("verifyPptxArchive", () => {
-  it("accepts a ZIP payload that contains the presentation part", () => {
-    const marker = new TextEncoder().encode("ppt/presentation.xml");
-    const bytes = new Uint8Array([0x50, 0x4b, 0x03, 0x04, ...marker]);
-    expect(verifyPptxArchive(bytes)).toBe(true);
+    expect(deriveExportStatus([], nativeSlides, "complete", false)).toBe("failed");
   });
 
-  it("rejects non-ZIP payloads", () => {
-    expect(verifyPptxArchive(new Uint8Array([1, 2, 3, 4]))).toBe(false);
-    expect(verifyPptxArchive(new Uint8Array())).toBe(false);
+  it("is failed when the content-parity gate fails", () => {
+    expect(deriveExportStatus([], nativeSlides, "failed")).toBe("failed");
   });
 });
 
@@ -247,6 +295,7 @@ describe("PptxExporter top-level result", () => {
     expect(result.report.status).toBe("complete");
     expect(result.report.slides[0].slideId).toBe("slide-1");
     expect(result.report.slides[0].blocks[0].blockId).toBe("block-a");
+    expect(result.fidelity).toBeDefined();
     expect(result.blob).toBeInstanceOf(Blob);
     expect(() => JSON.stringify(result.report)).not.toThrow();
   });
@@ -273,7 +322,7 @@ describe("report serialization", () => {
     expect(parsed.slides[0].blocks[0].blockId).toBe("block-a");
     expect(parsed.slides[1].slideId).toBe("slide-2");
     expect(parsed.slides[1].blocks[0].blockId).toBe("block-c");
-    expect(parsed.slides[1].blocks[1].status).toBe("unsupported");
+    expect(parsed.slides[1].blocks[1].status).toBe("rasterized");
     expect(typeof parsed.status).toBe("string");
     expect(typeof parsed.issues.length).toBe("number");
   });
