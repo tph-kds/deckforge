@@ -12,26 +12,31 @@ npx skills@latest add tph-kds/deckforge --skill deckforge
 npx skills@latest add tph-kds/deckforge --skill '*'
 ```
 
-Your coding agent now has DeckForge loaded. The skill activates automatically when you ask to create, edit, or audit a presentation.
+## Two ways to invoke a skill
+
+Every skill can be invoked two ways:
+
+| Style | Example | When to use |
+|---|---|---|
+| **Slash command** | `/deckforge create a 10-slide pitch deck` | You know exactly which skill you want |
+| **Natural language** | `Create a 10-slide pitch deck about our SaaS platform` | Let the agent auto-detect the right skill |
+
+Both produce the same result. Slash commands are explicit; natural language is convenient.
 
 ## Create your first deck
 
-Tell your agent what you want. Natural language works:
+**Slash command:**
+
+```
+/deckforge Create a 10-slide product launch deck for a SaaS analytics platform.
+Use a dark theme with blue accents. Include speaker notes on every slide.
+```
+
+**Natural language:**
 
 ```
 Create a 10-slide product launch deck for a SaaS analytics platform.
 Use a dark theme with blue accents. Include speaker notes on every slide.
-```
-
-```
-Build an investor pitch deck based on this outline:
-1. Problem, 2. Solution, 3. Market size, 4. Traction, 5. Team, 6. Ask
-Target: $2M seed round. Audience: early-stage VCs.
-```
-
-```
-Make a technical architecture presentation for our microservices migration.
-Include a process flow, comparison chart, and timeline.
 ```
 
 The agent loads the `deckforge` skill, selects templates and layouts, and builds a complete `DeckProject` with an editor, presenter, and export capability.
@@ -39,6 +44,13 @@ The agent loads the `deckforge` skill, selects templates and layouts, and builds
 ## Common workflows
 
 ### Build a new presentation
+
+```
+/deckforge Create an editable web presentation about climate tech innovations.
+Include charts, diagrams, and a call-to-action closing slide.
+```
+
+Or without the slash:
 
 ```
 Create an editable web presentation about climate tech innovations.
@@ -50,7 +62,8 @@ Agent activates: `deckforge`
 ### Redesign an existing deck
 
 ```
-Redesign this presentation — the layout feels cluttered and the typography is inconsistent.
+/deckforge Redesign this presentation — the layout feels cluttered
+and the typography is inconsistent.
 ```
 
 Agent loads your `deck.json`, audits it, and rebuilds with consistent themes and spacing.
@@ -58,7 +71,15 @@ Agent loads your `deck.json`, audits it, and rebuilds with consistent themes and
 ### Add PPTX export
 
 ```
-Add PowerPoint download to this deck. Make sure diagrams survive as visuals, not text summaries.
+/deckforge-export Add PowerPoint download to this deck.
+Make sure diagrams survive as visuals, not text summaries.
+```
+
+Or:
+
+```
+Add PowerPoint download to this deck. Make sure diagrams survive
+as visuals, not text summaries.
 ```
 
 Agent activates: `deckforge-export`
@@ -66,7 +87,8 @@ Agent activates: `deckforge-export`
 ### Audit for quality
 
 ```
-Review this presentation for accessibility, performance, and design consistency.
+/deckforge-audit Review this presentation for accessibility,
+performance, and design consistency.
 ```
 
 Agent activates: `deckforge-audit`
@@ -74,10 +96,30 @@ Agent activates: `deckforge-audit`
 ### Publish to the web
 
 ```
-Deploy this deck as a standalone web page with a public URL and embed support.
+/deckforge-publish Deploy this deck as a standalone web page
+with a public URL and embed support.
 ```
 
 Agent activates: `deckforge-publish`
+
+### Plan architecture (without building)
+
+```
+/deckforge-runtime-planner Plan the state management and rendering
+architecture for a collaborative deck editor.
+```
+
+Agent activates: `deckforge-runtime-planner`
+
+## Quick reference
+
+| Slash command | What it does |
+|---|---|
+| `/deckforge` | Create, redesign, extend, or migrate a presentation |
+| `/deckforge-audit` | Review existing slides for quality issues |
+| `/deckforge-export` | Add or fix PPTX export with fidelity checks |
+| `/deckforge-runtime-planner` | Plan architecture without implementing |
+| `/deckforge-publish` | Web delivery, embeds, and release |
 
 ## What you get
 
@@ -97,20 +139,6 @@ npm run dev
 ```
 
 Open `http://localhost:5173` — you have a full slide editor with undo/redo, themes, presenter mode, and export.
-
-## Skill reference
-
-| Skill | When to use |
-|---|---|
-| `deckforge` | Create, redesign, extend, or migrate a presentation |
-| `deckforge-audit` | Review existing slides for quality issues |
-| `deckforge-export` | Add or fix PPTX export with fidelity checks |
-| `deckforge-runtime-planner` | Plan architecture without implementing |
-| `deckforge-publish` | Web delivery, embeds, and release |
-| `deckforge-visual-evidence` | Browser verification of generated apps |
-| `deckforge-skill-evaluator` | Compare skill outcomes |
-
-Worker skills (`visual-evidence`, `skill-evaluator`) are invoked by CI, not by user prompts.
 
 ## Validate your project
 
