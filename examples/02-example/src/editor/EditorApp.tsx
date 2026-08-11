@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { DeckStore } from '../deck/useDeck';
 import { listLayouts, auditSlideLayout, suggestSlotForBlock } from '../deck/layout';
 import { listThemes, getTheme } from '../deck/themes';
@@ -8,6 +8,7 @@ import type { Block } from '../deck/types';
 import { measureSlide, summarizeIssues } from '../deck/measure';
 import { repairSlide } from '../deck/repair';
 import { EditorSlideRenderer } from '../render/SlideRenderer';
+import { SlideViewport, type SlideViewportHandle, type ViewState } from '../render/SlideViewport';
 import { SaveStatus } from '../ui/SaveStatus';
 import { CommandPalette, type CommandItem } from '../ui/CommandPalette';
 import { ShortcutHelpDialog } from '../ui/ShortcutHelpDialog';
@@ -84,6 +85,7 @@ function makeBlockForType(type: string): Block {
           type: 'bar',
           title: 'New chart',
           unit: '',
+          isTemplate: true,
           values: [
             { label: 'A', value: 40 },
             { label: 'B', value: 60 },
@@ -120,7 +122,8 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
   const { deck, selection, saveState, canUndo, canRedo, select, selectSlide, selectBlock, selectNone, commit, undo, redo, saveNow } = store;
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
-  const [zoom, setZoom] = useState(0.62);
+  const [zoom, setZoom] = useState<ViewState>({ zoom: 1, fit: 1, atFit: true });
+  const viewportRef = useRef<SlideViewportHandle>(null);
   const [notesOpen, setNotesOpen] = useState(true);
   const [railOpen, setRailOpen] = useState(true);
   const [inspectorOpen, setInspectorOpen] = useState(true);
@@ -365,17 +368,17 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
         </div>
       )}
 
-      <ScrollSurface as="main" surface="app-page" axis="both" className="editor-canvas">
+      <main className="editor-canvas" aria-label="Slide canvas">
         <div className="editor-canvas-controls">
           <span className="slide-indicator" title={activeSlide.title}>
             <strong>{deck.slides.findIndex((s) => s.id === activeSlide.id) + 1}</strong>
             <span>/ {deck.slides.length}</span>
             <span className="slide-indicator-title">{activeSlide.title}</span>
           </span>
-          <span className="zoom-label">Zoom {Math.round(zoom * 100)}%</span>
-          <button type="button" onClick={() => setZoom((z) => Math.max(0.25, z - 0.08))} aria-label="Zoom out">−</button>
-          <button type="button" onClick={() => setZoom(0.62)} aria-label="Reset zoom">Fit</button>
-          <button type="button" onClick={() => setZoom((z) => Math.min(1.5, z + 0.08))} aria-label="Zoom in">+</button>
+          <span className="zoom-label">Zoom {Math.round(zoom.zoom * 100)}%</span>
+          <button type="button" onClick={() => viewportRef.current?.zoomOut()} aria-label="Zoom out">−</button>
+          <button type="button" onClick={() => viewportRef.current?.fit()} aria-label="Fit to screen">Fit</button>
+          <button type="button" onClick={() => viewportRef.current?.zoomIn()} aria-label="Zoom in">+</button>
           <label className="canvas-size-field">
             <span>Canvas</span>
             <select
@@ -431,17 +434,24 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
             {focusMode ? '✕ Edit' : '⛶ Focus'}
           </button>
         </div>
-        <div className="canvas-stage" onClick={() => selectNone()}>
-          <EditorSlideRenderer
-            deck={deck}
-            slide={activeSlide}
-            scale={zoom}
-            interactive
-            selectedBlockIds={selection.blockIds}
-            onBlockSelect={(blockId, additive) => selectBlock(activeSlide.id, blockId, additive)}
-          />
-        </div>
-      </ScrollSurface>
+        <SlideViewport
+          ref={viewportRef}
+          deck={deck}
+          slide={activeSlide}
+          className="canvas-stage"
+          onViewChange={setZoom}
+          onBackgroundClick={() => selectNone()}
+          renderSlide={() => (
+            <EditorSlideRenderer
+              deck={deck}
+              slide={activeSlide}
+              interactive
+              selectedBlockIds={selection.blockIds}
+              onBlockSelect={(blockId, additive) => selectBlock(activeSlide.id, blockId, additive)}
+            />
+          )}
+        />
+      </main>
 
       <div className={`editor-notes-area ${notesOpen ? '' : 'is-collapsed'}`}>
         <div className="editor-notes-toggle">

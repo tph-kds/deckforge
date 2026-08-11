@@ -1,0 +1,385 @@
+{
+  "status": "partial",
+  "slides": [
+    {
+      "slideId": "s1",
+      "blocks": [
+        {
+          "blockId": "b1",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b2",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b3",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b4",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b5",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        }
+      ]
+    },
+    {
+      "slideId": "s2",
+      "blocks": [
+        {
+          "blockId": "b6",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b7",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b8",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b9",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b10",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        }
+      ]
+    },
+    {
+      "slideId": "s3",
+      "blocks": [
+        {
+          "blockId": "b11",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b12",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b13",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b14",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b15",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        }
+      ]
+    },
+    {
+      "slideId": "s4",
+      "blocks": [
+        {
+          "blockId": "b16",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b17",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b18",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b19",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        }
+      ]
+    },
+    {
+      "slideId": "s5",
+      "blocks": [
+        {
+          "blockId": "b20",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b21",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b22",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b23",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        }
+      ]
+    },
+    {
+      "slideId": "s6",
+      "blocks": [
+        {
+          "blockId": "b24",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b25",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b26",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b27",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b28",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b29",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b30",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        }
+      ]
+    },
+    {
+      "slideId": "s7",
+      "blocks": [
+        {
+          "blockId": "b31",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b32",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b33",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b34",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b35",
+          "status": "native",
+          "issues": [],
+          "representation": "native",
+          "contentPreserved": true,
+          "editable": true,
+          "visualParity": 1
+        },
+        {
+          "blockId": "b36",
+          "status": "rasterized",
+          "issues": [
+            {
+              "severity": "warning",
+              "code": "image-load-failed",
+              "automaticFixAvailable": false,
+              "suggestedFix": "Use a local asset or a data: URL so the image can be embedded offline",
+              "message": "Image \"https://images.unsplash.com/photo-1519326844852-704caea5675e?auto=format&fit=crop&w=720&q=70\" (block \"b36\") could not be loaded (network error or CORS restriction); a bundled placeholder image was embedded in its place",
+              "slideId": "s7",
+              "blockId": "b36"
+            }
+          ],
+          "representation": "raster",
+          "contentPreserved": true,
+          "editable": false,
+          "visualParity": 0.8
+        }
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "image-load-failed",
+      "automaticFixAvailable": false,
+      "suggestedFix": "Use a local asset or a data: URL so the image can be embedded offline",
+      "message": "Image \"https://images.unsplash.com/photo-1519326844852-704caea5675e?auto=format&fit=crop&w=720&q=70\" (block \"b36\") could not be loaded (network error or CORS restriction); a bundled placeholder image was embedded in its place",
+      "slideId": "s7",
+      "blockId": "b36"
+    }
+  ]
+}

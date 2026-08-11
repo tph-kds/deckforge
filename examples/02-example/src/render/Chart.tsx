@@ -1,4 +1,5 @@
 import type { ChartContent } from '../deck/types';
+import { chartSpecFromContent, describeBarChartLayout } from '../deck/chart-spec';
 import { getTheme } from '../deck/themes';
 
 interface ChartProps {
@@ -18,19 +19,11 @@ function useThemeColors(themeId: string) {
 
 export function BarChart({ chart, themeId }: ChartProps) {
   const colors = useThemeColors(themeId);
-  const values = chart.values ?? [];
+  const spec = chartSpecFromContent(chart);
+  const values = spec.values;
   if (!values.length) return null;
-  const max = Math.max(...values.map((value) => value.value), 1);
-  const unit = chart.unit ?? '';
-  const baseline = 8;
-  const chartH = 132;
-  const labelH = 18;
-  const titleH = chart.title ? 20 : 0;
-  const padX = 8;
-  const usable = 560 - padX * 2;
-  const slotW = usable / values.length;
-  const barW = Math.min(slotW * 0.55, 42);
-  const gridlines = [0, 0.25, 0.5, 0.75, 1];
+  const layout = describeBarChartLayout(spec);
+  const { plot, gridlines, bars } = layout;
   return (
     <svg
       viewBox="0 0 560 300"
@@ -39,68 +32,78 @@ export function BarChart({ chart, themeId }: ChartProps) {
       role="img"
       aria-label={chart.summary ?? 'Bar chart'}
     >
-      {chart.title ? (
-        <text x={padX} y={14} fontSize={13} fontWeight={600} fill={colors.muted} fontFamily="var(--font-body)">
-          {chart.title}
+      {spec.title ? (
+        <text x={8} y={14} fontSize={13} fontWeight={600} fill={colors.muted} fontFamily="var(--font-body)">
+          {spec.title}
         </text>
       ) : null}
-      {gridlines.map((fraction) => {
-        const y = baseline + titleH + chartH - fraction * chartH;
-        return (
-          <g key={fraction}>
-            <line
-              x1={padX}
-              x2={560 - padX}
-              y1={y}
-              y2={y}
-              stroke={colors.axis}
-              strokeWidth={1}
-              strokeDasharray={fraction === 0 ? 'none' : '3 4'}
-            />
-            <text x={560 - padX} y={y - 4} fontSize={9} fill={colors.muted} textAnchor="end" fontFamily="var(--font-body)">
-              {Math.round(fraction * max * 10) / 10}
-              {unit}
-            </text>
-          </g>
-        );
-      })}
+      <line
+        x1={plot.x}
+        x2={plot.x + plot.w}
+        y1={plot.y + plot.h}
+        y2={plot.y + plot.h}
+        stroke={colors.axis}
+        strokeWidth={1}
+      />
+      {gridlines.map((gridline) => (
+        <g key={gridline.fraction}>
+          <line
+            x1={plot.x}
+            x2={plot.x + plot.w}
+            y1={gridline.y}
+            y2={gridline.y}
+            stroke={colors.axis}
+            strokeWidth={1}
+            strokeDasharray={gridline.fraction === 0 ? 'none' : '3 4'}
+          />
+          <text
+            x={gridline.labelX}
+            y={gridline.labelY}
+            fontSize={spec.axisLabelFontSizePx}
+            fill={colors.muted}
+            textAnchor={layout.axisLabelAnchor}
+            fontFamily="var(--font-body)"
+          >
+            {gridline.label}
+          </text>
+        </g>
+      ))}
       {values.map((value, index) => {
-        const h = (value.value / max) * chartH;
-        const x = padX + index * slotW + (slotW - barW) / 2;
-        const y = baseline + titleH + chartH - h;
-        const isHighlight = chart.highlightIndex === index;
+        const placement = bars[index];
+        const isHighlight = spec.highlightIndex === index;
         return (
           <g key={value.label}>
             <rect
-              x={x}
-              y={y}
-              width={barW}
-              height={Math.max(h, 2)}
+              x={placement.barX}
+              y={placement.barY}
+              width={placement.barW}
+              height={placement.barH}
               rx={3}
               fill={isHighlight ? colors.highlight : colors.accent}
             />
             <text
-              x={x + barW / 2}
-              y={baseline + titleH + chartH + labelH - 5}
-              fontSize={10}
+              x={placement.categoryLabelX}
+              y={placement.categoryLabelY}
+              fontSize={spec.categoryLabelFontSizePx}
               fill={colors.muted}
               textAnchor="middle"
               fontFamily="var(--font-body)"
             >
               {value.label}
             </text>
-            <text
-              x={x + barW / 2}
-              y={y - 6}
-              fontSize={10}
-              fontWeight={600}
-              fill={isHighlight ? colors.highlight : colors.foreground}
-              textAnchor="middle"
-              fontFamily="var(--font-body)"
-            >
-              {value.value}
-              {unit}
-            </text>
+            {spec.labelPolicy.showDataLabels && (
+              <text
+                x={placement.dataLabelX}
+                y={placement.dataLabelY}
+                fontSize={spec.dataLabelFontSizePx}
+                fontWeight={600}
+                fill={isHighlight ? colors.highlight : colors.foreground}
+                textAnchor="middle"
+                fontFamily="var(--font-body)"
+              >
+                {placement.dataLabel}
+              </text>
+            )}
           </g>
         );
       })}
@@ -110,11 +113,11 @@ export function BarChart({ chart, themeId }: ChartProps) {
 
 export function BarHorizontalChart({ chart, themeId }: ChartProps) {
   const colors = useThemeColors(themeId);
-  const values = chart.values ?? [];
+  const spec = chartSpecFromContent(chart);
+  const values = spec.values;
   if (!values.length) return null;
   const max = Math.max(...values.map((value) => value.value), 1);
-  const unit = chart.unit ?? '';
-  const titleH = chart.title ? 20 : 0;
+  const titleH = spec.title ? 20 : 0;
   const rowH = 40;
   const labelW = 96;
   const barMaxW = 560 - labelW - 56;
@@ -127,15 +130,15 @@ export function BarHorizontalChart({ chart, themeId }: ChartProps) {
       role="img"
       aria-label={chart.summary ?? 'Horizontal bar chart'}
     >
-      {chart.title ? (
+      {spec.title ? (
         <text x={0} y={14} fontSize={13} fontWeight={600} fill={colors.muted} fontFamily="var(--font-body)">
-          {chart.title}
+          {spec.title}
         </text>
       ) : null}
       {values.map((value, index) => {
         const y = top + index * rowH;
         const w = (value.value / max) * barMaxW;
-        const isHighlight = chart.highlightIndex === index;
+        const isHighlight = spec.highlightIndex === index;
         return (
           <g key={value.label}>
             <text x={0} y={y + 16} fontSize={12} fill={colors.muted} textAnchor="start" fontFamily="var(--font-body)">
@@ -158,7 +161,7 @@ export function BarHorizontalChart({ chart, themeId }: ChartProps) {
               fontFamily="var(--font-body)"
             >
               {value.value}
-              {unit}
+              {spec.unit}
             </text>
           </g>
         );

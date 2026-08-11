@@ -16,7 +16,31 @@ function makeDeck(slides: DeckSlide[]): DeckProject {
   };
 }
 function slide(id: string, blocks: Block[]): DeckSlide {
-  return { id, title: id, layout: "title-hero", blocks };
+  const slotForType: Record<string, string> = {
+    heading: "title",
+    text: "subtitle",
+    bullets: "subtitle",
+    caption: "meta",
+    image: "visual",
+    video: "visual",
+    diagram: "visual",
+    chart: "visual",
+    shape: "visual",
+  };
+  const bySlot = new Map<string, string[]>();
+  blocks.forEach((block, index) => {
+    const slot = slotForType[block.type] ?? (index === 0 ? "title" : "subtitle");
+    const ids = bySlot.get(slot) ?? [];
+    ids.push(block.id);
+    bySlot.set(slot, ids);
+  });
+  return {
+    id,
+    title: id,
+    layout: "title-hero",
+    blocks,
+    layoutBindings: Array.from(bySlot.entries()).map(([slot, blockIds]) => ({ slot, blockIds })),
+  };
 }
 function block(id: string, type: string, content: unknown): Block {
   return { id, type, content };

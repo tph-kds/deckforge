@@ -224,8 +224,35 @@ export function applyCommandWithResult(deck: DeckProject, command: Command): Dis
     }
     case 'setTheme':
       return result({ ...deck, theme: { ...deck.theme, id: command.themeId } });
-    case 'setCanvas':
-      return result({ ...deck, canvas: command.canvas });
+    case 'setCanvas': {
+      const prev = deck.canvas;
+      const next = command.canvas;
+      const scaleX = next.width / prev.width;
+      const scaleY = next.height / prev.height;
+      const needsRescale = scaleX !== 1 || scaleY !== 1;
+      if (!needsRescale) return result({ ...deck, canvas: next });
+      const rescaled: DeckProject = {
+        ...deck,
+        canvas: next,
+        slides: deck.slides.map((slide) => ({
+          ...slide,
+          blocks: slide.blocks.map((block) => {
+            if (!block.frame) return block;
+            const f = block.frame;
+            return {
+              ...block,
+              frame: {
+                x: Math.round(f.x * scaleX),
+                y: Math.round(f.y * scaleY),
+                w: Math.round(f.w * scaleX),
+                h: Math.round(f.h * scaleY),
+              },
+            };
+          }),
+        })),
+      };
+      return { ...result(rescaled), affectedSlideIds: deck.slides.map((s) => s.id) };
+    }
     case 'setTransition':
       return result({ ...deck, presentation: { ...deck.presentation, transition: command.transition } });
     case 'setMotionProfile':

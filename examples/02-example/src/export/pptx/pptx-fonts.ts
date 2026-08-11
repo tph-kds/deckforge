@@ -16,6 +16,32 @@ const PPTX_SAFE_FONTS = new Set([
   "Times New Roman", "Trebuchet MS", "Verdana",
 ]);
 
+/**
+ * Registry of web font families (as used by the deck themes) to their closest
+ * PPT-safe substitutes. Kept in sync with deck/themes.ts so exported slides
+ * stay visually coherent even when the web font is unavailable in PowerPoint.
+ */
+const WEB_TO_SUBSTITUTES: Record<string, string> = {
+  "Inter": "Arial",
+  "Manrope": "Arial",
+  "IBM Plex Sans": "Arial",
+  "Sora": "Arial",
+  "Libre Baskerville": "Georgia",
+  "JetBrains Mono": "Consolas",
+};
+
+/**
+ * Resolve a web/theme font to a PPT-safe family. Returns the input unchanged
+ * when it is already PPT-safe.
+ */
+export function resolvePptxFont(fontFamily: string): string {
+  if (!fontFamily) return "Arial";
+  const cleanName = fontFamily.replace(/['"]/g, "").trim().split(",")[0].trim();
+  if (PPTX_SAFE_FONTS.has(cleanName)) return cleanName;
+  if (WEB_TO_SUBSTITUTES[cleanName]) return WEB_TO_SUBSTITUTES[cleanName];
+  return "Arial";
+}
+
 export function checkFontCompatibility(
   fontFamily: string,
   slideId?: string,
@@ -35,7 +61,7 @@ export function checkFontCompatibility(
     fontFamily: cleanName,
     slideId,
     blockId,
-    substituteFont: "Arial",
+    substituteFont: resolvePptxFont(cleanName),
   };
 }
 

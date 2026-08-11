@@ -16,6 +16,11 @@ export interface SlideStageProps {
  * that fits the deck's fixed logical canvas (16:9) inside it. The stage never
  * changes the logical slide size — it only scales a transform, so authoring
  * coordinates, type tokens, and cqw units stay stable (plan §7.1).
+ *
+ * The contain-fit scale is applied here on `.slide-stage-origin` (mirroring the
+ * editor's SlideViewport), NEVER on `.deck-slide`. The slide is rendered at
+ * logical scale 1, so animation and reduced-motion CSS rules that target
+ * `.deck-slide` can never clobber the fit transform and clip the slide.
  */
 export function SlideStage({ deck, children, className, minScale = 0.01, style }: SlideStageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -37,15 +42,20 @@ export function SlideStage({ deck, children, className, minScale = 0.01, style }
     <div ref={containerRef} className={`slide-stage ${className ?? ''}`} style={style}>
       <div
         className="slide-stage-origin"
-        style={{ width: deck.canvas.width * guard, height: deck.canvas.height * guard }}
+        style={{
+          width: deck.canvas.width,
+          height: deck.canvas.height,
+          transform: `translate(-50%, -50%) scale(${guard})`,
+          transformOrigin: 'center center',
+        }}
       >
-        {children(guard)}
+        {children(1)}
       </div>
     </div>
   );
 }
 
-function computeScale(deck: DeckProject, availWidth: number, availHeight: number): number {
+export function computeScale(deck: DeckProject, availWidth: number, availHeight: number): number {
   if (availWidth <= 0 || availHeight <= 0) return 1;
   const canvasW = deck.canvas.width || 1920;
   const canvasH = deck.canvas.height || 1080;

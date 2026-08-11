@@ -7,26 +7,22 @@ import type {
   FidelityReport,
   PptxBlockExport,
   PptxExportConfig,
+  PptxExportContext,
   PptxExportResult,
   PptxSlideElement,
 } from "../export-types";
 import type { DeckProject, DeckSlide } from "../../deck/types";
 import { createExportContext } from "./pptx-context";
 import { getBlockExporter } from "./block-exporters/index";
-import { resolveSlidePlacements } from "../../deck/layout";
+import { resolveSlideGeometry, type ResolvedBlockGeometry } from "../../deck/geometry-resolver";
 import { verifyPptxArchive } from "./pptx-verifier";
-import { rawText } from "../fidelity/content-parity";
 import { FIDELITY_POLICY } from "../fidelity/fidelity-policy";
 import { planBlockRepresentation } from "../fidelity/representation-planner";
 import { buildFidelityReport, fidelityStatus } from "../fidelity/fidelity-report";
 import type { FidelityBlockReport } from "../fidelity/fidelity-types";
 import type PptxGenJS from "pptxgenjs";
-
-const PIXELS_PER_INCH = 96;
-
-function pixelsToInches(px: number): number {
-  return px / PIXELS_PER_INCH;
-}
+import { derivePptxSlideSize, documentUnitToPptxInches } from "../geometry";
+import { validateExportScene, type ExportSceneDiagnostic } from "../export-scene";
 
 async function toUint8Array(value: string | Blob | ArrayBuffer | Uint8Array): Promise<Uint8Array<ArrayBuffer>> {
   if (value instanceof ArrayBuffer) return new Uint8Array(value);
@@ -35,13 +31,24 @@ async function toUint8Array(value: string | Blob | ArrayBuffer | Uint8Array): Pr
   return new Uint8Array(await value.arrayBuffer());
 }
 
-function writeElementToSlide(pptxSlide: PptxGenJS.Slide, element: PptxSlideElement): void {
-  // PptxGenJS uses inches; our deck model uses pixels (96 DPI).
+/**
+ * Place one element on a PPTX slide. Element geometry is in DOCUMENT pixels;
+ * the slide is sized with the derived PPTX geometry, so each axis maps by pure
+ * ratio (Phase 5). No fixed pixels-per-inch constant: the relationship between
+ * document space and PPTX inches is established once in the geometry layer.
+ */
+function writeElementToSlide(
+  pptxSlide: PptxGenJS.Slide,
+  element: PptxSlideElement,
+  ctx: PptxExportContext,
+): void {
+  if (!element || element.w <= 0 || element.h <= 0) return;
+
   const opts = {
-    x: pixelsToInches(element.x),
-    y: pixelsToInches(element.y),
-    w: pixelsToInches(element.w),
-    h: pixelsToInches(element.h),
+    x: documentUnitToPptxInches(element.x, ctx.slideWidth, ctx.pptxWidth),
+    y: documentUnitToPptxInches(element.y, ctx.slideHeight, ctx.pptxHeight),
+    w: documentUnitToPptxInches(element.w, ctx.slideWidth, ctx.pptxWidth),
+    h: documentUnitToPptxInches(element.h, ctx.slideHeight, ctx.pptxHeight),
   };
 
   switch (element.type) {
@@ -55,6 +62,7 @@ function writeElementToSlide(pptxSlide: PptxGenJS.Slide, element: PptxSlideEleme
     case "image": {
       pptxSlide.addImage({
         data: element.data.dataUri,
+        altText: element.data.alt,
         ...opts,
         ...element.data.options,
       } as unknown as PptxGenJS.ImageProps);
@@ -94,6 +102,7 @@ function writeElementToSlide(pptxSlide: PptxGenJS.Slide, element: PptxSlideEleme
     case "svg": {
       pptxSlide.addImage({
         data: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(element.data.svg)}`,
+        alt: element.data.alt,
         ...opts,
       } as unknown as PptxGenJS.ImageProps);
       break;
@@ -101,12 +110,6 @@ function writeElementToSlide(pptxSlide: PptxGenJS.Slide, element: PptxSlideEleme
   }
 }
 
-/**
- * Derive the overall export status from the accumulated issues, per-block
- * statuses, and the fidelity-level status. A report can only be `complete`
- * when every block exported natively, no warning/error-severity issue was
- * recorded, and the content-parity gate passed.
- */
 export function deriveExportStatus(
   issues: ExportIssue[],
   slideReports: ExportSlideReport[],
@@ -134,11 +137,6 @@ export interface ExportBuildResult {
   fidelity: FidelityReport;
 }
 
-/**
- * Convert every slide/block into PPTX elements while recording per-block
- * status and typed issues. Pure relative to the artifact generation so it can
- * be exercised without a PPTX library.
- */
 export async function buildExportReport(
   deck: DeckProject,
   config: PptxExportConfig
@@ -164,14 +162,22 @@ export async function buildExportReport(
     const blockReports: ExportBlockReport[] = [];
     const elements: PptxSlideElement[] = [];
 
-    // Resolve semantic slot frames so slot-positioned blocks get real coordinates.
-    const placements = resolveSlidePlacements(slide, deck.canvas);
-    const frameByBlockId = new Map<string, { x: number; y: number; w: number; h: number }>();
-    for (const placement of placements) {
-      frameByBlockId.set(placement.blockId, placement.frame);
+    const scene = resolveSlideGeometry(slide, deck.canvas);
+    const frameByBlockId = scene.frameByBlockId;
+
+    const slotGroups = new Map<string, ResolvedBlockGeometry[]>();
+    for (const entry of scene.blocks) {
+      if (!entry.slotId) continue;
+      const group = slotGroups.get(entry.slotId) ?? [];
+      group.push(entry);
+      slotGroups.set(entry.slotId, group);
     }
 
+    const processedBlockIds = new Set<string>();
+
     for (const block of slide.blocks) {
+      if (processedBlockIds.has(block.id)) continue;
+
       let result: PptxBlockExport;
 
       if (block.hidden) {
@@ -190,10 +196,33 @@ export async function buildExportReport(
       } else {
         const exporter = getBlockExporter(block.type);
         try {
-          // Attach the resolved slot frame to the block so exporters use real coordinates.
           const resolvedFrame = frameByBlockId.get(block.id);
-          const blockWithFrame = resolvedFrame
-            ? { ...block, frame: { ...block.frame, ...resolvedFrame } }
+          let adjustedFrame = resolvedFrame
+            ? { ...resolvedFrame }
+            : undefined;
+
+          if (resolvedFrame) {
+            const entry = scene.blocks.find((candidate) => candidate.blockId === block.id);
+            if (entry?.slotId) {
+              const group = slotGroups.get(entry.slotId) ?? [entry];
+              const blockIndex = group.indexOf(entry);
+              const blocksInSlot = group.length;
+              if (blocksInSlot > 1) {
+                const gap = 12;
+                const availableH = resolvedFrame.h - gap * (blocksInSlot - 1);
+                const slotH = Math.max(40, Math.floor(availableH / blocksInSlot));
+                adjustedFrame = {
+                  x: resolvedFrame.x,
+                  y: resolvedFrame.y + blockIndex * (slotH + gap),
+                  w: resolvedFrame.w,
+                  h: slotH,
+                };
+              }
+            }
+          }
+
+          const blockWithFrame = adjustedFrame
+            ? { ...block, frame: { ...block.frame, ...adjustedFrame }, resolvedFrame: adjustedFrame }
             : block;
           result = await exporter.export(blockWithFrame, ctx);
         } catch (err) {
@@ -232,11 +261,35 @@ export async function buildExportReport(
       );
       blockReports.push(planned);
       issues.push(...stampedIssues);
-      if (result.element) elements.push(result.element);
+      const emitted = result.elements?.length
+        ? result.elements
+        : result.element
+          ? [result.element]
+          : [];
+      for (const element of emitted) {
+        if (element.w > 0 && element.h > 0) {
+          elements.push(element);
+        }
+      }
     }
 
     slideReports.push({ slideId: slide.id, blocks: blockReports });
     slides.push({ slide, elements });
+  }
+
+  const sceneDiagnostics = validateExportScene(
+    { slides: slides.map(({ slide, elements }) => ({ slideId: slide.id, elements })) },
+    ctx,
+  );
+  for (const diagnostic of sceneDiagnostics) {
+    issues.push({
+      code: diagnostic.code,
+      severity: diagnostic.severity === "error" ? "error" : "warning",
+      slideId: diagnostic.slideId,
+      blockId: diagnostic.elementId,
+      message: diagnostic.message,
+      automaticFixAvailable: false,
+    });
   }
 
   const exportedSlides = deck.slides.filter(
@@ -275,10 +328,12 @@ export class PptxExporter {
     const PptxGenJS = (await import("pptxgenjs")).default;
     const pptx = new PptxGenJS();
 
-    const canvas = deck.canvas ?? { width: 13.333, height: 7.5 };
-    const slideWidthInches = pixelsToInches(canvas.width ?? 13.333);
-    const slideHeightInches = pixelsToInches(canvas.height ?? 7.5);
-    pptx.defineLayout({ name: "CUSTOM", width: slideWidthInches, height: slideHeightInches });
+    // Phase 4: PPTX slide size is DERIVED from the document pixels so the
+    // exported aspect ratio always matches the web canvas (no hard-coded
+    // 13.333"x7.5" that would distort e.g. a 1920x800 "wide" canvas).
+    const canvas = deck.canvas ?? { width: 1600, height: 900 };
+    const pptxSize = derivePptxSlideSize(canvas.width ?? 1600, canvas.height ?? 900);
+    pptx.defineLayout({ name: "CUSTOM", width: pptxSize.width, height: pptxSize.height });
     pptx.layout = "CUSTOM";
 
     for (const { slide, elements } of slides) {
@@ -288,8 +343,9 @@ export class PptxExporter {
         pptxSlide.addNotes(slide.speakerNotes);
       }
 
+      const slideCtx = createExportContext(deck, this.config);
       for (const element of elements) {
-        writeElementToSlide(pptxSlide, element);
+        writeElementToSlide(pptxSlide, element, slideCtx);
       }
     }
 
@@ -300,14 +356,48 @@ export class PptxExporter {
       type: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
     });
 
-    const expectedTexts = slides
-      .flatMap(({ slide }) => slide.blocks.filter((block) => !block.hidden).map((block) => rawText(block)))
-      .filter((text) => text.length > 0);
-    const expectedNotes = slides.filter(
-      ({ slide }) => this.config.includeSpeakerNotes && !!slide.speakerNotes,
-    ).length;
+    // Semantic native-text corpus: the EXACT text the exporter wrote into each
+    // native text/fallback/shape element. Verifying this (rather than a rawText
+    // reconstruction) is what makes text-survival meaningful — bullets keep
+    // their "•" prefixes, process steps their shape text, etc.
+    const nativeTextExpected = slides.flatMap(({ elements }) =>
+      elements
+        .filter((element) => element.type === "text" || element.type === "fallback" || element.type === "shape")
+        .map((element) => {
+          if (element.type === "shape") {
+            const text = (element.data.options as { text?: unknown } | undefined)?.text;
+            return typeof text === "string" ? text : "";
+          }
+          return (element.data as { text?: string }).text ?? "";
+        })
+        .filter((text) => text.length > 0),
+    );
 
-    const verification = await verifyPptxArchive({ report, blob, expectedTexts, expectedNotes });
+    // Semantic visual-fallback corpus: alt/description on SVG/raster elements.
+    // These survive as element attributes in the slide XML, not as <a:t> runs.
+    const visualFallbackTexts = slides.flatMap(({ elements }) =>
+      elements
+        .filter((element) => element.type === "svg" || element.type === "image")
+        .flatMap((element) => {
+          const alt = (element.data as { alt?: string }).alt;
+          return alt && alt.length > 0 ? [alt] : [];
+        }),
+    );
+
+    // pptxgenjs always emits one notesSlide part per exported slide, even when
+    // the slide has no speaker notes. The speaker-notes structural check must
+    // therefore expect one notes part per slide, not only for slides that
+    // happen to carry notes (which would fail every export of a no-notes deck).
+    const expectedNotes = this.config.includeSpeakerNotes ? slides.length : 0;
+
+    const verification = await verifyPptxArchive({
+      report,
+      blob,
+      nativeTextExpected,
+      visualFallbackTexts,
+      expectedNotes,
+      includeSpeakerNotes: this.config.includeSpeakerNotes,
+    });
     const archiveVerified = verification.passed;
 
     const allIssues: ExportIssue[] = [...report.issues];

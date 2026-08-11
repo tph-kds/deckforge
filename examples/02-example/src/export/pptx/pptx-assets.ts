@@ -7,6 +7,21 @@ export interface AssetEmbedResult {
   mimeType: string;
 }
 
+const FETCH_TIMEOUT_MS = 15000;
+
+async function fetchWithTimeout(url: string, timeoutMs: number): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
+    return response;
+  } catch (err) {
+    clearTimeout(timer);
+    throw err;
+  }
+}
+
 export async function embedAsset(
   assetUrl: string,
   cache: Map<string, AssetEmbedResult>
@@ -25,7 +40,10 @@ export async function embedAsset(
   }
 
   try {
-    const response = await fetch(assetUrl);
+    const response = await fetchWithTimeout(assetUrl, FETCH_TIMEOUT_MS);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
     const blob = await response.blob();
     const mimeType = blob.type || "image/png";
 
@@ -42,10 +60,12 @@ export async function embedAsset(
     cache.set(assetUrl, result);
     return result;
   } catch {
-    return {
+    const empty: AssetEmbedResult = {
       dataUri: "",
       mimeType: "image/png",
     };
+    cache.set(assetUrl, empty);
+    return empty;
   }
 }
 

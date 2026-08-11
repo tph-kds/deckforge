@@ -220,7 +220,7 @@ export const SlideRenderer = memo(function SlideRenderer({
     backgroundColor: 'var(--theme-background)',
     color: 'var(--theme-foreground)',
     position: 'relative',
-    overflow: 'hidden',
+    overflow: 'visible',
     fontFamily: 'var(--font-body)',
     transform: `scale(${scale})`,
     transformOrigin: 'top left',
@@ -228,7 +228,7 @@ export const SlideRenderer = memo(function SlideRenderer({
   const frameStyle: CSSProperties = {
     width: deck.canvas.width * scale,
     height: deck.canvas.height * scale,
-    overflow: 'hidden',
+    overflow: isThumbnail ? 'hidden' : 'visible',
     ...(isThumbnail ? { contain: 'layout paint size' as const, pointerEvents: 'none' as const } : {}),
   };
 
@@ -239,7 +239,8 @@ export const SlideRenderer = memo(function SlideRenderer({
 
   return (
     <div className={`deck-slide-frame ${isThumbnail ? 'is-thumbnail' : ''} ${transitionClass}`} style={frameStyle}>
-      <div className={`deck-slide ${gradientHero ? 'is-gradient-hero' : ''}`} style={logicalStyle}>
+      <div className={`deck-slide ${gradientHero ? 'is-gradient-hero' : ''}`} style={logicalStyle} data-canvas-aspect={deck.canvas.aspectRatio}>
+        <div className="deck-slide-boundary" aria-hidden="true" />
         {children}
       </div>
     </div>

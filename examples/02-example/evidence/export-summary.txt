@@ -1,0 +1,9 @@
+Deck: The Weight of the Web (7 slides, canvas 1600x900px)
+Export status: partial
+Archive verified: true
+PPTX: weight-of-the-web.pptx (189925 bytes)
+Slides exported: 7
+Blocks exported: 36
+Issues: 1 (0 errors)
+
+  warning:image-load-failed: 1

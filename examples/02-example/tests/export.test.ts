@@ -72,12 +72,13 @@ vi.mock("pptxgenjs", async () => {
           `ppt/slides/_rels/slide${n}.xml.rels`,
           `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="${NS_R}"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/></Relationships>`,
         );
-        if (slide.hasNotes) {
-          zip.file(
-            `ppt/notesSlides/notesSlide${n}.xml`,
-            `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><p:notes xmlns:a="${NS_A}" xmlns:p="${NS_P}"><p:cSld><p:spTree><p:sp><p:txBody><a:p><a:r><a:t>note</a:t></a:r></a:p></p:txBody></p:sp></p:spTree></p:cSld></p:notes>`,
-          );
-        }
+        // Real pptxgenjs emits a notesSlide part per slide even when the slide
+        // carries no speaker notes; the mock mirrors that so the speaker-notes
+        // structural check matches production behavior.
+        zip.file(
+          `ppt/notesSlides/notesSlide${n}.xml`,
+          `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><p:notes xmlns:a="${NS_A}" xmlns:p="${NS_P}"><p:cSld><p:spTree><p:sp><p:txBody><a:p><a:r><a:t>${slide.hasNotes ? "note" : ""}</a:t></a:r></a:p></p:txBody></p:sp></p:spTree></p:cSld></p:notes>`,
+        );
       });
       return zip.generateAsync({ type: "arraybuffer" });
     }
@@ -99,7 +100,30 @@ function makeDeck(slides: DeckSlide[]): DeckProject {
 }
 
 function slide(id: string, blocks: Block[], extra: Partial<DeckSlide> = {}): DeckSlide {
-  return { id, title: id, layout: "title-hero", blocks, ...extra };
+  return { id, title: id, layout: "title-hero", blocks, layoutBindings: bindBlocks(blocks), ...extra };
+}
+
+/** Bind each block to a title-hero slot so export resolves real geometry. */
+function bindBlocks(blocks: Block[]): DeckSlide["layoutBindings"] {
+  const slotForType: Record<string, string> = {
+    heading: "title",
+    text: "subtitle",
+    bullets: "subtitle",
+    caption: "meta",
+    image: "visual",
+    video: "visual",
+    diagram: "visual",
+    chart: "visual",
+    shape: "visual",
+  };
+  const bySlot = new Map<string, string[]>();
+  blocks.forEach((block, index) => {
+    const slot = slotForType[block.type] ?? (index === 0 ? "title" : "subtitle");
+    const ids = bySlot.get(slot) ?? [];
+    ids.push(block.id);
+    bySlot.set(slot, ids);
+  });
+  return Array.from(bySlot.entries()).map(([slot, blockIds]) => ({ slot, blockIds }));
 }
 
 function block(id: string, type: string, content: unknown, extra: Partial<Block> = {}): Block {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { applyCommandWithResult, type Command, type DispatchResult } from './commands';
 import { loadSeedDeck } from './seed';
+import { ensureDeckSlotBindings } from './geometry-resolver';
 import { deckStorageAvailable, loadDeck, saveDeck } from './persistence';
 import type { DeckProject, EditorSelection, SaveState } from './types';
 
@@ -24,7 +25,7 @@ export interface DeckStore {
 
 function initialDeck(): DeckProject {
   const stored = deckStorageAvailable() ? loadDeck() : null;
-  return stored ?? loadSeedDeck();
+  return ensureDeckSlotBindings(stored ?? loadSeedDeck());
 }
 
 export function useDeck(): DeckStore {

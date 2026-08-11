@@ -42,6 +42,10 @@ export interface ChartContent {
   values: ChartValue[];
   highlightIndex?: number;
   summary?: string;
+  /** True when the chart is still a starter "New chart" template from the
+   * editor's block palette, not real authored content. Template charts are
+   * excluded from export rather than leaking placeholder data. */
+  isTemplate?: boolean;
 }
 
 export type AssetKind = 'image' | 'video' | 'audio' | 'font' | 'data' | 'document' | 'model' | 'embed-poster';

@@ -1,3 +1,5 @@
+// export/pptx/block-exporters/text.ts
+
 import type {
   ExportIssue,
   PptxBlockExport,
@@ -5,72 +7,111 @@ import type {
   PptxExportContext,
   PptxSlideElement,
 } from "../../export-types";
-import { checkFontCompatibility } from "../pptx-fonts";
+import {
+  browserTypographyFor,
+  estimateTextHeightPx,
+  exportFrameOf,
+  fontSizeToPpt,
+  frameErrorIssue,
+  pptFontFor,
+} from "../export-utils";
+import { getTheme } from "../../../deck/themes";
+import type { Block } from "../../../deck/types";
 
 const MAX_TEXT_LENGTH = 4000;
 
-interface BlockGeometry {
-  x?: number;
-  y?: number;
-  w?: number;
-  h?: number;
-  frame?: { x?: number; y?: number; w?: number; h?: number };
-}
-
-interface TextBlock extends BlockGeometry {
+interface BlockLike {
   id: string;
-  type: "text" | "heading";
-  content?: unknown;
-  fontFamily?: string;
-  fontSize?: number;
-  fontWeight?: string;
-  color?: string;
-  textAlign?: string;
+  type: string;
 }
 
-function geometry(block: BlockGeometry, ctx: PptxExportContext, defaultW: number, defaultH: number) {
-  return {
-    x: block.x ?? block.frame?.x ?? 0,
-    y: block.y ?? block.frame?.y ?? 0,
-    w: block.w ?? block.frame?.w ?? defaultW,
-    h: block.h ?? block.frame?.h ?? defaultH,
-  };
+/** Text content arrived as a plain string, array of lines, or {text|value}. */
+function stringContent(block: { content?: unknown }): string {
+  if (typeof block.content === "string") return block.content;
+  if (Array.isArray(block.content)) {
+    return block.content.filter((item): item is string => typeof item === "string").join("\n");
+  }
+  if (block.content && typeof block.content === "object") {
+    const obj = block.content as Record<string, unknown>;
+    if (typeof obj.text === "string") return obj.text;
+    if (typeof obj.value === "string") return obj.value;
+    if (obj.label && typeof obj.label === "string") return obj.label;
+  }
+  return "";
 }
 
-function textElement(
+/**
+ * Resolve a text block into a PPTX text element with geometry and typography
+ * DERIVED from the document (Phase 5/7). Never default-features a missing
+ * frame to (0,0): a frame-less block is a geometry error, not an invisible
+ * top-left text box.
+ */
+function buildTextElement(
   text: string,
-  block: BlockGeometry,
+  block: unknown,
   ctx: PptxExportContext,
-  options: Record<string, unknown> = {}
-): PptxSlideElement {
+  containerWidthPx: number,
+  extra: Record<string, unknown> = {},
+): PptxSlideElement | null {
+  const frame = exportFrameOf(block as Block);
+  if (!frame) return null;
+
+  const b = block as Block;
+  const typography = browserTypographyFor(b, containerWidthPx > 0 ? containerWidthPx : frame.w);
+  const fontPx = (extra.fontSizePx as number) ?? typography.fontSizePx;
+  const fontSizePt = fontSizeToPpt(fontPx, ctx);
+  const bodyFont = (b as { fontFamily?: string }).fontFamily ?? "";
+  const theme = getTheme(ctx.deck.theme?.id ?? "editorial-cream");
+  const webFont = bodyFont || theme.typography.bodyFont;
+  const fontFace = pptFontFor(webFont, ctx);
+
+  const style = b.style ?? {};
+  const align = (extra.textAlign as string) ?? (style as { align?: string }).align ?? "left";
+  const valign = (extra.valign as string) ?? "top";
+
   return {
     type: "text",
-    ...geometry(block, ctx, ctx.slideWidth * 0.8, 1),
-    data: { text, options },
+    elementId: b.id,
+    x: frame.x,
+    y: frame.y,
+    w: frame.w,
+    h: frame.h,
+    data: {
+      text,
+      options: {
+        fontFace,
+        fontSize: fontSizePt,
+        bold: (extra.bold as boolean) ?? typography.bold,
+        italic: (extra.italic as boolean) ?? typography.italic,
+        color: (extra.color as string) ?? (theme.tokens?.foreground ?? "#0F172A").replace("#", ""),
+        align,
+        valign,
+        wrap: true,
+        breakLine: true,
+        autoFit: false,
+        margin: 0,
+        lineSpacingMultiple: typography.lineHeight,
+        breakMustFit: true,
+      },
+    },
   };
 }
 
-function stringContent(block: { content?: unknown }): string {
-  return typeof block.content === "string" ? block.content : "";
+function frameIssueIfMissing(block: BlockLike): ExportIssue | null {
+  const frame = exportFrameOf(block as Block);
+  if (frame) return null;
+  return frameErrorIssue(block.id, "text blocks require a resolved frame");
 }
 
 async function exportTextBlock(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
-  const textBlock = block as TextBlock;
+  const textBlock = block as BlockLike & { content?: unknown };
   const text = stringContent(textBlock);
-  const fontFamily = textBlock.fontFamily ?? "Arial";
   const issues: ExportIssue[] = [];
+  const frame = exportFrameOf(block as Block);
+  const containerWidth = frame?.w ?? ctx.slideWidth;
 
-  const fontWarning = checkFontCompatibility(fontFamily);
-  if (fontWarning) {
-    ctx.fontWarnings.push(fontWarning);
-    issues.push({
-      code: "missing-font",
-      severity: "warning",
-      message: `Font "${fontFamily}" is not a PowerPoint-safe font and may be substituted with ${fontWarning.substituteFont}`,
-      suggestedFix: `Use a PPTX-safe font like ${fontWarning.substituteFont}`,
-      automaticFixAvailable: false,
-    });
-  }
+  const missing = frameIssueIfMissing(textBlock);
+  if (missing) return { status: "unsupported", issues: [missing] };
 
   if (text.length > MAX_TEXT_LENGTH) {
     issues.push({
@@ -81,78 +122,66 @@ async function exportTextBlock(block: unknown, ctx: PptxExportContext): Promise<
     });
   }
 
+  const element = buildTextElement(text, block, ctx, containerWidth, {
+    textAlign: (block as { textAlign?: string }).textAlign,
+  });
+
   return {
-    status: "native",
-    issues,
-    element: textElement(text, textBlock, ctx, {
-      fontFace: fontFamily,
-      fontSize: textBlock.fontSize ?? 18,
-      bold: textBlock.fontWeight === "bold",
-      color: textBlock.color?.replace("#", "") ?? "000000",
-      align: textBlock.textAlign ?? "left",
-      valign: "top",
-      wrap: true,
-    }),
+    status: element ? "native" : "unsupported",
+    issues: element ? issues : [...issues, frameErrorIssue(textBlock.id, "could not resolve geometry")],
+    element: element ?? undefined,
   };
 }
 
 async function exportBulletsBlock(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
-  const bulletsBlock = block as BlockGeometry & { content?: unknown };
+  const bulletsBlock = block as BlockLike & { content?: unknown };
   const lines = Array.isArray(bulletsBlock.content)
     ? bulletsBlock.content.filter((line): line is string => typeof line === "string")
     : [];
   const text = lines.map((line) => `• ${line}`).join("\n");
+  const frame = exportFrameOf(bulletsBlock as Block);
+  const missing = frameIssueIfMissing(bulletsBlock);
+  if (missing) return { status: "unsupported", issues: [missing] };
 
+  const element = buildTextElement(text, bulletsBlock, ctx, frame?.w ?? ctx.slideWidth, {});
   return {
-    status: "native",
-    issues: [],
-    element: textElement(text, bulletsBlock, ctx, {
-      fontFace: "Arial",
-      fontSize: 16,
-      color: "333333",
-      align: "left",
-      valign: "top",
-      wrap: true,
-    }),
+    status: element ? "native" : "unsupported",
+    issues: element ? [] : [frameErrorIssue(bulletsBlock.id, "no geometry")],
+    element: element ?? undefined,
   };
 }
 
 async function exportCalloutBlock(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
-  const calloutBlock = block as BlockGeometry & { content?: unknown };
+  const calloutBlock = block as BlockLike & { content?: unknown };
+  const frame = exportFrameOf(calloutBlock as Block);
+  const missing = frameIssueIfMissing(calloutBlock);
+  if (missing) return { status: "unsupported", issues: [missing] };
+  const element = buildTextElement(stringContent(calloutBlock), calloutBlock, ctx, frame?.w ?? ctx.slideWidth, {
+    bold: true,
+    valign: "middle",
+  });
   return {
-    status: "native",
-    issues: [],
-    element: textElement(stringContent(calloutBlock), calloutBlock, ctx, {
-      fontFace: "Arial",
-      fontSize: 18,
-      bold: true,
-      color: "1F2937",
-      align: "left",
-      valign: "middle",
-      wrap: true,
-    }),
+    status: element ? "native" : "unsupported",
+    issues: element ? [] : [frameErrorIssue(calloutBlock.id, "no geometry")],
+    element: element ?? undefined,
   };
 }
 
 async function exportCitationBlock(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
-  const citationBlock = block as BlockGeometry & { content?: unknown };
+  const citationBlock = block as BlockLike & { content?: unknown };
+  const frame = exportFrameOf(citationBlock as Block);
+  const missing = frameIssueIfMissing(citationBlock);
+  if (missing) return { status: "unsupported", issues: [missing] };
+  const element = buildTextElement(stringContent(citationBlock), citationBlock, ctx, frame?.w ?? ctx.slideWidth, {});
   return {
-    status: "native",
-    issues: [],
-    element: textElement(stringContent(citationBlock), citationBlock, ctx, {
-      fontFace: "Arial",
-      fontSize: 12,
-      italic: true,
-      color: "6B7280",
-      align: "left",
-      valign: "top",
-      wrap: true,
-    }),
+    status: element ? "native" : "unsupported",
+    issues: element ? [] : [frameErrorIssue(citationBlock.id, "no geometry")],
+    element: element ?? undefined,
   };
 }
 
 async function exportMetricBlock(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
-  const metricBlock = block as BlockGeometry & {
+  const metricBlock = block as BlockLike & {
     content?: { value?: unknown; label?: unknown; delta?: unknown };
   };
   const content = metricBlock.content;
@@ -160,46 +189,18 @@ async function exportMetricBlock(block: unknown, ctx: PptxExportContext): Promis
   const label = typeof content?.label === "string" ? content.label : "";
   const delta = typeof content?.delta === "string" ? content.delta : "";
   const text = [value, label, delta].filter(Boolean).join("\n");
+  const frame = exportFrameOf(metricBlock as Block);
+  const missing = frameIssueIfMissing(metricBlock);
+  if (missing) return { status: "unsupported", issues: [missing] };
 
+  const element = buildTextElement(text, metricBlock, ctx, frame?.w ?? ctx.slideWidth, {
+    bold: true,
+    valign: "middle",
+  });
   return {
-    status: "native",
-    issues: [],
-    element: textElement(text, metricBlock, ctx, {
-      fontFace: "Arial",
-      fontSize: 24,
-      bold: true,
-      color: "111827",
-      align: "left",
-      valign: "middle",
-      wrap: true,
-    }),
-  };
-}
-
-async function exportProcessBlock(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
-  const processBlock = block as BlockGeometry & {
-    content?: { steps?: Array<{ title?: unknown; detail?: unknown }> };
-  };
-  const steps = processBlock.content?.steps ?? [];
-  const text = steps
-    .map((step, index) => {
-      const title = typeof step.title === "string" ? step.title : "";
-      const detail = typeof step.detail === "string" && step.detail ? ` \u2014 ${step.detail}` : "";
-      return `${index + 1}. ${title}${detail}`;
-    })
-    .join("\n");
-
-  return {
-    status: "native",
-    issues: [],
-    element: textElement(text, processBlock, ctx, {
-      fontFace: "Arial",
-      fontSize: 14,
-      color: "333333",
-      align: "left",
-      valign: "top",
-      wrap: true,
-    }),
+    status: element ? "native" : "unsupported",
+    issues: element ? [] : [frameErrorIssue(metricBlock.id, "no geometry")],
+    element: element ?? undefined,
   };
 }
 
@@ -237,10 +238,4 @@ export const metricBlockExporter: PptxBlockExporter = {
   type: "metric",
   exportability: "native-editable",
   export: exportMetricBlock,
-};
-
-export const processBlockExporter: PptxBlockExporter = {
-  type: "process",
-  exportability: "image-only",
-  export: exportProcessBlock,
 };

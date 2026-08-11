@@ -106,6 +106,113 @@ describe("verifyPptxArchive", () => {
     expect(result.passed).toBe(true);
   });
 
+  it("marks speaker-notes NOT APPLICABLE and passes when notes are disabled", async () => {
+    // Even when a notes part exists, a disabled export must not be judged.
+    const blob = await buildZip();
+    const result = await verifyPptxArchive({
+      report: BASE_REPORT,
+      blob,
+      expectedNotes: 0,
+      includeSpeakerNotes: false,
+    });
+    const notes = result.report.checks.find((c) => c.name === "speaker-notes");
+    expect(notes?.passed).toBe(true);
+    expect(notes?.detail).toContain("not-applicable");
+  });
+
+  it("fails speaker-notes when enabled but a notes part is missing", async () => {
+    const blob = await buildZip({ "ppt/notesSlides/notesSlide1.xml": undefined });
+    const result = await verifyPptxArchive({
+      report: BASE_REPORT,
+      blob,
+      expectedNotes: 1,
+      includeSpeakerNotes: true,
+    });
+    expect(result.report.checks.find((c) => c.name === "speaker-notes")?.passed).toBe(false);
+  });
+
+  it("passes speaker-notes when enabled and the notes part is present", async () => {
+    const blob = await buildZip();
+    const result = await verifyPptxArchive({
+      report: BASE_REPORT,
+      blob,
+      expectedNotes: 1,
+      includeSpeakerNotes: true,
+    });
+    expect(result.report.checks.find((c) => c.name === "speaker-notes")?.passed).toBe(true);
+  });
+
+  it("verifies native text strictly against <a:t> runs", async () => {
+    const blob = await buildZip({
+      "ppt/slides/slide1.xml": SLIDE_XML.replace("Hello world", "Something else entirely"),
+    });
+    const result = await verifyPptxArchive({
+      report: BASE_REPORT,
+      blob,
+      nativeTextExpected: ["Hello world"],
+    });
+    expect(result.passed).toBe(false);
+    expect(result.report.checks.find((c) => c.name === "text-survival")?.passed).toBe(false);
+  });
+
+  it("verifies visual-fallback text against XML attributes (e.g. descr alt)", async () => {
+    const xmlWithDescr = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+       xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+       xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
+  <p:cSld><p:spTree>
+    <p:pic>
+      <p:nvPicPr><p:cNvPr id="2" name="img" descr="A page of a book photographed at close range"/></p:nvPicPr>
+    </p:pic>
+  </p:spTree></p:cSld>
+</p:sld>`;
+    const blob = await buildZip({ "ppt/slides/slide1.xml": xmlWithDescr });
+    const result = await verifyPptxArchive({
+      report: BASE_REPORT,
+      blob,
+      visualFallbackTexts: ["A page of a book photographed at close range"],
+    });
+    const fallback = result.report.checks.find((c) => c.name === "visual-fallback-alt");
+    expect(fallback?.passed).toBe(true);
+    expect(result.passed).toBe(true);
+  });
+
+  it("fails visual-fallback-alt when the attribute text is missing", async () => {
+    const blob = await buildZip();
+    const result = await verifyPptxArchive({
+      report: BASE_REPORT,
+      blob,
+      visualFallbackTexts: ["a page of a book that is not present"],
+    });
+    expect(result.report.checks.find((c) => c.name === "visual-fallback-alt")?.passed).toBe(false);
+  });
+
+  it("distinguishes native (a:t) from visual-fallback (attribute) corpora", async () => {
+    const xml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+       xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
+  <p:cSld><p:spTree>
+    <p:sp><p:txBody><a:p><a:r><a:t>Visible heading</a:t></a:r></a:p></p:txBody></p:sp>
+    <p:pic><p:nvPicPr><p:cNvPr id="2" name="img" descr="Alt text only in attribute"/></p:nvPicPr></p:pic>
+  </p:spTree></p:cSld>
+</p:sld>`;
+    const blob = await buildZip({ "ppt/slides/slide1.xml": xml });
+
+    const nativeFails = await verifyPptxArchive({
+      report: BASE_REPORT,
+      blob,
+      nativeTextExpected: ["Alt text only in attribute"],
+    });
+    expect(nativeFails.report.checks.find((c) => c.name === "text-survival")?.passed).toBe(false);
+
+    const fallbackPasses = await verifyPptxArchive({
+      report: BASE_REPORT,
+      blob,
+      visualFallbackTexts: ["Alt text only in attribute"],
+    });
+    expect(fallbackPasses.report.checks.find((c) => c.name === "visual-fallback-alt")?.passed).toBe(true);
+  });
+
   it("fails to open a non-archive blob", async () => {
     const result = await verifyPptxArchive({ report: BASE_REPORT, blob: new Blob(["not a zip"]) });
     expect(result.passed).toBe(false);

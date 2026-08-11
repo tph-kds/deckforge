@@ -1,3 +1,5 @@
+// export/pptx/block-exporters/video.ts
+
 import type {
   PptxBlockExport,
   PptxBlockExporter,
@@ -5,6 +7,8 @@ import type {
 } from "../../export-types";
 import { renderSnapshotSvg } from "../../fidelity/svg/svg-snapshot";
 import { mapThemeColors } from "../pptx-theme";
+import { exportFrameOf, frameErrorIssue } from "../export-utils";
+import type { Block } from "../../../deck/types";
 
 interface VideoChapter {
   title?: unknown;
@@ -18,26 +22,21 @@ interface VideoContent {
   chapter?: VideoChapter;
 }
 
-interface VideoBlock {
-  id: string;
-  type: "video";
-  content?: VideoContent;
-  alt?: string;
-  ariaLabel?: string;
-  x?: number;
-  y?: number;
-  w?: number;
-  h?: number;
-  frame?: { x?: number; y?: number; w?: number; h?: number };
-}
-
 export const videoBlockExporter: PptxBlockExporter = {
   type: "video",
   exportability: "poster-with-link",
 
   async export(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
-    const videoBlock = block as VideoBlock;
-    const content = videoBlock.content ?? {};
+    const videoBlock = block as Block;
+    const frame = exportFrameOf(videoBlock);
+    if (!frame) {
+      return {
+        status: "unsupported",
+        issues: [frameErrorIssue(videoBlock.id, "video blocks require a resolved frame")],
+      };
+    }
+
+    const content = (videoBlock.content ?? {}) as VideoContent;
     const chapter = content.chapter ?? {};
     const title =
       (typeof chapter.title === "string" ? chapter.title : "") ||
@@ -49,15 +48,11 @@ export const videoBlockExporter: PptxBlockExporter = {
       .map((point) => `\u2022 ${point}`)
       .join("\n");
     const body = [summary, keyPoints].filter(Boolean).join("\n");
-    const x = videoBlock.x ?? videoBlock.frame?.x ?? 0;
-    const y = videoBlock.y ?? videoBlock.frame?.y ?? 0;
-    const w = videoBlock.w ?? videoBlock.frame?.w ?? ctx.slideWidth * 0.5;
-    const h = videoBlock.h ?? videoBlock.frame?.h ?? ctx.slideHeight * 0.3;
 
     const theme = mapThemeColors(ctx.deck.theme);
     const svg = renderSnapshotSvg({
-      width: Math.max(1, Math.round(w)),
-      height: Math.max(1, Math.round(h)),
+      width: Math.max(1, Math.round(frame.w)),
+      height: Math.max(1, Math.round(frame.h)),
       title,
       text: body,
       alt: videoBlock.alt ?? videoBlock.ariaLabel ?? "",
@@ -82,10 +77,8 @@ export const videoBlockExporter: PptxBlockExporter = {
       ],
       element: {
         type: "svg",
-        x,
-        y,
-        w,
-        h,
+        elementId: videoBlock.id,
+        ...frame,
         data: { svg, alt },
       },
     };

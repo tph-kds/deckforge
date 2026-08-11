@@ -555,8 +555,11 @@ kbd {
 .editor-canvas {
   grid-area: canvas;
   background: var(--ui-surface-2);
-  overflow: auto;
+  overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .editor-canvas-controls {
@@ -623,9 +626,25 @@ kbd {
 }
 
 .canvas-stage {
-  padding: 32px;
-  display: flex;
-  justify-content: center;
+  flex: 1;
+  min-height: 0;
+}
+
+.slide-viewport {
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(var(--ui-border) 1px, transparent 1px);
+  background-size: 24px 24px;
+  cursor: grab;
+}
+
+.slide-viewport.is-panning {
+  cursor: grabbing;
+}
+
+.slide-viewport-transform {
+  will-change: transform;
 }
 
 .layout-issues {
@@ -697,7 +716,6 @@ kbd {
 }
 
 .editor-shell.focus-mode .canvas-stage {
-  align-items: center;
   min-height: 100%;
 }
 
@@ -826,7 +844,10 @@ kbd {
 }
 
 .slide-stage-origin {
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  will-change: transform;
 }
 
 .deck-slide-frame {
@@ -1589,4 +1610,42 @@ kbd {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Canvas boundary indicator - shows slide edges without clipping content */
+.deck-slide-boundary {
+  position: absolute;
+  inset: 0;
+  border: 1.5px dashed var(--theme-border, #e2e8f0);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+  transition: border-color 0.2s ease, opacity 0.2s ease;
+}
+.deck-slide-boundary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  pointer-events: none;
+}
+.deck-slide:hover .deck-slide-boundary {
+  border-color: var(--theme-focus, #b45309);
+  opacity: 0.8;
+}
+/* Safe margin indicator */
+.deck-slide-boundary::after {
+  content: "";
+  position: absolute;
+  left: var(--safe-margin, 64px);
+  right: var(--safe-margin, 64px);
+  top: var(--safe-margin, 64px);
+  bottom: var(--safe-margin, 64px);
+  border: 1px dotted rgba(180, 83, 9, 0.15);
+  border-radius: 1px;
+  pointer-events: none;
 }
