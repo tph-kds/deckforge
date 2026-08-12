@@ -90,6 +90,7 @@ export function App() {
         onExport={(blob) => console.log('Export complete', blob.size)}
         onError={(err) => console.error('Export failed', err)}
         commit={(command) => store.commit(command)}
+        saveNow={() => store.saveNow()}
       />
     </div>
   );

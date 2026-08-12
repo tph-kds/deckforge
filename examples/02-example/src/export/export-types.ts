@@ -1,4 +1,4 @@
-import type { Block, DeckProject } from "../deck/types";
+import type { Block, DeckProject, SaveState } from "../deck/types";
 import type { PreparedAsset } from "./prepare-export";
 import type { Command, DispatchResult } from "../deck/commands";
 
@@ -322,6 +322,7 @@ export interface ExportDialogProps {
   onExport?: (result: Blob) => void;
   onError?: (error: Error) => void;
   commit?: (command: Command) => DispatchResult | undefined;
+  saveNow?: () => SaveState;
 }
 
 export const DEFAULT_PPTX_CONFIG: PptxExportConfig = {

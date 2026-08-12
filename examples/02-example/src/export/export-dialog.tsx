@@ -8,7 +8,7 @@ import type {
 import { DEFAULT_PPTX_CONFIG } from "./export-types";
 import { runExportPreflight } from "./export-preflight";
 import { prepareExport, type PreparedExport } from "./prepare-export";
-import type { DeckProject } from "../deck/types";
+import type { DeckProject, SaveState } from "../deck/types";
 import { makeDeckSelfContained } from "./self-contained";
 import { canonicalAssetRef } from "../deck/assets";
 import type { Command, DispatchResult } from "../deck/commands";
@@ -20,6 +20,7 @@ interface ExportDialogProps {
   onExport?: (result: Blob) => void;
   onError?: (error: Error) => void;
   commit?: (command: Command) => DispatchResult | undefined;
+  saveNow?: () => SaveState;
 }
 
 /**
@@ -80,7 +81,7 @@ function fileToDataUri(file: File): Promise<string> {
   });
 }
 
-export function ExportDialog({ deck, isOpen, onClose, onExport, onError, commit }: ExportDialogProps) {
+export function ExportDialog({ deck, isOpen, onClose, onExport, onError, commit, saveNow }: ExportDialogProps) {
   const [config, setConfig] = useState<PptxExportConfig>(DEFAULT_PPTX_CONFIG);
   const [preflight, setPreflight] = useState<ExportPreflightResult | null>(null);
   const [lastReport, setLastReport] = useState<ExportReport | null>(null);
@@ -151,6 +152,7 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError, commit 
     try {
       const result = await makeDeckSelfContained(deck);
       commit({ type: "replaceDeck", deck: result.deck });
+      saveNow?.();
       if (result.failures.length > 0) {
         setErrorMessage(
           `${result.failures.length} image(s) could not be embedded offline. ` +
