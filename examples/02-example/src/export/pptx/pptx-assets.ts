@@ -78,3 +78,39 @@ export function embedAssetSync(
   }
   return null;
 }
+
+/**
+ * Pre-resolve all remote assets before export.
+ * This prevents CORS issues and placeholder substitutions.
+ * Returns a map of URL → AssetEmbedResult.
+ * Throws if any asset fails to resolve.
+ */
+export async function resolveAllAssets(
+  deck: { assets?: Array<{ id: string; src: string; kind?: string }> }
+): Promise<Map<string, AssetEmbedResult>> {
+  const cache = new Map<string, AssetEmbedResult>();
+  const remoteAssets = (deck.assets ?? []).filter(
+    (asset) => asset.src && !asset.src.startsWith("data:") && asset.kind !== "video"
+  );
+
+  const results = await Promise.allSettled(
+    remoteAssets.map(async (asset) => {
+      const result = await embedAsset(asset.src, cache);
+      if (!result.dataUri) {
+        throw new Error(`Failed to resolve asset "${asset.id}" (${asset.src})`);
+      }
+      return { url: asset.src, result };
+    })
+  );
+
+  const failures = results.filter(
+    (r): r is PromiseRejectedResult => r.status === "rejected"
+  );
+
+  if (failures.length > 0) {
+    const messages = failures.map((f) => f.reason?.message ?? "unknown error").join("; ");
+    throw new Error(`Asset resolution failed: ${messages}`);
+  }
+
+  return cache;
+}

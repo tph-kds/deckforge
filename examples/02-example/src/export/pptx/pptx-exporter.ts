@@ -13,6 +13,7 @@ import type {
 } from "../export-types";
 import type { DeckProject, DeckSlide } from "../../deck/types";
 import { createExportContext } from "./pptx-context";
+import { resolveAllAssets, type AssetEmbedResult } from "./pptx-assets";
 import { getBlockExporter } from "./block-exporters/index";
 import { resolveSlideGeometry, type ResolvedBlockGeometry } from "../../deck/geometry-resolver";
 import { verifyPptxArchive } from "./pptx-verifier";
@@ -142,9 +143,10 @@ export interface ExportBuildResult {
 
 export async function buildExportReport(
   deck: DeckProject,
-  config: PptxExportConfig
+  config: PptxExportConfig,
+  preResolvedCache?: Map<string, AssetEmbedResult>
 ): Promise<ExportBuildResult> {
-  const ctx = createExportContext(deck, config);
+  const ctx = createExportContext(deck, config, preResolvedCache);
   const issues: ExportIssue[] = [];
   const slideReports: ExportSlideReport[] = [];
   const slides: ExportBuildResult["slides"] = [];
@@ -347,7 +349,28 @@ export class PptxExporter {
   }
 
   async export(deck: DeckProject): Promise<PptxExportResult> {
-    const { report, slides, fidelity } = await buildExportReport(deck, this.config);
+    // Pre-resolve all remote assets before export
+    let preResolvedCache: Map<string, AssetEmbedResult> | undefined;
+    try {
+      preResolvedCache = await resolveAllAssets(deck);
+    } catch (err) {
+      const report: ExportReport = {
+        status: "failed",
+        slides: [],
+        issues: [
+          {
+            code: "image-load-failed",
+            severity: "error",
+            message: `Asset pre-resolution failed: ${err instanceof Error ? err.message : "unknown error"}`,
+            suggestedFix: "Ensure all image assets are accessible or use data: URLs",
+            automaticFixAvailable: false,
+          },
+        ],
+      };
+      return { report, blob: new Blob(), archiveVerified: false, fidelity: undefined };
+    }
+
+    const { report, slides, fidelity } = await buildExportReport(deck, this.config, preResolvedCache);
 
     const PptxGenJS = (await import("pptxgenjs")).default;
     const pptx = new PptxGenJS();
@@ -367,7 +390,7 @@ export class PptxExporter {
         pptxSlide.addNotes(slide.speakerNotes);
       }
 
-      const slideCtx = createExportContext(deck, this.config);
+      const slideCtx = createExportContext(deck, this.config, preResolvedCache);
       for (const element of elements) {
         writeElementToSlide(pptxSlide, element, slideCtx);
       }

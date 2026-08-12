@@ -1,6 +1,7 @@
 import type { PptxExportConfig, PptxExportContext } from "../export-types";
 import type { DeckProject } from "../../deck/types";
 import { derivePptxSlideSize } from "../geometry";
+import type { AssetEmbedResult } from "./pptx-assets";
 
 /**
  * Build the export context. The PPTX slide size is DERIVED from the actual
@@ -11,7 +12,8 @@ import { derivePptxSlideSize } from "../geometry";
  */
 export function createExportContext(
   deck: DeckProject,
-  config: PptxExportConfig
+  config: PptxExportConfig,
+  preResolvedCache?: Map<string, AssetEmbedResult>
 ): PptxExportContext {
   const canvas = deck.canvas ?? { width: 1600, height: 900 };
   const slideWidth = canvas.width ?? 1600;
@@ -21,7 +23,7 @@ export function createExportContext(
     deck,
     config,
     fontWarnings: [],
-    assetCache: new Map(),
+    assetCache: preResolvedCache ?? new Map(),
     slideWidth,
     slideHeight,
     pptxWidth: pptxSize.width,
