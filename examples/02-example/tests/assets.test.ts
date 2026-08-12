@@ -47,7 +47,8 @@ describe('asset resolution', () => {
     const block = imageBlock({ content: { assetId: 'asset-book-cover' } });
     const resolved = resolveImage(deck, block);
     expect(resolved.status).toBe('ready');
-    expect(resolved.src).toContain('images.unsplash.com');
+    // The seed book-cover is now an embedded data URI (self-contained deck).
+    expect(resolved.src).toMatch(/^data:image\/jpeg;base64,/);
   });
 
   it('falls back to a bare src when no manifest entry exists', () => {
