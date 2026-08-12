@@ -9,6 +9,9 @@ import { DEFAULT_PPTX_CONFIG } from "./export-types";
 import { runExportPreflight } from "./export-preflight";
 import { prepareExport, type PreparedExport } from "./prepare-export";
 import type { DeckProject } from "../deck/types";
+import { makeDeckSelfContained } from "./self-contained";
+import { canonicalAssetRef } from "../deck/assets";
+import type { Command, DispatchResult } from "../deck/commands";
 
 interface ExportDialogProps {
   deck: DeckProject;
@@ -16,6 +19,7 @@ interface ExportDialogProps {
   onClose: () => void;
   onExport?: (result: Blob) => void;
   onError?: (error: Error) => void;
+  commit?: (command: Command) => DispatchResult | undefined;
 }
 
 /**
@@ -60,7 +64,23 @@ function fidelitySummary(report: ExportReport): string {
   return `Native ${native} · Fallbacks ${fallbacks} · Missing ${missing}`;
 }
 
-export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: ExportDialogProps) {
+function currentImageSource(deck: DeckProject, slideId: string, blockId: string): string {
+  const slide = deck.slides.find((s) => s.id === slideId);
+  const block = slide?.blocks.find((b) => b.id === blockId);
+  if (!block) return "";
+  return canonicalAssetRef(deck, block)?.src ?? "";
+}
+
+function fileToDataUri(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(reader.error ?? new Error("Could not read file"));
+    reader.readAsDataURL(file);
+  });
+}
+
+export function ExportDialog({ deck, isOpen, onClose, onExport, onError, commit }: ExportDialogProps) {
   const [config, setConfig] = useState<PptxExportConfig>(DEFAULT_PPTX_CONFIG);
   const [preflight, setPreflight] = useState<ExportPreflightResult | null>(null);
   const [lastReport, setLastReport] = useState<ExportReport | null>(null);
@@ -69,6 +89,8 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [progress, setProgress] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
+  const [fixDrafts, setFixDrafts] = useState<Record<string, string>>({});
+  const [selfContaining, setSelfContaining] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   /**
@@ -104,6 +126,45 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
       );
     }
   }, [deck, config]);
+
+  const applyImageFix = (issue: { slideId?: string; blockId?: string }) => {
+    if (!issue.slideId || !issue.blockId || !commit) return;
+    const src = (fixDrafts[issue.blockId] ?? currentImageSource(deck, issue.slideId, issue.blockId)).trim();
+    if (!src) return;
+    commit({ type: "updateImageSource", slideId: issue.slideId, blockId: issue.blockId, src });
+  };
+
+  const chooseFileFix = async (issue: { slideId?: string; blockId?: string }) => {
+    if (!issue.slideId || !issue.blockId || !commit) return;
+    const input = document.getElementById(`fix-file-${issue.blockId}`) as HTMLInputElement | null;
+    const file = input?.files?.[0];
+    if (!file) return;
+    const uri = await fileToDataUri(file);
+    setFixDrafts((d) => ({ ...d, [issue.blockId!]: uri }));
+    commit({ type: "updateImageSource", slideId: issue.slideId, blockId: issue.blockId, src: uri });
+  };
+
+  const handleSelfContained = async () => {
+    if (!deck || !commit || selfContaining) return;
+    setSelfContaining(true);
+    setErrorMessage("");
+    try {
+      const result = await makeDeckSelfContained(deck);
+      commit({ type: "replaceDeck", deck: result.deck });
+      if (result.failures.length > 0) {
+        setErrorMessage(
+          `${result.failures.length} image(s) could not be embedded offline. ` +
+            "Resolve the remaining issues to export.",
+        );
+      }
+    } catch (error) {
+      setErrorMessage(
+        `Could not make the deck self-contained: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    } finally {
+      setSelfContaining(false);
+    }
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -224,6 +285,12 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
         : "var(--ui-danger, #dc2626)";
 
   const canExport = (state === "ready" || state === "success") && !isExporting;
+
+  const FIXABLE_IMAGE_CODES = new Set(["unresolved-image", "image-load-failed", "unknown-asset"]);
+  const fixableIssues =
+    preflight?.issues.filter(
+      (i) => FIXABLE_IMAGE_CODES.has(i.code) && Boolean(i.slideId) && Boolean(i.blockId),
+    ) ?? [];
 
   const stageLabel: Record<ExportStage, string> = {
     building: "Building slides...",
@@ -378,6 +445,83 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
             </div>
           )}
 
+          {state === "blocked" && fixableIssues.length > 0 && (
+            <div style={{ marginBottom: 14 }}>
+              {fixableIssues.map((issue) => {
+                const blockId = issue.blockId!;
+                const value = fixDrafts[blockId] ?? currentImageSource(deck, issue.slideId!, blockId);
+                return (
+                  <div
+                    key={`${issue.slideId}:${blockId}`}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 6,
+                      padding: "10px 12px",
+                      borderRadius: "var(--ui-radius)",
+                      border: "1px solid var(--ui-border)",
+                      marginBottom: 8,
+                      background: "var(--ui-surface)",
+                    }}
+                  >
+                    <div style={{ fontSize: 12, fontWeight: 600, color: "var(--ui-fg)" }}>
+                      Fix image {blockId}
+                    </div>
+                    <input
+                      type="text"
+                      aria-label={`Image source for ${blockId}`}
+                      value={value}
+                      onChange={(e) => setFixDrafts((d) => ({ ...d, [blockId]: e.target.value }))}
+                      disabled={isExporting}
+                      placeholder="https://… or data:image/…"
+                      style={{
+                        padding: "6px 8px",
+                        borderRadius: "var(--ui-radius)",
+                        border: "1px solid var(--ui-border)",
+                        background: "var(--ui-bg)",
+                        fontSize: 12,
+                        color: "var(--ui-fg)",
+                      }}
+                    />
+                    <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                      <label
+                        htmlFor={`fix-file-${blockId}`}
+                        style={{ fontSize: 12, cursor: "pointer", color: "var(--ui-fg)" }}
+                      >
+                        Choose file…
+                      </label>
+                      <input
+                        id={`fix-file-${blockId}`}
+                        type="file"
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        onChange={() => chooseFileFix(issue)}
+                      />
+                      <button
+                        onClick={() => applyImageFix(issue)}
+                        aria-label={`Apply image fix for ${blockId}`}
+                        disabled={isExporting}
+                        style={{
+                          marginLeft: "auto",
+                          padding: "5px 12px",
+                          borderRadius: "var(--ui-radius)",
+                          border: "none",
+                          background: "var(--ui-fg)",
+                          color: "#fff",
+                          fontSize: 12,
+                          fontWeight: 600,
+                          cursor: isExporting ? "not-allowed" : "pointer",
+                        }}
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
           {state === "success" && lastReport && (
             <div
               role="status"
@@ -422,6 +566,14 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
           </label>
 
           <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+            <button
+              className="text-button"
+              onClick={handleSelfContained}
+              disabled={isExporting || selfContaining}
+              style={{ fontSize: 12, marginRight: "auto" }}
+            >
+              {selfContaining ? "Embedding images…" : "Make deck self-contained"}
+            </button>
             <button
               className="text-button"
               onClick={() => setShowDetails(!showDetails)}

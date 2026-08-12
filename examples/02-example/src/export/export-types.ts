@@ -1,5 +1,6 @@
 import type { Block, DeckProject } from "../deck/types";
 import type { PreparedAsset } from "./prepare-export";
+import type { Command, DispatchResult } from "../deck/commands";
 
 export type ExportIssueSeverity = "info" | "warning" | "error";
 
@@ -320,6 +321,7 @@ export interface ExportDialogProps {
   onClose: () => void;
   onExport?: (result: Blob) => void;
   onError?: (error: Error) => void;
+  commit?: (command: Command) => DispatchResult | undefined;
 }
 
 export const DEFAULT_PPTX_CONFIG: PptxExportConfig = {
