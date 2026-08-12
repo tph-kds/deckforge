@@ -19,14 +19,7 @@ interface ChartDataPoint {
   value: number;
 }
 
-const CHART_TYPE_MAP: Record<string, string> = {
-  bar: "bar",
-  "bar-horizontal": "bar",
-  line: "line",
-  pie: "pie",
-  doughnut: "pie",
-  scatter: "scatter",
-};
+
 
 /** PptxGenJS data-label position derived from the shared ChartSpec policy. */
 function dataLabelPositionOf(position: string): string {
@@ -132,9 +125,11 @@ export const chartBlockExporter: PptxBlockExporter = {
       };
     }
 
-    const chartType = content?.type ?? "bar";
     const spec = chartSpecFromContent(content as ChartContent);
-    const pptxChartType = CHART_TYPE_MAP[chartType] ?? "bar";
+    const isHorizontal = chartSpec.orientation === "horizontal";
+    const isBar = chartSpec.type === "bar" || chartSpec.type === "bar-horizontal";
+    const pptxChartType = isBar ? "bar" : "line";
+    const barDir = isHorizontal ? "bar" : "col";
 
     const labels = chartSpec.categories;
     const dataValues = chartSpec.series[0]?.values ?? [];
@@ -149,7 +144,7 @@ export const chartBlockExporter: PptxBlockExporter = {
     ];
 
     const showValueLabels =
-      spec.labelPolicy.showDataLabels && pptxChartType !== "line";
+      spec.labelPolicy.showDataLabels && chartSpec.type !== "line";
     const labelOptions = {
       showValue: showValueLabels,
       dataLabelPosition: dataLabelPositionOf(spec.labelPolicy.dataLabelPosition),
@@ -176,6 +171,7 @@ export const chartBlockExporter: PptxBlockExporter = {
             showTitle: !!chartSpec.title,
             title: chartSpec.title,
             chartColors: chartSpec.style.seriesColors,
+            ...(isBar ? { barDir } : {}),
             ...labelOptions,
           },
         },
