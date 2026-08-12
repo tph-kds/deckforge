@@ -101,3 +101,53 @@ test('fixing the image URL unblocks the export and embeds the image', async ({ p
   expect(bytes.length).toBeGreaterThan(1024);
   expect(bytes.includes(Buffer.from('ppt/media/'))).toBe(true);
 });
+
+test('a blocked export can be fixed inline in the dialog and then exported', async ({ page }) => {
+  await selectSeedImageBlock(page);
+  await page.getByLabel('Image URL').fill(DEAD_URL);
+
+  const dialog = await openExportDialog(page);
+  await expect(dialog.getByText('Export blocked')).toBeVisible({ timeout: 20_000 });
+
+  // The inline fix row for b36 appears with the current (dead) source prefilled.
+  const fixInput = dialog.getByLabel('Image source for b36');
+  await expect(fixInput).toBeVisible();
+  await expect(fixInput).toHaveValue(DEAD_URL);
+
+  await fixInput.fill(DATA_PNG);
+  await dialog.getByRole('button', { name: 'Apply image fix for b36' }).click();
+
+  // Preflight re-runs automatically after the commit → READY.
+  await expect(dialog.getByText('Ready to export')).toBeVisible({ timeout: 20_000 });
+  await expect(dialog).toContainText('Missing 0');
+
+  const downloadPromise = page.waitForEvent('download', { timeout: 60_000 });
+  await dialog.getByRole('button', { name: 'Export PPTX' }).click();
+  await expect(dialog.getByText('Export complete!')).toBeVisible({ timeout: 60_000 });
+  const download = await downloadPromise;
+  const bytes = readFileSync(await download.path());
+  expect(bytes.includes(Buffer.from('ppt/media/'))).toBe(true);
+});
+
+test('make deck self-contained bundles the remote image and the deck exports offline', async ({ page }) => {
+  await page.goto(EDITOR_PATH);
+  await expect(page.getByTestId('deck-editor-shell')).toBeVisible();
+
+  const dialog = await openExportDialog(page);
+  await expect(dialog.getByText('Ready to export')).toBeVisible({ timeout: 20_000 });
+
+  await dialog.getByRole('button', { name: 'Make deck self-contained' }).click();
+
+  // The manifest now carries the embedded data URI and preflight re-runs READY.
+  await expect(dialog.getByText('Ready to export')).toBeVisible({ timeout: 20_000 });
+
+  const stored = await page.evaluate(() => localStorage.getItem('deckforge:deck:v1') ?? '');
+  expect(stored).toContain('data:image/jpeg;base64,');
+
+  const downloadPromise = page.waitForEvent('download', { timeout: 60_000 });
+  await dialog.getByRole('button', { name: 'Export PPTX' }).click();
+  await expect(dialog.getByText('Export complete!')).toBeVisible({ timeout: 60_000 });
+  const download = await downloadPromise;
+  const bytes = readFileSync(await download.path());
+  expect(bytes.includes(Buffer.from('ppt/media/'))).toBe(true);
+});
