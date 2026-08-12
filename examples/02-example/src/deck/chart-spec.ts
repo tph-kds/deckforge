@@ -37,6 +37,7 @@ export interface ChartLabelPolicy {
 
 export interface ChartSpec {
   chartType: "bar" | "bar-horizontal" | "line";
+  orientation: "horizontal" | "vertical";
   title?: string;
   unit: string;
   values: ChartValue[];
@@ -50,6 +51,7 @@ export interface ChartSpec {
 
 export const DEFAULT_CHART_SPEC: ChartSpec = {
   chartType: "bar",
+  orientation: "vertical",
   unit: "",
   values: [],
   labelPolicy: {
@@ -69,6 +71,7 @@ export const DEFAULT_CHART_SPEC: ChartSpec = {
 export function chartSpecFromContent(chart: ChartContent): ChartSpec {
   return {
     chartType: chart.type ?? "bar",
+    orientation: chart.type === "bar-horizontal" ? "horizontal" : "vertical",
     title: chart.title,
     unit: chart.unit ?? "",
     values: Array.isArray(chart.values) ? chart.values : [],

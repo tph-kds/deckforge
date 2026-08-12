@@ -38,6 +38,17 @@ describe("chartSpecFromContent", () => {
     expect(spec.labelPolicy.showUnitInAxisLabels).toBe(false);
   });
 
+  it("derives orientation from chart type", () => {
+    const barSpec = chartSpecFromContent(WEIGHT_CHART);
+    expect(barSpec.orientation).toBe("vertical");
+
+    const horizontalSpec = chartSpecFromContent({ ...WEIGHT_CHART, type: "bar-horizontal" });
+    expect(horizontalSpec.orientation).toBe("horizontal");
+
+    const lineSpec = chartSpecFromContent({ ...WEIGHT_CHART, type: "line" });
+    expect(lineSpec.orientation).toBe("vertical");
+  });
+
   it("tolerates malformed values arrays", () => {
     const spec = chartSpecFromContent({ type: "bar", values: undefined as never });
     expect(spec.values).toEqual([]);

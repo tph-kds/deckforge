@@ -1,4 +1,7 @@
 // export/pptx/block-exporters/chart.ts
+//
+// PPTX chart exporter that uses the canonical chart spec from the snapshot.
+// This ensures color/typography parity between web and PPTX.
 
 import type {
   PptxBlockExport,
@@ -8,6 +11,8 @@ import type {
 import type { Block, ChartContent, ChartValue } from "../../../deck/types";
 import { chartSpecFromContent } from "../../../deck/chart-spec";
 import { exportFrameOf, frameErrorIssue } from "../export-utils";
+import { resolveTheme, hexToPptx } from "../../resolved-theme";
+import type { ResolvedChartSpec } from "../../snapshot";
 
 interface ChartDataPoint {
   label: string;
@@ -26,6 +31,53 @@ const CHART_TYPE_MAP: Record<string, string> = {
 /** PptxGenJS data-label position derived from the shared ChartSpec policy. */
 function dataLabelPositionOf(position: string): string {
   return position === "in-end" ? "inEnd" : "outEnd";
+}
+
+/**
+ * Build the resolved chart spec from a block's content.
+ * This is the single source of truth for chart rendering.
+ */
+function buildResolvedChartSpec(
+  content: ChartContent | undefined,
+  block: Block,
+  ctx: PptxExportContext
+): ResolvedChartSpec | null {
+  if (!content) return null;
+
+  // Skip template charts
+  if (content.isTemplate) return null;
+
+  // Validate chart data
+  if (!Array.isArray(content.values) || content.values.length === 0) return null;
+
+  const theme = resolveTheme(ctx.deck);
+  const palette = theme.chartPalette;
+
+  return {
+    type: content.type ?? "bar",
+    orientation: content.type === "bar-horizontal" ? "horizontal" : "vertical",
+    title: content.title ?? "",
+    unit: content.unit ?? "",
+    categories: content.values.map((v: ChartValue) => v.label),
+    series: [
+      {
+        name: content.title ?? "Data",
+        values: content.values.map((v: ChartValue) => v.value),
+      },
+    ],
+    highlightIndex: content.highlightIndex,
+    summary: content.summary ?? "",
+    style: {
+      seriesColors: palette.slice(0, content.values.length).map(hexToPptx),
+      axisColor: hexToPptx(theme.tokens.border),
+      gridColor: hexToPptx(theme.tokens.border),
+      labelColor: hexToPptx(theme.tokens.muted),
+      fontFamily: theme.typography.bodyFont,
+      fontSize: 10,
+      background: "transparent",
+      highlightColor: hexToPptx(theme.tokens.secondary),
+    },
+  };
 }
 
 export const chartBlockExporter: PptxBlockExporter = {
@@ -62,29 +114,10 @@ export const chartBlockExporter: PptxBlockExporter = {
       };
     }
 
-    const values: ChartValue[] = content?.values ?? (chartBlock as { data?: ChartDataPoint[] }).data ?? [];
-    const chartType = content?.type ?? (chartBlock as { chartType?: string }).chartType ?? "bar";
-    const spec = chartSpecFromContent(content as ChartContent);
-    const title = spec.title || (chartBlock as { title?: string }).title || "";
-    const unit = spec.unit;
-    const pptxChartType = CHART_TYPE_MAP[chartType] ?? "bar";
+    // Build resolved chart spec
+    const chartSpec = buildResolvedChartSpec(content, chartBlock, ctx);
 
-    if (!Array.isArray(values)) {
-      return {
-        status: "unsupported",
-        issues: [
-          {
-            code: "chart-no-data",
-            severity: "error",
-            message: `Chart block "${chartBlock.id}" has malformed data (expected an array of {label, value})`,
-            suggestedFix: "Give the chart a valid values array",
-            automaticFixAvailable: false,
-          },
-        ],
-      };
-    }
-
-    if (values.length === 0) {
+    if (!chartSpec) {
       return {
         status: "skipped",
         issues: [
@@ -99,9 +132,13 @@ export const chartBlockExporter: PptxBlockExporter = {
       };
     }
 
-    const labels = values.map((point) => point.label);
-    const dataValues = values.map((point) => point.value);
-    const seriesName = title || "Data";
+    const chartType = content?.type ?? "bar";
+    const spec = chartSpecFromContent(content as ChartContent);
+    const pptxChartType = CHART_TYPE_MAP[chartType] ?? "bar";
+
+    const labels = chartSpec.categories;
+    const dataValues = chartSpec.series[0]?.values ?? [];
+    const seriesName = chartSpec.title || "Data";
 
     const chartData = [
       {
@@ -116,13 +153,13 @@ export const chartBlockExporter: PptxBlockExporter = {
     const labelOptions = {
       showValue: showValueLabels,
       dataLabelPosition: dataLabelPositionOf(spec.labelPolicy.dataLabelPosition),
-      dataLabelColor: "555555",
-      dataLabelFontSize: 10,
+      dataLabelColor: chartSpec.style.labelColor,
+      dataLabelFontSize: chartSpec.style.fontSize,
       dataLabelFontBold: true,
-      ...(unit ? { valAxisTitle: unit, valAxisTitleFontSize: 9 } : {}),
+      ...(chartSpec.unit ? { valAxisTitle: chartSpec.unit, valAxisTitleFontSize: 9 } : {}),
       valAxisLabelShow: true,
       catAxisLabelShow: true,
-      catAxisLabelFontSize: 9,
+      catAxisLabelFontSize: chartSpec.style.fontSize,
     };
 
     return {
@@ -136,8 +173,9 @@ export const chartBlockExporter: PptxBlockExporter = {
           chartType: pptxChartType,
           data: chartData,
           options: {
-            showTitle: !!title,
-            title,
+            showTitle: !!chartSpec.title,
+            title: chartSpec.title,
+            chartColors: chartSpec.style.seriesColors,
             ...labelOptions,
           },
         },
