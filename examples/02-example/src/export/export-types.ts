@@ -322,7 +322,7 @@ export interface ExportDialogProps {
   onExport?: (result: Blob) => void;
   onError?: (error: Error) => void;
   commit?: (command: Command) => DispatchResult | undefined;
-  saveNow?: () => SaveState;
+  saveNow?: (deck: DeckProject) => SaveState;
 }
 
 export const DEFAULT_PPTX_CONFIG: PptxExportConfig = {

@@ -17,6 +17,8 @@ import { readFileSync } from 'node:fs';
 const EDITOR_PATH = '/deckforge/';
 const DEAD_URL =
   'https://images.unsplash.com/photo-1519326844852-704caea5675e?auto=format&fit=crop&w=720&q=70';
+const LIVE_URL =
+  'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=720&q=70';
 const DATA_PNG =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
 
@@ -130,23 +132,35 @@ test('a blocked export can be fixed inline in the dialog and then exported', asy
 });
 
 test('make deck self-contained bundles the remote image and the deck exports offline', async ({ page }) => {
-  await page.goto(EDITOR_PATH);
-  await expect(page.getByTestId('deck-editor-shell')).toBeVisible();
+  // Give the seed image block b36 a live remote URL so there is something real
+  // to embed — a committed all-data-URI seed deck would make this test vacuous.
+  await selectSeedImageBlock(page);
+  await page.getByLabel('Image URL').fill(LIVE_URL);
 
   const dialog = await openExportDialog(page);
   await expect(dialog.getByText('Ready to export')).toBeVisible({ timeout: 20_000 });
 
   await dialog.getByRole('button', { name: 'Make deck self-contained' }).click();
 
-  // The manifest now carries the embedded data URI and preflight re-runs READY.
+  // Preflight re-runs after the replaceDeck commit → READY again.
   await expect(dialog.getByText('Ready to export')).toBeVisible({ timeout: 20_000 });
 
+  // The persisted deck now carries the embedded data URI — and the remote URL
+  // is gone. This only holds if saveNow persisted the POST-embed deck.
   const stored = await page.evaluate(() => localStorage.getItem('deckforge:deck:v1') ?? '');
   expect(stored).toContain('data:image/jpeg;base64,');
+  expect(stored).not.toContain('images.unsplash.com');
+
+  // The embed survives a reload because it was actually persisted (not just
+  // left in React state for the debounced autosave to lose).
+  await page.reload();
+  await expect(page.getByTestId('deck-editor-shell')).toBeVisible();
+  const dialogAfterReload = await openExportDialog(page);
+  await expect(dialogAfterReload.getByText('Ready to export')).toBeVisible({ timeout: 20_000 });
 
   const downloadPromise = page.waitForEvent('download', { timeout: 60_000 });
-  await dialog.getByRole('button', { name: 'Export PPTX' }).click();
-  await expect(dialog.getByText('Export complete!')).toBeVisible({ timeout: 60_000 });
+  await dialogAfterReload.getByRole('button', { name: 'Export PPTX' }).click();
+  await expect(dialogAfterReload.getByText('Export complete!')).toBeVisible({ timeout: 60_000 });
   const download = await downloadPromise;
   const bytes = readFileSync(await download.path());
   expect(bytes.includes(Buffer.from('ppt/media/'))).toBe(true);

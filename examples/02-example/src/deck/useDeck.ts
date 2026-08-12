@@ -20,7 +20,7 @@ export interface DeckStore {
   commit: (command: Command) => DispatchResult | undefined;
   undo: () => void;
   redo: () => void;
-  saveNow: () => SaveState;
+  saveNow: (deck?: DeckProject) => SaveState;
 }
 
 function initialDeck(): DeckProject {
@@ -102,12 +102,12 @@ export function useDeck(): DeckStore {
     });
   }, []);
 
-  const saveNow = useCallback((): SaveState => {
+  const saveNow = useCallback((deckToSave?: DeckProject): SaveState => {
     if (!deckStorageAvailable()) {
       setSaveState('failed');
       return 'failed';
     }
-    const result = saveDeck(deckRef.current);
+    const result = saveDeck(deckToSave ?? deckRef.current);
     const state: SaveState = result.ok ? 'saved' : 'failed';
     setSaveState(state);
     if (result.ok) {

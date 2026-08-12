@@ -20,7 +20,7 @@ interface ExportDialogProps {
   onExport?: (result: Blob) => void;
   onError?: (error: Error) => void;
   commit?: (command: Command) => DispatchResult | undefined;
-  saveNow?: () => SaveState;
+  saveNow?: (deck: DeckProject) => SaveState;
 }
 
 /**
@@ -152,7 +152,7 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError, commit,
     try {
       const result = await makeDeckSelfContained(deck);
       commit({ type: "replaceDeck", deck: result.deck });
-      saveNow?.();
+      saveNow?.(result.deck);
       if (result.failures.length > 0) {
         setErrorMessage(
           `${result.failures.length} image(s) could not be embedded offline. ` +
