@@ -13,6 +13,7 @@ import { chartSpecFromContent } from "../../../deck/chart-spec";
 import { exportFrameOf, frameErrorIssue } from "../export-utils";
 import { resolveTheme, hexToPptx } from "../../resolved-theme";
 import type { ResolvedChartSpec } from "../../snapshot";
+import { renderChartToSvg } from "../../fidelity/svg/svg-chart";
 
 interface ChartDataPoint {
   label: string;
@@ -170,6 +171,48 @@ export const chartBlockExporter: PptxBlockExporter = {
     }
 
     const spec = chartSpecFromContent(content as ChartContent);
+
+    // Fidelity gate: check if native chart can reproduce web appearance
+    const fidelityIssues: string[] = [];
+
+    // Check: Colors must be explicit hex (not automatic)
+    const hasAutomaticColors = chartSpec.style.seriesColors.some(
+      (c) => !c || c.length < 6
+    );
+    if (hasAutomaticColors) {
+      fidelityIssues.push("series colors contain non-hex values");
+    }
+
+    // Check: Data labels must be configured
+    if (!spec.labelPolicy.showDataLabels) {
+      fidelityIssues.push("data labels disabled");
+    }
+
+    // If fidelity issues and mode is fidelity-first, use SVG fallback
+    if (fidelityIssues.length > 0 && ctx.config.mode === "fidelity-first") {
+      const svgString = renderChartToSvg(chartSpec);
+      return {
+        status: "rasterized",
+        issues: [
+          {
+            code: "fallback-rasterized",
+            severity: "warning",
+            message: `Chart "${chartBlock.id}" fell back to SVG: ${fidelityIssues.join(", ")}`,
+            automaticFixAvailable: false,
+          },
+        ],
+        element: {
+          type: "svg",
+          elementId: chartBlock.id,
+          ...frame,
+          data: {
+            svg: svgString,
+            alt: chartSpec.summary || chartSpec.title || "Chart",
+          },
+        },
+      };
+    }
+
     const isHorizontal = chartSpec.orientation === "horizontal";
     const isBar = chartSpec.type === "bar" || chartSpec.type === "bar-horizontal";
     const pptxChartType = isBar ? "bar" : "line";
