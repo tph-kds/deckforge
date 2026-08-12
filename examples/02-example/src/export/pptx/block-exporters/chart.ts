@@ -134,6 +134,41 @@ export const chartBlockExporter: PptxBlockExporter = {
       };
     }
 
+    // Data parity invariant
+    const values = content?.values ?? [];
+    if (chartSpec.categories.length !== values.length) {
+      return {
+        status: "unsupported",
+        issues: [
+          {
+            code: "chart-data-mismatch",
+            severity: "error",
+            message: `Chart block "${chartBlock.id}" has data mismatch: ${chartSpec.categories.length} categories in spec vs ${values.length} in source`,
+            suggestedFix: "Verify chart data integrity",
+            automaticFixAvailable: false,
+          },
+        ],
+      };
+    }
+
+    // Verify values match
+    for (let i = 0; i < values.length; i++) {
+      if (chartSpec.series[0]?.values[i] !== values[i].value) {
+        return {
+          status: "unsupported",
+          issues: [
+            {
+              code: "chart-data-mismatch",
+              severity: "error",
+              message: `Chart block "${chartBlock.id}" value mismatch at index ${i}: expected ${values[i].value} but got ${chartSpec.series[0]?.values[i]}`,
+              suggestedFix: "Verify chart data integrity",
+              automaticFixAvailable: false,
+            },
+          ],
+        };
+      }
+    }
+
     const spec = chartSpecFromContent(content as ChartContent);
     const isHorizontal = chartSpec.orientation === "horizontal";
     const isBar = chartSpec.type === "bar" || chartSpec.type === "bar-horizontal";
