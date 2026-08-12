@@ -46,6 +46,15 @@ function buildResolvedChartSpec(
   const theme = resolveTheme(ctx.deck);
   const palette = theme.chartPalette;
 
+  const highlightColor = theme.tokens.secondary;
+  const accentColor = palette[0] ?? theme.tokens.foreground;
+
+  // Compute per-bar colors: highlight bar gets secondary, others get accent
+  const seriesColors = content.values.map((_: ChartValue, index: number) => {
+    const isHighlight = content.highlightIndex === index;
+    return hexToPptx(isHighlight ? highlightColor : accentColor);
+  });
+
   return {
     type: content.type ?? "bar",
     orientation: content.type === "bar-horizontal" ? "horizontal" : "vertical",
@@ -61,14 +70,14 @@ function buildResolvedChartSpec(
     highlightIndex: content.highlightIndex,
     summary: content.summary ?? "",
     style: {
-      seriesColors: palette.slice(0, content.values.length).map(hexToPptx),
+      seriesColors,
       axisColor: hexToPptx(theme.tokens.border),
       gridColor: hexToPptx(theme.tokens.border),
       labelColor: hexToPptx(theme.tokens.muted),
       fontFamily: theme.typography.bodyFont,
       fontSize: 10,
       background: "transparent",
-      highlightColor: hexToPptx(theme.tokens.secondary),
+      highlightColor: hexToPptx(highlightColor),
     },
   };
 }
