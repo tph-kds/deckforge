@@ -1,6 +1,6 @@
 import seed from '../../deck.json';
 import type { Block, DeckProject, DeckSlide } from './types';
-import { getLayoutContract, type LayoutSlotContract } from './layout';
+import { getLayoutContract, suggestSlotForBlock, type LayoutSlotContract } from './layout';
 
 export function loadSeedDeck(): DeckProject {
   return structuredClone(seed) as unknown as DeckProject;
@@ -160,5 +160,124 @@ export function migrateLayoutBindings(
     ...slide,
     layout: newLayout,
     layoutBindings,
+  };
+}
+
+/**
+ * Legacy block migration (P0-003, DF-012).
+ *
+ * Repairs stale blocks that have positionMode "slot" but:
+ * - No slot property (MISSING_SLOT_ID)
+ * - A slot that doesn't exist in the layout (UNKNOWN_SLOT)
+ * - A slot that doesn't accept the block type (SLOT_TYPE_MISMATCH)
+ *
+ * This migration runs automatically when loading legacy documents
+ * to ensure all blocks are exportable without manual repair.
+ *
+ * Returns a NEW slide with repaired blocks and bindings.
+ * The input slide is never mutated.
+ */
+export function migrateLegacyBlockSlots(slide: DeckSlide): DeckSlide {
+  const contract = getLayoutContract(slide.layout);
+  if (!contract?.composition?.slots.length) return slide;
+
+  const slots = contract.composition.slots;
+  const slotById = new Map(slots.map((slot) => [slot.id, slot]));
+  const slotCapacity = new Map<string, number>();
+  for (const slot of slots) {
+    slotCapacity.set(slot.id, slot.maxItems ?? Number.POSITIVE_INFINITY);
+  }
+
+  // Build current bindings map
+  const bindingMap = new Map<string, string[]>();
+  for (const binding of slide.layoutBindings ?? []) {
+    bindingMap.set(binding.slot, [...binding.blockIds]);
+  }
+
+  // Track which blocks are bound
+  const boundCounts = new Map<string, number>();
+  for (const [slotId, ids] of bindingMap) {
+    boundCounts.set(slotId, ids.length);
+  }
+
+  const needsRepair: Block[] = [];
+  const repairedBlocks: Block[] = [];
+
+  for (const block of slide.blocks) {
+    if (block.hidden) continue;
+    if (block.positionMode === 'freeform' || block.positionMode === 'background') {
+      repairedBlocks.push(block);
+      continue;
+    }
+
+    // Check if block needs repair
+    const slotContract = block.slot ? slotById.get(block.slot) : undefined;
+    const needsSlotRepair = !block.slot || !slotContract || !slotAccepts(slotContract, block.type);
+
+    if (needsSlotRepair) {
+      needsRepair.push(block);
+    } else {
+      repairedBlocks.push(block);
+    }
+  }
+
+  if (needsRepair.length === 0) return slide;
+
+  // Repair each block using the same logic as suggestSlotForBlock
+  for (const block of needsRepair) {
+    const slideWithBlock: DeckSlide = {
+      ...slide,
+      blocks: [...slide.blocks, block],
+    };
+    const suggestedSlot = suggestSlotForBlock(slideWithBlock, block);
+
+    if (suggestedSlot) {
+      // Add block to the suggested slot's binding
+      if (!bindingMap.has(suggestedSlot)) {
+        bindingMap.set(suggestedSlot, []);
+      }
+      bindingMap.get(suggestedSlot)!.push(block.id);
+      boundCounts.set(suggestedSlot, (boundCounts.get(suggestedSlot) ?? 0) + 1);
+
+      // Add repaired block
+      repairedBlocks.push({
+        ...block,
+        slot: suggestedSlot,
+        positionMode: 'slot',
+      });
+    } else {
+      // No slot found — keep block as-is (will be caught by geometry resolver)
+      repairedBlocks.push(block);
+    }
+  }
+
+  // Build new layoutBindings
+  const responsiveOrder = contract.composition.responsiveOrder ?? slots.map((s) => s.id);
+  const layoutBindings = responsiveOrder
+    .filter((slotId) => bindingMap.has(slotId))
+    .map((slotId) => ({
+      slot: slotId,
+      blockIds: bindingMap.get(slotId)!,
+      flow: 'stack' as const,
+      gap: 10,
+    }));
+
+  return {
+    ...slide,
+    blocks: repairedBlocks,
+    layoutBindings,
+  };
+}
+
+/**
+ * Migrate all legacy blocks in a deck.
+ *
+ * Returns a NEW deck with repaired blocks and bindings.
+ * The input deck is never mutated.
+ */
+export function migrateLegacyDeckSlots(deck: DeckProject): DeckProject {
+  return {
+    ...deck,
+    slides: deck.slides.map((slide) => migrateLegacyBlockSlots(slide)),
   };
 }

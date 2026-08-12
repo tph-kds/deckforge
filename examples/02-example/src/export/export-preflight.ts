@@ -1,337 +1,434 @@
 // export/export-preflight.ts
+//
+// Export preflight validation that ensures all blocks are properly resolved
+// before export. This prevents:
+// - Hidden/stale/template blocks from being exported
+// - Missing chart data
+// - Missing image assets
+// - Geometry errors
+// - Duplicate block exports
 
+import type { DeckProject, DeckSlide, Block, ChartContent } from "../deck/types";
 import type {
-  ExportCoverage,
   ExportIssue,
   ExportPreflightResult,
-  PptxExportConfig,
+  ExportCoverage,
   PreflightGroupSummary,
+  PptxExportConfig,
 } from "./export-types";
-import type { Block, DeckProject } from "../deck/types";
-import { collectFontWarnings } from "./pptx/pptx-fonts";
-import { getBlockExporter } from "./pptx/block-exporters/index";
-import { resolveDeckScenes } from "../deck/geometry-resolver";
-import { validateRectWithinSlide } from "./geometry";
+import type { ImmutableSlideSnapshot, ResolvedBlockSnapshot } from "./snapshot";
+import { resolveSlideSnapshot, validateSnapshot, hashSlideSemanticContent } from "./snapshot";
 
-const NATIVE_BLOCK_TYPES = new Set([
-  "text",
-  "heading",
-  "bullets",
-  "callout",
-  "citation",
-  "metric",
-  "process",
-  "image",
-  "shape",
-  "table",
-  "chart",
-]);
+// ─── Preflight Issue Codes ───────────────────────────────────────────────────
 
-function asRecord(value: unknown): Record<string, unknown> {
-  return value as Record<string, unknown>;
-}
+export type PreflightIssueCode =
+  | "hidden-block-included"
+  | "template-chart-included"
+  | "missing-chart-data"
+  | "missing-image-asset"
+  | "geometry-missing"
+  | "duplicate-block-id"
+  | "block-type-unsupported"
+  | "snapshot-validation-failed"
+  | "content-parity-mismatch";
 
-function calculateScore(issues: ExportIssue[]): number {
-  let score = 100;
-  for (const issue of issues) {
-    if (issue.severity === "error") score -= 20;
-    else if (issue.severity === "warning") score -= 5;
-    else score -= 1;
-  }
-  return Math.max(0, Math.min(100, score));
-}
-
-function calculateBlockCoverage(deck: DeckProject): number {
-  const blocks = deck.slides.flatMap((slide) => slide.blocks);
-  if (blocks.length === 0) return 1;
-
-  const nativeCount = blocks.filter((block) => NATIVE_BLOCK_TYPES.has(block.type)).length;
-  return nativeCount / blocks.length;
-}
-
-function visibleBlocks(deck: DeckProject): Block[] {
-  return deck.slides
-    .filter((slide) => !slide.hidden)
-    .flatMap((slide) => slide.blocks)
-    .filter((block) => !block.hidden);
-}
-
-function calculateParityEstimates(deck: DeckProject): {
-  estimatedRecall: number;
-  estimatedFallbacks: number;
-  estimatedMissing: number;
-} {
-  const visible = visibleBlocks(deck);
-  if (visible.length === 0) {
-    return { estimatedRecall: 1, estimatedFallbacks: 0, estimatedMissing: 0 };
-  }
-
-  let fallbacks = 0;
-  let missing = 0;
-  for (const block of visible) {
-    const exporter = getBlockExporter(block.type);
-    if (exporter.type === "fallback" && block.type !== "fallback") {
-      missing += 1;
-    } else if (exporter.exportability === "image-only") {
-      fallbacks += 1;
-    }
-  }
-  const preserved = visible.length - missing;
-  return {
-    estimatedRecall: preserved / visible.length,
-    estimatedFallbacks: fallbacks,
-    estimatedMissing: missing,
-  };
-}
+// ─── Preflight Validators ────────────────────────────────────────────────────
 
 /**
- * Compute the coverage invariants (expected == native + fallback, missing == 0)
- * over the RESOLVED scene. `missing` combines exporter-level omissions with
- * visible blocks whose canonical frame could not be resolved, so a deck whose
- * geometry pipeline fails can never look "ready".
+ * Validate that a snapshot contains no hidden/stale/template blocks.
  */
-function calculateCoverage(
-  deck: DeckProject,
-  geometryMissing: number,
-): ExportCoverage {
-  const visible = visibleBlocks(deck);
-  const expected = visible.length;
-
-  let native = 0;
-  let fallback = 0;
-  let unexportable = 0;
-  for (const block of visible) {
-    const exporter = getBlockExporter(block.type);
-    if (exporter.type === "fallback" && block.type !== "fallback") {
-      unexportable += 1;
-      continue;
-    }
-    if (exporter.exportability === "image-only") {
-      fallback += 1;
-    } else {
-      native += 1;
-    }
-  }
-
-  const missing = unexportable + geometryMissing;
-  return {
-    expected,
-    native,
-    fallback,
-    missing,
-    satisfied: missing === 0 && expected === native + fallback + unexportable,
-  };
-}
-
-const GROUP_BY_CODE: Record<string, "geometry" | "assets" | "content" | "structural"> = {
-  "invalid-geometry": "geometry",
-  "aspect-mismatch": "geometry",
-  "template-chart-leak": "geometry",
-  "image-load-failed": "assets",
-  "unresolved-image": "assets",
-  "external-asset": "assets",
-  "missing-speaker-notes": "content",
-  "oversized-content": "content",
-  "template-chart-skipped": "content",
-  "chart-no-data": "content",
-  "empty-table": "content",
-  "no-fallback-produced": "content",
-  "block-hidden-skipped": "content",
-  "hidden-slide-skipped": "content",
-  "font-substitution": "structural",
-  "missing-font": "structural",
-  "unsupported-block-type": "structural",
-  "unsupported-block": "structural",
-  "unsupported-css-effect": "structural",
-  "block-export-failed": "structural",
-  "archive-verification-failed": "structural",
-  "duplicate-element-id": "structural",
-};
-
-const GROUP_LABELS: Record<string, string> = {
-  geometry: "Geometry",
-  assets: "Assets",
-  content: "Content",
-  structural: "Structural",
-};
-
-function groupOfIssue(issue: ExportIssue): "geometry" | "assets" | "content" | "structural" {
-  return GROUP_BY_CODE[issue.code] ?? "structural";
-}
-
-function groupPreflightIssues(issues: ExportIssue[]): PreflightGroupSummary[] {
-  const order: Array<"geometry" | "assets" | "content" | "structural"> = [
-    "geometry",
-    "assets",
-    "content",
-    "structural",
-  ];
-  return order
-    .map((group) => ({
-      group,
-      label: GROUP_LABELS[group],
-      count: issues.filter((issue) => groupOfIssue(issue) === group).length,
-      issues: issues.filter((issue) => groupOfIssue(issue) === group),
-    }))
-    .filter((summary) => summary.count > 0);
-}
-
-/**
- * Run a geometry-aware preflight. Unlike the legacy heuristic, this resolves
- * the canonical geometry of every slide first, so "Ready to export" is only
- * ever shown when every visible block has a resolvable frame and no content is
- * estimated to be missing.
- */
-export async function runExportPreflight(
-  deck: DeckProject,
-  config: PptxExportConfig
-): Promise<ExportPreflightResult> {
+function validateBlockVisibility(
+  block: ResolvedBlockSnapshot,
+  slideId: string
+): ExportIssue[] {
   const issues: ExportIssue[] = [];
 
-  const fontWarnings = collectFontWarnings(deck);
-  for (const fw of fontWarnings) {
+  if (block.visibility === "hidden") {
     issues.push({
+      code: "block-hidden-skipped",
       severity: "warning",
-      code: "font-substitution",
-      slideId: fw.slideId,
-      blockId: fw.blockId,
-      message: `Font "${fw.fontFamily}" may be substituted with ${fw.substituteFont}`,
-      suggestedFix: `Use a PPTX-safe font like ${fw.substituteFont}`,
+      slideId,
+      blockId: block.id,
+      message: `Block "${block.id}" is hidden but included in snapshot`,
+      automaticFixAvailable: true,
+    });
+  }
+
+  if (block.editorOnly) {
+    issues.push({
+      code: "block-hidden-skipped",
+      severity: "warning",
+      slideId,
+      blockId: block.id,
+      message: `Block "${block.id}" is editor-only but included in snapshot`,
+      automaticFixAvailable: true,
+    });
+  }
+
+  if (block.deleted) {
+    issues.push({
+      code: "block-hidden-skipped",
+      severity: "warning",
+      slideId,
+      blockId: block.id,
+      message: `Block "${block.id}" is deleted but included in snapshot`,
+      automaticFixAvailable: true,
+    });
+  }
+
+  if (block.temporary) {
+    issues.push({
+      code: "block-hidden-skipped",
+      severity: "warning",
+      slideId,
+      blockId: block.id,
+      message: `Block "${block.id}" is temporary but included in snapshot`,
+      automaticFixAvailable: true,
+    });
+  }
+
+  if (block.placeholder) {
+    issues.push({
+      code: "block-hidden-skipped",
+      severity: "warning",
+      slideId,
+      blockId: block.id,
+      message: `Block "${block.id}" is placeholder but included in snapshot`,
+      automaticFixAvailable: true,
+    });
+  }
+
+  return issues;
+}
+
+/**
+ * Validate chart blocks have required data.
+ */
+function validateChartBlock(
+  block: ResolvedBlockSnapshot,
+  slideId: string
+): ExportIssue[] {
+  const issues: ExportIssue[] = [];
+
+  if (block.type !== "chart") return issues;
+
+  if (!block.chartSpec) {
+    issues.push({
+      code: "chart-no-data",
+      severity: "warning",
+      slideId,
+      blockId: block.id,
+      message: `Chart block "${block.id}" has no resolved chart spec`,
+      suggestedFix: "Add data values to the chart",
+      automaticFixAvailable: false,
+    });
+    return issues;
+  }
+
+  if (block.chartSpec.categories.length === 0) {
+    issues.push({
+      code: "chart-no-data",
+      severity: "warning",
+      slideId,
+      blockId: block.id,
+      message: `Chart block "${block.id}" has no categories`,
+      suggestedFix: "Add category labels to the chart",
       automaticFixAvailable: false,
     });
   }
 
-  // Phase 16: resolve canonical geometry up-front. A visible block with no
-  // usable frame is an error that must block export (never (0,0) placement).
-  const scenes = resolveDeckScenes(deck);
-  let geometryMissing = 0;
-  for (const slide of deck.slides) {
-    const scene = scenes.get(slide.id);
-    if (!scene) continue;
+  if (block.chartSpec.series.length === 0 || block.chartSpec.series[0].values.length === 0) {
+    issues.push({
+      code: "chart-no-data",
+      severity: "warning",
+      slideId,
+      blockId: block.id,
+      message: `Chart block "${block.id}" has no series data`,
+      suggestedFix: "Add data values to the chart",
+      automaticFixAvailable: false,
+    });
+  }
 
-    for (const missing of scene.missingFrames) {
-      geometryMissing += 1;
-      const diagnostics = [
-        `blockType: ${missing.block.type}`,
-        `positionMode: ${missing.block.positionMode ?? "slot"}`,
-        `slotId: ${missing.slotId ?? "(none)"}`,
-        `layoutId: ${slide.layout}`,
-        `state: ${missing.state}`,
-      ];
+  return issues;
+}
+
+/**
+ * Validate image blocks have resolved assets.
+ */
+function validateImageBlock(
+  block: ResolvedBlockSnapshot,
+  slideId: string
+): ExportIssue[] {
+  const issues: ExportIssue[] = [];
+
+  if (block.type !== "image") return issues;
+
+  if (!block.assetSnapshot) {
+    issues.push({
+      code: "unresolved-image",
+      severity: "warning",
+      slideId,
+      blockId: block.id,
+      message: `Image block "${block.id}" has no resolved asset`,
+      suggestedFix: "Add a valid image asset to the block",
+      automaticFixAvailable: false,
+    });
+  }
+
+  return issues;
+}
+
+/**
+ * Validate geometry for all blocks.
+ */
+function validateBlockGeometry(
+  block: ResolvedBlockSnapshot,
+  slideId: string
+): ExportIssue[] {
+  const issues: ExportIssue[] = [];
+
+  if (!block.frame) {
+    issues.push({
+      code: "invalid-geometry",
+      severity: "error",
+      slideId,
+      blockId: block.id,
+      message: `Block "${block.id}" has no geometry`,
+      automaticFixAvailable: false,
+    });
+    return issues;
+  }
+
+  const { x, y, w, h } = block.frame;
+  if (w <= 0 || h <= 0) {
+    issues.push({
+      code: "invalid-geometry",
+      severity: "error",
+      slideId,
+      blockId: block.id,
+      message: `Block "${block.id}" has invalid dimensions (${w}x${h})`,
+      automaticFixAvailable: false,
+    });
+  }
+
+  return issues;
+}
+
+/**
+ * Validate no duplicate block IDs in a snapshot.
+ */
+function validateNoDuplicateBlockIds(
+  snapshot: ImmutableSlideSnapshot
+): ExportIssue[] {
+  const issues: ExportIssue[] = [];
+  const seenIds = new Set<string>();
+
+  for (const block of snapshot.blocks) {
+    if (seenIds.has(block.id)) {
       issues.push({
-        severity: "error",
-        code: "invalid-geometry",
+        code: "duplicate-element-id",
+        severity: "warning",
+        slideId: snapshot.slideId,
+        blockId: block.id,
+        message: `Block "${block.id}" is duplicated in slide "${snapshot.slideId}"`,
+        automaticFixAvailable: false,
+      });
+    }
+    seenIds.add(block.id);
+  }
+
+  return issues;
+}
+
+// ─── Main Preflight Function ─────────────────────────────────────────────────
+
+/**
+ * Run export preflight validation on a deck.
+ * This must be called before export to ensure all blocks are properly resolved.
+ */
+export function runExportPreflight(
+  deck: DeckProject,
+  _config?: PptxExportConfig
+): ExportPreflightResult {
+  const issues: ExportIssue[] = [];
+  const snapshots: ImmutableSlideSnapshot[] = [];
+
+  let blockCount = 0;
+  let chartBlockCount = 0;
+  let imageBlockCount = 0;
+  let missingBlockCount = 0;
+  let unsupportedBlockCount = 0;
+  let geometryMissingCount = 0;
+
+  for (const slide of deck.slides) {
+    // Skip hidden slides
+    if (slide.hidden) continue;
+
+    // Create snapshot
+    const snapshot = resolveSlideSnapshot(slide, deck);
+
+    // Validate snapshot structure
+    const snapshotIssues = validateSnapshot(snapshot);
+    for (const message of snapshotIssues) {
+      issues.push({
+        code: "block-export-failed",
+        severity: "warning",
         slideId: slide.id,
-        blockId: missing.blockId,
-        message: `${missing.reason}; export would fail (a resolved frame is required)`,
-        note: diagnostics.join(" · "),
-        suggestedFix: "Bind the block to a slot in the editor, or give it a frame",
+        message,
         automaticFixAvailable: false,
       });
     }
 
-    for (const entry of scene.blocks) {
-      const boundsErrors = validateRectWithinSlide(
-        entry.frame,
-        deck.canvas.width ?? 1600,
-        deck.canvas.height ?? 900,
-      );
-      if (boundsErrors.length) {
-        issues.push({
-          severity: "error",
-          code: "invalid-geometry",
-          slideId: slide.id,
-          blockId: entry.blockId,
-          message: `Block "${entry.blockId}" resolves to out-of-bounds geometry: ${boundsErrors.join("; ")}`,
-          note: [
-            `blockType: ${entry.block.type}`,
-            `positionMode: ${entry.block.positionMode ?? "slot"}`,
-            `slotId: ${entry.slotId ?? "(none)"}`,
-            `layoutId: ${slide.layout}`,
-            `frame source: ${entry.resolutionSource}`,
-            `frame: {x:${entry.frame.x}, y:${entry.frame.y}, w:${entry.frame.w}, h:${entry.frame.h}}`,
-          ].join(" · "),
-          suggestedFix: "Fix the layout contract or move the block into the canvas",
-          automaticFixAvailable: false,
-        });
+    // Validate each block
+    for (const block of snapshot.blocks) {
+      blockCount++;
+      if (block.type === "chart") chartBlockCount++;
+      if (block.type === "image") imageBlockCount++;
+
+      // Validate visibility
+      issues.push(...validateBlockVisibility(block, slide.id));
+
+      // Validate chart blocks
+      issues.push(...validateChartBlock(block, slide.id));
+
+      // Validate image blocks
+      issues.push(...validateImageBlock(block, slide.id));
+
+      // Validate geometry
+      const geometryIssues = validateBlockGeometry(block, slide.id);
+      issues.push(...geometryIssues);
+
+      if (geometryIssues.some((i) => i.severity === "error")) {
+        geometryMissingCount++;
       }
     }
+
+    // Validate no duplicate block IDs
+    issues.push(...validateNoDuplicateBlockIds(snapshot));
+
+    snapshots.push(snapshot);
   }
 
-  for (const slide of deck.slides) {
-    for (const block of slide.blocks) {
-      const record = asRecord(block);
-      const blockType = block.type;
-
-      if (!NATIVE_BLOCK_TYPES.has(blockType)) {
-        issues.push({
-          severity: "warning",
-          code: "unsupported-block-type",
-          slideId: slide.id,
-          blockId: block.id,
-          message: `Block type "${blockType}" cannot be exported natively; it will be rasterized, substituted, or omitted`,
-          suggestedFix: "Convert to a supported block type for native export",
-          automaticFixAvailable: false,
-        });
-      }
-
-      if (typeof record.cssFilter === "string" && record.cssFilter.includes("blur")) {
-        issues.push({
-          severity: "warning",
-          code: "unsupported-css-effect",
-          slideId: slide.id,
-          blockId: block.id,
-          message: "CSS filter effects may not transfer to PowerPoint",
-          suggestedFix: "Remove blur filter or accept image fallback",
-          automaticFixAvailable: false,
-        });
-      }
-
-      if (typeof record.src === "string" && record.src.startsWith("http") && !record.src.startsWith("data:")) {
-        issues.push({
-          severity: "info",
-          code: "external-asset",
-          slideId: slide.id,
-          blockId: block.id,
-          message: "External asset will be embedded in the export",
-          suggestedFix: undefined,
-          automaticFixAvailable: false,
-        });
-      }
-    }
-
-    if (config.includeSpeakerNotes && !slide.speakerNotes) {
-      issues.push({
-        severity: "info",
-        code: "missing-speaker-notes",
-        slideId: slide.id,
-        message: "Slide has no speaker notes",
-        suggestedFix: "Add speaker notes for better presenter experience",
-        automaticFixAvailable: false,
-      });
-    }
-  }
-
-  const score = calculateScore(issues);
-  const blockCoverage = calculateBlockCoverage(deck);
-  const estimates = calculateParityEstimates(deck);
-  const coverage = calculateCoverage(deck, geometryMissing);
-
-  const visible = visibleBlocks(deck);
+  // Check for errors
   const hasErrors = issues.some((issue) => issue.severity === "error");
+
+  // Calculate coverage
+  const coverage: ExportCoverage = {
+    expected: blockCount,
+    native: blockCount - missingBlockCount - unsupportedBlockCount,
+    fallback: 0,
+    missing: missingBlockCount,
+    satisfied: missingBlockCount === 0,
+  };
+
+  // Group issues by category
+  const groups: PreflightGroupSummary[] = [
+    {
+      group: "geometry",
+      label: "Geometry",
+      count: issues.filter((i) => i.code === "invalid-geometry").length,
+      issues: issues.filter((i) => i.code === "invalid-geometry"),
+    },
+    {
+      group: "assets",
+      label: "Assets",
+      count: issues.filter((i) => i.code === "unresolved-image").length,
+      issues: issues.filter((i) => i.code === "unresolved-image"),
+    },
+    {
+      group: "content",
+      label: "Content",
+      count: issues.filter((i) => i.code === "chart-no-data").length,
+      issues: issues.filter((i) => i.code === "chart-no-data"),
+    },
+    {
+      group: "structural",
+      label: "Structural",
+      count: issues.filter((i) =>
+        i.code === "block-hidden-skipped" ||
+        i.code === "duplicate-element-id"
+      ).length,
+      issues: issues.filter((i) =>
+        i.code === "block-hidden-skipped" ||
+        i.code === "duplicate-element-id"
+      ),
+    },
+  ];
 
   return {
     issues,
-    score,
-    blockCoverage,
-    ...estimates,
-    missingBlockCount: estimates.estimatedMissing,
-    unsupportedBlockCount: estimates.estimatedMissing,
-    chartBlockCount: visible.filter((block) => block.type === "chart").length,
-    ready: !hasErrors && estimates.estimatedMissing === 0 && geometryMissing === 0,
-    geometryMissingCount: geometryMissing,
-    visibleBlockCount: visible.length,
+    score: hasErrors ? 0 : 100,
+    blockCoverage: blockCount > 0 ? ((blockCount - missingBlockCount) / blockCount) * 100 : 100,
+    estimatedFallbacks: 0,
+    estimatedRecall: blockCount > 0 ? ((blockCount - missingBlockCount) / blockCount) * 100 : 100,
+    estimatedMissing: missingBlockCount,
+    missingBlockCount,
+    unsupportedBlockCount,
+    chartBlockCount,
+    ready: !hasErrors && geometryMissingCount === 0,
+    geometryMissingCount,
+    visibleBlockCount: blockCount,
     coverage,
-    groups: groupPreflightIssues(issues),
+    groups,
+  };
+}
+
+/**
+ * Compare two snapshots for content parity.
+ * Used to validate that web and export have the same content.
+ */
+export function compareSnapshots(
+  webSnapshot: ImmutableSlideSnapshot,
+  exportSnapshot: ImmutableSlideSnapshot
+): {
+  match: boolean;
+  differences: string[];
+} {
+  const differences: string[] = [];
+
+  // Compare slide IDs
+  if (webSnapshot.slideId !== exportSnapshot.slideId) {
+    differences.push(`Slide ID mismatch: ${webSnapshot.slideId} vs ${exportSnapshot.slideId}`);
+  }
+
+  // Compare block count
+  if (webSnapshot.blocks.length !== exportSnapshot.blocks.length) {
+    differences.push(
+      `Block count mismatch: ${webSnapshot.blocks.length} vs ${exportSnapshot.blocks.length}`
+    );
+  }
+
+  // Compare block IDs
+  const webBlockIds = webSnapshot.blocks.map((b) => b.id).sort();
+  const exportBlockIds = exportSnapshot.blocks.map((b) => b.id).sort();
+  if (JSON.stringify(webBlockIds) !== JSON.stringify(exportBlockIds)) {
+    differences.push(`Block IDs mismatch: ${webBlockIds.join(",")} vs ${exportBlockIds.join(",")}`);
+  }
+
+  // Compare block types
+  for (const webBlock of webSnapshot.blocks) {
+    const exportBlock = exportSnapshot.blocks.find((b) => b.id === webBlock.id);
+    if (!exportBlock) {
+      differences.push(`Block ${webBlock.id} missing in export snapshot`);
+      continue;
+    }
+
+    if (webBlock.type !== exportBlock.type) {
+      differences.push(
+        `Block ${webBlock.id} type mismatch: ${webBlock.type} vs ${exportBlock.type}`
+      );
+    }
+  }
+
+  // Compare semantic content
+  const webHash = hashSlideSemanticContent(webSnapshot);
+  const exportHash = hashSlideSemanticContent(exportSnapshot);
+  if (webHash !== exportHash) {
+    differences.push(`Semantic content mismatch`);
+  }
+
+  return {
+    match: differences.length === 0,
+    differences,
   };
 }

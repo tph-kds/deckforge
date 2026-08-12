@@ -1,4 +1,7 @@
 // export/pptx/block-exporters/text.ts
+//
+// PPTX text exporter that uses the resolved theme for colors and fonts.
+// This ensures typography parity between web and PPTX.
 
 import type {
   ExportIssue,
@@ -15,7 +18,7 @@ import {
   frameErrorIssue,
   pptFontFor,
 } from "../export-utils";
-import { getTheme } from "../../../deck/themes";
+import { resolveTheme, hexToPptx } from "../../resolved-theme";
 import type { Block } from "../../../deck/types";
 
 const MAX_TEXT_LENGTH = 4000;
@@ -60,14 +63,26 @@ function buildTextElement(
   const typography = browserTypographyFor(b, containerWidthPx > 0 ? containerWidthPx : frame.w);
   const fontPx = (extra.fontSizePx as number) ?? typography.fontSizePx;
   const fontSizePt = fontSizeToPpt(fontPx, ctx);
+
+  // Use resolved theme for colors and fonts
+  const theme = resolveTheme(ctx.deck);
   const bodyFont = (b as { fontFamily?: string }).fontFamily ?? "";
-  const theme = getTheme(ctx.deck.theme?.id ?? "editorial-cream");
   const webFont = bodyFont || theme.typography.bodyFont;
   const fontFace = pptFontFor(webFont, ctx);
 
   const style = b.style ?? {};
   const align = (extra.textAlign as string) ?? (style as { align?: string }).align ?? "left";
   const valign = (extra.valign as string) ?? "top";
+
+  // Resolve color from theme tokens
+  let color = theme.tokens.foreground;
+  if (b.type === "citation" || b.type === "callout") {
+    color = theme.tokens.muted;
+  } else if (style.variant === "kicker") {
+    color = theme.tokens.secondary;
+  } else if (style.variant === "meta") {
+    color = theme.tokens.muted;
+  }
 
   return {
     type: "text",
@@ -83,7 +98,7 @@ function buildTextElement(
         fontSize: fontSizePt,
         bold: (extra.bold as boolean) ?? typography.bold,
         italic: (extra.italic as boolean) ?? typography.italic,
-        color: (extra.color as string) ?? (theme.tokens?.foreground ?? "#0F172A").replace("#", ""),
+        color: hexToPptx(color),
         align,
         valign,
         wrap: true,

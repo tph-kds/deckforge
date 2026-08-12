@@ -22,7 +22,7 @@ import type {
   PptxExportContext,
   PptxSlideElement,
 } from "../../export-types";
-import { mapThemeColors } from "../pptx-theme";
+import { resolveTheme, hexToPptx } from "../../resolved-theme";
 import {
   browserTypographyFor,
   exportFrameOf,
@@ -31,7 +31,6 @@ import {
   pptFontFor,
 } from "../export-utils";
 import type { Block } from "../../../deck/types";
-import { getTheme } from "../../../deck/themes";
 
 interface ProcessStepContent {
   title?: unknown;
@@ -62,14 +61,13 @@ function buildStepShape(
   frame: { x: number; y: number; w: number; h: number },
   text: string,
   ctx: PptxExportContext,
-  theme: ReturnType<typeof mapThemeColors>,
+  theme: ReturnType<typeof resolveTheme>,
   titleOnly = false,
 ): PptxSlideElement {
   const block = { type: "process", style: {} } as Block;
   const typography = browserTypographyFor(block, frame.w);
   const titleFontPx = titleOnly ? typography.fontSizePx * 1.15 : typography.fontSizePx;
-  const deckTheme = getTheme(ctx.deck.theme?.id ?? "editorial-cream");
-  const fontFace = pptFontFor(deckTheme.typography.bodyFont, ctx);
+  const fontFace = pptFontFor(theme.typography.bodyFont, ctx);
 
   return {
     type: "text",
@@ -82,12 +80,12 @@ function buildStepShape(
       text,
       options: {
         shape: "roundRect",
-        fill: { color: theme.accent1 },
-        line: { color: theme.dark1, width: 1 },
+        fill: { color: hexToPptx(theme.tokens.primary) },
+        line: { color: hexToPptx(theme.tokens.primary), width: 1 },
         fontFace,
         fontSize: Math.max(9, fontSizeToPpt(titleFontPx, ctx)),
         bold: true,
-        color: theme.light1,
+        color: hexToPptx(theme.tokens.background),
         align: "center",
         valign: "middle",
         margin: 4,
@@ -112,7 +110,7 @@ async function exportProcessBlock(
     };
   }
 
-  const theme = mapThemeColors(ctx.deck.theme);
+  const theme = resolveTheme(ctx.deck);
   const content = processBlock.content as ProcessContent | undefined;
   const steps = Array.isArray(content?.steps) ? content.steps : [];
 
@@ -172,8 +170,8 @@ async function exportProcessBlock(
           data: {
             shape: "rightArrow",
             options: {
-              fill: { color: theme.dark2 },
-              line: { color: theme.dark2, width: 0 },
+              fill: { color: hexToPptx(theme.tokens.muted) },
+              line: { color: hexToPptx(theme.tokens.muted), width: 0 },
             },
           },
         });

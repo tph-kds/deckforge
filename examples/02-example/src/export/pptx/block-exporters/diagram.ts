@@ -6,7 +6,7 @@ import type {
   PptxExportContext,
 } from "../../export-types";
 import { renderDiagramSvg } from "../../fidelity/svg/svg-diagram";
-import { mapThemeColors } from "../pptx-theme";
+import { resolveTheme, hexToPptx } from "../../resolved-theme";
 import { exportFrameOf, frameErrorIssue } from "../export-utils";
 import type { Block } from "../../../deck/types";
 
@@ -33,18 +33,18 @@ export const diagramBlockExporter: PptxBlockExporter = {
     const nodes = content?.nodes ?? [];
     const edges = content?.edges ?? [];
 
-    const theme = mapThemeColors(ctx.deck.theme);
+    const theme = resolveTheme(ctx.deck);
     const svg = renderDiagramSvg(
       { nodes, edges },
       {
         width: Math.max(1, Math.round(frame.w)),
         height: Math.max(1, Math.round(frame.h)),
         colors: {
-          background: theme.background,
-          nodeFill: theme.light1,
-          nodeStroke: theme.accent1,
-          labelColor: theme.text,
-          edgeColor: theme.dark2,
+          background: hexToPptx(theme.tokens.background),
+          nodeFill: hexToPptx(theme.tokens.surface),
+          nodeStroke: hexToPptx(theme.tokens.primary),
+          labelColor: hexToPptx(theme.tokens.foreground),
+          edgeColor: hexToPptx(theme.tokens.muted),
         },
       }
     );

@@ -6,6 +6,11 @@ import {
   type LayoutSlotContract,
 } from "./layout";
 import { isUsableFrame, type Rect } from "../export/geometry";
+import {
+  validateBlockPositioning,
+  type SlotValidationError,
+  type BlockValidationResult,
+} from "./slot-validation";
 
 /**
  * deck/geometry-resolver.ts
@@ -70,6 +75,8 @@ export interface MissingGeometry {
   /** The slot the block declares, when present. */
   slotId?: string;
   layoutId?: string;
+  /** Structured validation error for developer diagnostics. */
+  validationError?: SlotValidationError;
 }
 
 export type GeometryDiagnosticState =
@@ -363,6 +370,7 @@ export function resolveSlideGeometry(
   }
 
   for (const block of slide.blocks) {
+    if (block.hidden) continue;
     const placement = placementByBlock.get(block.id);
     const resolved = resolveBlockFrame(block, slide, canvas, placement, boundCounts);
     if (resolved) {
@@ -375,7 +383,11 @@ export function resolveSlideGeometry(
         resolutionSource: resolved.source,
       });
       frameByBlockId.set(block.id, resolved.frame);
-    } else if (!block.hidden) {
+    } else {
+      // Get structured validation error for developer diagnostics
+      const validationResult = validateBlockPositioning(block, slide, canvas);
+      const validationError = validationResult.errors.length > 0 ? validationResult.errors[0] : undefined;
+
       missingFrames.push({
         blockId: block.id,
         block,
@@ -383,6 +395,7 @@ export function resolveSlideGeometry(
         layoutId: slide.layout,
         state: geometryStateFor(block, slide),
         reason: `${block.type} block "${block.id}" (positionMode "${block.positionMode ?? "slot"}") has no resolvable frame`,
+        validationError,
       });
     }
   }

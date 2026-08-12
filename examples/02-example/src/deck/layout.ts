@@ -1,9 +1,61 @@
 import layoutManifest from './layout-manifest.json';
 import type { Block, DeckProject, DeckSlide, Frame, LayoutBinding } from './types';
 
+/**
+ * Typed slot roles for semantic block-slot matching.
+ *
+ * Use these roles instead of arbitrary string IDs to ensure
+ * deterministic compatibility between blocks and slots.
+ */
+export type SlotRole =
+  | 'title'
+  | 'subtitle'
+  | 'kicker'
+  | 'body'
+  | 'visual'
+  | 'chart'
+  | 'callout'
+  | 'image'
+  | 'process'
+  | 'citation'
+  | 'footer'
+  | 'context'
+  | 'metric'
+  | 'meaning'
+  | 'evidence'
+  | 'caption'
+  | 'meta'
+  | 'steps'
+  | 'decision'
+  | 'support'
+  | 'left'
+  | 'right'
+  | 'column-1'
+  | 'column-2'
+  | 'column-3'
+  | 'content'
+  | 'accent'
+  | 'devices'
+  | 'gallery'
+  | 'demo'
+  | 'map'
+  | 'option-a'
+  | 'option-b'
+  | 'before'
+  | 'after'
+  | 'impact'
+  | 'takeaway'
+  | 'outcome'
+  | 'interpretation'
+  | 'meaning-alt'
+  | 'timeline'
+  | 'source'
+  | 'contact'
+  | string; // Allow custom roles for extensibility
+
 export interface LayoutSlotContract {
   id: string;
-  role: string;
+  role: SlotRole;
   grid: { column: number; row: number; columnSpan: number; rowSpan: number };
   allowedBlocks?: string[];
   required?: boolean;
