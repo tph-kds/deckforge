@@ -23,6 +23,7 @@ import type { FidelityBlockReport } from "../fidelity/fidelity-types";
 import type PptxGenJS from "pptxgenjs";
 import { derivePptxSlideSize, documentUnitToPptxInches } from "../geometry";
 import { validateExportScene, type ExportSceneDiagnostic } from "../export-scene";
+import { resolveTheme, hexToPptx } from "../resolved-theme";
 
 async function toUint8Array(value: string | Blob | ArrayBuffer | Uint8Array): Promise<Uint8Array<ArrayBuffer>> {
   if (value instanceof ArrayBuffer) return new Uint8Array(value);
@@ -90,10 +91,12 @@ function writeElementToSlide(
       break;
     }
     case "fallback": {
+      // Use resolved theme colors for fallback elements
+      const theme = resolveTheme(ctx.deck);
       pptxSlide.addText(element.data.text, {
         ...opts,
-        fill: { color: "FFF3CD" },
-        color: "856404",
+        fill: { color: hexToPptx(theme.tokens.surface) },
+        color: hexToPptx(theme.tokens.muted),
         fontSize: 12,
         ...element.data.options,
       } as unknown as PptxGenJS.TextPropsOptions);
@@ -275,6 +278,27 @@ export async function buildExportReport(
 
     slideReports.push({ slideId: slide.id, blocks: blockReports });
     slides.push({ slide, elements });
+  }
+
+  // Chart count invariant
+  const sourceChartCount = deck.slides
+    .filter((slide) => config.includeHiddenSlides || !slide.hidden)
+    .flatMap((slide) => slide.blocks)
+    .filter((block) => block.type === "chart" && !(block.content as { isTemplate?: boolean })?.isTemplate)
+    .length;
+
+  const exportedChartCount = slides
+    .flatMap(({ elements }) => elements)
+    .filter((element) => element.type === "chart")
+    .length;
+
+  if (sourceChartCount !== exportedChartCount) {
+    issues.push({
+      code: "chart-count-mismatch",
+      severity: "error",
+      message: `Chart count mismatch: ${sourceChartCount} source charts but ${exportedChartCount} exported charts`,
+      automaticFixAvailable: false,
+    });
   }
 
   const sceneDiagnostics = validateExportScene(

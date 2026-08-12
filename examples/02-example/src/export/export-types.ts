@@ -27,7 +27,8 @@ export type ExportIssueCode =
   | "duplicate-element-id"
   | "unresolved-image"
   | "template-chart-leak"
-  | "chart-data-mismatch";
+  | "chart-data-mismatch"
+  | "chart-count-mismatch";
 
 export interface ExportIssue {
   code: ExportIssueCode;
