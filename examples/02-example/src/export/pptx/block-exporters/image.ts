@@ -1,4 +1,11 @@
 // export/pptx/block-exporters/image.ts
+//
+// The image exporter consumes the canonical, pre-resolved asset registry built
+// by the single `prepareExport` phase. It performs NO network work of its own:
+// if the preparation phase failed to resolve a required image, this exporter
+// reports a blocking error (Fidelity First) or a truthful rasterized fallback
+// (Editability First) — never a silent omission, and never a re-fetch that
+// could contradict what preflight reported.
 
 import type {
   PptxBlockExport,
@@ -6,19 +13,10 @@ import type {
   PptxExportContext,
   PptxSlideElement,
 } from "../../export-types";
-import { embedAsset } from "../pptx-assets";
+import { canonicalAssetRef } from "../../../deck/assets";
 import { exportFrameOf, frameErrorIssue } from "../export-utils";
 import { PLACEHOLDER_IMAGE_DATA_URI } from "../pptx-placeholder";
-import type { Block } from "../../../deck/types";
-
-interface ImageContentLike {
-  assetId?: string;
-  src?: string;
-  alt?: string;
-  fit?: string;
-  originalWidth?: number;
-  originalHeight?: number;
-}
+import type { Block, ImageBlockContent } from "../../../deck/types";
 
 export const imageBlockExporter: PptxBlockExporter = {
   type: "image",
@@ -36,50 +34,75 @@ export const imageBlockExporter: PptxBlockExporter = {
       };
     }
 
-    const content = imageBlock.content as ImageContentLike | undefined;
-    const asset = content?.assetId
-      ? ctx.deck.assets?.find((entry) => entry.id === content.assetId)
-      : undefined;
-    const src = content?.src ?? (imageBlock as { src?: string }).src ?? asset?.src ?? "";
-    const alt = content?.alt ?? (imageBlock as { alt?: string }).alt ?? asset?.alt ?? "";
-    const fit = content?.fit ?? "contain";
+    const content = (imageBlock.content as ImageBlockContent | undefined) ?? {};
+    const ref = canonicalAssetRef(ctx.deck, imageBlock);
+    const alt = content.alt ?? imageBlock.alt ?? "";
+    const fit = content.fit ?? "cover";
 
-    const issueBase = {
-      severity: "warning" as const,
-      code: "image-load-failed" as const,
-      automaticFixAvailable: false,
-    };
-    const fix = "Use a local asset or a data: URL so the image can be embedded offline";
+    const fix =
+      "Use a local asset or a data: URL so the image can be embedded offline";
 
-if (!src) {
-        return {
-          status: "skipped",
-          issues: [
-            {
-              ...issueBase,
-              message: `Image block "${imageBlock.id}" has no resolvable source and was skipped`,
-              suggestedFix: "Attach a local asset to the image block or use a data: URL",
-            },
-          ],
-        };
-      }
+    // Placeholder image block: no source and no asset id. The web renders a
+    // designed placeholder, so PPTX keeps the visual slot filled with the
+    // bundled placeholder raster — a truthful fallback, not an omission.
+    if (!ref) {
+      return {
+        status: "rasterized",
+        issues: [
+          {
+            code: "no-fallback-produced",
+            severity: "info",
+            message: `Image block "${imageBlock.id}" has no image source; the bundled placeholder raster was embedded`,
+            suggestedFix: "Attach a local asset to the image block or use a data: URL",
+            automaticFixAvailable: true,
+          },
+        ],
+        element: placeholderElement(imageBlock.id, frame, alt, fit),
+      };
+    }
 
-    try {
-      const assetResult = await embedAsset(src, ctx.assetCache);
+    // Orphan: the block references a manifest asset that does not exist. This
+    // is a real resolution failure, surfaced the same way as a dead URL.
+    if (ref.orphan) {
+      return {
+        status: "unsupported",
+        issues: [
+          {
+            code: "image-load-failed",
+            severity: "error",
+            message: `Image block "${imageBlock.id}" references asset "${ref.assetId}" which has no manifest entry; the image cannot be embedded`,
+            suggestedFix: "Attach a local asset to the image block or use a data: URL",
+            automaticFixAvailable: false,
+          },
+        ],
+      };
+    }
 
-      // Regression (P2-004): a failed/empty asset must NEVER become a labeled
-      // TEXT box ("Image unavailable: …"). The visual slot always receives a
-      // real image element: the bundled placeholder raster when the source is
-      // unresolvable. The image "appears in PPTX" either way.
-      const dataUri = assetResult.dataUri || PLACEHOLDER_IMAGE_DATA_URI;
-      const mimeType = assetResult.mimeType || "image/png";
+    const entry = ctx.assetRegistry.get(ref.assetId);
+    const source = entry?.originalSrc ?? ref.src ?? "";
 
+    if (!source) {
+      return {
+        status: "unsupported",
+        issues: [
+          {
+            code: "image-load-failed",
+            severity: "error",
+            message: `Image block "${imageBlock.id}" has no resolvable source and cannot be embedded`,
+            suggestedFix: fix,
+            automaticFixAvailable: false,
+          },
+        ],
+      };
+    }
+
+    if (entry && entry.status === "ready" && entry.resolvedDataUri) {
       const element: PptxSlideElement = {
         type: "image",
         elementId: imageBlock.id,
         ...frame,
         data: {
-          dataUri,
+          dataUri: entry.resolvedDataUri,
           alt,
           options: {
             sizing: {
@@ -91,55 +114,71 @@ if (!src) {
           },
         },
       };
+      return { status: "native", issues: [], element };
+    }
 
-      if (assetResult.dataUri) {
-        return { status: "native", issues: [], element };
-      }
+    // The preparation phase failed to resolve this required image.
+    const reason =
+      entry?.error ?? "network error, CORS restriction, or missing asset";
+    const base = {
+      code: "image-load-failed" as const,
+      automaticFixAvailable: false as const,
+    };
 
+    // Fidelity First never ships a successful export with a placeholder in
+    // place of a real image: an unresolved required image is a blocking error.
+    if (ctx.config.mode === "fidelity-first") {
       return {
-        status: "rasterized",
+        status: "unsupported",
         issues: [
           {
-            severity: "warning",
-            code: "image-load-failed",
-            automaticFixAvailable: false,
+            ...base,
+            severity: "error",
+            message: `Image "${source}" (block "${imageBlock.id}") could not be loaded: ${reason}`,
             suggestedFix: fix,
-            message: `Image "${src}" (block "${imageBlock.id}") could not be loaded (network error or CORS restriction); a bundled placeholder image was embedded in its place`,
           },
         ],
-        element,
-      };
-    } catch (err) {
-      // Even a hard failure keeps the visual slot filled with a real image.
-      return {
-        status: "rasterized",
-        issues: [
-          {
-            severity: "warning",
-            code: "image-load-failed",
-            automaticFixAvailable: false,
-            suggestedFix: fix,
-            message: `Image "${src}" (block "${imageBlock.id}") failed to export: ${err instanceof Error ? err.message : "unknown error"}; a bundled placeholder image was embedded in its place`,
-          },
-        ],
-        element: {
-          type: "image",
-          elementId: imageBlock.id,
-          ...frame,
-          data: {
-            dataUri: PLACEHOLDER_IMAGE_DATA_URI,
-            alt,
-            options: {
-              sizing: {
-                type: fit === "cover" ? "cover" : "contain",
-                w: frame.w,
-                h: frame.h,
-              },
-              margin: 0,
-            },
-          },
-        },
       };
     }
+
+    // Editability-first: keep the visual slot filled with the bundled
+    // placeholder raster so the image still "appears" in PPTX.
+    return {
+      status: "rasterized",
+      issues: [
+        {
+          ...base,
+          severity: "warning",
+          message: `Image "${source}" (block "${imageBlock.id}") could not be loaded: ${reason}; a bundled placeholder image was embedded in its place`,
+          suggestedFix: fix,
+        },
+      ],
+      element: placeholderElement(imageBlock.id, frame, alt, fit),
+    };
   },
 };
+
+function placeholderElement(
+  elementId: string,
+  frame: { x: number; y: number; w: number; h: number },
+  alt: string,
+  fit: string,
+): PptxSlideElement {
+  return {
+    type: "image",
+    elementId,
+    ...frame,
+    data: {
+      dataUri: PLACEHOLDER_IMAGE_DATA_URI,
+      alt,
+      options: {
+        sizing: {
+          type: fit === "cover" ? "cover" : "contain",
+          w: frame.w,
+          h: frame.h,
+        },
+        margin: 0,
+      },
+    },
+  };
+}

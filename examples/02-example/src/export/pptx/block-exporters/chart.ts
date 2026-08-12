@@ -1,86 +1,35 @@
 // export/pptx/block-exporters/chart.ts
 //
-// PPTX chart exporter that uses the canonical chart spec from the snapshot.
-// This ensures color/typography parity between web and PPTX.
+// PPTX chart exporter that consumes the canonical ResolvedChartSpec from the
+// snapshot resolver. The exporter NEVER reconstructs chart data, orientation or
+// colors on its own — it reads the same immutable spec the web and presenter
+// surfaces use, then maps it to a native PowerPoint chart. When the native
+// chart cannot reproduce the web appearance within the fidelity policy, the
+// chart falls back to an SVG rendered from the SAME spec.
 
 import type {
   PptxBlockExport,
   PptxBlockExporter,
   PptxExportContext,
 } from "../../export-types";
-import type { Block, ChartContent, ChartValue } from "../../../deck/types";
+import type { Block, ChartContent } from "../../../deck/types";
 import { chartSpecFromContent } from "../../../deck/chart-spec";
 import { exportFrameOf, frameErrorIssue } from "../export-utils";
-import { resolveTheme, hexToPptx } from "../../resolved-theme";
+import { hexToPptx } from "../../resolved-theme";
 import type { ResolvedChartSpec } from "../../snapshot";
+import { resolveChartSpecForBlock } from "../../snapshot";
 import { renderChartToSvg } from "../../fidelity/svg/svg-chart";
-
-interface ChartDataPoint {
-  label: string;
-  value: number;
-}
-
-
 
 /** PptxGenJS data-label position derived from the shared ChartSpec policy. */
 function dataLabelPositionOf(position: string): string {
   return position === "in-end" ? "inEnd" : "outEnd";
 }
 
-/**
- * Build the resolved chart spec from a block's content.
- * This is the single source of truth for chart rendering.
- */
-function buildResolvedChartSpec(
-  content: ChartContent | undefined,
-  block: Block,
-  ctx: PptxExportContext
-): ResolvedChartSpec | null {
-  if (!content) return null;
+const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i;
 
-  // Skip template charts
-  if (content.isTemplate) return null;
-
-  // Validate chart data
-  if (!Array.isArray(content.values) || content.values.length === 0) return null;
-
-  const theme = resolveTheme(ctx.deck);
-  const palette = theme.chartPalette;
-
-  const highlightColor = theme.tokens.secondary;
-  const accentColor = palette[0] ?? theme.tokens.foreground;
-
-  // Compute per-bar colors: highlight bar gets secondary, others get accent
-  const seriesColors = content.values.map((_: ChartValue, index: number) => {
-    const isHighlight = content.highlightIndex === index;
-    return hexToPptx(isHighlight ? highlightColor : accentColor);
-  });
-
-  return {
-    type: content.type ?? "bar",
-    orientation: content.type === "bar-horizontal" ? "horizontal" : "vertical",
-    title: content.title ?? "",
-    unit: content.unit ?? "",
-    categories: content.values.map((v: ChartValue) => v.label),
-    series: [
-      {
-        name: content.title ?? "Data",
-        values: content.values.map((v: ChartValue) => v.value),
-      },
-    ],
-    highlightIndex: content.highlightIndex,
-    summary: content.summary ?? "",
-    style: {
-      seriesColors,
-      axisColor: hexToPptx(theme.tokens.border),
-      gridColor: hexToPptx(theme.tokens.border),
-      labelColor: hexToPptx(theme.tokens.muted),
-      fontFamily: theme.typography.bodyFont,
-      fontSize: 10,
-      background: "transparent",
-      highlightColor: hexToPptx(highlightColor),
-    },
-  };
+/** A chart data point that is definitely well-formed enough to export. */
+function hasRealChartData(content: ChartContent | undefined): boolean {
+  return Array.isArray(content?.values) && content.values.length > 0;
 }
 
 export const chartBlockExporter: PptxBlockExporter = {
@@ -117,10 +66,25 @@ export const chartBlockExporter: PptxBlockExporter = {
       };
     }
 
-    // Build resolved chart spec
-    const chartSpec = buildResolvedChartSpec(content, chartBlock, ctx);
+    // Malformed data (a non-array "values") is a hard error: the block is a
+    // source chart but cannot produce a semantic chart. This must never fall
+    // through to a default chart with placeholder data.
+    if (content && !Array.isArray(content.values)) {
+      return {
+        status: "unsupported",
+        issues: [
+          {
+            code: "chart-no-data",
+            severity: "error",
+            message: `Chart block "${chartBlock.id}" has malformed data (expected an array of {label, value}) and was not exported`,
+            suggestedFix: "Give the chart a valid values array",
+            automaticFixAvailable: false,
+          },
+        ],
+      };
+    }
 
-    if (!chartSpec) {
+    if (!hasRealChartData(content)) {
       return {
         status: "skipped",
         issues: [
@@ -135,33 +99,48 @@ export const chartBlockExporter: PptxBlockExporter = {
       };
     }
 
-    // Data parity invariant
-    const values = content?.values ?? [];
-    if (chartSpec.categories.length !== values.length) {
+    // ── Canonical spec: THE single source of truth for data + colors. ──────
+    const chartSpec: ResolvedChartSpec | undefined = resolveChartSpecForBlock(ctx.deck, chartBlock);
+    if (!chartSpec) {
       return {
         status: "unsupported",
         issues: [
           {
-            code: "chart-data-mismatch",
+            code: "chart-no-data",
             severity: "error",
-            message: `Chart block "${chartBlock.id}" has data mismatch: ${chartSpec.categories.length} categories in spec vs ${values.length} in source`,
-            suggestedFix: "Verify chart data integrity",
+            message: `Chart block "${chartBlock.id}" could not be resolved into a semantic chart`,
+            suggestedFix: "Verify the chart has a valid type, values, and labels",
             automaticFixAvailable: false,
           },
         ],
       };
     }
 
-    // Verify values match
-    for (let i = 0; i < values.length; i++) {
-      if (chartSpec.series[0]?.values[i] !== values[i].value) {
+    // Data parity invariant: the exported spec MUST be the exact content data.
+    const sourceValues = content!.values;
+    if (chartSpec.categories.length !== sourceValues.length) {
+      return {
+        status: "unsupported",
+        issues: [
+          {
+            code: "chart-data-mismatch",
+            severity: "error",
+            message: `Chart block "${chartBlock.id}" has data mismatch: ${chartSpec.categories.length} categories in spec vs ${sourceValues.length} in source`,
+            suggestedFix: "Verify chart data integrity",
+            automaticFixAvailable: false,
+          },
+        ],
+      };
+    }
+    for (let i = 0; i < sourceValues.length; i++) {
+      if (chartSpec.series[0]?.values[i] !== sourceValues[i].value) {
         return {
           status: "unsupported",
           issues: [
             {
               code: "chart-data-mismatch",
               severity: "error",
-              message: `Chart block "${chartBlock.id}" value mismatch at index ${i}: expected ${values[i].value} but got ${chartSpec.series[0]?.values[i]}`,
+              message: `Chart block "${chartBlock.id}" value mismatch at index ${i}: expected ${sourceValues[i].value} but got ${chartSpec.series[0]?.values[i]}`,
               suggestedFix: "Verify chart data integrity",
               automaticFixAvailable: false,
             },
@@ -172,23 +151,25 @@ export const chartBlockExporter: PptxBlockExporter = {
 
     const spec = chartSpecFromContent(content as ChartContent);
 
-    // Fidelity gate: check if native chart can reproduce web appearance
+    // ── Fidelity gate ────────────────────────────────────────────────────────
+    // A native PowerPoint chart is only used when it can reproduce the web
+    // chart's orientation, exact colors and data labels. Otherwise, in
+    // fidelity-first mode, render the SAME spec to SVG.
     const fidelityIssues: string[] = [];
 
-    // Check: Colors must be explicit hex (not automatic)
     const hasAutomaticColors = chartSpec.style.seriesColors.some(
-      (c) => !c || c.length < 6
+      (c) => !HEX_COLOR_RE.test(c),
     );
     if (hasAutomaticColors) {
-      fidelityIssues.push("series colors contain non-hex values");
+      fidelityIssues.push("series colors are not explicit hex values");
     }
-
-    // Check: Data labels must be configured
+    if (!/^#[0-9a-f]{6}$/i.test(chartSpec.style.highlightColor)) {
+      fidelityIssues.push("highlight color is not an explicit hex value");
+    }
     if (!spec.labelPolicy.showDataLabels) {
       fidelityIssues.push("data labels disabled");
     }
 
-    // If fidelity issues and mode is fidelity-first, use SVG fallback
     if (fidelityIssues.length > 0 && ctx.config.mode === "fidelity-first") {
       const svgString = renderChartToSvg(chartSpec);
       return {
@@ -213,14 +194,18 @@ export const chartBlockExporter: PptxBlockExporter = {
       };
     }
 
+    // ── Deterministic Web → PPTX orientation mapping ────────────────────────
+    // Web bar (vertical) → PowerPoint column chart (barDir "col").
+    // Web bar-horizontal → PowerPoint horizontal bar chart (barDir "bar").
+    // Never inferred from data shape; always driven by the persisted
+    // orientation on the canonical spec.
     const isHorizontal = chartSpec.orientation === "horizontal";
-    const isBar = chartSpec.type === "bar" || chartSpec.type === "bar-horizontal";
-    const pptxChartType = isBar ? "bar" : "line";
+    const pptxChartType = "bar" as const;
     const barDir = isHorizontal ? "bar" : "col";
 
     const labels = chartSpec.categories;
     const dataValues = chartSpec.series[0]?.values ?? [];
-    const seriesName = chartSpec.title || "Data";
+    const seriesName = chartSpec.series[0]?.name || chartSpec.title || "Data";
 
     const chartData = [
       {
@@ -235,10 +220,12 @@ export const chartBlockExporter: PptxBlockExporter = {
     const labelOptions = {
       showValue: showValueLabels,
       dataLabelPosition: dataLabelPositionOf(spec.labelPolicy.dataLabelPosition),
-      dataLabelColor: chartSpec.style.labelColor,
+      dataLabelColor: hexToPptx(chartSpec.style.foreground),
       dataLabelFontSize: chartSpec.style.fontSize,
       dataLabelFontBold: true,
-      ...(chartSpec.unit ? { valAxisTitle: chartSpec.unit, valAxisTitleFontSize: 9 } : {}),
+      ...(chartSpec.unit
+        ? { valAxisTitle: chartSpec.unit, valAxisTitleFontSize: 9 }
+        : {}),
       valAxisLabelShow: true,
       catAxisLabelShow: true,
       catAxisLabelFontSize: chartSpec.style.fontSize,
@@ -257,8 +244,8 @@ export const chartBlockExporter: PptxBlockExporter = {
           options: {
             showTitle: !!chartSpec.title,
             title: chartSpec.title,
-            chartColors: chartSpec.style.seriesColors,
-            ...(isBar ? { barDir } : {}),
+            chartColors: chartSpec.style.seriesColors.map((c) => hexToPptx(c)),
+            barDir,
             ...labelOptions,
           },
         },

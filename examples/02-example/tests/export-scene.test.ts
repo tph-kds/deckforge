@@ -47,18 +47,29 @@ function block(id: string, type: string, content: unknown, extra: Partial<Block>
 }
 
 describe("export scene validation (Phase 16)", () => {
-  it("flags an exported 'New chart' template as a leak", async () => {
+  it("never exports an editor template chart, and never flags real charts by title", async () => {
     const deck = makeDeck([
       slide("s1", [
         block("b-title", "heading", "Title"),
-        block("b-chart", "chart", { type: "bar", title: "New chart", values: [{ label: "A", value: 40 }] }),
+        block("b-template", "chart", { type: "bar", isTemplate: true, title: "New chart", values: [] }),
+        block("b-real", "chart", { type: "bar", title: "New chart", values: [{ label: "A", value: 40 }] }),
       ]),
     ]);
-    const { report } = await buildExportReport(deck, DEFAULT_PPTX_CONFIG);
-    expect(report.issues.some((issue) => issue.code === "template-chart-leak")).toBe(true);
+    const { report, slides } = await buildExportReport(deck, DEFAULT_PPTX_CONFIG);
+    // Template charts are excluded at the source and never reach the element list.
+    const exportedChartIds = slides
+      .flatMap((s) => s.elements)
+      .filter((e) => e.type === "chart")
+      .map((e) => e.elementId);
+    expect(exportedChartIds).not.toContain("b-template");
+    // A chart that merely shares the editor's default title but carries real
+    // data is a legitimate user chart and is never flagged by title.
+    expect(exportedChartIds).toContain("b-real");
+    expect(report.issues.some((issue) => issue.code === "template-chart-leak")).toBe(false);
+    expect(report.issues.some((issue) => issue.code === "chart-count-mismatch")).toBe(false);
   });
 
-  it("an unresolvable image becomes a real image element (never text placeholder)", async () => {
+  it("Fidelity First: an unresolvable image is a blocking error, never a placeholder", async () => {
     const deck = makeDeck([
       slide("s1", [
         block("b-title", "heading", "Title"),
@@ -66,6 +77,28 @@ describe("export scene validation (Phase 16)", () => {
       ]),
     ]);
     const { slides, report } = await buildExportReport(deck, DEFAULT_PPTX_CONFIG);
+    // Fidelity First forbids placeholder substitution: the block reports an
+    // error and no element is emitted, so the export cannot be "complete".
+    const blockReport = report.slides[0].blocks.find((b) => b.blockId === "b-image")!;
+    expect(blockReport.status).toBe("unsupported");
+    expect(blockReport.issues.some((issue) => issue.code === "image-load-failed" && issue.severity === "error")).toBe(true);
+    expect(slides[0].elements.find((e) => e.elementId === "b-image")).toBeUndefined();
+    expect(report.status).toBe("failed");
+    // The forbidden placeholder text must never reach the export surface.
+    const allText = report.slides.flatMap((s) =>
+      s.blocks.flatMap((b) => b.issues.map((i) => i.message)),
+    );
+    expect(allText.some((msg) => /image unavailable/i.test(msg))).toBe(false);
+  });
+
+  it("Editability First: an unresolvable image becomes a real placeholder raster (never text placeholder)", async () => {
+    const deck = makeDeck([
+      slide("s1", [
+        block("b-title", "heading", "Title"),
+        block("b-image", "image", { assetId: "missing", src: "https://example.com/never.png" }),
+      ]),
+    ]);
+    const { slides, report } = await buildExportReport(deck, { ...DEFAULT_PPTX_CONFIG, mode: "editability-first" });
     // The image slot is always filled with an actual raster element — never a
     // labeled "[image unavailable: …]" text box (P2-004).
     const element = slides[0].elements.find((e) => e.elementId === "b-image");
@@ -76,11 +109,6 @@ describe("export scene validation (Phase 16)", () => {
     const blockReport = report.slides[0].blocks.find((b) => b.blockId === "b-image")!;
     expect(blockReport.status).toBe("rasterized");
     expect(blockReport.issues.some((issue) => issue.code === "image-load-failed")).toBe(true);
-    // The forbidden placeholder text must never reach the export surface.
-    const allText = report.slides.flatMap((s) =>
-      s.blocks.flatMap((b) => b.issues.map((i) => i.message)),
-    );
-    expect(allText.some((msg) => /image unavailable/i.test(msg))).toBe(false);
   });
 
   it("flags duplicate element ids across slides", () => {

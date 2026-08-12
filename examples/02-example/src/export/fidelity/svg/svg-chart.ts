@@ -151,7 +151,7 @@ function renderVerticalBar(spec: ResolvedChartSpec): string {
   for (let index = 0; index < values.length; index++) {
     const placement = bars[index];
     const isHighlight = spec.highlightIndex === index;
-    const fill = isHighlight ? style.highlightColor : (style.seriesColors[index] ?? style.seriesColors[0] ?? "#6366F1");
+    const fill = style.seriesColors[index] ?? style.accentColor;
     const label = spec.categories[index] ?? "";
 
     parts.push(
@@ -161,7 +161,7 @@ function renderVerticalBar(spec: ResolvedChartSpec): string {
       `<text x="${placement.categoryLabelX}" y="${placement.categoryLabelY}" font-size="10" fill="${style.labelColor}" text-anchor="middle" font-family="${fontFamily}">${escapeXml(label)}</text>`
     );
     parts.push(
-      `<text x="${placement.dataLabelX}" y="${placement.dataLabelY}" font-size="10" font-weight="600" fill="${isHighlight ? style.highlightColor : style.labelColor}" text-anchor="middle" font-family="${fontFamily}">${escapeXml(placement.dataLabel)}</text>`
+      `<text x="${placement.dataLabelX}" y="${placement.dataLabelY}" font-size="10" font-weight="600" fill="${isHighlight ? style.highlightColor : style.foreground}" text-anchor="middle" font-family="${fontFamily}">${escapeXml(placement.dataLabel)}</text>`
     );
   }
 
@@ -197,7 +197,7 @@ function renderHorizontalBar(spec: ResolvedChartSpec): string {
     const y = top + index * rowH;
     const w = (value / max) * barMaxW;
     const isHighlight = spec.highlightIndex === index;
-    const fill = isHighlight ? style.highlightColor : (style.seriesColors[index] ?? style.seriesColors[0] ?? "#6366F1");
+    const fill = style.seriesColors[index] ?? style.accentColor;
     const label = categories[index] ?? "";
 
     parts.push(
@@ -207,7 +207,7 @@ function renderHorizontalBar(spec: ResolvedChartSpec): string {
       `<rect x="${labelW}" y="${y + 2}" width="${Math.max(w, 2)}" height="20" rx="3" fill="${fill}"/>`
     );
     parts.push(
-      `<text x="${labelW + w + 6}" y="${y + 17}" font-size="11" font-weight="600" fill="${style.labelColor}" font-family="${fontFamily}">${escapeXml(formatValue(value, spec.unit))}</text>`
+      `<text x="${labelW + w + 6}" y="${y + 17}" font-size="11" font-weight="600" fill="${isHighlight ? style.highlightColor : style.foreground}" font-family="${fontFamily}">${escapeXml(formatValue(value, spec.unit))}</text>`
     );
   }
 

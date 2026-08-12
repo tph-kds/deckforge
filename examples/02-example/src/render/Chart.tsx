@@ -1,24 +1,67 @@
 import type { ChartContent } from '../deck/types';
+import type { Block, DeckProject } from '../deck/types';
 import { chartSpecFromContent, describeBarChartLayout } from '../deck/chart-spec';
 import { getTheme } from '../deck/themes';
+import { resolveChartSpecForBlock } from '../export/snapshot';
 
 interface ChartProps {
   chart: ChartContent;
   themeId: string;
+  deck?: DeckProject;
+  block?: Block;
 }
 
-function useThemeColors(themeId: string) {
+interface ResolvedChartColors {
+  seriesColors: string[];
+  highlightColor: string;
+  foreground: string;
+  labelColor: string;
+  axis: string;
+  accent: string;
+}
+
+/**
+ * Colors for a chart. When a deck + block are available they come from the
+ * canonical ResolvedChartSpec (the same spec the PPTX exporter consumes), so
+ * Web and PPTX always render the exact same hexadecimal values. Without a
+ * deck/block (standalone rendering, tests) the theme is used directly, which
+ * produces identical colors for the same theme.
+ */
+function useResolvedChartColors(chart: ChartContent, themeId: string, deck?: DeckProject, block?: Block): ResolvedChartColors {
+  if (deck && block) {
+    const spec = resolveChartSpecForBlock(deck, block);
+    if (spec) {
+      return {
+        seriesColors: spec.style.seriesColors,
+        highlightColor: spec.style.highlightColor,
+        foreground: spec.style.foreground,
+        labelColor: spec.style.labelColor,
+        axis: spec.style.axisColor,
+        accent: spec.style.accentColor,
+      };
+    }
+  }
   const theme = getTheme(themeId);
-  const foreground = theme.tokens.foreground;
-  const muted = theme.tokens.muted;
-  const accent = theme.chartPalette[0];
-  const highlight = theme.tokens.secondary;
-  const axis = theme.tokens.border;
-  return { foreground, muted, accent, highlight, axis };
+  return {
+    seriesColors: [],
+    highlightColor: theme.tokens.secondary,
+    foreground: theme.tokens.foreground,
+    labelColor: theme.tokens.muted,
+    axis: theme.tokens.border,
+    accent: theme.chartPalette[0],
+  };
 }
 
-export function BarChart({ chart, themeId }: ChartProps) {
-  const colors = useThemeColors(themeId);
+function barFill(colors: ResolvedChartColors, index: number, isHighlight: boolean): string {
+  return isHighlight ? colors.highlightColor : (colors.seriesColors[index] ?? colors.accent);
+}
+
+function dataLabelFill(colors: ResolvedChartColors, isHighlight: boolean): string {
+  return isHighlight ? colors.highlightColor : colors.foreground;
+}
+
+export function BarChart({ chart, themeId, deck, block }: ChartProps) {
+  const colors = useResolvedChartColors(chart, themeId, deck, block);
   const spec = chartSpecFromContent(chart);
   const values = spec.values;
   if (!values.length) return null;
@@ -33,7 +76,7 @@ export function BarChart({ chart, themeId }: ChartProps) {
       aria-label={chart.summary ?? 'Bar chart'}
     >
       {spec.title ? (
-        <text x={8} y={14} fontSize={13} fontWeight={600} fill={colors.muted} fontFamily="var(--font-body)">
+        <text x={8} y={14} fontSize={13} fontWeight={600} fill={colors.labelColor} fontFamily="var(--font-body)">
           {spec.title}
         </text>
       ) : null}
@@ -60,7 +103,7 @@ export function BarChart({ chart, themeId }: ChartProps) {
             x={gridline.labelX}
             y={gridline.labelY}
             fontSize={spec.axisLabelFontSizePx}
-            fill={colors.muted}
+            fill={colors.labelColor}
             textAnchor={layout.axisLabelAnchor}
             fontFamily="var(--font-body)"
           >
@@ -79,13 +122,13 @@ export function BarChart({ chart, themeId }: ChartProps) {
               width={placement.barW}
               height={placement.barH}
               rx={3}
-              fill={isHighlight ? colors.highlight : colors.accent}
+              fill={barFill(colors, index, isHighlight)}
             />
             <text
               x={placement.categoryLabelX}
               y={placement.categoryLabelY}
               fontSize={spec.categoryLabelFontSizePx}
-              fill={colors.muted}
+              fill={colors.labelColor}
               textAnchor="middle"
               fontFamily="var(--font-body)"
             >
@@ -97,7 +140,7 @@ export function BarChart({ chart, themeId }: ChartProps) {
                 y={placement.dataLabelY}
                 fontSize={spec.dataLabelFontSizePx}
                 fontWeight={600}
-                fill={isHighlight ? colors.highlight : colors.foreground}
+                fill={dataLabelFill(colors, isHighlight)}
                 textAnchor="middle"
                 fontFamily="var(--font-body)"
               >
@@ -111,8 +154,8 @@ export function BarChart({ chart, themeId }: ChartProps) {
   );
 }
 
-export function BarHorizontalChart({ chart, themeId }: ChartProps) {
-  const colors = useThemeColors(themeId);
+export function BarHorizontalChart({ chart, themeId, deck, block }: ChartProps) {
+  const colors = useResolvedChartColors(chart, themeId, deck, block);
   const spec = chartSpecFromContent(chart);
   const values = spec.values;
   if (!values.length) return null;
@@ -131,7 +174,7 @@ export function BarHorizontalChart({ chart, themeId }: ChartProps) {
       aria-label={chart.summary ?? 'Horizontal bar chart'}
     >
       {spec.title ? (
-        <text x={0} y={14} fontSize={13} fontWeight={600} fill={colors.muted} fontFamily="var(--font-body)">
+        <text x={0} y={14} fontSize={13} fontWeight={600} fill={colors.labelColor} fontFamily="var(--font-body)">
           {spec.title}
         </text>
       ) : null}
@@ -141,7 +184,7 @@ export function BarHorizontalChart({ chart, themeId }: ChartProps) {
         const isHighlight = spec.highlightIndex === index;
         return (
           <g key={value.label}>
-            <text x={0} y={y + 16} fontSize={12} fill={colors.muted} textAnchor="start" fontFamily="var(--font-body)">
+            <text x={0} y={y + 16} fontSize={12} fill={colors.labelColor} textAnchor="start" fontFamily="var(--font-body)">
               {value.label}
             </text>
             <rect
@@ -150,14 +193,14 @@ export function BarHorizontalChart({ chart, themeId }: ChartProps) {
               width={Math.max(w, 2)}
               height={20}
               rx={3}
-              fill={isHighlight ? colors.highlight : colors.accent}
+              fill={barFill(colors, index, isHighlight)}
             />
             <text
               x={labelW + w + 6}
               y={y + 17}
               fontSize={11}
               fontWeight={600}
-              fill={colors.foreground}
+              fill={dataLabelFill(colors, isHighlight)}
               fontFamily="var(--font-body)"
             >
               {value.value}
@@ -170,7 +213,7 @@ export function BarHorizontalChart({ chart, themeId }: ChartProps) {
   );
 }
 
-export function ChartRenderer({ chart, themeId }: ChartProps) {
-  if (chart.type === 'bar-horizontal') return <BarHorizontalChart chart={chart} themeId={themeId} />;
-  return <BarChart chart={chart} themeId={themeId} />;
+export function ChartRenderer({ chart, themeId, deck, block }: ChartProps) {
+  if (chart.type === 'bar-horizontal') return <BarHorizontalChart chart={chart} themeId={themeId} deck={deck} block={block} />;
+  return <BarChart chart={chart} themeId={themeId} deck={deck} block={block} />;
 }

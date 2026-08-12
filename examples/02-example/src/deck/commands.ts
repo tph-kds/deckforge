@@ -1,10 +1,12 @@
 ﻿import type { Block, DeckProject, DeckSlide } from './types';
+import { imageContentOf } from './assets';
 import { migrateLayoutBindings, newId } from './seed';
 
 export type Command =
   | { type: 'updateBlockContent'; slideId: string; blockId: string; content: unknown }
   | { type: 'updateBlockStyle'; slideId: string; blockId: string; style: Record<string, unknown> }
   | { type: 'updateBlockAlt'; slideId: string; blockId: string; alt: string }
+  | { type: 'updateImageSource'; slideId: string; blockId: string; src: string }
   | { type: 'updateSlideTitle'; slideId: string; title: string }
   | { type: 'updateSlideNotes'; slideId: string; notes: string }
   | { type: 'updateSlideLayout'; slideId: string; layout: string }
@@ -46,6 +48,18 @@ function mapSlide(deck: DeckProject, slideId: string, fn: (slide: DeckSlide) => 
     ...deck,
     slides: deck.slides.map((slide) => (slide.id === slideId ? fn(slide) : slide)),
   };
+}
+
+/**
+ * Best-effort MIME type for a data: URL; remote URLs are resolved at fetch
+ * time and reported by the preparation phase.
+ */
+function mimeTypeOf(src: string): string | undefined {
+  if (src.startsWith('data:')) {
+    const mime = src.slice(5).split(';')[0];
+    return mime || undefined;
+  }
+  return undefined;
 }
 
 function mapBlock(
@@ -142,6 +156,68 @@ export function applyCommandWithResult(deck: DeckProject, command: Command): Dis
         ...result(mapBlock(deck, command.slideId, command.blockId, (block) => ({ ...block, alt: command.alt }))),
         affectedSlideIds: [command.slideId],
       };
+    case 'updateImageSource': {
+      // Atomic image-source edit: the block's manifest binding and the asset
+      // manifest stay consistent in ONE command. Previously the inspector wrote
+      // content.src only, leaving the manifest stale so preflight and the PPTX
+      // exporter could disagree about whether the image resolves (P2-004).
+      const trimmed = command.src.trim();
+      const created: string[] = [];
+      let nextAssets = deck.assets ?? [];
+
+      const next = mapSlide(deck, command.slideId, (slide) => ({
+        ...slide,
+        blocks: slide.blocks.map((block) => {
+          if (block.id !== command.blockId || block.type !== 'image') return block;
+          const content = imageContentOf(block);
+          const existingAssetId = content.assetId;
+          const existingAsset = existingAssetId
+            ? nextAssets.find((a) => a.id === existingAssetId)
+            : undefined;
+
+          if (!trimmed) {
+            // Clearing the URL unbinds the block so it renders as the designed
+            // placeholder (export: rasterized placeholder, never an error).
+            return {
+              ...block,
+              content: { ...content, src: undefined, assetId: undefined },
+            };
+          }
+
+          let assetId = existingAsset ? existingAsset.id : (existingAssetId ?? '');
+          if (!assetId) {
+            assetId = newId('asset');
+            created.push(assetId);
+          }
+
+          if (nextAssets.some((a) => a.id === assetId)) {
+            nextAssets = nextAssets.map((a) =>
+              a.id === assetId
+                ? { ...a, src: trimmed, mimeType: a.mimeType ?? mimeTypeOf(trimmed) }
+                : a,
+            );
+          } else {
+            nextAssets = [
+              ...nextAssets,
+              { id: assetId, kind: 'image' as const, src: trimmed, mimeType: mimeTypeOf(trimmed) },
+            ];
+          }
+
+          // The manifest owns the source; the block just binds to it.
+          return {
+            ...block,
+            content: { ...content, src: undefined, assetId },
+          };
+        }),
+      }));
+
+      return {
+        deck: { ...next, assets: nextAssets },
+        createdIds: created,
+        removedIds: [],
+        affectedSlideIds: [command.slideId],
+      };
+    }
     case 'updateSlideTitle':
       return {
         ...result(mapSlide(deck, command.slideId, (slide) => {

@@ -22,6 +22,7 @@ import type { Block, DeckProject, DeckSlide } from "../src/deck/types";
 import { PptxExporter, buildExportReport } from "../src/export/pptx/pptx-exporter";
 import { DEFAULT_PPTX_CONFIG } from "../src/export/export-types";
 import { runExportPreflight } from "../src/export/export-preflight";
+import { prepareExport } from "../src/export/prepare-export";
 import { getBlockExporter } from "../src/export/pptx/block-exporters/index";
 import { planBlockRepresentation } from "../src/export/fidelity/representation-planner";
 import { FIDELITY_POLICY } from "../src/export/fidelity/fidelity-policy";
@@ -388,6 +389,21 @@ describe("export coverage invariants (golden fixture deck)", () => {
     expect(result.estimatedRecall).toBe(1);
     const geometryGroup = result.groups.find((g) => g.group === "geometry");
     expect(geometryGroup?.count ?? 0).toBe(0);
+  });
+
+  it("the prepared registry resolves the fixture image to embeddable bytes", async () => {
+    const deck = makeDeck([unboundFixtureSlide()]);
+    const prepared = await prepareExport(deck, DEFAULT_PPTX_CONFIG);
+
+    // The single preparation phase resolved the fixture image to a real data
+    // URI — preflight and the exporter consume exactly this registry.
+    const asset = prepared.assets.get("asset-book-cover");
+    expect(asset?.status).toBe("ready");
+    expect(asset?.resolvedDataUri).toMatch(/^data:image\/png;base64,/);
+
+    const imageBlock = prepared.slides[0].blocks.find((b) => b.id === "b36");
+    expect(imageBlock?.assetSnapshot?.status).toBe("ready");
+    expect(imageBlock?.assetSnapshot?.dataUri).toBe(asset?.resolvedDataUri);
   });
 });
 

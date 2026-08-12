@@ -1,5 +1,5 @@
 import type { Block, DeckProject } from "../deck/types";
-import type { AssetEmbedResult } from "./pptx/pptx-assets";
+import type { PreparedAsset } from "./prepare-export";
 
 export type ExportIssueSeverity = "info" | "warning" | "error";
 
@@ -276,7 +276,13 @@ export interface PptxExportContext {
   deck: DeckProject;
   config: PptxExportConfig;
   fontWarnings: FontWarning[];
-  assetCache: Map<string, AssetEmbedResult>;
+  /**
+   * The canonical, pre-resolved asset registry produced by the single
+   * `prepareExport` phase. Exporters MUST consume resolved bytes from here and
+   * must never fetch or re-resolve an asset on their own. Keyed by canonical
+   * asset id (manifest id or `inline:<blockId>`).
+   */
+  assetRegistry: ReadonlyMap<string, PreparedAsset>;
   /** Document pixel width of the slide (from SlideDocument.canvas). */
   slideWidth: number;
   /** Document pixel height of the slide (from SlideDocument.canvas). */

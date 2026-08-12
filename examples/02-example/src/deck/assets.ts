@@ -40,6 +40,39 @@ export function resolveAsset(deck: AssetDeck, assetId?: string): DeckAsset | und
   return (deck.assets ?? []).find((asset) => asset.id === assetId);
 }
 
+/** Canonical asset reference for an image block. */
+export interface CanonicalAssetRef {
+  /** Registry key: manifest asset id, or `inline:<blockId>` for inline sources. */
+  assetId: string;
+  /** Concrete source to fetch/embed when a real source exists. */
+  src?: string;
+  /** True when `content.assetId` points at a manifest entry that does not exist. */
+  orphan?: boolean;
+}
+
+/**
+ * The single, authoritative way to map an image block to the asset it needs
+ * embedded in an export. Manifest entries are preferred; inline `src` values
+ * (legacy editor state) get a deterministic synthetic keyed by block. A
+ * `content.assetId` that does not exist in the manifest is reported as an
+ * orphan ONLY when there is no inline source to fall back on — a stale id
+ * alongside a concrete `src` still exports that src. Returns undefined for
+ * placeholder blocks with no source at all.
+ */
+export function canonicalAssetRef(deck: AssetDeck, block: Block): CanonicalAssetRef | undefined {
+  const content = imageContentOf(block);
+  if (content.assetId) {
+    const asset = resolveAsset(deck, content.assetId);
+    if (asset) return { assetId: asset.id, src: asset.src || undefined };
+    const inline = content.src ?? (block as { src?: string }).src;
+    if (inline) return { assetId: `inline:${block.id}`, src: inline };
+    return { assetId: content.assetId, orphan: true };
+  }
+  const inline = content.src ?? (block as { src?: string }).src;
+  if (inline) return { assetId: `inline:${block.id}`, src: inline };
+  return undefined;
+}
+
 /**
  * Resolve the concrete source and status for an image block.
  *

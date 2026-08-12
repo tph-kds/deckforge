@@ -11,9 +11,9 @@ import type {
   PptxExportResult,
   PptxSlideElement,
 } from "../export-types";
-import type { DeckProject, DeckSlide } from "../../deck/types";
+import type { DeckProject, DeckSlide, ChartContent } from "../../deck/types";
 import { createExportContext } from "./pptx-context";
-import { resolveAllAssets, type AssetEmbedResult } from "./pptx-assets";
+import { prepareExport, isPreparedExport, type PreparedExport } from "../prepare-export";
 import { getBlockExporter } from "./block-exporters/index";
 import { resolveSlideGeometry, type ResolvedBlockGeometry } from "../../deck/geometry-resolver";
 import { verifyPptxArchive } from "./pptx-verifier";
@@ -142,11 +142,14 @@ export interface ExportBuildResult {
 }
 
 export async function buildExportReport(
-  deck: DeckProject,
-  config: PptxExportConfig,
-  preResolvedCache?: Map<string, AssetEmbedResult>
+  input: PreparedExport | DeckProject,
+  config: PptxExportConfig
 ): Promise<ExportBuildResult> {
-  const ctx = createExportContext(deck, config, preResolvedCache);
+  const prepared: PreparedExport = isPreparedExport(input)
+    ? input
+    : await prepareExport(input, config);
+  const deck = prepared.deck;
+  const ctx = createExportContext(deck, config, prepared);
   const issues: ExportIssue[] = [];
   const slideReports: ExportSlideReport[] = [];
   const slides: ExportBuildResult["slides"] = [];
@@ -282,23 +285,49 @@ export async function buildExportReport(
     slides.push({ slide, elements });
   }
 
-  // Chart count invariant
-  const sourceChartCount = deck.slides
-    .filter((slide) => config.includeHiddenSlides || !slide.hidden)
-    .flatMap((slide) => slide.blocks)
-    .filter((block) => block.type === "chart" && !(block.content as { isTemplate?: boolean })?.isTemplate)
-    .length;
+  // ── Chart invariants ────────────────────────────────────────────────────────
+  // "New chart" templates are NEVER counted: the source set is the visible,
+  // non-template chart blocks that carry real data. The exported set is every
+  // element (native chart OR SVG fidelity fallback) whose elementId maps back
+  // to one of those source blocks. Every exported chart MUST have a
+  // sourceBlockId; a chart with no source block is an orphan and is rejected.
+  const sourceChartBlockIds = new Set<string>();
+  for (const slide of deck.slides) {
+    if (!config.includeHiddenSlides && slide.hidden) continue;
+    for (const block of slide.blocks) {
+      if (block.type !== "chart") continue;
+      const content = block.content as ChartContent | undefined;
+      if (content?.isTemplate) continue;
+      if (!Array.isArray(content?.values) || !content.values.length) continue;
+      sourceChartBlockIds.add(block.id);
+    }
+  }
 
-  const exportedChartCount = slides
-    .flatMap(({ elements }) => elements)
-    .filter((element) => element.type === "chart")
-    .length;
+  const allExportedElements = slides.flatMap(({ elements }) => elements);
+  const exportedChartCount = allExportedElements.filter(
+    (element) => !!element.elementId && sourceChartBlockIds.has(element.elementId),
+  ).length;
 
-  if (sourceChartCount !== exportedChartCount) {
+  if (sourceChartBlockIds.size !== exportedChartCount) {
     issues.push({
       code: "chart-count-mismatch",
       severity: "error",
-      message: `Chart count mismatch: ${sourceChartCount} source charts but ${exportedChartCount} exported charts`,
+      message: `Chart count mismatch: ${sourceChartBlockIds.size} source charts but ${exportedChartCount} exported charts`,
+      automaticFixAvailable: false,
+    });
+  }
+
+  // Every native chart element must originate from a real source chart block.
+  const orphanCharts = allExportedElements.filter(
+    (element) =>
+      element.type === "chart" &&
+      !(element.elementId && sourceChartBlockIds.has(element.elementId)),
+  );
+  if (orphanCharts.length > 0) {
+    issues.push({
+      code: "chart-count-mismatch",
+      severity: "error",
+      message: `Exported ${orphanCharts.length} chart element(s) with no matching source chart block`,
       automaticFixAvailable: false,
     });
   }
@@ -348,29 +377,17 @@ export class PptxExporter {
     this.config = config;
   }
 
-  async export(deck: DeckProject): Promise<PptxExportResult> {
-    // Pre-resolve all remote assets before export
-    let preResolvedCache: Map<string, AssetEmbedResult> | undefined;
-    try {
-      preResolvedCache = await resolveAllAssets(deck);
-    } catch (err) {
-      const report: ExportReport = {
-        status: "failed",
-        slides: [],
-        issues: [
-          {
-            code: "image-load-failed",
-            severity: "error",
-            message: `Asset pre-resolution failed: ${err instanceof Error ? err.message : "unknown error"}`,
-            suggestedFix: "Ensure all image assets are accessible or use data: URLs",
-            automaticFixAvailable: false,
-          },
-        ],
-      };
-      return { report, blob: new Blob(), archiveVerified: false, fidelity: undefined };
-    }
+  async export(input: PreparedExport | DeckProject): Promise<PptxExportResult> {
+    // The canonical, single preparation phase. When a PreparedExport is passed
+    // (as the dialog always does), no resolution work happens here — the
+    // exporter consumes the already-resolved registry. A raw DeckProject is
+    // prepared on the fly for programmatic callers.
+    const prepared: PreparedExport = isPreparedExport(input)
+      ? input
+      : await prepareExport(input, this.config);
+    const deck = prepared.deck;
 
-    const { report, slides, fidelity } = await buildExportReport(deck, this.config, preResolvedCache);
+    const { report, slides, fidelity } = await buildExportReport(prepared, this.config);
 
     const PptxGenJS = (await import("pptxgenjs")).default;
     const pptx = new PptxGenJS();
@@ -390,7 +407,7 @@ export class PptxExporter {
         pptxSlide.addNotes(slide.speakerNotes);
       }
 
-      const slideCtx = createExportContext(deck, this.config, preResolvedCache);
+      const slideCtx = createExportContext(deck, this.config, prepared);
       for (const element of elements) {
         writeElementToSlide(pptxSlide, element, slideCtx);
       }

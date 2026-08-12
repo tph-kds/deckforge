@@ -7,8 +7,13 @@
 // - Missing image assets
 // - Geometry errors
 // - Duplicate block exports
+//
+// Preflight operates on the output of the single `prepareExport` phase: it
+// consumes the prepared snapshots and the canonical asset registry, so
+// "Ready to export" is only ever reported when every required visible image
+// actually resolved to embeddable bytes. No network work happens here.
 
-import type { DeckProject, DeckSlide, Block, ChartContent } from "../deck/types";
+import type { DeckProject } from "../deck/types";
 import type {
   ExportIssue,
   ExportPreflightResult,
@@ -16,9 +21,10 @@ import type {
   PreflightGroupSummary,
   PptxExportConfig,
 } from "./export-types";
+import { DEFAULT_PPTX_CONFIG } from "./export-types";
 import type { ImmutableSlideSnapshot, ResolvedBlockSnapshot } from "./snapshot";
-import { resolveSlideSnapshot, validateSnapshot, hashSlideSemanticContent } from "./snapshot";
-import { resolveSlideGeometry } from "../deck/geometry-resolver";
+import { hashSlideSemanticContent } from "./snapshot";
+import { prepareExport, isPreparedExport, type PreparedExport } from "./prepare-export";
 import { getBlockExporter } from "./pptx/block-exporters/index";
 
 // ─── Preflight Scoring ───────────────────────────────────────────────────────
@@ -32,19 +38,6 @@ function calculateScore(issues: ExportIssue[]): number {
   }
   return Math.max(0, Math.min(100, score));
 }
-
-// ─── Preflight Issue Codes ───────────────────────────────────────────────────
-
-export type PreflightIssueCode =
-  | "hidden-block-included"
-  | "template-chart-included"
-  | "missing-chart-data"
-  | "missing-image-asset"
-  | "geometry-missing"
-  | "duplicate-block-id"
-  | "block-type-unsupported"
-  | "snapshot-validation-failed"
-  | "content-parity-mismatch";
 
 // ─── Preflight Validators ────────────────────────────────────────────────────
 
@@ -167,29 +160,77 @@ function validateChartBlock(
 }
 
 /**
- * Validate image blocks have resolved assets.
+ * Classify an image block against the resolved asset registry and report the
+ * issues that block (or constrain) an export.
+ *
+ *   ready        → native (resolved to embeddable bytes in preparation)
+ *   failed       → Fidelity First: missing + blocking error
+ *                  Editability First: fallback + warning (placeholder embedded)
+ *   no snapshot  → placeholder block (no source): fallback + info
  */
-function validateImageBlock(
+function classifyImageBlock(
   block: ResolvedBlockSnapshot,
-  slideId: string
-): ExportIssue[] {
-  const issues: ExportIssue[] = [];
+  slideId: string,
+  config: PptxExportConfig,
+): { representation: "native" | "fallback" | "missing"; issues: ExportIssue[] } {
+  const as = block.assetSnapshot;
 
-  if (block.type !== "image") return issues;
-
-  if (!block.assetSnapshot) {
-    issues.push({
-      code: "unresolved-image",
-      severity: "warning",
-      slideId,
-      blockId: block.id,
-      message: `Image block "${block.id}" has no resolved asset`,
-      suggestedFix: "Add a valid image asset to the block",
-      automaticFixAvailable: false,
-    });
+  if (!as) {
+    return {
+      representation: "fallback",
+      issues: [
+        {
+          code: "image-load-failed",
+          severity: "info",
+          slideId,
+          blockId: block.id,
+          message: `Image block "${block.id}" has no image source; a bundled placeholder raster will be embedded`,
+          suggestedFix: "Attach a local asset to the image block or use a data: URL",
+          automaticFixAvailable: true,
+        },
+      ],
+    };
   }
 
-  return issues;
+  if (as.status === "ready") {
+    return { representation: "native", issues: [] };
+  }
+
+  const reason =
+    as.error ??
+    (as.resolvedSrc ? `image "${as.resolvedSrc}" could not be resolved` : "no resolvable source");
+
+  if (config.mode === "fidelity-first") {
+    return {
+      representation: "missing",
+      issues: [
+        {
+          code: "unresolved-image",
+          severity: "error",
+          slideId,
+          blockId: block.id,
+          message: `Image block "${block.id}" cannot be embedded in the PPTX: ${reason}`,
+          suggestedFix: "Fix the image URL or attach a local/data: asset so the image can be embedded offline",
+          automaticFixAvailable: false,
+        },
+      ],
+    };
+  }
+
+  return {
+    representation: "fallback",
+    issues: [
+      {
+        code: "image-load-failed",
+        severity: "warning",
+        slideId,
+        blockId: block.id,
+        message: `Image block "${block.id}" cannot be embedded: ${reason}; a bundled placeholder raster will be embedded in its place`,
+        suggestedFix: "Fix the image URL or attach a local/data: asset so the image can be embedded offline",
+        automaticFixAvailable: false,
+      },
+    ],
+  };
 }
 
 /**
@@ -257,15 +298,22 @@ function validateNoDuplicateBlockIds(
 // ─── Main Preflight Function ─────────────────────────────────────────────────
 
 /**
- * Run export preflight validation on a deck.
- * This must be called before export to ensure all blocks are properly resolved.
+ * Run export preflight validation on a prepared export.
+ *
+ * Pass the result of `prepareExport` so the preflight, fidelity accounting and
+ * the PPTX exporter all reason about the SAME resolved assets. For backward
+ * compatibility a raw `DeckProject` is prepared on the fly (this still
+ * resolves assets exactly once, inside that preparation).
  */
-export function runExportPreflight(
-  deck: DeckProject,
-  _config?: PptxExportConfig
-): ExportPreflightResult {
+export async function runExportPreflight(
+  input: PreparedExport | DeckProject,
+  config?: PptxExportConfig
+): Promise<ExportPreflightResult> {
+  const prepared: PreparedExport = isPreparedExport(input)
+    ? input
+    : await prepareExport(input, config ?? DEFAULT_PPTX_CONFIG);
+
   const issues: ExportIssue[] = [];
-  const snapshots: ImmutableSlideSnapshot[] = [];
 
   let chartBlockCount = 0;
   let geometryMissingCount = 0;
@@ -274,82 +322,43 @@ export function runExportPreflight(
   let visibleCount = 0;
   let nativeCount = 0;
   let fallbackCount = 0;
-  let unexportableCount = 0;
+  let missingCount = 0;
 
-  for (const slide of deck.slides) {
-    // Skip hidden slides
-    if (slide.hidden) continue;
+  for (const snapshot of prepared.slides) {
+    const rawSlide = prepared.deck.slides.find((slide) => slide.id === snapshot.slideId);
+    if (!rawSlide) continue;
 
-    // Canonical geometry: fail closed when a visible block has no frame.
-    const scene = resolveSlideGeometry(slide, deck.canvas);
-    geometryMissingCount += scene.missingFrames.length;
-    for (const missing of scene.missingFrames) {
-      issues.push({
-        code: "invalid-geometry",
-        severity: "error",
-        slideId: slide.id,
-        blockId: missing.blockId,
-        message: `Block "${missing.blockId}" (${missing.block.type}) has no resolvable frame and cannot be exported`,
-        suggestedFix: "Bind the block to a layout slot or give it an explicit frame",
-        automaticFixAvailable: true,
-      });
-    }
-
-    // Create snapshot
-    const snapshot = resolveSlideSnapshot(slide, deck);
-
-    // Validate snapshot structure
-    const snapshotIssues = validateSnapshot(snapshot);
-    for (const message of snapshotIssues) {
-      issues.push({
-        code: "block-export-failed",
-        severity: "warning",
-        slideId: slide.id,
-        message,
-        automaticFixAvailable: false,
-      });
-    }
-
-    // Validate each block
+    // Validate each block that made it into the canonical snapshot.
     for (const block of snapshot.blocks) {
+      visibleCount++;
+
       if (block.type === "chart") chartBlockCount++;
 
-      // Validate visibility
-      issues.push(...validateBlockVisibility(block, slide.id));
+      issues.push(...validateBlockVisibility(block, snapshot.slideId));
+      issues.push(...validateChartBlock(block, snapshot.slideId));
+      issues.push(...validateBlockGeometry(block, snapshot.slideId));
 
-      // Validate chart blocks
-      issues.push(...validateChartBlock(block, slide.id));
+      if (block.type === "image") {
+        const classification = classifyImageBlock(block, snapshot.slideId, prepared.config);
+        issues.push(...classification.issues);
+        if (classification.representation === "native") nativeCount++;
+        else if (classification.representation === "fallback") fallbackCount++;
+        else missingCount++;
+        continue;
+      }
 
-      // Validate image blocks
-      issues.push(...validateImageBlock(block, slide.id));
-
-      // Validate geometry
-      issues.push(...validateBlockGeometry(block, slide.id));
-    }
-
-    // Validate no duplicate block IDs
-    issues.push(...validateNoDuplicateBlockIds(snapshot));
-
-    snapshots.push(snapshot);
-
-    // Parity + coverage classification over visible blocks. Blocks with no
-    // native exporter are counted as missing AND flagged with an issue so the
-    // export is never a silent omission.
-    for (const block of slide.blocks) {
-      if (block.hidden) continue;
-      visibleCount++;
       const exporter = getBlockExporter(block.type);
       if (exporter.type === "fallback" && block.type !== "fallback") {
         issues.push({
           code: "unsupported-block-type",
           severity: "warning",
-          slideId: slide.id,
+          slideId: snapshot.slideId,
           blockId: block.id,
           message: `Block type "${block.type}" cannot be exported natively; it will be rasterized, substituted, or omitted`,
           suggestedFix: "Convert to a supported block type for native export",
           automaticFixAvailable: false,
         });
-        unexportableCount++;
+        missingCount++;
         continue;
       }
       if (exporter.exportability === "image-only") {
@@ -358,13 +367,34 @@ export function runExportPreflight(
         nativeCount++;
       }
     }
+
+    issues.push(...validateNoDuplicateBlockIds(snapshot));
+
+    // Fail closed on geometry: any visible raw block missing from the canonical
+    // snapshot has no resolvable frame and cannot be exported.
+    const snapshotBlockIds = new Set(snapshot.blocks.map((block) => block.id));
+    for (const block of rawSlide.blocks) {
+      if (block.hidden) continue;
+      if (snapshotBlockIds.has(block.id)) continue;
+      geometryMissingCount++;
+      visibleCount++;
+      issues.push({
+        code: "invalid-geometry",
+        severity: "error",
+        slideId: rawSlide.id,
+        blockId: block.id,
+        message: `Block "${block.id}" (${block.type}) has no resolvable frame and cannot be exported`,
+        suggestedFix: "Bind the block to a layout slot or give it an explicit frame",
+        automaticFixAvailable: true,
+      });
+    }
   }
 
   // Check for errors
   const hasErrors = issues.some((issue) => issue.severity === "error");
 
   // Parity estimates are 0..1 fractions, not percentages (exported contract).
-  const estimatedMissing = unexportableCount;
+  const estimatedMissing = missingCount;
   const estimatedFallbacks = fallbackCount;
   const estimatedRecall =
     visibleCount > 0 ? (visibleCount - estimatedMissing) / visibleCount : 1;
@@ -389,8 +419,8 @@ export function runExportPreflight(
     {
       group: "assets",
       label: "Assets",
-      count: issues.filter((i) => i.code === "unresolved-image").length,
-      issues: issues.filter((i) => i.code === "unresolved-image"),
+      count: issues.filter((i) => i.code === "unresolved-image" || i.code === "image-load-failed").length,
+      issues: issues.filter((i) => i.code === "unresolved-image" || i.code === "image-load-failed"),
     },
     {
       group: "content",
@@ -403,11 +433,13 @@ export function runExportPreflight(
       label: "Structural",
       count: issues.filter((i) =>
         i.code === "block-hidden-skipped" ||
-        i.code === "duplicate-element-id"
+        i.code === "duplicate-element-id" ||
+        i.code === "unsupported-block-type"
       ).length,
       issues: issues.filter((i) =>
         i.code === "block-hidden-skipped" ||
-        i.code === "duplicate-element-id"
+        i.code === "duplicate-element-id" ||
+        i.code === "unsupported-block-type"
       ),
     },
   ];

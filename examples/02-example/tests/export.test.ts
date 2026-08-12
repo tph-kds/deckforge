@@ -200,7 +200,7 @@ describe("buildExportReport", () => {
     expect(diagram?.contentPreserved).toBe(true);
   });
 
-  it("skips an image with no resolvable source and never reports complete", async () => {
+  it("blocks an image with an unknown asset id (fidelity-first fail closed)", async () => {
     const deck = makeDeck([
       slide("slide-1", [
         block("block-title", "heading", "Title"),
@@ -210,10 +210,14 @@ describe("buildExportReport", () => {
 
     const { report } = await buildExportReport(deck, DEFAULT_PPTX_CONFIG);
 
-    expect(report.status).not.toBe("complete");
+    // An image block referencing a manifest asset that does not exist is a
+    // blocking resolution failure, never a silent skip (P2-004).
+    expect(report.status).toBe("failed");
     const image = report.slides[0].blocks.find((item) => item.blockId === "block-image");
-    expect(image?.status).toBe("skipped");
-    expect(image?.issues.some((issue) => issue.code === "image-load-failed")).toBe(true);
+    expect(image?.status).toBe("unsupported");
+    expect(
+      image?.issues.some((issue) => issue.code === "image-load-failed" && issue.severity === "error"),
+    ).toBe(true);
   });
 
   it("forces status != complete when required body content is skipped", async () => {

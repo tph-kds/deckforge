@@ -7,6 +7,11 @@ export interface AssetEmbedResult {
   mimeType: string;
 }
 
+export interface EmbedOutcome {
+  result: AssetEmbedResult;
+  error?: string;
+}
+
 const FETCH_TIMEOUT_MS = 15000;
 
 async function fetchWithTimeout(url: string, timeoutMs: number): Promise<Response> {
@@ -22,12 +27,18 @@ async function fetchWithTimeout(url: string, timeoutMs: number): Promise<Respons
   }
 }
 
-export async function embedAsset(
+/**
+ * Fetch one URL into an embeddable data URI, caching by URL so each source is
+ * resolved at most once per preparation. Unlike the legacy `embedAsset`, this
+ * variant also reports WHY a resolution failed so preflight can surface an
+ * actionable, block-specific blocking error instead of a generic one.
+ */
+export async function embedAssetDetailed(
   assetUrl: string,
   cache: Map<string, AssetEmbedResult>
-): Promise<AssetEmbedResult> {
+): Promise<EmbedOutcome> {
   if (cache.has(assetUrl)) {
-    return cache.get(assetUrl)!;
+    return { result: cache.get(assetUrl)! };
   }
 
   if (assetUrl.startsWith("data:")) {
@@ -36,7 +47,7 @@ export async function embedAsset(
       mimeType: assetUrl.split(";")[0].split(":")[1] ?? "image/png",
     };
     cache.set(assetUrl, result);
-    return result;
+    return { result };
   }
 
   try {
@@ -58,15 +69,23 @@ export async function embedAsset(
 
     const result: AssetEmbedResult = { dataUri, mimeType };
     cache.set(assetUrl, result);
-    return result;
-  } catch {
+    return { result };
+  } catch (err) {
+    const error = err instanceof Error ? err.message : "unknown error";
     const empty: AssetEmbedResult = {
       dataUri: "",
       mimeType: "image/png",
     };
     cache.set(assetUrl, empty);
-    return empty;
+    return { result: empty, error };
   }
+}
+
+export async function embedAsset(
+  assetUrl: string,
+  cache: Map<string, AssetEmbedResult>
+): Promise<AssetEmbedResult> {
+  return (await embedAssetDetailed(assetUrl, cache)).result;
 }
 
 export function embedAssetSync(
@@ -77,40 +96,4 @@ export function embedAssetSync(
     return cache.get(assetUrl)!;
   }
   return null;
-}
-
-/**
- * Pre-resolve all remote assets before export.
- * This prevents CORS issues and placeholder substitutions.
- * Returns a map of URL → AssetEmbedResult.
- * Throws if any asset fails to resolve.
- */
-export async function resolveAllAssets(
-  deck: { assets?: Array<{ id: string; src: string; kind?: string }> }
-): Promise<Map<string, AssetEmbedResult>> {
-  const cache = new Map<string, AssetEmbedResult>();
-  const remoteAssets = (deck.assets ?? []).filter(
-    (asset) => asset.src && !asset.src.startsWith("data:") && asset.kind !== "video"
-  );
-
-  const results = await Promise.allSettled(
-    remoteAssets.map(async (asset) => {
-      const result = await embedAsset(asset.src, cache);
-      if (!result.dataUri) {
-        throw new Error(`Failed to resolve asset "${asset.id}" (${asset.src})`);
-      }
-      return { url: asset.src, result };
-    })
-  );
-
-  const failures = results.filter(
-    (r): r is PromiseRejectedResult => r.status === "rejected"
-  );
-
-  if (failures.length > 0) {
-    const messages = failures.map((f) => f.reason?.message ?? "unknown error").join("; ");
-    throw new Error(`Asset resolution failed: ${messages}`);
-  }
-
-  return cache;
 }

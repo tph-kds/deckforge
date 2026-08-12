@@ -26,30 +26,16 @@ export interface ExportScene {
   slides: Array<{ slideId: string; elements: PptxSlideElement[] }>;
 }
 
-/** Detect the leak of a starter "New chart" template into the export. */
-function isTemplateChartLeak(slide: ExportScene["slides"][number]): ExportSceneDiagnostic[] {
-  return slide.elements
-    .filter((element) => element.type === "chart")
-    .map((element): ExportSceneDiagnostic[] => {
-      const data = element.data as { title?: string; options?: Record<string, unknown> };
-      const title = data.title ?? (data.options?.title as string | undefined) ?? "";
-      if (/new chart/i.test(title)) {
-        return [
-          {
-            code: "template-chart-leak",
-            severity: "warning",
-            slideId: slide.slideId,
-            elementId: element.elementId,
-            message: `Slide "${slide.slideId}" exports a chart titled "${title}", which matches an unconfigured editor template; verify the chart has real data`,
-          },
-        ];
-      }
-      return [];
-    })
-    .flat();
-}
+/**
+ * The "New chart" template is not detected by its title (never special-case
+ * titles). Template charts are instead excluded at the source: chart blocks
+ * with `isTemplate: true` never reach the exported element list, and the
+ * exporter enforces "every exported chart maps to a visible source block".
+ */
 
-/** Detect fallback elements that stand in for failed images. */
+/**
+ * Detect fallback elements that stand in for failed images.
+ */
 function detectUnresolvedImages(slide: ExportScene["slides"][number]): ExportSceneDiagnostic[] {
   return slide.elements
     .filter((element) => element.type === "fallback")
@@ -157,7 +143,6 @@ export function validateExportScene(
   ];
   for (const slide of scene.slides) {
     diagnostics.push(...detectGeometryErrors(slide, ctx));
-    diagnostics.push(...isTemplateChartLeak(slide));
     diagnostics.push(...detectUnresolvedImages(slide));
   }
   return diagnostics;

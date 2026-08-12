@@ -157,3 +157,31 @@ test('changes the slide canvas to a 4:3 preset', async ({ page }) => {
   await expect(canvasSize).toHaveValue('4:3');
   await expect(page.locator('.editor-canvas-controls')).toContainText('4:3 · 1440×1080');
 });
+
+test('opens fitted to the canvas with no page overflow on narrow screens', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openEditor(page);
+  await expect
+    .poll(async () =>
+      page.locator('.slide-viewport').evaluate((vp) => {
+        const frame = vp.querySelector('.deck-slide-frame');
+        if (!frame) return false;
+        const v = vp.getBoundingClientRect();
+        const f = frame.getBoundingClientRect();
+        return f.left >= v.left - 1 && f.right <= v.right + 1 && f.top >= v.top - 1 && f.bottom <= v.bottom + 1;
+      }),
+    )
+    .toBe(true);
+  const noHorizontalOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+  );
+  expect(noHorizontalOverflow).toBe(true);
+});
+
+test('active slide thumbnail metadata stays legible', async ({ page }) => {
+  await openEditor(page);
+  const meta = page.locator('.editor-thumbnail[aria-current="page"] .thumb-meta');
+  await expect(meta).toBeVisible();
+  const color = await meta.evaluate((el) => getComputedStyle(el).color);
+  expect(color).not.toBe('rgb(15, 23, 42)');
+});

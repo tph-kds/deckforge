@@ -7,6 +7,7 @@ import type {
 } from "./export-types";
 import { DEFAULT_PPTX_CONFIG } from "./export-types";
 import { runExportPreflight } from "./export-preflight";
+import { prepareExport, type PreparedExport } from "./prepare-export";
 import type { DeckProject } from "../deck/types";
 
 interface ExportDialogProps {
@@ -70,13 +71,22 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
   const [showDetails, setShowDetails] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  /**
+   * The single prepared export for the current deck+config. Preflight and the
+   * PPTX exporter MUST consume the SAME prepared result so "Ready to export"
+   * can never diverge from what the exporter will actually produce. Recreated
+   * whenever the deck or config changes.
+   */
+  const preparedRef = useRef<PreparedExport | null>(null);
 
   const runPreflight = useCallback(async () => {
     if (!deck) return;
     setState("preflight");
     setErrorMessage("");
     try {
-      const result = await runExportPreflight(deck, config);
+      const prepared = await prepareExport(deck, config);
+      preparedRef.current = prepared;
+      const result = await runExportPreflight(prepared);
       setPreflight(result);
       setState(result.ready ? "ready" : "blocked");
       if (!result.ready) {
@@ -158,7 +168,12 @@ export function ExportDialog({ deck, isOpen, onClose, onExport, onError }: Expor
       const exporter = new PptxExporter(config);
       setStage("writing");
       setProgress(50);
-      const result = await exporter.export(deck);
+      // Reuse the SAME prepared export that preflight consumed — the exporter
+      // must never re-resolve assets or it could disagree with the READY
+      // verdict (regression: preflight "Ready" + export "Failed to resolve").
+      const prepared = preparedRef.current ?? (await prepareExport(deck, config));
+      preparedRef.current = prepared;
+      const result = await exporter.export(prepared);
       setProgress(90);
       setLastReport(result.report);
 

@@ -1,7 +1,7 @@
 import type { PptxExportConfig, PptxExportContext } from "../export-types";
 import type { DeckProject } from "../../deck/types";
 import { derivePptxSlideSize } from "../geometry";
-import type { AssetEmbedResult } from "./pptx-assets";
+import type { PreparedExport } from "../prepare-export";
 
 /**
  * Build the export context. The PPTX slide size is DERIVED from the actual
@@ -9,11 +9,15 @@ import type { AssetEmbedResult } from "./pptx-assets";
  * aspect ratio (Phase 4). This context is the only place the document and the
  * PPTX geometry relationship is established; individual exporters never invent
  * their own mapping.
+ *
+ * The context carries the canonical asset registry from the single
+ * `prepareExport` phase when one was prepared — exporters consume resolved
+ * bytes from it and never fetch on their own.
  */
 export function createExportContext(
   deck: DeckProject,
   config: PptxExportConfig,
-  preResolvedCache?: Map<string, AssetEmbedResult>
+  prepared?: PreparedExport
 ): PptxExportContext {
   const canvas = deck.canvas ?? { width: 1600, height: 900 };
   const slideWidth = canvas.width ?? 1600;
@@ -23,7 +27,7 @@ export function createExportContext(
     deck,
     config,
     fontWarnings: [],
-    assetCache: preResolvedCache ?? new Map(),
+    assetRegistry: prepared?.assets ?? new Map(),
     slideWidth,
     slideHeight,
     pptxWidth: pptxSize.width,

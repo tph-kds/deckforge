@@ -133,6 +133,16 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
 
   const activeSlide = deck.slides.find((slide) => slide.id === selection.slideId) ?? deck.slides[0];
   const activeBlock = activeSlide.blocks.find((block) => block.id === selection.blockIds[0]);
+  const activeImageSource =
+    activeBlock?.type === 'image'
+      ? (() => {
+          const content = activeBlock.content as { assetId?: string; src?: string } | undefined;
+          const asset = content?.assetId
+            ? (deck.assets ?? []).find((a) => a.id === content.assetId)
+            : undefined;
+          return content?.src ?? asset?.src ?? '';
+        })()
+      : '';
   const layouts = listLayouts();
   const themes = listThemes();
   const motionProfiles = listMotionProfiles();
@@ -559,6 +569,10 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
               block={activeBlock}
               themeId={deck.theme.id}
               update={(patch) => updateBlock(activeBlock.id, patch)}
+              imageSource={activeImageSource}
+              onImageSourceChange={(src) =>
+                commit({ type: 'updateImageSource', slideId: activeSlide.id, blockId: activeBlock.id, src })
+              }
             />
           ) : (
             <p className="inspector-empty">
@@ -585,9 +599,11 @@ interface BlockInspectorProps {
   block: Block;
   themeId: string;
   update: (patch: { content?: unknown; style?: Record<string, unknown>; alt?: string }) => void;
+  imageSource?: string;
+  onImageSourceChange?: (src: string) => void;
 }
 
-function BlockInspector({ block, update }: BlockInspectorProps) {
+function BlockInspector({ block, update, imageSource, onImageSourceChange }: BlockInspectorProps) {
   const style = block.style ?? {};
   return (
     <div className="block-inspector">
@@ -596,7 +612,7 @@ function BlockInspector({ block, update }: BlockInspectorProps) {
         <button type="button" className="tab" role="tab" aria-selected="false" disabled>Style</button>
         <button type="button" className="tab" role="tab" aria-selected="false" disabled>Accessibility</button>
       </div>
-      <ContentInspector block={block} update={update} />
+      <ContentInspector block={block} update={update} imageSource={imageSource} onImageSourceChange={onImageSourceChange} />
       <label>
         Style variant
         <select
@@ -631,7 +647,17 @@ function BlockInspector({ block, update }: BlockInspectorProps) {
   );
 }
 
-function ContentInspector({ block, update }: { block: Block; update: (patch: { content?: unknown; style?: Record<string, unknown>; alt?: string }) => void }) {
+function ContentInspector({
+  block,
+  update,
+  imageSource,
+  onImageSourceChange,
+}: {
+  block: Block;
+  update: (patch: { content?: unknown; style?: Record<string, unknown>; alt?: string }) => void;
+  imageSource?: string;
+  onImageSourceChange?: (src: string) => void;
+}) {
   switch (block.type) {
     case 'heading':
     case 'text':
@@ -668,13 +694,13 @@ function ContentInspector({ block, update }: { block: Block; update: (patch: { c
       );
     }
     case 'image': {
-      const content = (block.content as { src?: string; fit?: string }) ?? {};
+      const content = (block.content as { fit?: string }) ?? {};
       return (
         <div className="inspector-fields">
-          <label>Image URL<input type="text" value={content.src ?? ''} onChange={(event) => update({ content: { ...content, src: event.target.value } })} /></label>
+          <label>Image URL<input type="text" value={imageSource ?? ''} onChange={(event) => onImageSourceChange?.(event.target.value)} placeholder="https://… or data:image/…" /></label>
           <label>
             Fit
-            <select value={content.fit ?? 'cover'} onChange={(event) => update({ content: { ...content, fit: event.target.value } })}>
+            <select value={content.fit ?? 'cover'} onChange={(event) => update({ content: { ...(block.content as object), fit: event.target.value } })}>
               <option value="cover">Cover</option>
               <option value="contain">Contain</option>
             </select>

@@ -79,6 +79,7 @@ export const SlideViewport = forwardRef<SlideViewportHandle, SlideViewportProps>
   const [fit, setFit] = useState(1);
   const [dragging, setDragging] = useState(false);
   const dragStart = useRef<{ x: number; y: number; panX: number; panY: number } | null>(null);
+  const didFitOnMount = useRef(false);
 
   const canvasW = deck.canvas?.width ?? 1600;
   const canvasH = deck.canvas?.height ?? 900;
@@ -102,6 +103,15 @@ export const SlideViewport = forwardRef<SlideViewportHandle, SlideViewportProps>
   useEffect(() => {
     setFit(computedFit);
   }, [computedFit]);
+
+  // Open at Fit so the whole slide is visible on first layout (any screen
+  // size). Only the first render does this; user zoom/pan always wins after.
+  useEffect(() => {
+    if (didFitOnMount.current || size == null || computedFit <= 0) return;
+    didFitOnMount.current = true;
+    setZoom(computedFit);
+    setPan({ x: 0, y: 0 });
+  }, [size, computedFit]);
 
   const atFit = Math.abs(zoom - fit) < 1e-6;
 

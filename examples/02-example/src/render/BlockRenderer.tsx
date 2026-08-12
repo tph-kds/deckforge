@@ -200,7 +200,7 @@ export function BlockRenderer({ block, slide, deck, themeId, surface = 'editor' 
     case 'chart':
       return (
         <div className="block-chart" aria-label={block.ariaLabel}>
-          <ChartRenderer chart={block.content as never} themeId={themeId} />
+          <ChartRenderer chart={block.content as never} themeId={themeId} deck={deck} block={block} />
         </div>
       );
     case 'process':

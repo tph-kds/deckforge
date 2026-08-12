@@ -33,11 +33,14 @@ import type {
   ChartValue,
   DeckProject,
   DeckSlide,
+  ImageBlockContent,
   ThemeDef,
   ThemeTokens,
 } from "../deck/types";
-import { getTheme } from "../deck/themes";
 import { resolveSlideGeometry, type ResolvedBlockGeometry } from "../deck/geometry-resolver";
+import { canonicalAssetRef, resolveAsset } from "../deck/assets";
+import { normalizeColor, resolveTheme, type ResolvedTheme } from "./resolved-theme";
+import type { PreparedAsset } from "./prepare-export";
 
 // ─── Canonical Style Types ───────────────────────────────────────────────────
 
@@ -61,14 +64,24 @@ export interface ResolvedPaint {
 }
 
 export interface ResolvedChartStyle {
+  /**
+   * ONE explicit hex color per category (bar). Derived from the resolved theme
+   * and the chart's highlightIndex so Web, Present and PPTX render identical
+   * bars. Never left to PowerPoint's automatic palette.
+   */
   seriesColors: string[];
+  /** Primary bar color for non-highlighted bars (chartPalette[0]). */
+  accentColor: string;
+  /** Color of the highlighted bar/segment (tokens.secondary). */
+  highlightColor: string;
+  /** Foreground text color used for data labels on the web chart. */
+  foreground: string;
+  labelColor: string;
   axisColor: string;
   gridColor: string;
-  labelColor: string;
   fontFamily: string;
   fontSize: number;
   background: string;
-  highlightColor: string;
 }
 
 // ─── Canonical Block Snapshot ────────────────────────────────────────────────
@@ -116,6 +129,15 @@ export interface ResolvedChartSpec {
 export interface ResolvedAssetSnapshot {
   assetId: string;
   resolvedSrc: string;
+  /**
+   * The pre-resolved embeddable data URI from the preparation phase. Present
+   * only when the asset was actually fetched and can be embedded.
+   */
+  dataUri?: string;
+  /** Resolution status reported by the preparation phase. */
+  status?: "ready" | "failed";
+  /** Why the asset could not be resolved, when it failed. */
+  error?: string;
   mimeType: string;
   width: number;
   height: number;
@@ -163,30 +185,9 @@ export interface ImmutableSlideSnapshot {
 
 // ─── Style Resolution Helpers ────────────────────────────────────────────────
 
-function normalizeColor(color: string): string {
-  if (!color) return "#000000";
-  if (color.startsWith("#")) {
-    const hex = color.replace("#", "");
-    if (hex.length === 3) {
-      return `#${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
-    }
-    return `#${hex.slice(0, 6)}`;
-  }
-  if (color.startsWith("rgb")) {
-    const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-    if (match) {
-      const r = parseInt(match[1], 10).toString(16).padStart(2, "0");
-      const g = parseInt(match[2], 10).toString(16).padStart(2, "0");
-      const b = parseInt(match[3], 10).toString(16).padStart(2, "0");
-      return `#${r}${g}${b}`;
-    }
-  }
-  return color;
-}
-
 function resolveBlockTextStyle(
   block: Block,
-  theme: ThemeDef,
+  theme: Pick<ThemeDef, "tokens" | "typography">,
   containerWidth: number
 ): ResolvedTextStyle {
   const style = block.style ?? {};
@@ -267,16 +268,67 @@ function resolveBlockTextStyle(
   };
 }
 
-function resolveChartStyle(theme: ThemeDef): ResolvedChartStyle {
+/**
+ * Theme-level chart style base (no per-bar series colors yet).
+ * Both the browser chart and the PPTX exporter derive their exact hexadecimal
+ * values from this single source.
+ */
+function resolveChartStyleBase(theme: ResolvedTheme): Omit<ResolvedChartStyle, "seriesColors"> {
   return {
-    seriesColors: theme.chartPalette.map(normalizeColor),
+    accentColor: normalizeColor(theme.chartPalette[0] ?? theme.tokens.foreground),
+    highlightColor: normalizeColor(theme.tokens.secondary),
+    foreground: normalizeColor(theme.tokens.foreground),
+    labelColor: normalizeColor(theme.tokens.muted),
     axisColor: normalizeColor(theme.tokens.border),
     gridColor: normalizeColor(theme.tokens.border),
-    labelColor: normalizeColor(theme.tokens.muted),
     fontFamily: theme.typography.bodyFont,
     fontSize: 10,
     background: "transparent",
-    highlightColor: normalizeColor(theme.tokens.secondary),
+  };
+}
+
+/**
+ * Resolve the canonical, immutable chart spec for a chart block.
+ *
+ * THE single source of truth for chart data + style. Web, Present and the PPTX
+ * exporter all consume this exact spec; nobody reconstructs chart data or
+ * colors independently. Returns undefined for template charts ("New chart"),
+ * hidden blocks and charts without real data — those are never exported.
+ */
+export function resolveChartSpecForBlock(
+  deck: DeckProject,
+  block: Block,
+): ResolvedChartSpec | undefined {
+  if (block.type !== "chart") return undefined;
+  const content = block.content as ChartContent | undefined;
+  if (!content || content.isTemplate) return undefined;
+  if (!Array.isArray(content.values) || content.values.length === 0) return undefined;
+
+  const theme = resolveTheme(deck);
+  const base = resolveChartStyleBase(theme);
+
+  // Per-bar colors: every bar gets the accent color except the highlighted one,
+  // which gets the theme's secondary/highlight color. This is what the browser
+  // draws and what PPTX must receive verbatim.
+  const seriesColors = content.values.map((_: ChartValue, index: number) =>
+    index === content.highlightIndex ? base.highlightColor : base.accentColor,
+  );
+
+  return {
+    type: content.type ?? "bar",
+    orientation: content.type === "bar-horizontal" ? "horizontal" : "vertical",
+    title: content.title ?? "",
+    unit: content.unit ?? "",
+    categories: content.values.map((v: ChartValue) => v.label),
+    series: [
+      {
+        name: content.title ?? "Data",
+        values: content.values.map((v: ChartValue) => v.value),
+      },
+    ],
+    highlightIndex: content.highlightIndex,
+    summary: content.summary ?? "",
+    style: { ...base, seriesColors },
   };
 }
 
@@ -285,12 +337,19 @@ function resolveChartStyle(theme: ThemeDef): ResolvedChartStyle {
 /**
  * Resolve a slide into an immutable snapshot.
  * This is the single source of truth for all renderers.
+ *
+ * When `assetRegistry` is supplied (the prepared export), image blocks carry a
+ * registry-aware `assetSnapshot` with the resolved data URI and a concrete
+ * ready/failed status — including orphans (block references a manifest entry
+ * that does not exist). Without a registry (web/presenter rendering) the
+ * snapshot is purely declarative.
  */
 export function resolveSlideSnapshot(
   slide: DeckSlide,
-  deck: DeckProject
+  deck: DeckProject,
+  assetRegistry?: ReadonlyMap<string, PreparedAsset>
 ): ImmutableSlideSnapshot {
-  const theme = getTheme(deck.theme?.id ?? "editorial-cream");
+  const theme = resolveTheme(deck);
   const canvas = deck.canvas ?? { width: 1600, height: 900 };
   const width = canvas.width ?? 1600;
   const height = canvas.height ?? 900;
@@ -315,50 +374,56 @@ export function resolveSlideSnapshot(
     const containerWidth = resolvedFrame.w;
     const style = resolveBlockTextStyle(block, theme, containerWidth);
 
-    // Resolve chart spec if applicable
+    // Resolve chart spec if applicable — canonical single source of truth
     let chartSpec: ResolvedChartSpec | undefined;
     if (block.type === "chart") {
-      const content = block.content as ChartContent | undefined;
-      if (content && !content.isTemplate && Array.isArray(content.values) && content.values.length > 0) {
-        chartSpec = {
-          type: content.type ?? "bar",
-          orientation: content.type === "bar-horizontal" ? "horizontal" : "vertical",
-          title: content.title ?? "",
-          unit: content.unit ?? "",
-          categories: content.values.map((v: ChartValue) => v.label),
-          series: [
-            {
-              name: content.title ?? "Data",
-              values: content.values.map((v: ChartValue) => v.value),
-            },
-          ],
-          highlightIndex: content.highlightIndex,
-          summary: content.summary ?? "",
-          style: resolveChartStyle(theme),
-        };
-      }
+      chartSpec = resolveChartSpecForBlock(deck, block);
     }
 
-    // Resolve asset snapshot if applicable
+    // Resolve asset snapshot if applicable — the canonical asset reference is
+    // the single source of truth for which source the block needs embedded.
     let assetSnapshot: ResolvedAssetSnapshot | undefined;
     if (block.type === "image") {
-      const content = block.content as { assetId?: string; fit?: string; focalPoint?: { x: number; y: number }; caption?: string; attribution?: string } | undefined;
-      if (content?.assetId) {
-        const asset = (deck.assets ?? []).find((a) => a.id === content.assetId);
-        if (asset && asset.status !== "failed") {
-          assetSnapshot = {
-            assetId: asset.id,
-            resolvedSrc: asset.src,
-            mimeType: asset.mimeType ?? "image/jpeg",
-            width: asset.width ?? 720,
-            height: asset.height ?? 480,
-            alt: asset.alt ?? block.alt ?? "",
-            fit: (content.fit as "cover" | "contain") ?? "cover",
-            focalPoint: content.focalPoint ?? asset.focalPoint ?? { x: 0.5, y: 0.5 },
-            caption: content.caption,
-            attribution: content.attribution ?? asset.credit,
-          };
-        }
+      const content = (block.content as ImageBlockContent | undefined) ?? {};
+      const ref = canonicalAssetRef(deck, block);
+      const registryEntry = ref ? assetRegistry?.get(ref.assetId) : undefined;
+      const manifestAsset =
+        ref && !ref.assetId.startsWith("inline:")
+          ? resolveAsset(deck, ref.assetId)
+          : undefined;
+
+      if (ref && ref.orphan) {
+        assetSnapshot = {
+          assetId: ref.assetId,
+          resolvedSrc: "",
+          dataUri: "",
+          status: "failed",
+          error: `Asset "${ref.assetId}" has no manifest entry`,
+          mimeType: "image/png",
+          width: 720,
+          height: 480,
+          alt: content.alt ?? block.alt ?? "",
+          fit: content.fit ?? "cover",
+          focalPoint: content.focalPoint ?? { x: 0.5, y: 0.5 },
+          caption: content.caption,
+          attribution: content.attribution,
+        };
+      } else if (ref) {
+        assetSnapshot = {
+          assetId: ref.assetId,
+          resolvedSrc: registryEntry?.originalSrc ?? ref.src ?? manifestAsset?.src ?? "",
+          dataUri: registryEntry?.resolvedDataUri,
+          status: registryEntry?.status ?? "ready",
+          error: registryEntry?.error,
+          mimeType: registryEntry?.mimeType ?? manifestAsset?.mimeType ?? "image/jpeg",
+          width: registryEntry?.width ?? manifestAsset?.width ?? 720,
+          height: registryEntry?.height ?? manifestAsset?.height ?? 480,
+          alt: content.alt ?? block.alt ?? manifestAsset?.alt ?? "",
+          fit: content.fit ?? "cover",
+          focalPoint: content.focalPoint ?? manifestAsset?.focalPoint ?? { x: 0.5, y: 0.5 },
+          caption: content.caption,
+          attribution: content.attribution ?? manifestAsset?.credit,
+        };
       }
     }
 
@@ -393,19 +458,25 @@ export function resolveSlideSnapshot(
     gradients: { ...(theme.gradients ?? {}) },
   };
 
-  // Resolve asset snapshots
+  // Resolve asset snapshots (deck-level manifest assets, registry-aware).
   const assets: ResolvedAssetSnapshot[] = (deck.assets ?? [])
     .filter((asset) => asset.status !== "failed")
-    .map((asset) => ({
-      assetId: asset.id,
-      resolvedSrc: asset.src,
-      mimeType: asset.mimeType ?? "image/jpeg",
-      width: asset.width ?? 720,
-      height: asset.height ?? 480,
-      alt: asset.alt ?? "",
-      fit: "cover" as const,
-      focalPoint: asset.focalPoint ?? { x: 0.5, y: 0.5 },
-    }));
+    .map((asset) => {
+      const entry = assetRegistry?.get(asset.id);
+      return {
+        assetId: asset.id,
+        resolvedSrc: asset.src,
+        dataUri: entry?.resolvedDataUri,
+        status: entry?.status,
+        error: entry?.error,
+        mimeType: asset.mimeType ?? "image/jpeg",
+        width: asset.width ?? 720,
+        height: asset.height ?? 480,
+        alt: asset.alt ?? "",
+        fit: "cover" as const,
+        focalPoint: asset.focalPoint ?? { x: 0.5, y: 0.5 },
+      };
+    });
 
   return {
     slideId: slide.id,
@@ -428,9 +499,14 @@ export function resolveSlideSnapshot(
 /**
  * Create immutable snapshots for all slides in a deck.
  * This is called once at export time and provides the snapshot for all renderers.
+ * When `assetRegistry` is supplied (prepared export), snapshots carry the
+ * resolved data URIs and ready/failed asset status.
  */
-export function createDeckSnapshot(deck: DeckProject): ImmutableSlideSnapshot[] {
-  return deck.slides.map((slide) => resolveSlideSnapshot(slide, deck));
+export function createDeckSnapshot(
+  deck: DeckProject,
+  assetRegistry?: ReadonlyMap<string, PreparedAsset>
+): ImmutableSlideSnapshot[] {
+  return deck.slides.map((slide) => resolveSlideSnapshot(slide, deck, assetRegistry));
 }
 
 /**
@@ -462,13 +538,6 @@ export function validateSnapshot(snapshot: ImmutableSlideSnapshot): string[] {
         issues.push(`Chart block ${block.id} has no resolved chart spec`);
       } else if (block.chartSpec.categories.length === 0) {
         issues.push(`Chart block ${block.id} has no categories`);
-      }
-    }
-
-    // Validate image blocks have resolved assets
-    if (block.type === "image") {
-      if (!block.assetSnapshot) {
-        issues.push(`Image block ${block.id} has no resolved asset`);
       }
     }
   }
