@@ -156,8 +156,9 @@ describe('repairSlideSlotBindings', () => {
       ],
     };
     const repaired = repairSlideSlotBindings(slide, CANVAS);
-    expect(repaired.layoutBindings.length).toBeGreaterThan(1);
-    const allBoundBlockIds = repaired.layoutBindings.flatMap((b) => b.blockIds);
+    const repairedBindings = repaired.layoutBindings ?? [];
+    expect(repairedBindings.length).toBeGreaterThan(1);
+    const allBoundBlockIds = repairedBindings.flatMap((b) => b.blockIds);
     expect(allBoundBlockIds).toContain('b2');
   });
 

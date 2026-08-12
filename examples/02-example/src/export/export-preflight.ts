@@ -18,6 +18,20 @@ import type {
 } from "./export-types";
 import type { ImmutableSlideSnapshot, ResolvedBlockSnapshot } from "./snapshot";
 import { resolveSlideSnapshot, validateSnapshot, hashSlideSemanticContent } from "./snapshot";
+import { resolveSlideGeometry } from "../deck/geometry-resolver";
+import { getBlockExporter } from "./pptx/block-exporters/index";
+
+// ─── Preflight Scoring ───────────────────────────────────────────────────────
+
+function calculateScore(issues: ExportIssue[]): number {
+  let score = 100;
+  for (const issue of issues) {
+    if (issue.severity === "error") score -= 20;
+    else if (issue.severity === "warning") score -= 5;
+    else score -= 1;
+  }
+  return Math.max(0, Math.min(100, score));
+}
 
 // ─── Preflight Issue Codes ───────────────────────────────────────────────────
 
@@ -253,16 +267,33 @@ export function runExportPreflight(
   const issues: ExportIssue[] = [];
   const snapshots: ImmutableSlideSnapshot[] = [];
 
-  let blockCount = 0;
   let chartBlockCount = 0;
-  let imageBlockCount = 0;
-  let missingBlockCount = 0;
-  let unsupportedBlockCount = 0;
   let geometryMissingCount = 0;
+
+  // Parity/coverage tallies over all visible blocks (fractions per contract).
+  let visibleCount = 0;
+  let nativeCount = 0;
+  let fallbackCount = 0;
+  let unexportableCount = 0;
 
   for (const slide of deck.slides) {
     // Skip hidden slides
     if (slide.hidden) continue;
+
+    // Canonical geometry: fail closed when a visible block has no frame.
+    const scene = resolveSlideGeometry(slide, deck.canvas);
+    geometryMissingCount += scene.missingFrames.length;
+    for (const missing of scene.missingFrames) {
+      issues.push({
+        code: "invalid-geometry",
+        severity: "error",
+        slideId: slide.id,
+        blockId: missing.blockId,
+        message: `Block "${missing.blockId}" (${missing.block.type}) has no resolvable frame and cannot be exported`,
+        suggestedFix: "Bind the block to a layout slot or give it an explicit frame",
+        automaticFixAvailable: true,
+      });
+    }
 
     // Create snapshot
     const snapshot = resolveSlideSnapshot(slide, deck);
@@ -281,9 +312,7 @@ export function runExportPreflight(
 
     // Validate each block
     for (const block of snapshot.blocks) {
-      blockCount++;
       if (block.type === "chart") chartBlockCount++;
-      if (block.type === "image") imageBlockCount++;
 
       // Validate visibility
       issues.push(...validateBlockVisibility(block, slide.id));
@@ -295,30 +324,58 @@ export function runExportPreflight(
       issues.push(...validateImageBlock(block, slide.id));
 
       // Validate geometry
-      const geometryIssues = validateBlockGeometry(block, slide.id);
-      issues.push(...geometryIssues);
-
-      if (geometryIssues.some((i) => i.severity === "error")) {
-        geometryMissingCount++;
-      }
+      issues.push(...validateBlockGeometry(block, slide.id));
     }
 
     // Validate no duplicate block IDs
     issues.push(...validateNoDuplicateBlockIds(snapshot));
 
     snapshots.push(snapshot);
+
+    // Parity + coverage classification over visible blocks. Blocks with no
+    // native exporter are counted as missing AND flagged with an issue so the
+    // export is never a silent omission.
+    for (const block of slide.blocks) {
+      if (block.hidden) continue;
+      visibleCount++;
+      const exporter = getBlockExporter(block.type);
+      if (exporter.type === "fallback" && block.type !== "fallback") {
+        issues.push({
+          code: "unsupported-block-type",
+          severity: "warning",
+          slideId: slide.id,
+          blockId: block.id,
+          message: `Block type "${block.type}" cannot be exported natively; it will be rasterized, substituted, or omitted`,
+          suggestedFix: "Convert to a supported block type for native export",
+          automaticFixAvailable: false,
+        });
+        unexportableCount++;
+        continue;
+      }
+      if (exporter.exportability === "image-only") {
+        fallbackCount++;
+      } else {
+        nativeCount++;
+      }
+    }
   }
 
   // Check for errors
   const hasErrors = issues.some((issue) => issue.severity === "error");
 
-  // Calculate coverage
+  // Parity estimates are 0..1 fractions, not percentages (exported contract).
+  const estimatedMissing = unexportableCount;
+  const estimatedFallbacks = fallbackCount;
+  const estimatedRecall =
+    visibleCount > 0 ? (visibleCount - estimatedMissing) / visibleCount : 1;
+
+  // Coverage invariants: expected == native + fallback and missing == 0.
   const coverage: ExportCoverage = {
-    expected: blockCount,
-    native: blockCount - missingBlockCount - unsupportedBlockCount,
-    fallback: 0,
-    missing: missingBlockCount,
-    satisfied: missingBlockCount === 0,
+    expected: visibleCount,
+    native: nativeCount,
+    fallback: fallbackCount,
+    missing: estimatedMissing + geometryMissingCount,
+    satisfied: estimatedMissing === 0 && geometryMissingCount === 0,
   };
 
   // Group issues by category
@@ -357,17 +414,17 @@ export function runExportPreflight(
 
   return {
     issues,
-    score: hasErrors ? 0 : 100,
-    blockCoverage: blockCount > 0 ? ((blockCount - missingBlockCount) / blockCount) * 100 : 100,
-    estimatedFallbacks: 0,
-    estimatedRecall: blockCount > 0 ? ((blockCount - missingBlockCount) / blockCount) * 100 : 100,
-    estimatedMissing: missingBlockCount,
-    missingBlockCount,
-    unsupportedBlockCount,
+    score: calculateScore(issues),
+    blockCoverage: visibleCount > 0 ? nativeCount / visibleCount : 1,
+    estimatedFallbacks,
+    estimatedRecall,
+    estimatedMissing,
+    missingBlockCount: estimatedMissing,
+    unsupportedBlockCount: estimatedMissing,
     chartBlockCount,
-    ready: !hasErrors && geometryMissingCount === 0,
+    ready: !hasErrors && estimatedMissing === 0 && geometryMissingCount === 0,
     geometryMissingCount,
-    visibleBlockCount: blockCount,
+    visibleBlockCount: visibleCount,
     coverage,
     groups,
   };
