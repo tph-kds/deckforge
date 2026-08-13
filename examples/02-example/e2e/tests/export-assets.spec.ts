@@ -146,9 +146,15 @@ test('make deck self-contained bundles the remote image and the deck exports off
   await expect(dialog.getByText('Ready to export')).toBeVisible({ timeout: 20_000 });
 
   // The persisted deck now carries the embedded data URI — and the remote URL
-  // is gone. This only holds if saveNow persisted the POST-embed deck.
+  // is gone. This only holds if saveNow persisted the POST-embed deck. The
+  // embed is an async network fetch, so wait for the persisted deck to flip
+  // instead of racing a stale "Ready to export" against the localStorage read.
+  await page.waitForFunction(
+    () => (localStorage.getItem('deckforge:deck:v1') ?? '').includes('data:image/jpeg;base64,'),
+    undefined,
+    { timeout: 20_000 },
+  );
   const stored = await page.evaluate(() => localStorage.getItem('deckforge:deck:v1') ?? '');
-  expect(stored).toContain('data:image/jpeg;base64,');
   expect(stored).not.toContain('images.unsplash.com');
 
   // The embed survives a reload because it was actually persisted (not just
@@ -164,4 +170,43 @@ test('make deck self-contained bundles the remote image and the deck exports off
   const download = await downloadPromise;
   const bytes = readFileSync(await download.path());
   expect(bytes.includes(Buffer.from('ppt/media/'))).toBe(true);
+});
+
+test('an uploaded local image appears in the exported PPTX and persists across reloads', async ({ page }) => {
+  await selectSeedImageBlock(page);
+
+  const pngBuffer = Buffer.from(DATA_PNG.split(',')[1], 'base64');
+  await page
+    .locator('.block-inspector input[type="file"]')
+    .setInputFiles({ name: 'fixture.png', mimeType: 'image/png', buffer: pngBuffer });
+
+  // Upload completes → the Image URL field now shows the embedded data URI.
+  await expect(page.getByLabel('Image URL')).toHaveValue(/^data:image\//, { timeout: 20_000 });
+
+  // Debounced autosave persists the uploaded image before we reload later.
+  await page.waitForFunction(
+    () => (localStorage.getItem('deckforge:deck:v1') ?? '').includes('data:image/'),
+    undefined,
+    { timeout: 20_000 },
+  );
+
+  const dialog = await openExportDialog(page);
+  await expect(dialog.getByText('Ready to export')).toBeVisible({ timeout: 20_000 });
+  await expect(dialog).toContainText('Missing 0');
+
+  const downloadPromise = page.waitForEvent('download', { timeout: 60_000 });
+  await dialog.getByRole('button', { name: 'Export PPTX' }).click();
+  await expect(dialog.getByText('Export complete!')).toBeVisible({ timeout: 60_000 });
+  const download = await downloadPromise;
+  const bytes = readFileSync(await download.path());
+  expect(bytes.length).toBeGreaterThan(1024);
+  expect(bytes.includes(Buffer.from('ppt/media/'))).toBe(true);
+
+  // The uploaded image survives a reload because the autosave persisted it.
+  await page.reload();
+  await expect(page.getByTestId('deck-editor-shell')).toBeVisible();
+  await page.locator('.editor-thumbnail').nth(6).click();
+  const image = page.locator('.editor-canvas [data-block-id="b36"]');
+  await image.click();
+  await expect(page.getByLabel('Image URL')).toHaveValue(/^data:image\//, { timeout: 20_000 });
 });
