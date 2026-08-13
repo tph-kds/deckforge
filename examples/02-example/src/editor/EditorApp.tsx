@@ -4,6 +4,7 @@ import { listLayouts, auditSlideLayout, suggestSlotForBlock } from '../deck/layo
 import { listThemes, getTheme } from '../deck/themes';
 import { listMotionProfiles } from '../deck/motion';
 import { newId } from '../deck/seed';
+import { importImageAsDataUri } from '../deck/image-import';
 import type { Block } from '../deck/types';
 import { measureSlide, summarizeIssues } from '../deck/measure';
 import { repairSlide } from '../deck/repair';
@@ -658,6 +659,23 @@ function ContentInspector({
   imageSource?: string;
   onImageSourceChange?: (src: string) => void;
 }) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+
+  const handleImageFile = async (file?: File) => {
+    if (!file || !onImageSourceChange) return;
+    setUploading(true);
+    setUploadError('');
+    try {
+      const uri = await importImageAsDataUri(file);
+      onImageSourceChange(uri);
+    } catch (error) {
+      setUploadError(error instanceof Error ? error.message : 'Could not process the image');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   switch (block.type) {
     case 'heading':
     case 'text':
@@ -698,6 +716,19 @@ function ContentInspector({
       return (
         <div className="inspector-fields">
           <label>Image URL<input type="text" value={imageSource ?? ''} onChange={(event) => onImageSourceChange?.(event.target.value)} placeholder="https://… or data:image/…" /></label>
+          <div className="image-upload">
+            <input
+              id={`image-upload-${block.id}`}
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={(event) => handleImageFile(event.target.files?.[0])}
+            />
+            <label htmlFor={`image-upload-${block.id}`} className="upload-button" data-testid="image-upload-button">
+              {uploading ? 'Processing…' : 'Upload from computer…'}
+            </label>
+            {uploadError && <p className="image-upload-error" data-testid="image-upload-error">{uploadError}</p>}
+          </div>
           <label>
             Fit
             <select value={content.fit ?? 'cover'} onChange={(event) => update({ content: { ...(block.content as object), fit: event.target.value } })}>
