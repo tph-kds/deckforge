@@ -15,7 +15,10 @@ export function computeTargetSize(
   const longest = Math.max(width, height);
   if (longest <= maxEdge) return { w: width, h: height };
   const scale = maxEdge / longest;
-  return { w: Math.round(width * scale), h: Math.round(height * scale) };
+  return {
+    w: Math.max(1, Math.round(width * scale)),
+    h: Math.max(1, Math.round(height * scale)),
+  };
 }
 
 export function chooseOutputType(

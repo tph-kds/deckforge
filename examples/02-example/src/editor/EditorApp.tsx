@@ -613,7 +613,7 @@ function BlockInspector({ block, update, imageSource, onImageSourceChange }: Blo
         <button type="button" className="tab" role="tab" aria-selected="false" disabled>Style</button>
         <button type="button" className="tab" role="tab" aria-selected="false" disabled>Accessibility</button>
       </div>
-      <ContentInspector block={block} update={update} imageSource={imageSource} onImageSourceChange={onImageSourceChange} />
+      <ContentInspector key={block.id} block={block} update={update} imageSource={imageSource} onImageSourceChange={onImageSourceChange} />
       <label>
         Style variant
         <select
@@ -664,6 +664,7 @@ function ContentInspector({
 
   const handleImageFile = async (file?: File) => {
     if (!file || !onImageSourceChange) return;
+    if (uploading) return;
     setUploading(true);
     setUploadError('');
     try {
@@ -722,9 +723,13 @@ function ContentInspector({
               type="file"
               accept="image/*"
               style={{ display: 'none' }}
-              onChange={(event) => handleImageFile(event.target.files?.[0])}
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                event.target.value = '';
+                void handleImageFile(file);
+              }}
             />
-            <label htmlFor={`image-upload-${block.id}`} className="upload-button" data-testid="image-upload-button">
+            <label htmlFor={`image-upload-${block.id}`} className="upload-button" data-testid="image-upload-button" aria-disabled={uploading}>
               {uploading ? 'Processing…' : 'Upload from computer…'}
             </label>
             {uploadError && <p className="image-upload-error" data-testid="image-upload-error">{uploadError}</p>}

@@ -27,6 +27,10 @@ describe('computeTargetSize', () => {
     expect(computeTargetSize(3000, 2000)).toEqual({ w: 1600, h: 1067 });
   });
 
+  it('clamps degenerate downscale so no dimension rounds to zero', () => {
+    expect(computeTargetSize(1, 4000)).toEqual({ w: 1, h: 1600 });
+  });
+
   it('exposes the default cap and quality as constants', () => {
     expect(MAX_EDGE).toBe(1600);
     expect(JPEG_QUALITY).toBe(0.85);
