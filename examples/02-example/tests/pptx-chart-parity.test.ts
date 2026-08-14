@@ -3,22 +3,10 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { loadSeedDeck } from "../src/deck/seed";
 import { resolveSlideSnapshot, type ResolvedChartSpec } from "../src/export/snapshot";
-import { buildExportReport } from "../src/export/pptx/pptx-exporter";
+import { buildExportReport, PptxExporter } from "../src/export/pptx/pptx-exporter";
 import { DEFAULT_PPTX_CONFIG } from "../src/export/export-types";
 import type { PptxSlideElement } from "../src/export/export-types";
 import { ChartRenderer } from "../src/render/Chart";
-
-interface ChartElementData {
-  chartType: string;
-  data: Array<{ name: string; labels: string[]; values: number[] }>;
-  options: {
-    title?: string;
-    barDir?: string;
-    chartColors?: string[];
-    showValue?: boolean;
-    dataLabelPosition?: string;
-  };
-}
 
 const deck = loadSeedDeck();
 
@@ -45,9 +33,19 @@ function sourceChartSpec(blockId: string): ResolvedChartSpec {
   return snapBlock.chartSpec;
 }
 
+function sourceFrame(blockId: string): { x: number; y: number; w: number; h: number } {
+  const slide = deck.slides.find((s) => s.blocks.some((b) => b.id === blockId));
+  if (!slide) throw new Error(`Block ${blockId} not found`);
+  const snapshot = resolveSlideSnapshot(slide, deck);
+  const snapBlock = snapshot.blocks.find((b) => b.id === blockId);
+  if (!snapBlock) throw new Error(`No snapshot block for ${blockId}`);
+  return snapBlock.frame;
+}
+
 interface ExportedChart {
   element: PptxSlideElement;
-  data: ChartElementData;
+  svg: string;
+  alt: string;
 }
 
 let cachedSlides: Array<{ slide: unknown; elements: PptxSlideElement[] }> | undefined;
@@ -64,9 +62,10 @@ async function allChartElements(): Promise<ExportedChart[]> {
   const out: ExportedChart[] = [];
   for (const slide of slides) {
     for (const element of slide.elements) {
-      if (element.type === "chart") {
-        out.push({ element, data: element.data as ChartElementData });
-      }
+      if (element.type !== "svg") continue;
+      const data = element.data as { svg?: string; alt?: string };
+      if (!data.svg?.includes("<svg")) continue;
+      out.push({ element, svg: data.svg, alt: data.alt ?? "" });
     }
   }
   return out;
@@ -77,31 +76,56 @@ async function exportedChartFor(blockId: string): Promise<ExportedChart | undefi
   return charts.find((c) => c.element.elementId === blockId);
 }
 
-function orientationToBarDir(orientation: ResolvedChartSpec["orientation"]): string {
-  return orientation === "horizontal" ? "bar" : "col";
-}
-
 function stripHash(colors: string[]): string[] {
   return colors.map((c) => c.replace("#", "").toLowerCase());
 }
 
-/** Both Web (resolved spec) and PPTX export the same hex string; compare
- * case-insensitively since case carries no color information. */
-function expectSameColors(exported: string[] | undefined, spec: string[]) {
-  expect(exported).toBeDefined();
-  expect(stripHash(exported ?? [])).toEqual(stripHash(spec));
+function textContents(svg: string): string[] {
+  return [...svg.matchAll(/<text[^>]*>([^<]*)<\/text>/g)].map((m) => unescapeXml(m[1]));
 }
 
-describe("strict Web-vs-PPTX chart parity", () => {
-  it("exports exactly the semantic source charts (no templates, no orphans)", async () => {
+function unescapeXml(text: string): string {
+  return text
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"');
+}
+
+function rectFills(svg: string): string[] {
+  return [...svg.matchAll(/<rect[^>]*fill="([^"]+)"/g)].map((m) => m[1].toLowerCase());
+}
+
+function rectYs(svg: string): number[] {
+  return [...svg.matchAll(/<rect x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"/g)].map(
+    (m) => Number(m[2]),
+  );
+}
+
+/** Assert document-order positions of <text> contents are strictly increasing
+ * (order preserved). Searches only the visible text nodes, never the root SVG
+ * aria-label/summary attribute which can contain the same strings. */
+function expectInOrder(svg: string, values: string[]) {
+  const body = textContents(svg).join("\n");
+  let last = -1;
+  for (const value of values) {
+    const pos = body.indexOf(value, last + 1);
+    expect(pos, `"${value}" must appear as a visible label`).toBeGreaterThan(last);
+    last = pos;
+  }
+}
+
+describe("strict Web-vs-PPTX chart parity (SVG-raster)", () => {
+  it("exports exactly the semantic source charts as SVG images (no templates, no orphans)", async () => {
     const sources = chartSourceBlocks();
     const exported = await allChartElements();
     const sourceIds = new Set(sources.map((s) => s.blockId));
 
     expect(exported.length).toBe(sources.length);
-    for (const { element } of exported) {
-      expect(element.elementId).toBeDefined();
-      expect(element.elementId && sourceIds.has(element.elementId)).toBe(true); // every exported chart has a sourceBlockId
+    for (const { element, svg } of exported) {
+      expect(element.type).toBe("svg");
+      expect(element.elementId && sourceIds.has(element.elementId)).toBe(true);
+      expect(svg.length).toBeGreaterThan(200); // real rendered chart, not a placeholder
     }
     expect(sources.some((s) => s.blockId === "b5")).toBe(true);
     expect(sources.some((s) => s.blockId === "b13")).toBe(true);
@@ -109,138 +133,157 @@ describe("strict Web-vs-PPTX chart parity", () => {
     expect(sources.length).toBe(3);
   });
 
-  it("matches type/orientation, categories, values, series order, colors, labels and frame for every chart", async () => {
-    const sources = chartSourceBlocks();
+  it("places every chart at its contained 560:300 box (the web's visible drawing region)", async () => {
+    for (const { blockId } of chartSourceBlocks()) {
+      const exported = await exportedChartFor(blockId);
+      expect(exported, `no exported chart for ${blockId}`).toBeDefined();
+      if (!exported) continue;
+      const frame = sourceFrame(blockId);
+      const CHART_ASPECT = 560 / 300;
+      const frameAspect = frame.w / frame.h;
+      let cw = frame.w;
+      let ch = frame.h;
+      if (frameAspect > CHART_ASPECT) {
+        cw = frame.h * CHART_ASPECT;
+      } else {
+        ch = frame.w / CHART_ASPECT;
+      }
+      const cx = frame.x + (frame.w - cw) / 2;
+      const cy = frame.y + (frame.h - ch) / 2;
+      expect(exported.element.x).toBeCloseTo(cx, 4);
+      expect(exported.element.y).toBeCloseTo(cy, 4);
+      expect(exported.element.w).toBeCloseTo(cw, 4);
+      expect(exported.element.h).toBeCloseTo(ch, 4);
+    }
+  });
 
-    for (const { blockId } of sources) {
+  it("vertical charts keep web order, exact decimals + unit data labels, dashed gridlines", async () => {
+    for (const blockId of ["b5", "b13"]) {
       const spec = sourceChartSpec(blockId);
       const exported = await exportedChartFor(blockId);
       expect(exported, `no exported chart for ${blockId}`).toBeDefined();
       if (!exported) continue;
 
-      const { element, data } = exported;
+      // Title, in web order of categories, exact data labels with unit.
+      expect(exported.svg).toContain(spec.title ?? "");
+      expectInOrder(exported.svg, spec.categories);
+      expectInOrder(
+        exported.svg,
+        spec.series[0].values.map((value) => `${value}${spec.unit}`),
+      );
 
-      // Orientation: persisted on the canonical spec, mapped deterministically.
-      expect(data.options.barDir).toBe(orientationToBarDir(spec.orientation));
+      // 5 gridline rows: solid baseline (fraction 0) + 4 dashed gridlines.
+      const dashed = [...exported.svg.matchAll(/stroke-dasharray="3 4"/g)];
+      expect(dashed.length, `${blockId} four dashed gridlines`).toBe(4);
+      const labels = textContents(exported.svg);
+      const max = Math.max(...spec.series[0].values);
+      for (const fraction of [0.25, 0.5, 0.75, 1]) {
+        const raw = Math.round(fraction * max * 10) / 10;
+        expect(labels, `${blockId} tick label ${raw}`).toContain(String(raw));
+      }
 
-      // Data parity: exact web categories, values and series order.
-      expect(data.data[0].labels).toEqual(spec.categories);
-      expect(data.data[0].values).toEqual(spec.series[0].values);
-      expect(data.data.map((d) => d.name)).toEqual(spec.series.map((s) => s.name));
-
-      // Color parity: PPTX receives the exact resolved hex values (no office palette).
-      expectSameColors(data.options.chartColors, spec.style.seriesColors);
-
-      // Label parity.
-      expect(data.options.showValue).toBe(true);
-      expect(data.options.dataLabelPosition).toBe("outEnd");
-
-      // Frame parity: exported geometry equals the resolved web geometry.
-      const slide = deck.slides.find((s) => s.blocks.some((b) => b.id === blockId))!;
-      const snapshot = resolveSlideSnapshot(slide, deck);
-      const snapBlock = snapshot.blocks.find((b) => b.id === blockId)!;
-      expect(element.x).toBe(snapBlock.frame.x);
-      expect(element.y).toBe(snapBlock.frame.y);
-      expect(element.w).toBe(snapBlock.frame.w);
-      expect(element.h).toBe(snapBlock.frame.h);
+      // Per-bar fill: seriesColors already carries the highlight color at the
+      // highlight index; data labels use highlight/foreground.
+      const fills = rectFills(exported.svg);
+      expect(fills.length).toBe(spec.series[0].values.length);
+      expect(fills).toEqual(spec.style.seriesColors.map((c) => c.toLowerCase()));
+      const highlightIndex = spec.highlightIndex ?? -1;
+      if (highlightIndex >= 0) {
+        const labelText = `${spec.series[0].values[highlightIndex]}${spec.unit}`;
+        const labelEls = [...exported.svg.matchAll(new RegExp(`<text[^>]*>${labelText}</text>`, "gi"))].map(
+          (m) => m[0],
+        );
+        expect(labelEls.length, `at least one label "${labelText}" must exist`).toBeGreaterThan(0);
+        const highlightEls = labelEls.filter((el) => {
+          const fill = /<text[^>]*fill="([^"]*)"/i.exec(el)?.[1];
+          return fill?.toLowerCase() === spec.style.highlightColor.toLowerCase();
+        });
+        expect(highlightEls, `highlight label "${labelText}" uses the highlight color`).toHaveLength(1);
+      }
     }
   });
 
-  it("slide 1 (b5): only the intended vertical bar chart, no 'New chart'", async () => {
-    const slides = await exportedElements();
-    const slide1Elements = slides[0]?.elements ?? [];
-    const charts = slide1Elements.filter((e) => e.type === "chart");
-    expect(charts.length).toBe(1);
-    expect(charts[0].elementId).toBe("b5");
-    const spec = sourceChartSpec("b5");
-    const data = charts[0].data as ChartElementData;
-    expect(spec.orientation).toBe("vertical");
-    expect(data.options.barDir).toBe("col");
-    expect(data.data[0].labels).toEqual(["2016", "2018", "2020", "2022", "2024"]);
-    expect(data.data[0].values).toEqual([1.6, 1.9, 2.1, 2.3, 2.4]);
-    expect(data.options.title).not.toMatch(/new chart/i);
-    expectSameColors(data.options.chartColors, spec.style.seriesColors);
-  });
-
-  it("slide 3 (b13): vertical trend chart stays vertical with identical data/colors", async () => {
-    const exported = await exportedChartFor("b13");
-    expect(exported).toBeDefined();
-    if (!exported) return;
-
-    const spec = sourceChartSpec("b13");
-    expect(spec.orientation).toBe("vertical");
-    expect(exported.data.options.barDir).toBe("col");
-    expect(exported.data.data[0].labels).toEqual(spec.categories);
-    expect(exported.data.data[0].values).toEqual(spec.series[0].values);
-    expectSameColors(exported.data.options.chartColors, spec.style.seriesColors);
-  });
-
-  it("slide 4 (b18): horizontal bar stays horizontal with 50/25/7/4/14 and exact colors", async () => {
+  it("horizontal chart keeps web top-down category order with 50/25/7/4/14 labels", async () => {
     const exported = await exportedChartFor("b18");
     expect(exported).toBeDefined();
     if (!exported) return;
 
     const spec = sourceChartSpec("b18");
     expect(spec.orientation).toBe("horizontal");
-    expect(exported.data.options.barDir).toBe("bar");
-    expect(exported.data.data[0].labels).toEqual(["Images", "JavaScript", "Fonts", "CSS", "Video & other"]);
-    expect(exported.data.data[0].values).toEqual([50, 25, 7, 4, 14]);
-    expectSameColors(exported.data.options.chartColors, spec.style.seriesColors);
+
+    // Category order preserved (Images first, top-down) AND no gridline rows.
+    expectInOrder(exported.svg, ["Images", "JavaScript", "Fonts", "CSS", "Video & other"]);
+    expectInOrder(exported.svg, ["50%", "25%", "7%", "4%", "14%"]);
+    expect(exported.svg.match(/stroke-dasharray="3 4"/g) ?? []).toHaveLength(0);
+
+    // Rows render top-down: the first bar's rect y is the smallest.
+    const ys = rectYs(exported.svg);
+    expect(ys.length).toBe(5);
+    for (let i = 1; i < ys.length; i++) {
+      expect(ys[i], `row ${i} is below row ${i - 1}`).toBeGreaterThan(ys[i - 1]);
+    }
+
+    // Highlight (Images) is the first bar, in the highlight color.
+    const fills = rectFills(exported.svg);
+    expect(fills[0]).toBe(spec.style.highlightColor.toLowerCase());
   });
 
-  it("never leaves chart data to PowerPoint defaults or embeds a placeholder image", async () => {
-    const slides = await exportedElements();
-    let placeholderCount = 0;
-    for (const slide of slides) {
-      for (const element of slide.elements) {
-        if (element.type === "image") {
-          const uri = (element.data as { dataUri?: string }).dataUri ?? "";
-          if (uri.length < 1000) placeholderCount++;
-        }
-        if (element.type === "chart") {
-          const colors = (element.data as ChartElementData).options.chartColors ?? [];
-          for (const color of colors) {
-            expect(color).toMatch(/^[0-9a-f]{6}$/i); // 6-digit hex, never an empty/automatic color
-          }
-        }
+  it("the PPTX-embedded SVG matches the Web-rendered chart SVG bar-for-bar", async () => {
+    for (const { blockId } of chartSourceBlocks()) {
+      const block = deck.slides
+        .flatMap((s) => s.blocks)
+        .find((b) => b.id === blockId && b.type === "chart");
+      expect(block).toBeDefined();
+      if (!block) continue;
+
+      const webSvg = renderToStaticMarkup(
+        createElement(ChartRenderer, {
+          chart: block.content as never,
+          themeId: "editorial-cream",
+          deck,
+          block,
+        }),
+      );
+      const webBars = [...webSvg.matchAll(/<rect[^>]*fill="([^"]+)"/g)].map((m) => m[1].toLowerCase());
+      expect(webBars.length, `no rendered bars for ${blockId}`).toBeGreaterThan(0);
+
+      const exported = await exportedChartFor(blockId);
+      expect(exported, `no exported chart for ${blockId}`).toBeDefined();
+      if (!exported) continue;
+
+      const pptxBars = rectFills(exported.svg);
+      expect(pptxBars, `${blockId} web and PPTX bar fills identical`).toEqual(webBars);
+
+      const webLabels = [...webSvg.matchAll(/<text[^>]*>([^<]*)<\/text>/g)].map((m) => unescapeXml(m[1]));
+      const pptxLabels = textContents(exported.svg);
+      for (const label of webLabels) {
+        expect(pptxLabels, `${blockId} web label "${label}" present`).toContain(label);
       }
     }
-    expect(placeholderCount).toBe(0);
   });
 
-  it("the Web-rendered chart SVG fills match the PPTX-exported colors bar-for-bar", async () => {
-    const charts = await allChartElements();
-    const blockIds = new Set(chartSourceBlocks().map((s) => s.blockId));
+  it("never emits a native chart part or a placeholder image (regression: 1.6 rounds to 2)", async () => {
+    const exporter = new PptxExporter(DEFAULT_PPTX_CONFIG);
+    const result = await exporter.export(deck);
+    expect(result.report.status).not.toBe("failed");
+    const zip = await JSZipLoad(result);
 
-    for (const slide of deck.slides) {
-      for (const block of slide.blocks) {
-        if (block.type !== "chart") continue;
-        const c = block.content as { isTemplate?: boolean; values?: unknown } | undefined;
-        if (c?.isTemplate || !Array.isArray(c?.values) || !c.values.length) continue;
-        const blockId = block.id;
-        if (!blockIds.has(blockId)) continue;
+    // Native charts are gone; charts are rasterized PNGs, so the exact decimal
+    // data labels ("2.4MB") can never be rounded by a number format.
+    const chartParts = Object.keys(zip.files).filter((n) => /ppt\/charts\/chart\d+\.xml/.test(n));
+    expect(chartParts).toHaveLength(0);
 
-        // Render the chart EXACTLY as the web presenter does: same ChartRenderer,
-        // same deck + block so the canonical ResolvedChartSpec drives the colors.
-        const svg = renderToStaticMarkup(
-          createElement(ChartRenderer, {
-            chart: block.content as never,
-            themeId: "editorial-cream",
-            deck,
-            block,
-          }),
-        );
-        const webBars = [...svg.matchAll(/<rect[^>]*fill="([^"]+)"/g)].map((m) => m[1].toLowerCase());
-        expect(webBars.length, `no rendered bars for ${blockId}`).toBeGreaterThan(0);
-
-        const exported = await exportedChartFor(blockId);
-        expect(exported, `no exported chart for ${blockId}`).toBeDefined();
-        if (!exported) continue;
-        const pptxColors = (exported.data.options.chartColors ?? []).map((c2) => `#${c2.toLowerCase()}`);
-
-        // Bar-for-bar: the i-th Web <rect> fill == the i-th PPTX series color.
-        expect(webBars).toEqual(pptxColors);
-      }
+    const mediaPng = Object.keys(zip.files).filter((n) => /ppt\/media\/.*\.png/.test(n));
+    expect(mediaPng.length).toBeGreaterThanOrEqual(3);
+    // No empty placeholder images.
+    for (const name of mediaPng) {
+      const bytes = await zip.file(name)!.async("uint8array");
+      expect(bytes.length).toBeGreaterThan(100);
     }
   });
 });
+
+import JSZip from "jszip";
+async function JSZipLoad(result: { blob: Blob }): Promise<ReturnType<typeof JSZip.loadAsync>> {
+  return JSZip.loadAsync(await result.blob.arrayBuffer());
+}

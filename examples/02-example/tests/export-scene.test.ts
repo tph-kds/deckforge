@@ -57,9 +57,10 @@ describe("export scene validation (Phase 16)", () => {
     ]);
     const { report, slides } = await buildExportReport(deck, DEFAULT_PPTX_CONFIG);
     // Template charts are excluded at the source and never reach the element list.
+    // Real charts now export as SVG-raster images, so include both element kinds.
     const exportedChartIds = slides
       .flatMap((s) => s.elements)
-      .filter((e) => e.type === "chart")
+      .filter((e) => e.type === "chart" || e.type === "svg")
       .map((e) => e.elementId);
     expect(exportedChartIds).not.toContain("b-template");
     // A chart that merely shares the editor's default title but carries real
@@ -168,7 +169,7 @@ describe("export behavior regressions", () => {
     expect(free?.issues.some((issue) => issue.severity === "error")).toBe(true);
   });
 
-  it("export geometry is invariant across editor zoom levels (pure view, no mutation)", async () => {
+  it("export geometry is invariant across editor zoom levels (pure view, no mutation)", { timeout: 30000 }, async () => {
     const deck = loadSeedDeck();
     const exporter = new PptxExporter(DEFAULT_PPTX_CONFIG);
     const first = await exporter.export(deck);

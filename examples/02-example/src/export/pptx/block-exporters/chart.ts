@@ -1,11 +1,16 @@
 // export/pptx/block-exporters/chart.ts
 //
 // PPTX chart exporter that consumes the canonical ResolvedChartSpec from the
-// snapshot resolver. The exporter NEVER reconstructs chart data, orientation or
-// colors on its own — it reads the same immutable spec the web and presenter
-// surfaces use, then maps it to a native PowerPoint chart. When the native
-// chart cannot reproduce the web appearance within the fidelity policy, the
-// chart falls back to an SVG rendered from the SAME spec.
+// snapshot resolver. Charts are exported as vector SVG images rendered from the
+// SAME layout engine the web presenter uses (`renderChartToSvg`), placed at the
+// full block frame — the web chart is an <svg viewBox="0 0 560 300"> filling the
+// frame, so an embedded copy is pixel-identical.
+//
+// Native PowerPoint charts are deliberately NOT used: pptxgenjs/PowerPoint
+// cannot reproduce the web chart's per-bar highlight color, exact plot-area
+// geometry (no plot-margin API), the solid baseline under dashed gridlines, or
+// the top-down category order of horizontal bars. The SVG is the only path that
+// is 100% faithful to the web.
 
 import type {
   PptxBlockExport,
@@ -15,17 +20,33 @@ import type {
 import type { Block, ChartContent } from "../../../deck/types";
 import { chartSpecFromContent } from "../../../deck/chart-spec";
 import { exportFrameOf, frameErrorIssue } from "../export-utils";
-import { hexToPptx } from "../../resolved-theme";
 import type { ResolvedChartSpec } from "../../snapshot";
 import { resolveChartSpecForBlock } from "../../snapshot";
 import { renderChartToSvg } from "../../fidelity/svg/svg-chart";
 
-/** PptxGenJS data-label position derived from the shared ChartSpec policy. */
-function dataLabelPositionOf(position: string): string {
-  return position === "in-end" ? "inEnd" : "outEnd";
-}
+/**
+ * The web chart SVG has a fixed 560x300 viewBox letterboxed inside its block
+ * frame (preserveAspectRatio meet). The exported element is the largest 560:300
+ * box that fits in the frame, centered — the visible drawing region.
+ */
+const CHART_ASPECT = 560 / 300;
 
-const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i;
+function chartContainedFrame(frame: { x: number; y: number; w: number; h: number }): {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+} {
+  const frameAspect = frame.w / frame.h;
+  let w = frame.w;
+  let h = frame.h;
+  if (frameAspect > CHART_ASPECT) {
+    w = frame.h * CHART_ASPECT;
+  } else {
+    h = frame.w / CHART_ASPECT;
+  }
+  return { x: frame.x + (frame.w - w) / 2, y: frame.y + (frame.h - h) / 2, w, h };
+}
 
 /** A chart data point that is definitely well-formed enough to export. */
 function hasRealChartData(content: ChartContent | undefined): boolean {
@@ -34,7 +55,7 @@ function hasRealChartData(content: ChartContent | undefined): boolean {
 
 export const chartBlockExporter: PptxBlockExporter = {
   type: "chart",
-  exportability: "native-editable",
+  exportability: "hybrid-rasterized",
 
   async export(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
     const chartBlock = block as Block;
@@ -149,105 +170,26 @@ export const chartBlockExporter: PptxBlockExporter = {
       }
     }
 
-    const spec = chartSpecFromContent(content as ChartContent);
-
-    // ── Fidelity gate ────────────────────────────────────────────────────────
-    // A native PowerPoint chart is only used when it can reproduce the web
-    // chart's orientation, exact colors and data labels. Otherwise, in
-    // fidelity-first mode, render the SAME spec to SVG.
-    const fidelityIssues: string[] = [];
-
-    const hasAutomaticColors = chartSpec.style.seriesColors.some(
-      (c) => !HEX_COLOR_RE.test(c),
-    );
-    if (hasAutomaticColors) {
-      fidelityIssues.push("series colors are not explicit hex values");
-    }
-    if (!/^#[0-9a-f]{6}$/i.test(chartSpec.style.highlightColor)) {
-      fidelityIssues.push("highlight color is not an explicit hex value");
-    }
-    if (!spec.labelPolicy.showDataLabels) {
-      fidelityIssues.push("data labels disabled");
-    }
-
-    if (fidelityIssues.length > 0 && ctx.config.mode === "fidelity-first") {
-      const svgString = renderChartToSvg(chartSpec);
-      return {
-        status: "rasterized",
-        issues: [
-          {
-            code: "fallback-rasterized",
-            severity: "warning",
-            message: `Chart "${chartBlock.id}" fell back to SVG: ${fidelityIssues.join(", ")}`,
-            automaticFixAvailable: false,
-          },
-        ],
-        element: {
-          type: "svg",
-          elementId: chartBlock.id,
-          ...frame,
-          data: {
-            svg: svgString,
-            alt: chartSpec.summary || chartSpec.title || "Chart",
-          },
-        },
-      };
-    }
-
-    // ── Deterministic Web → PPTX orientation mapping ────────────────────────
-    // Web bar (vertical) → PowerPoint column chart (barDir "col").
-    // Web bar-horizontal → PowerPoint horizontal bar chart (barDir "bar").
-    // Never inferred from data shape; always driven by the persisted
-    // orientation on the canonical spec.
-    const isHorizontal = chartSpec.orientation === "horizontal";
-    const pptxChartType = "bar" as const;
-    const barDir = isHorizontal ? "bar" : "col";
-
-    const labels = chartSpec.categories;
-    const dataValues = chartSpec.series[0]?.values ?? [];
-    const seriesName = chartSpec.series[0]?.name || chartSpec.title || "Data";
-
-    const chartData = [
-      {
-        name: seriesName,
-        labels,
-        values: dataValues,
-      },
-    ];
-
-    const showValueLabels =
-      spec.labelPolicy.showDataLabels && chartSpec.type !== "line";
-    const labelOptions = {
-      showValue: showValueLabels,
-      dataLabelPosition: dataLabelPositionOf(spec.labelPolicy.dataLabelPosition),
-      dataLabelColor: hexToPptx(chartSpec.style.foreground),
-      dataLabelFontSize: chartSpec.style.fontSize,
-      dataLabelFontBold: true,
-      ...(chartSpec.unit
-        ? { valAxisTitle: chartSpec.unit, valAxisTitleFontSize: 9 }
-        : {}),
-      valAxisLabelShow: true,
-      catAxisLabelShow: true,
-      catAxisLabelFontSize: chartSpec.style.fontSize,
-    };
+// ── Render the EXACT web chart (same SVG the presenter draws). ─────────
+    // The browser chart is an <svg viewBox="0 0 560 300"> filling the block
+    // frame; preserveAspectRatio meet letterboxes the drawing into the largest
+    // 560:300 box, which is the visible region. Embedding that same SVG at the
+    // contained box reproduces the web drawing byte-for-byte: dashed gridlines,
+    // per-bar highlight color, exact bar geometry, category order and data
+    // labels like "2.4MB".
+    const chartFrame = chartContainedFrame(frame);
+    const svgString = renderChartToSvg(chartSpec);
 
     return {
-      status: "native",
+      status: "rasterized",
       issues: [],
       element: {
-        type: "chart",
+        type: "svg",
         elementId: chartBlock.id,
-        ...frame,
+        ...chartFrame,
         data: {
-          chartType: pptxChartType,
-          data: chartData,
-          options: {
-            showTitle: !!chartSpec.title,
-            title: chartSpec.title,
-            chartColors: chartSpec.style.seriesColors.map((c) => hexToPptx(c)),
-            barDir,
-            ...labelOptions,
-          },
+          svg: svgString,
+          alt: chartSpec.summary || chartSpec.title || "Chart",
         },
       },
     };

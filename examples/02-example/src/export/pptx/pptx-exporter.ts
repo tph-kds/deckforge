@@ -10,6 +10,7 @@ import type {
   PptxExportContext,
   PptxExportResult,
   PptxSlideElement,
+  PptxTextRun,
 } from "../export-types";
 import type { DeckProject, DeckSlide, ChartContent } from "../../deck/types";
 import { createExportContext } from "./pptx-context";
@@ -34,16 +35,30 @@ async function toUint8Array(value: string | Blob | ArrayBuffer | Uint8Array): Pr
 }
 
 /**
+ * Normalize intrinsic pixel dimensions to a sub-100-inch representation that
+ * preserves the aspect ratio. pptxgenjs reads the element w/h as the source
+ * image size for crop math (and treats any value >= 100 as EMU, not inches), so
+ * the scale here is arbitrary but must keep both axes below 100. Only the ratio
+ * matters: `cover`/`contain` srcRect percentages are derived from it.
+ */
+function naturalAspectInches(width: number, height: number): { w: number; h: number } {
+  const max = Math.max(width, height);
+  if (!isFinite(max) || max <= 0) return { w: 0, h: 0 };
+  const scale = 4 / max;
+  return { w: width * scale, h: height * scale };
+}
+
+/**
  * Place one element on a PPTX slide. Element geometry is in DOCUMENT pixels;
  * the slide is sized with the derived PPTX geometry, so each axis maps by pure
  * ratio (Phase 5). No fixed pixels-per-inch constant: the relationship between
  * document space and PPTX inches is established once in the geometry layer.
  */
-function writeElementToSlide(
+async function writeElementToSlide(
   pptxSlide: PptxGenJS.Slide,
   element: PptxSlideElement,
   ctx: PptxExportContext,
-): void {
+): Promise<void> {
   if (!element || element.w <= 0 || element.h <= 0) return;
 
   const opts = {
@@ -62,10 +77,21 @@ function writeElementToSlide(
       break;
     }
     case "image": {
+      // pptxgenjs computes the cover/contain `srcRect` crop from the element's
+      // w/h aspect (its `imgSize`) against the sizing box. The element's final
+      // size still comes from `sizing.w/h` (the frame), so we override w/h with
+      // the source image's intrinsic aspect — normalized to a sub-100-inch
+      // scale — so the crop matches the web `object-fit` instead of stretching.
+      const natural =
+        element.data.naturalWidth && element.data.naturalHeight
+          ? naturalAspectInches(element.data.naturalWidth, element.data.naturalHeight)
+          : null;
       pptxSlide.addImage({
         data: element.data.dataUri,
         altText: element.data.alt,
         ...opts,
+        w: natural?.w ?? opts.w,
+        h: natural?.h ?? opts.h,
         ...element.data.options,
       } as unknown as PptxGenJS.ImageProps);
       break;
@@ -104,11 +130,33 @@ function writeElementToSlide(
       break;
     }
     case "svg": {
-      pptxSlide.addImage({
-        data: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(element.data.svg)}`,
-        alt: element.data.alt,
-        ...opts,
-      } as unknown as PptxGenJS.ImageProps);
+      // The SVG fallback (charts, diagrams, video posters) must become a PNG.
+      // In Node there is no browser `Image`/`canvas` for PptxGenJS's built-in
+      // SVG preview, so the SVG is rasterized here with resvg to a crisp 2x PNG.
+      // In the browser that preview works, so the SVG data-URI is passed through
+      // and PptxGenJS rasterizes it client-side (the native resvg binding cannot
+      // run in the browser and is kept out of the browser bundle via a lazy
+      // import).
+      if (typeof document === "undefined") {
+        const { renderSvgToPng } = await import("../fidelity/svg/svg-raster");
+        const png = renderSvgToPng(element.data.svg, element.w * 2);
+        pptxSlide.addImage({
+          data: `data:image/png;base64,${png.toString("base64")}`,
+          altText: element.data.alt,
+          ...opts,
+        } as unknown as PptxGenJS.ImageProps);
+      } else {
+        // PptxGenJS requires a base64 header; it then keeps the SVG part and
+        // rasterizes a PNG preview client-side via canvas.
+        const bytes = new TextEncoder().encode(element.data.svg);
+        let binary = "";
+        for (const byte of bytes) binary += String.fromCharCode(byte);
+        pptxSlide.addImage({
+          data: `data:image/svg+xml;base64,${btoa(binary)}`,
+          altText: element.data.alt,
+          ...opts,
+        } as unknown as PptxGenJS.ImageProps);
+      }
       break;
     }
   }
@@ -409,7 +457,7 @@ export class PptxExporter {
 
       const slideCtx = createExportContext(deck, this.config, prepared);
       for (const element of elements) {
-        writeElementToSlide(pptxSlide, element, slideCtx);
+        await writeElementToSlide(pptxSlide, element, slideCtx);
       }
     }
 
@@ -432,7 +480,10 @@ export class PptxExporter {
             const text = (element.data.options as { text?: unknown } | undefined)?.text;
             return typeof text === "string" ? text : "";
           }
-          return (element.data as { text?: string }).text ?? "";
+          const data = element.data as { text?: string | PptxTextRun[] };
+          return Array.isArray(data.text)
+            ? data.text.map((run) => run.text ?? "").join(" ")
+            : (data.text ?? "");
         })
         .filter((text) => text.length > 0),
     );

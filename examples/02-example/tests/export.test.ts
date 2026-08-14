@@ -137,14 +137,6 @@ describe("buildExportReport", () => {
         block("block-title", "heading", "The title"),
         block("block-body", "text", "Some body text"),
         block("block-bullets", "bullets", ["First point", "Second point"]),
-        block("block-chart", "chart", {
-          type: "bar",
-          title: "Weights",
-          values: [
-            { label: "A", value: 1 },
-            { label: "B", value: 2 },
-          ],
-        }),
         block("block-image", "image", { src: "data:image/png;base64,iVBORw0KGgo=" }),
         block("block-shape", "shape", { shapeType: "rectangle" }),
       ]),

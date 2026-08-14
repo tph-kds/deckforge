@@ -164,6 +164,12 @@ export interface FontWarning {
   substituteFont?: string;
 }
 
+/** A single styled run inside a native text element (pptxgenjs TextProps). */
+export interface PptxTextRun {
+  text: string;
+  options?: Record<string, unknown>;
+}
+
 interface PptxTextElement {
   type: "text";
   x: number;
@@ -174,7 +180,7 @@ interface PptxTextElement {
   elementId?: string;
   /** Stable identity of the owning slide. */
   slideId?: string;
-  data: { text: string; options?: Record<string, unknown> };
+  data: { text: string | PptxTextRun[]; options?: Record<string, unknown> };
 }
 
 interface PptxImageElement {
@@ -187,7 +193,15 @@ interface PptxImageElement {
   elementId?: string;
   /** Stable identity of the owning slide. */
   slideId?: string;
-  data: { dataUri: string; alt?: string; options?: Record<string, unknown> };
+  data: {
+    dataUri: string;
+    alt?: string;
+    /** Intrinsic pixel dimensions of the source image, when known. Used to
+     * crop cover/contain from the real aspect ratio instead of stretching. */
+    naturalWidth?: number;
+    naturalHeight?: number;
+    options?: Record<string, unknown>;
+  };
 }
 
 interface PptxShapeElement {
