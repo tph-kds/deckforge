@@ -1,30 +1,39 @@
+// export/pptx/block-exporters/fallback.ts
+
 import type {
   PptxBlockExport,
   PptxBlockExporter,
   PptxExportContext,
 } from "../../export-types";
 import { renderSnapshotSvg } from "../../fidelity/svg/svg-snapshot";
+import { exportFrameOf, frameErrorIssue } from "../export-utils";
+import type { Block } from "../../../deck/types";
 
 export const fallbackBlockExporter: PptxBlockExporter = {
   type: "fallback",
   exportability: "image-only",
 
   async export(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
-    const anyBlock = block as Record<string, unknown>;
-    const blockType = (anyBlock.type as string) ?? "unknown";
-    const frame = (anyBlock.frame as { x?: number; y?: number; w?: number; h?: number } | undefined) ?? {};
-    const x = (anyBlock.x as number) ?? frame.x ?? 0;
-    const y = (anyBlock.y as number) ?? frame.y ?? 0;
-    const w = (anyBlock.w as number) ?? frame.w ?? ctx.slideWidth * 0.5;
-    const h = (anyBlock.h as number) ?? frame.h ?? ctx.slideHeight * 0.3;
+    const anyBlock = block as Block;
+    const frame = exportFrameOf(anyBlock);
+    if (!frame) {
+      return {
+        status: "unsupported",
+        issues: [frameErrorIssue(anyBlock.id, "fallback blocks require a resolved frame")],
+      };
+    }
 
+    const blockType = anyBlock.type ?? "unknown";
     const content = anyBlock.content;
     const text = typeof content === "string" ? content : content ? JSON.stringify(content) : "";
-    const alt = (anyBlock.alt as string) ?? (anyBlock.ariaLabel as string) ?? "";
+    const alt = anyBlock.alt ?? anyBlock.ariaLabel ?? "";
+
+    const finalW = Math.max(100, frame.w);
+    const finalH = Math.max(60, frame.h);
 
     const svg = renderSnapshotSvg({
-      width: Math.max(1, Math.round(w)),
-      height: Math.max(1, Math.round(h)),
+      width: Math.round(finalW),
+      height: Math.round(finalH),
       title: blockType,
       text,
       alt,
@@ -43,10 +52,8 @@ export const fallbackBlockExporter: PptxBlockExporter = {
       ],
       element: {
         type: "svg",
-        x,
-        y,
-        w,
-        h,
+        elementId: anyBlock.id,
+        ...frame,
         data: { svg, alt },
       },
     };

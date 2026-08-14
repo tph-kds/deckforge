@@ -8,8 +8,8 @@ import {
   calloutBlockExporter,
   citationBlockExporter,
   metricBlockExporter,
-  processBlockExporter,
 } from "./text";
+import { processBlockExporter } from "./process";
 import { imageBlockExporter } from "./image";
 import { shapeBlockExporter } from "./shape";
 import { tableBlockExporter } from "./table";

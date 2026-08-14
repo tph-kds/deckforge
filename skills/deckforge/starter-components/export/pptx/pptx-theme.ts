@@ -1,5 +1,4 @@
-import type { DeckProject } from "../../deck-types";
-import type PptxGenJS from "pptxgenjs";
+import type { DeckProject } from "../../deck/types";
 
 type DeckTheme = DeckProject["theme"];
 
@@ -41,16 +40,5 @@ export function mapThemeFonts(theme: DeckTheme): { heading: string; body: string
   return {
     heading: typography.headingFont ?? "Arial",
     body: typography.bodyFont ?? "Arial",
-  };
-}
-
-export function applyThemeToPptx(pptx: PptxGenJS, theme: DeckTheme): void {
-  const fonts = mapThemeFonts(theme);
-
-  // PptxGenJS ThemeProps only supports font faces; theme colors are applied
-  // per-element via mapThemeColors() in the block exporters.
-  pptx.theme = {
-    headFontFace: fonts.heading,
-    bodyFontFace: fonts.body,
   };
 }
