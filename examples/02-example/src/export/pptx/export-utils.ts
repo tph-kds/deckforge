@@ -88,11 +88,19 @@ export function browserTypographyFor(block: Block, containerWidthPx: number): Br
           letterSpacingEm: -0.02,
         };
       }
-      return { fontSizePx: 24, lineHeight: 1.25, bold: false, italic: false };
+      // All headings render as <h2> on the web (BlockRenderer), and h2 keeps
+      // the browser default font-weight: bold. Only level 1 overrides weight
+      // to 400, so every other level is bold.
+      return { fontSizePx: 24, lineHeight: 1.25, bold: true, italic: false };
     case "caption":
       return { fontSizePx: 13, lineHeight: 1.5, bold: true, italic: false };
+    case "bullets":
+      // `.block-bullets` inherits the 16px body font-size (styles.css has no
+      // font-size on the list), so lines are 16px with a normal ~1.2 line box.
+      return { fontSizePx: 16, lineHeight: 1.2, bold: false, italic: false };
     case "citation":
-      return { fontSizePx: clampTo(w, 1.2, 10, 13), lineHeight: 1.5, bold: false, italic: true };
+      // `.block-citation` sets no font-style, so citations are NOT italic.
+      return { fontSizePx: clampTo(w, 1.2, 10, 13), lineHeight: 1.5, bold: false, italic: false };
     case "callout":
       return { fontSizePx: clampTo(w, 1.7, 14, 19), lineHeight: 1.5, bold: false, italic: true };
     case "metric":
@@ -103,7 +111,9 @@ export function browserTypographyFor(block: Block, containerWidthPx: number): Br
       if (variant === "kicker") return { fontSizePx: 12, lineHeight: 1.4, bold: true, italic: false, letterSpacingEm: 0.14 };
       if (variant === "meta") return { fontSizePx: 13, lineHeight: 1.5, bold: false, italic: false };
       if (variant === "caption") return { fontSizePx: 13, lineHeight: 1.5, bold: true, italic: false };
-      if (variant === "callout") return { fontSizePx: clampTo(w, 1.7, 14, 19), lineHeight: 1.5, bold: false, italic: true };
+      // Inline variant (BlockRenderer styleFrom) fixes 15px; the `.block-callout`
+      // class clamps instead — that branch is handled by the "callout" case above.
+      if (variant === "callout") return { fontSizePx: 15, lineHeight: 1.5, bold: false, italic: true };
       return { fontSizePx: clampTo(w, 1.6, 14, 20), lineHeight: 1.55, bold: false, italic: false };
   }
 }
