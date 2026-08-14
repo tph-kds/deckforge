@@ -15,6 +15,15 @@ python scripts/audits/validate_output_contract.py <target-project> --profile <pr
 
 Also run schema/catalog validation, type checking, tests, production build, accessibility automation, and representative visual regression when supported.
 
+## Export quality gate
+
+A generated app that uses the scaffold export layer must verify all of the following before completion:
+
+1. `runExportPreflight` reports `ready: true` and zero missing assets on a fully authored deck, with no network access.
+2. `makeDeckSelfContained` produces a deck whose rendered output and embedded PPTX both work offline; preflight must report `Missing: 0`.
+3. PPTX export smoke-test opens the archive (via `verifyPptxArchive`) and contains non-empty `ppt/media/`.
+4. Charts render through `renderChartSvg`/`renderChartRaster` (rasterized, never DOM-dependent) so PPTX chart fidelity matches the browser.
+
 ## Capability truth comes from the receipt
 
 Regex scanning of the project is advisory only. The blocking source of truth is the capability receipt:
