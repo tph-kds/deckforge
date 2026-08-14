@@ -27,6 +27,10 @@ Images must occupy a meaningful visual slot. Avoid tiny decorative images surrou
 
 Set the media `fit` explicitly (`cover` or `contain`) and choose the focal point before rendering; never stretch an image to fill a slot. Alt text is mandatory for every image, and purely decorative images must be marked as decorative so assistive technology skips them. Lazy-load below-the-fold media.
 
+## Asset-manifest image workflow
+
+Image imports must go through the asset manifest (`deck.assets`) plus `imageContentOf`, never through bare URLs or ad-hoc inline storage. Uploads must record the embedded pixel dimensions (`width`/`height`) on the manifest entry so cover/contain cropping uses real aspect ratios — never stretched frames. The `updateImageSource` command must keep the block binding and the manifest entry atomic so the deck stays consistent even when the source changes or fails.
+
 ## Screenshot and demo treatment
 
 - show enough interface context to orient the audience;
