@@ -571,8 +571,14 @@ export function EditorApp({ store, navigate, onExport }: EditorAppProps) {
               themeId={deck.theme.id}
               update={(patch) => updateBlock(activeBlock.id, patch)}
               imageSource={activeImageSource}
-              onImageSourceChange={(src) =>
-                commit({ type: 'updateImageSource', slideId: activeSlide.id, blockId: activeBlock.id, src })
+              onImageSourceChange={(src, dimensions) =>
+                commit({
+                  type: 'updateImageSource',
+                  slideId: activeSlide.id,
+                  blockId: activeBlock.id,
+                  src,
+                  ...(dimensions ?? {}),
+                })
               }
             />
           ) : (
@@ -601,7 +607,7 @@ interface BlockInspectorProps {
   themeId: string;
   update: (patch: { content?: unknown; style?: Record<string, unknown>; alt?: string }) => void;
   imageSource?: string;
-  onImageSourceChange?: (src: string) => void;
+  onImageSourceChange?: (src: string, dimensions?: { width?: number; height?: number }) => void;
 }
 
 function BlockInspector({ block, update, imageSource, onImageSourceChange }: BlockInspectorProps) {
@@ -657,7 +663,7 @@ function ContentInspector({
   block: Block;
   update: (patch: { content?: unknown; style?: Record<string, unknown>; alt?: string }) => void;
   imageSource?: string;
-  onImageSourceChange?: (src: string) => void;
+  onImageSourceChange?: (src: string, dimensions?: { width?: number; height?: number }) => void;
 }) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
@@ -668,8 +674,8 @@ function ContentInspector({
     setUploading(true);
     setUploadError('');
     try {
-      const uri = await importImageAsDataUri(file);
-      onImageSourceChange(uri);
+      const imported = await importImageAsDataUri(file);
+      onImageSourceChange(imported.uri, { width: imported.width, height: imported.height });
     } catch (error) {
       setUploadError(error instanceof Error ? error.message : 'Could not process the image');
     } finally {

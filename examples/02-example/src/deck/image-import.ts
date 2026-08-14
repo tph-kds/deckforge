@@ -39,7 +39,15 @@ function hasTransparency(canvas: HTMLCanvasElement): boolean {
   return false;
 }
 
-export function importImageAsDataUri(file: File): Promise<string> {
+export interface ImportedImage {
+  /** The embeddable `data:` URI. */
+  uri: string;
+  /** Pixel dimensions of the EMBEDDED bytes (after downscaling). */
+  width: number;
+  height: number;
+}
+
+export function importImageAsDataUri(file: File): Promise<ImportedImage> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(new Error("Could not read the selected file"));
@@ -69,7 +77,7 @@ export function importImageAsDataUri(file: File): Promise<string> {
           reject(new Error("Could not encode the image"));
           return;
         }
-        resolve(uri);
+        resolve({ uri, width: w, height: h });
       };
       img.src = String(reader.result);
     };

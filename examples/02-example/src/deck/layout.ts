@@ -312,8 +312,11 @@ export function resolveBlockFrame(
 /**
  * Pick the best slot to bind a newly inserted block to. Prefers the first
  * responsive slot whose `allowedBlocks` accepts the type and that still has
- * room (maxItems not reached). Falls back to the first slot with room so an
- * insert always renders instead of disappearing into state-only.
+ * room (maxItems not reached). Next prefers a type-compatible slot even when
+ * it is at capacity (soft overflow), so a new block never lands in a slot
+ * that rejects its type (e.g. an image in a text-only band producing a
+ * degenerate frame). Falls back to the first slot with room so an insert
+ * always renders instead of disappearing into state-only.
  */
 export function suggestSlotForBlock(slide: DeckSlide, block: Block): string | undefined {
   const contract = getLayoutContract(slide.layout);
@@ -336,7 +339,11 @@ export function suggestSlotForBlock(slide: DeckSlide, block: Block): string | un
   };
   const allows = (slot: LayoutSlotContract): boolean =>
     !slot.allowedBlocks?.length || slot.allowedBlocks.includes(block.type);
-  return slots.find((slot) => allows(slot) && hasRoom(slot))?.id ?? slots.find(hasRoom)?.id;
+  return (
+    slots.find((slot) => allows(slot) && hasRoom(slot))?.id ??
+    slots.find((slot) => allows(slot))?.id ??
+    slots.find(hasRoom)?.id
+  );
 }
 
 export interface LayoutIssue {

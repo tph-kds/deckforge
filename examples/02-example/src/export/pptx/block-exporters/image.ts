@@ -15,8 +15,47 @@ import type {
 } from "../../export-types";
 import { canonicalAssetRef } from "../../../deck/assets";
 import { exportFrameOf, frameErrorIssue } from "../export-utils";
+import { documentUnitToPptxInches } from "../../geometry";
 import { PLACEHOLDER_IMAGE_DATA_URI } from "../pptx-placeholder";
+import { readImageSizeFromDataUri } from "../../image-dimensions";
 import type { Block, ImageBlockContent } from "../../../deck/types";
+
+/**
+ * PPTX sizing box (inches) for an image element, derived from the resolved
+ * document-pixel frame. pptxgenjs interprets `sizing.w/h` as INCHES when the
+ * value is < 100 and as EMU otherwise — feeding it document pixels (e.g. 852)
+ * produced a 0.001"-wide picture. Inches are always the correct unit here.
+ */
+function sizingBoxInches(
+  frame: { w: number; h: number },
+  ctx: PptxExportContext,
+): { w: number; h: number } {
+  return {
+    w: documentUnitToPptxInches(frame.w, ctx.slideWidth, ctx.pptxWidth),
+    h: documentUnitToPptxInches(frame.h, ctx.slideHeight, ctx.pptxHeight),
+  };
+}
+
+/**
+ * Intrinsic dimensions for the raster that will be embedded. The bytes are
+ * authoritative (they match the actual embedded image), so they take priority
+ * over the manifest record, which can be stale or absent (URL-pasted sources,
+ * decks saved before upload dimensions were tracked).
+ */
+function naturalSize(
+  dataUri: string,
+  recordedWidth?: number,
+  recordedHeight?: number,
+): { width: number; height: number } | undefined {
+  const decoded = readImageSizeFromDataUri(dataUri);
+  if (decoded) {
+    return decoded;
+  }
+  if (recordedWidth && recordedHeight) {
+    return { width: recordedWidth, height: recordedHeight };
+  }
+  return undefined;
+}
 
 export const imageBlockExporter: PptxBlockExporter = {
   type: "image",
@@ -57,7 +96,7 @@ export const imageBlockExporter: PptxBlockExporter = {
             automaticFixAvailable: true,
           },
         ],
-        element: placeholderElement(imageBlock.id, frame, alt, fit),
+        element: placeholderElement(imageBlock.id, frame, alt, fit, ctx),
       };
     }
 
@@ -97,6 +136,7 @@ export const imageBlockExporter: PptxBlockExporter = {
     }
 
     if (entry && entry.status === "ready" && entry.resolvedDataUri) {
+      const natural = naturalSize(entry.resolvedDataUri, entry.width, entry.height);
       const element: PptxSlideElement = {
         type: "image",
         elementId: imageBlock.id,
@@ -104,11 +144,12 @@ export const imageBlockExporter: PptxBlockExporter = {
         data: {
           dataUri: entry.resolvedDataUri,
           alt,
+          naturalWidth: natural?.width,
+          naturalHeight: natural?.height,
           options: {
             sizing: {
               type: fit === "cover" ? "cover" : "contain",
-              w: frame.w,
-              h: frame.h,
+              ...sizingBoxInches(frame, ctx),
             },
             margin: 0,
           },
@@ -153,7 +194,7 @@ export const imageBlockExporter: PptxBlockExporter = {
           suggestedFix: fix,
         },
       ],
-      element: placeholderElement(imageBlock.id, frame, alt, fit),
+      element: placeholderElement(imageBlock.id, frame, alt, fit, ctx),
     };
   },
 };
@@ -163,7 +204,9 @@ function placeholderElement(
   frame: { x: number; y: number; w: number; h: number },
   alt: string,
   fit: string,
+  ctx: PptxExportContext,
 ): PptxSlideElement {
+  const natural = readImageSizeFromDataUri(PLACEHOLDER_IMAGE_DATA_URI);
   return {
     type: "image",
     elementId,
@@ -171,11 +214,12 @@ function placeholderElement(
     data: {
       dataUri: PLACEHOLDER_IMAGE_DATA_URI,
       alt,
+      naturalWidth: natural?.width,
+      naturalHeight: natural?.height,
       options: {
         sizing: {
           type: fit === "cover" ? "cover" : "contain",
-          w: frame.w,
-          h: frame.h,
+          ...sizingBoxInches(frame, ctx),
         },
         margin: 0,
       },

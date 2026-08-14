@@ -6,7 +6,7 @@ export type Command =
   | { type: 'updateBlockContent'; slideId: string; blockId: string; content: unknown }
   | { type: 'updateBlockStyle'; slideId: string; blockId: string; style: Record<string, unknown> }
   | { type: 'updateBlockAlt'; slideId: string; blockId: string; alt: string }
-  | { type: 'updateImageSource'; slideId: string; blockId: string; src: string }
+  | { type: 'updateImageSource'; slideId: string; blockId: string; src: string; width?: number; height?: number }
   | { type: 'updateSlideTitle'; slideId: string; title: string }
   | { type: 'updateSlideNotes'; slideId: string; notes: string }
   | { type: 'updateSlideLayout'; slideId: string; layout: string }
@@ -165,6 +165,16 @@ export function applyCommandWithResult(deck: DeckProject, command: Command): Dis
       const created: string[] = [];
       let nextAssets = deck.assets ?? [];
 
+      // The upload path knows the embedded pixel dimensions; keep them on the
+      // manifest entry so exporters can crop cover/contain from the real
+      // aspect ratio instead of stretching the frame.
+      const hasDims =
+        typeof command.width === 'number' &&
+        command.width > 0 &&
+        typeof command.height === 'number' &&
+        command.height > 0;
+      const dims = hasDims ? { width: command.width, height: command.height } : {};
+
       const next = mapSlide(deck, command.slideId, (slide) => ({
         ...slide,
         blocks: slide.blocks.map((block) => {
@@ -193,13 +203,20 @@ export function applyCommandWithResult(deck: DeckProject, command: Command): Dis
           if (nextAssets.some((a) => a.id === assetId)) {
             nextAssets = nextAssets.map((a) =>
               a.id === assetId
-                ? { ...a, src: trimmed, mimeType: a.mimeType ?? mimeTypeOf(trimmed) }
+                ? {
+                    ...a,
+                    src: trimmed,
+                    mimeType: a.mimeType ?? mimeTypeOf(trimmed),
+                    // A source replaced without known dimensions (e.g. a pasted
+                    // URL) must not keep the previous image's aspect ratio.
+                    ...(hasDims ? dims : { width: undefined, height: undefined }),
+                  }
                 : a,
             );
           } else {
             nextAssets = [
               ...nextAssets,
-              { id: assetId, kind: 'image' as const, src: trimmed, mimeType: mimeTypeOf(trimmed) },
+              { id: assetId, kind: 'image' as const, src: trimmed, mimeType: mimeTypeOf(trimmed), ...dims },
             ];
           }
 

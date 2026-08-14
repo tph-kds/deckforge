@@ -102,9 +102,22 @@ function ImageBlock({ block, deck }: BlockViewProps) {
   const assetDeck = deck ?? { assets: [] as DeckProject['assets'] };
   const resolved = resolveImage(assetDeck, block);
   const asset = resolved.asset ?? resolveAsset(assetDeck, content.assetId);
+  const effectiveSrc = resolved.status === 'ready' && resolved.src ? resolved.src : '';
+  const [renderedSrc, setRenderedSrc] = useState(effectiveSrc);
   const [loadState, setLoadState] = useState<'loading' | 'loaded' | 'error'>(
-    resolved.status === 'placeholder' || resolved.status === 'failed' ? 'error' : 'loading',
+    effectiveSrc ? 'loading' : 'error',
   );
+
+  // Recover from a stale load lifecycle: a block that starts as a placeholder
+  // (loadState 'error') must switch to 'loading' the moment a valid source
+  // arrives (upload or URL edit). Without this, an inserted-then-uploaded image
+  // kept rendering its ✕ "Image unavailable" forever even though the inspector
+  // showed the data URI. The render-phase adjustment re-runs this render with
+  // the reset state, so there is never a frame showing the stale error.
+  if (effectiveSrc && effectiveSrc !== renderedSrc) {
+    setRenderedSrc(effectiveSrc);
+    setLoadState('loading');
+  }
 
   const handleLoad = useCallback(() => setLoadState('loaded'), []);
   const handleError = useCallback(() => setLoadState('error'), []);
