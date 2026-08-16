@@ -219,6 +219,7 @@ export interface DeckProject {
     tags?: string[];
     createdAt?: string;
     updatedAt?: string;
+    seedVersion?: string;
   };
   canvas: {
     aspectRatio: '16:9' | '4:3' | 'custom';
