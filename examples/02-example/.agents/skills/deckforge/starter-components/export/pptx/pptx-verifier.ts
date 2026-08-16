@@ -4,10 +4,23 @@ import type { ExportReport, PptxVerificationCheck, PptxVerificationReport } from
 export interface VerificationInput {
   report: ExportReport;
   blob: Blob;
-  /** Text fragments that must survive somewhere in the archive's slide <a:t> runs. */
+  /** Legacy alias for native text that must survive in slide <a:t> runs. */
   expectedTexts?: string[];
+  /**
+   * Semantic native-text corpus: text fragments from blocks exported as
+   * native text elements. EVERY fragment must survive in <a:t> runs.
+   */
+  nativeTextExpected?: string[];
+  /**
+   * Semantic visual-fallback corpus: alt/description fragments from blocks
+   * exported as SVG/raster elements. These must survive in the slide XML
+   * (as element attributes such as `descr`), not necessarily in <a:t> runs.
+   */
+  visualFallbackTexts?: string[];
   /** Number of speaker-notes parts expected (slides with notes in this export). */
   expectedNotes?: number;
+  /** When false the speaker-notes check is NOT APPLICABLE and always passes. */
+  includeSpeakerNotes?: boolean;
 }
 
 function decode(entryText: string): string {
@@ -23,6 +36,15 @@ function decode(entryText: string): string {
 
 function normalizeText(text: string): string {
   return decode(text).replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
+}
+
+/**
+ * Collapse whitespace over the DECODED XML including attribute values, so a
+ * phrase stored in an attribute (e.g. `descr="..."` alt text on an image or
+ * SVG element) can be located without needing to parse the XML.
+ */
+function normalizeXmlCollapsed(text: string): string {
+  return decode(text).replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
 }
 
 function slidePartName(name: string): boolean {
@@ -41,9 +63,18 @@ export async function verifyPptxArchive(input: VerificationInput): Promise<{
   passed: boolean;
   report: PptxVerificationReport;
 }> {
-  const { report, blob, expectedTexts = [], expectedNotes } = input;
+  const {
+    report,
+    blob,
+    expectedTexts = [],
+    nativeTextExpected = [],
+    visualFallbackTexts = [],
+    expectedNotes,
+    includeSpeakerNotes = true,
+  } = input;
   const checks: PptxVerificationCheck[] = [];
   const expectedSlides = report.slides.length;
+  const nativeCorpus = [...expectedTexts, ...nativeTextExpected].filter((text) => text && text.length > 0);
 
   try {
     const zipData =
@@ -58,34 +89,63 @@ export async function verifyPptxArchive(input: VerificationInput): Promise<{
     });
 
     const notesCount = Object.keys(zip.files).filter(notesPartName).length;
-    const notesExpected = expectedNotes ?? expectedSlides;
-    checks.push({
-      name: "speaker-notes",
-      passed: notesCount === notesExpected,
-      detail: `expected notes for ${notesExpected} slides, found ${notesCount}`,
-    });
+    if (includeSpeakerNotes === false) {
+      // Regression (P2-002): speaker-notes is NOT APPLICABLE when the user
+      // disabled notes; it must not be compared against an expectation.
+      checks.push({
+        name: "speaker-notes",
+        passed: true,
+        detail: "not-applicable: speaker notes disabled",
+      });
+    } else {
+      const notesExpected = expectedNotes ?? expectedSlides;
+      checks.push({
+        name: "speaker-notes",
+        passed: notesCount === notesExpected,
+        detail: `expected notes for ${notesExpected} slides, found ${notesCount}`,
+      });
+    }
 
     const slideTexts: string[] = [];
+    const slideXmlCollapsed: string[] = [];
     for (const name of archiveSlides) {
       const entry = zip.file(name);
       if (!entry) continue;
       const raw = await entry.async("string");
       const texts = raw.match(/<a:t>([^<]*)<\/a:t>/g) ?? [];
       slideTexts.push(...texts.map((t) => t.replace(/<\/?a:t>/g, "")));
+      slideXmlCollapsed.push(normalizeXmlCollapsed(raw));
     }
     const combined = normalizeText(slideTexts.join(" "));
 
-    const missing: string[] = [];
-    for (const expected of expectedTexts) {
+    const missingNative: string[] = [];
+    for (const expected of nativeCorpus) {
       const normalized = normalizeText(expected);
       if (normalized && !combined.includes(normalized)) {
-        missing.push(`missing text: "${expected}"`);
+        missingNative.push(`missing text: "${expected}"`);
       }
     }
     checks.push({
       name: "text-survival",
-      passed: missing.length === 0,
-      detail: missing.length === 0 ? "all expected text found" : missing.join("; "),
+      passed: missingNative.length === 0,
+      detail: missingNative.length === 0 ? "all expected text found" : missingNative.join("; "),
+    });
+
+    const collapsed = slideXmlCollapsed.join(" ");
+    const missingFallback: string[] = [];
+    for (const expected of visualFallbackTexts) {
+      const normalized = normalizeXmlCollapsed(expected);
+      if (normalized && !collapsed.includes(normalized)) {
+        missingFallback.push(`missing alt/description: "${expected}"`);
+      }
+    }
+    checks.push({
+      name: "visual-fallback-alt",
+      passed: missingFallback.length === 0,
+      detail:
+        missingFallback.length === 0
+          ? "all fallback alt/description text found"
+          : missingFallback.join("; "),
     });
 
     const missingRels = archiveSlides.filter((name) => !zip.file(relsPartName(name)));

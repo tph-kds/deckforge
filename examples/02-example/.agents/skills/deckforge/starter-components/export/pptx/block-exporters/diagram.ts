@@ -1,22 +1,18 @@
+// export/pptx/block-exporters/diagram.ts
+
 import type {
   PptxBlockExport,
   PptxBlockExporter,
   PptxExportContext,
 } from "../../export-types";
 import { renderDiagramSvg } from "../../fidelity/svg/svg-diagram";
-import { mapThemeColors } from "../pptx-theme";
+import { resolveTheme, hexToPptx } from "../../resolved-theme";
+import { exportFrameOf, frameErrorIssue } from "../export-utils";
+import type { Block } from "../../../deck/types";
 
-interface DiagramBlock {
-  id: string;
-  type: "diagram";
+interface DiagramContent {
   nodes?: Array<{ id?: string; label: string } | string>;
   edges?: Array<{ from: string; to: string } | string>;
-  content?: { nodes?: Array<{ id?: string; label: string } | string>; edges?: Array<{ from: string; to: string } | string> };
-  x?: number;
-  y?: number;
-  w?: number;
-  h?: number;
-  frame?: { x?: number; y?: number; w?: number; h?: number };
 }
 
 export const diagramBlockExporter: PptxBlockExporter = {
@@ -24,27 +20,31 @@ export const diagramBlockExporter: PptxBlockExporter = {
   exportability: "image-only",
 
   async export(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
-    const diagramBlock = block as DiagramBlock;
-    const content = diagramBlock.content;
-    const nodes = content?.nodes ?? diagramBlock.nodes ?? [];
-    const edges = content?.edges ?? diagramBlock.edges ?? [];
-    const x = diagramBlock.x ?? diagramBlock.frame?.x ?? 0;
-    const y = diagramBlock.y ?? diagramBlock.frame?.y ?? 0;
-    const w = diagramBlock.w ?? diagramBlock.frame?.w ?? ctx.slideWidth * 0.6;
-    const h = diagramBlock.h ?? diagramBlock.frame?.h ?? ctx.slideHeight * 0.4;
+    const diagramBlock = block as Block;
+    const frame = exportFrameOf(diagramBlock);
+    if (!frame) {
+      return {
+        status: "unsupported",
+        issues: [frameErrorIssue(diagramBlock.id, "diagram blocks require a resolved frame")],
+      };
+    }
 
-    const theme = mapThemeColors(ctx.deck.theme);
+    const content = diagramBlock.content as DiagramContent | undefined;
+    const nodes = content?.nodes ?? [];
+    const edges = content?.edges ?? [];
+
+    const theme = resolveTheme(ctx.deck);
     const svg = renderDiagramSvg(
       { nodes, edges },
       {
-        width: Math.max(1, Math.round(w)),
-        height: Math.max(1, Math.round(h)),
+        width: Math.max(1, Math.round(frame.w)),
+        height: Math.max(1, Math.round(frame.h)),
         colors: {
-          background: theme.background,
-          nodeFill: theme.light1,
-          nodeStroke: theme.accent1,
-          labelColor: theme.text,
-          edgeColor: theme.dark2,
+          background: hexToPptx(theme.tokens.background),
+          nodeFill: hexToPptx(theme.tokens.surface),
+          nodeStroke: hexToPptx(theme.tokens.primary),
+          labelColor: hexToPptx(theme.tokens.foreground),
+          edgeColor: hexToPptx(theme.tokens.muted),
         },
       }
     );
@@ -54,10 +54,8 @@ export const diagramBlockExporter: PptxBlockExporter = {
       issues: [],
       element: {
         type: "svg",
-        x,
-        y,
-        w,
-        h,
+        elementId: diagramBlock.id,
+        ...frame,
         data: { svg, alt: (diagramBlock as { alt?: string }).alt },
       },
     };

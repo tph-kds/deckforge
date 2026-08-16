@@ -1,8 +1,12 @@
+// export/pptx/block-exporters/table.ts
+
 import type {
   PptxBlockExport,
   PptxBlockExporter,
   PptxExportContext,
 } from "../../export-types";
+import { exportFrameOf, frameErrorIssue } from "../export-utils";
+import type { Block } from "../../../deck/types";
 
 interface TableCell {
   text: string;
@@ -11,16 +15,9 @@ interface TableCell {
   fill?: string;
 }
 
-interface TableBlock {
-  id: string;
-  type: "table";
+interface TableBlockContent {
   rows: TableCell[][];
   headerRow?: boolean;
-  x?: number;
-  y?: number;
-  w?: number;
-  h?: number;
-  frame?: { x?: number; y?: number; w?: number; h?: number };
 }
 
 export const tableBlockExporter: PptxBlockExporter = {
@@ -28,13 +25,24 @@ export const tableBlockExporter: PptxBlockExporter = {
   exportability: "native-editable",
 
   async export(block: unknown, ctx: PptxExportContext): Promise<PptxBlockExport> {
-    const tableBlock = block as TableBlock;
+    const tableBlock = block as Block;
+    const frame = exportFrameOf(tableBlock);
+    if (!frame) {
+      return {
+        status: "unsupported",
+        issues: [frameErrorIssue(tableBlock.id, "table blocks require a resolved frame")],
+      };
+    }
 
-    const pptxRows = tableBlock.rows.map((row, rowIdx) =>
+    const content = tableBlock.content as TableBlockContent | undefined;
+    const rows = content?.rows ?? [];
+    const headerRow = content?.headerRow ?? false;
+
+    const pptxRows = rows.map((row, rowIdx) =>
       row.map((cell) => ({
         text: cell.text,
         options: {
-          bold: cell.bold ?? (tableBlock.headerRow && rowIdx === 0),
+          bold: cell.bold ?? (headerRow && rowIdx === 0),
           color: cell.color?.replace("#", "") ?? "000000",
           fill: { color: cell.fill?.replace("#", "") ?? "FFFFFF" },
           valign: "middle",
@@ -48,10 +56,8 @@ export const tableBlockExporter: PptxBlockExporter = {
       issues: [],
       element: {
         type: "table",
-        x: tableBlock.x ?? tableBlock.frame?.x ?? 0,
-        y: tableBlock.y ?? tableBlock.frame?.y ?? 0,
-        w: tableBlock.w ?? tableBlock.frame?.w ?? ctx.slideWidth * 0.8,
-        h: tableBlock.h ?? tableBlock.frame?.h ?? ctx.slideHeight * 0.5,
+        elementId: tableBlock.id,
+        ...frame,
         data: {
           rows: pptxRows,
           options: {

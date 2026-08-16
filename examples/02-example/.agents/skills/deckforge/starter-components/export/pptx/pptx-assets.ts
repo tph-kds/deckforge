@@ -1,4 +1,4 @@
-// starter-components/export/pptx/pptx-assets.ts
+// export/pptx/pptx-assets.ts
 
 export interface AssetEmbedResult {
   dataUri: string;
@@ -7,12 +7,38 @@ export interface AssetEmbedResult {
   mimeType: string;
 }
 
-export async function embedAsset(
+export interface EmbedOutcome {
+  result: AssetEmbedResult;
+  error?: string;
+}
+
+const FETCH_TIMEOUT_MS = 15000;
+
+async function fetchWithTimeout(url: string, timeoutMs: number): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
+    return response;
+  } catch (err) {
+    clearTimeout(timer);
+    throw err;
+  }
+}
+
+/**
+ * Fetch one URL into an embeddable data URI, caching by URL so each source is
+ * resolved at most once per preparation. Unlike the legacy `embedAsset`, this
+ * variant also reports WHY a resolution failed so preflight can surface an
+ * actionable, block-specific blocking error instead of a generic one.
+ */
+export async function embedAssetDetailed(
   assetUrl: string,
   cache: Map<string, AssetEmbedResult>
-): Promise<AssetEmbedResult> {
+): Promise<EmbedOutcome> {
   if (cache.has(assetUrl)) {
-    return cache.get(assetUrl)!;
+    return { result: cache.get(assetUrl)! };
   }
 
   if (assetUrl.startsWith("data:")) {
@@ -21,11 +47,14 @@ export async function embedAsset(
       mimeType: assetUrl.split(";")[0].split(":")[1] ?? "image/png",
     };
     cache.set(assetUrl, result);
-    return result;
+    return { result };
   }
 
   try {
-    const response = await fetch(assetUrl);
+    const response = await fetchWithTimeout(assetUrl, FETCH_TIMEOUT_MS);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
     const blob = await response.blob();
     const mimeType = blob.type || "image/png";
 
@@ -40,13 +69,23 @@ export async function embedAsset(
 
     const result: AssetEmbedResult = { dataUri, mimeType };
     cache.set(assetUrl, result);
-    return result;
-  } catch {
-    return {
+    return { result };
+  } catch (err) {
+    const error = err instanceof Error ? err.message : "unknown error";
+    const empty: AssetEmbedResult = {
       dataUri: "",
       mimeType: "image/png",
     };
+    cache.set(assetUrl, empty);
+    return { result: empty, error };
   }
+}
+
+export async function embedAsset(
+  assetUrl: string,
+  cache: Map<string, AssetEmbedResult>
+): Promise<AssetEmbedResult> {
+  return (await embedAssetDetailed(assetUrl, cache)).result;
 }
 
 export function embedAssetSync(

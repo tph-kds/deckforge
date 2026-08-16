@@ -1,5 +1,6 @@
-import type { Block, DeckProject } from "../deck-types";
-import type { AssetEmbedResult } from "./pptx/pptx-assets";
+import type { Block, DeckProject, SaveState } from "../deck/types";
+import type { PreparedAsset } from "./prepare-export";
+import type { Command, DispatchResult } from "../deck/commands";
 
 export type ExportIssueSeverity = "info" | "warning" | "error";
 
@@ -18,7 +19,17 @@ export type ExportIssueCode =
   | "hidden-slide-skipped"
   | "missing-speaker-notes"
   | "external-asset"
-  | "no-fallback-produced";
+  | "no-fallback-produced"
+  | "empty-table"
+  | "template-chart-skipped"
+  | "chart-no-data"
+  | "invalid-geometry"
+  | "aspect-mismatch"
+  | "duplicate-element-id"
+  | "unresolved-image"
+  | "template-chart-leak"
+  | "chart-data-mismatch"
+  | "chart-count-mismatch";
 
 export interface ExportIssue {
   code: ExportIssueCode;
@@ -97,6 +108,24 @@ export type PptxExportability =
   | "poster-with-link"
   | "unsupported";
 
+export type PreflightIssueGroup = "geometry" | "assets" | "content" | "structural";
+
+export interface PreflightGroupSummary {
+  group: PreflightIssueGroup;
+  label: string;
+  count: number;
+  issues: ExportIssue[];
+}
+
+/** Coverage invariants: expected == native + fallback and missing == 0. */
+export interface ExportCoverage {
+  expected: number;
+  native: number;
+  fallback: number;
+  missing: number;
+  satisfied: boolean;
+}
+
 export interface ExportPreflightResult {
   issues: ExportIssue[];
   score: number;
@@ -107,6 +136,16 @@ export interface ExportPreflightResult {
   missingBlockCount: number;
   unsupportedBlockCount: number;
   chartBlockCount: number;
+  /** True when export may proceed cleanly (no errors, zero missing geometry). */
+  ready: boolean;
+  /** Visible blocks with no resolvable canonical frame (fail-close gate). */
+  geometryMissingCount: number;
+  /** Number of visible blocks (the "expected" denominator). */
+  visibleBlockCount: number;
+  /** Coverage invariants over the resolved scene. */
+  coverage: ExportCoverage;
+  /** Diagnostics grouped by pipeline stage for the UI. */
+  groups: PreflightGroupSummary[];
 }
 
 export interface PptxExportConfig {
@@ -125,13 +164,23 @@ export interface FontWarning {
   substituteFont?: string;
 }
 
+/** A single styled run inside a native text element (pptxgenjs TextProps). */
+export interface PptxTextRun {
+  text: string;
+  options?: Record<string, unknown>;
+}
+
 interface PptxTextElement {
   type: "text";
   x: number;
   y: number;
   w: number;
   h: number;
-  data: { text: string; options?: Record<string, unknown> };
+  /** Stable identity of the source block (SlideDocument) for validation/diagnostics. */
+  elementId?: string;
+  /** Stable identity of the owning slide. */
+  slideId?: string;
+  data: { text: string | PptxTextRun[]; options?: Record<string, unknown> };
 }
 
 interface PptxImageElement {
@@ -140,7 +189,19 @@ interface PptxImageElement {
   y: number;
   w: number;
   h: number;
-  data: { dataUri: string; alt?: string; options?: Record<string, unknown> };
+  /** Stable identity of the source block (SlideDocument) for validation/diagnostics. */
+  elementId?: string;
+  /** Stable identity of the owning slide. */
+  slideId?: string;
+  data: {
+    dataUri: string;
+    alt?: string;
+    /** Intrinsic pixel dimensions of the source image, when known. Used to
+     * crop cover/contain from the real aspect ratio instead of stretching. */
+    naturalWidth?: number;
+    naturalHeight?: number;
+    options?: Record<string, unknown>;
+  };
 }
 
 interface PptxShapeElement {
@@ -149,6 +210,10 @@ interface PptxShapeElement {
   y: number;
   w: number;
   h: number;
+  /** Stable identity of the source block (SlideDocument) for validation/diagnostics. */
+  elementId?: string;
+  /** Stable identity of the owning slide. */
+  slideId?: string;
   data: { shape: string; options?: Record<string, unknown> };
 }
 
@@ -158,6 +223,10 @@ interface PptxTableElement {
   y: number;
   w: number;
   h: number;
+  /** Stable identity of the source block (SlideDocument) for validation/diagnostics. */
+  elementId?: string;
+  /** Stable identity of the owning slide. */
+  slideId?: string;
   data: { rows: unknown[][]; options?: Record<string, unknown> };
 }
 
@@ -167,6 +236,10 @@ interface PptxChartElement {
   y: number;
   w: number;
   h: number;
+  /** Stable identity of the source block (SlideDocument) for validation/diagnostics. */
+  elementId?: string;
+  /** Stable identity of the owning slide. */
+  slideId?: string;
   data: { chartType: string; data: unknown[]; options?: Record<string, unknown> };
 }
 
@@ -176,6 +249,10 @@ interface PptxFallbackElement {
   y: number;
   w: number;
   h: number;
+  /** Stable identity of the source block (SlideDocument) for validation/diagnostics. */
+  elementId?: string;
+  /** Stable identity of the owning slide. */
+  slideId?: string;
   data: { text: string; options?: Record<string, unknown> };
 }
 
@@ -185,6 +262,10 @@ interface PptxSvgElement {
   y: number;
   w: number;
   h: number;
+  /** Stable identity of the source block (SlideDocument) for validation/diagnostics. */
+  elementId?: string;
+  /** Stable identity of the owning slide. */
+  slideId?: string;
   data: { svg: string; alt?: string; options?: Record<string, unknown> };
 }
 
@@ -210,13 +291,34 @@ export interface PptxExportContext {
   deck: DeckProject;
   config: PptxExportConfig;
   fontWarnings: FontWarning[];
-  assetCache: Map<string, AssetEmbedResult>;
+  /**
+   * The canonical, pre-resolved asset registry produced by the single
+   * `prepareExport` phase. Exporters MUST consume resolved bytes from here and
+   * must never fetch or re-resolve an asset on their own. Keyed by canonical
+   * asset id (manifest id or `inline:<blockId>`).
+   */
+  assetRegistry: ReadonlyMap<string, PreparedAsset>;
+  /** Document pixel width of the slide (from SlideDocument.canvas). */
   slideWidth: number;
+  /** Document pixel height of the slide (from SlideDocument.canvas). */
   slideHeight: number;
+  /**
+   * PowerPoint slide size in inches, DERIVED from the document aspect ratio
+   * (Phase 4). webAspect === pptxAspect always. Never a hard-coded 13.333x7.5.
+   */
+  pptxWidth: number;
+  pptxHeight: number;
 }
 
 export interface PptxBlockExport {
   element?: PptxSlideElement;
+  /**
+   * Additional elements produced by one source block (e.g. a process diagram
+   * rendered as several editable shapes + connectors). When present, all of
+   * them are written to the slide; `element` remains the primary representative
+   * used for representation planning.
+   */
+  elements?: PptxSlideElement[];
   status: BlockExportStatus;
   issues: ExportIssue[];
 }
@@ -233,6 +335,8 @@ export interface ExportDialogProps {
   onClose: () => void;
   onExport?: (result: Blob) => void;
   onError?: (error: Error) => void;
+  commit?: (command: Command) => DispatchResult | undefined;
+  saveNow?: (deck: DeckProject) => SaveState;
 }
 
 export const DEFAULT_PPTX_CONFIG: PptxExportConfig = {

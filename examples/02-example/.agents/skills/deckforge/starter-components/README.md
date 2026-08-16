@@ -17,3 +17,12 @@ Included references cover:
 - deterministic content measurement (overflow, collision, budget, boundary, orphan) and its repair pass (move/trim/truncate with a fixed-point loop).
 
 A production implementation must still adapt authentication, API persistence, collaboration, rich-text/media adapters, schema validation, authorization, asset upload, visual regression, and runtime security to the target product.
+
+**Runtime dependencies**
+
+Generated decks using the scaffold export layer must install:
+- `@resvg/resvg-js ^2.6.2` (SVG chart rasterization)
+- `jszip ^3.10.1` and `pptxgenjs ^3.12.0` (PPTX export + verification)
+- `react ^18.3.1` and `react-dom ^18.3.1`
+
+with `"overrides": { "nanoid": "3.3.17" }`, and devDeps `typescript ^5.5.3`, `vite ^7.3.0`, `vitest ^3.2.7`, `@vitejs/plugin-react ^5.2.0`.

@@ -29,6 +29,10 @@ Store chart data and diagram structure as serializable content rather than scree
 
 Check that the visual can be understood in grayscale, at presentation distance, and through its text summary. Confirm that data values match source material and that no animation changes the apparent magnitude or order of evidence.
 
+## Export behavior
+
+Charts use `ChartContent` with an `isTemplate` flag. Template ("New chart") charts must be excluded from export so placeholder charts never reach the rendered deck or PPTX. Process/diagram blocks use the semantic steps representation and render through the block exporters so the PPTX layout matches the browser layout.
+
 ## Data storytelling pipeline
 
 Question and claim → data quality → comparison type → chart candidates → honest

@@ -31,6 +31,33 @@ A layout is a constraint system, not a decorative label. Normal slides use named
 
 Resolve slot geometry from the layout manifest. Blocks bind to slots. Absolute frames are an escape hatch for user-created freeform content, not the normal generation strategy.
 
+### Slot-positioning contract (GENERATION RULE)
+
+Every block with `positionMode: "slot"` MUST satisfy this contract BEFORE persistence:
+
+1. **slotId exists** — the block has a non-empty `slot` property
+2. **slotId references a valid slot** — the slot exists in the active layout's `composition.slots`
+3. **slot accepts the block type** — the slot's `allowedBlocks` includes the block's `type` (or `allowedBlocks` is empty/unset)
+4. **slot has capacity** — the slot's `maxItems` is not exceeded
+
+Before emitting any block with `positionMode: "slot"`:
+
+```
+1. Determine the active layout
+2. Enumerate available slots from layout-manifest.json
+3. Select a compatible slot (matching role and allowedBlocks)
+4. Assign the slotId to the block
+5. Validate slot compatibility
+6. Only then create the block
+```
+
+**Never invent a slot name.** If no compatible slot exists:
+- Use a valid explicit canonical frame (`positionMode: "absolute"`)
+- Or select another compatible layout
+- Do NOT create a block with `positionMode: "slot"` and a nonexistent or incompatible slotId
+
+**Exportability invariant:** Every persisted visible block must have resolvable canonical geometry. AI-generated decks must pass export preflight without manual repair.
+
 Every composition must satisfy:
 
 - safe-margin containment;
@@ -146,6 +173,19 @@ Diagrams need named nodes, directional edges, boundaries, labels, and clear read
 ## Security
 
 Use structured block data. Sanitize rich text and SVG. Validate asset URLs and content types. External embeds require allow-lists, sandbox policy, loading behavior, and a documented message protocol. Never expose secrets in deck JSON.
+
+## Export safety
+
+Generated decks must be exportable without manual geometry repair. The generation pipeline must enforce:
+
+- No unresolved slot references — every slot-positioned block has a valid slotId in the active layout
+- No blocks relying exclusively on CSS positioning — all blocks have canonical document-pixel frames
+- No browser-only geometry — no editor zoom-derived coordinates
+- No missing canonical frames — every visible block resolves to a usable frame
+- No invalid chart containers — charts require a real outer frame before internal chart layout runs
+- No temporary placeholders in persisted document — template blocks must be replaced with real content
+
+The export preflight should normally pass immediately for a correctly generated deck. If preflight reports geometry errors, the generator must repair them automatically before exposing the completed slide to the end user.
 
 ## Performance
 

@@ -14,6 +14,9 @@ def load(path:Path):
 def is_remote(src:str)->bool:
     return bool(re.match(r'^https?://',src.strip(),re.I))
 
+def is_data_uri(src:str)->bool:
+    return bool(re.match(r'^data:',src.strip(),re.I))
+
 def frame_ratio(frame)->float|None:
     w=frame.get('w');h=frame.get('h')
     if not w or not h:return None
@@ -70,7 +73,7 @@ def main():
                 errors.append(f'{sid}/{bid}: image has no source');item['status']='error'
             elif asset and not asset.get('src'):
                 errors.append(f'{sid}/{bid}: asset "{asset_id}" is remote-only (no local source)');item['status']='error'
-            elif src and not is_remote(src):
+            elif src and not is_remote(src) and not is_data_uri(src):
                 local=Path(str(args.deck).rsplit('/',1)[0])/src
                 if not local.exists():
                     errors.append(f'{sid}/{bid}: local asset file missing: {src}');item['status']='error'

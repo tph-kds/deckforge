@@ -1,4 +1,4 @@
-import type { DeckProject } from "../../deck-types";
+import type { DeckProject } from "../../deck/types";
 import type { FidelityReport } from "../export-types";
 import { calculateContentParity } from "./content-parity";
 import { FIDELITY_POLICY } from "./fidelity-policy";
