@@ -1,3 +1,5 @@
+import type { Block, SlideInteraction } from './deck/types';
+
 export type DeckId = string;
 export type SlideId = string;
 export type BlockId = string;
