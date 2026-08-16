@@ -148,7 +148,7 @@ Generated decks using the scaffold export layer must install:
 
 with `"overrides": { "nanoid": "3.3.17" }`, and devDeps `typescript ^5.5.3`, `vite ^7.3.0`, `vitest ^3.2.7`, `@vitejs/plugin-react ^5.2.0`.
 
-The `@resvg/resvg-js` native binding is a Node-only module. The PPTX exporter imports `svg-raster` lazily behind a `typeof document === "undefined"` guard, but `vite build` still code-splits that chunk, so the production build must externalize the binding (see `examples/02-example/vite.config.ts`):
+The `@resvg/resvg-js` native binding is a Node-only module. The PPTX exporter imports `svg-raster` lazily behind a `typeof document === "undefined"` guard, but `vite build` still code-splits that chunk, so the production build must externalize the binding (see the reference app's `vite.config.ts`):
 
 ```ts
 build: {
