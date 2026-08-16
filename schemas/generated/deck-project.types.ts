@@ -15,6 +15,7 @@ export namespace $defs {
     id: $defs.Id;
     language: string;
     objective?: string;
+    seedVersion?: string;
     slug: $defs.Slug;
     tags?: Array<string>;
     templateId?: string;

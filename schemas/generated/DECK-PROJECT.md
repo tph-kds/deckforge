@@ -188,6 +188,7 @@ This reference is produced by `scripts/generate/generate_schema_artifacts.py` fr
   - `id` (required: yes)
   - `language` (required: yes)
   - `objective` (required: no)
+  - `seedVersion` (required: no)
   - `slug` (required: yes)
   - `tags` (required: no)
   - `templateId` (required: no)

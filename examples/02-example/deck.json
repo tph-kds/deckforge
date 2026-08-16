@@ -12,7 +12,8 @@
     "authors": ["DeckForge Studio"],
     "tags": ["web-performance", "sustainability", "engineering"],
     "createdAt": "2026-08-02T00:00:00.000Z",
-    "updatedAt": "2026-08-02T00:00:00.000Z"
+    "updatedAt": "2026-08-02T00:00:00.000Z",
+    "seedVersion": "1"
   },
   "canvas": {
     "aspectRatio": "16:9",
