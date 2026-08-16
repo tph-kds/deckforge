@@ -20,8 +20,8 @@ function seedVersion(): string {
 }
 
 afterEach(() => {
-  vi.unstubAllGlobals();
   clearDeck();
+  vi.unstubAllGlobals();
 });
 
 describe("persistence seed-version invalidation", () => {
@@ -64,5 +64,13 @@ describe("persistence seed-version invalidation", () => {
     const reloaded = loadDeck();
     expect(reloaded).not.toBeNull();
     expect(reloaded?.meta.title).toBe(deck.meta.title);
+  });
+
+  it("a stored envelope with a matching seed version but a corrupt deck body is discarded", () => {
+    const storage = installStorage();
+    storage.set(STORAGE_KEY, JSON.stringify({ seedVersion: seedVersion(), deck: { meta: { title: "x" } } }));
+
+    expect(loadDeck()).toBeNull();
+    expect(storage.has(STORAGE_KEY)).toBe(false);
   });
 });

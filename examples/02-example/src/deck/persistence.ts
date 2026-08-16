@@ -47,7 +47,10 @@ export function loadDeck(): DeckProject | null {
       return null;
     }
     const deck = parsed.deck;
-    if (!deck.schemaVersion || !Array.isArray(deck.slides)) return null;
+    if (!deck.schemaVersion || !Array.isArray(deck.slides)) {
+      clearDeck();
+      return null;
+    }
     return deck;
   } catch {
     return null;
